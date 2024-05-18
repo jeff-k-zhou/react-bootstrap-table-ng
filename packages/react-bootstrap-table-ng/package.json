@@ -1,0 +1,57 @@
+{
+  "name": "react-bootstrap-table-ng",
+  "version": "4.3.16",
+  "description": "Next generation of react-bootstrap-table",
+  "main": "./lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jeff-k-zhou/react-bootstrap-table-ng.git"
+  },
+  "license": "MIT",
+  "keywords": [
+    "react",
+    "bootstrap",
+    "table",
+    "grid",
+    "react-component"
+  ],
+  "files": [
+    "lib/",
+    "dist/"
+  ],
+  "tags": [
+    "react"
+  ],
+  "author": "Jeff Zhou",
+  "contributors": [
+    {
+      "name": "Terrence Miao",
+      "email": "terrence.miao@gmail.com",
+      "url": "https://github.com/TerrenceMiao"
+    },
+    {
+      "name": "Allen Fang",
+      "email": "ayu780129@hotmail.com",
+      "url": "https://github.com/AllenFang"
+    },
+    {
+      "name": "Chun-MingChen",
+      "email": "nick830314@gmail.com",
+      "url": "https://github.com/Chun-MingChen"
+    }
+  ],
+  "dependencies": {
+    "classnames": "^2.3.1",
+    "react-transition-group": "^4.4.5",
+    "underscore": "^1.13.1"
+  },
+  "peerDependencies": {
+    "classnames": "^2.3.1",
+    "prop-types": "^15.8.1",
+    "react": "^16.4.0",
+    "react-dom": "^16.4.0"
+  },
+  "devDependencies": {
+    "@types/react-transition-group": "^4.4.6"
+  }
+}

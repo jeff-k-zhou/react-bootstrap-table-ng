@@ -1,0 +1,55 @@
+{
+  "name": "react-bootstrap-table-ng-filter",
+  "version": "1.5.6",
+  "description": "It's a column filter addon for react-bootstrap-table-ng",
+  "main": "./lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jeff-k-zhou/react-bootstrap-table-ng.git"
+  },
+  "license": "MIT",
+  "keywords": [
+    "react",
+    "bootstrap",
+    "table",
+    "grid",
+    "react-bootstrap-table-addons",
+    "react-component"
+  ],
+  "files": [
+    "lib/",
+    "dist/"
+  ],
+  "tags": [
+    "react"
+  ],
+  "author": "Jeff Zhou",
+  "contributors": [
+    {
+      "name": "Terrence Miao",
+      "email": "terrence.miao@gmail.com",
+      "url": "https://github.com/TerrenceMiao"
+    },
+    {
+      "name": "Allen Fang",
+      "email": "ayu780129@hotmail.com",
+      "url": "https://github.com/AllenFang"
+    },
+    {
+      "name": "Chun-MingChen",
+      "email": "nick830314@gmail.com",
+      "url": "https://github.com/Chun-MingChen"
+    }
+  ],
+  "peerDependencies": {
+    "prop-types": "^15.8.1",
+    "react": "^16.4.0",
+    "react-dom": "^16.4.0"
+  },
+  "dependencies": {
+    "react-bootstrap-table-ng": "^4.3.4"
+  },
+  "devDependencies": {
+    "ts-migrate": "^0.1.35"
+  }
+}

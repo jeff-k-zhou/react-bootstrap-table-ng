@@ -1,0 +1,52 @@
+{
+  "name": "react-bootstrap-table-ng-overlay",
+  "version": "2.1.9",
+  "description": "It's a loading overlay addons for react-bootstrap-table-ng",
+  "main": "./lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jeff-k-zhou/react-bootstrap-table-ng.git"
+  },
+  "license": "MIT",
+  "keywords": [
+    "react",
+    "bootstrap",
+    "table",
+    "grid",
+    "react-bootstrap-table-addons",
+    "react-component"
+  ],
+  "files": [
+    "lib/",
+    "dist/"
+  ],
+  "tags": [
+    "react"
+  ],
+  "author": "Jeff Zhou",
+  "contributors": [
+    {
+      "name": "Terrence Miao",
+      "email": "terrence.miao@gmail.com",
+      "url": "https://github.com/TerrenceMiao"
+    },
+    {
+      "name": "Allen Fang",
+      "email": "ayu780129@hotmail.com",
+      "url": "https://github.com/AllenFang"
+    },
+    {
+      "name": "Chun-MingChen",
+      "email": "nick830314@gmail.com",
+      "url": "https://github.com/Chun-MingChen"
+    }
+  ],
+  "dependencies": {
+    "react-loading-overlay-ng": "^1.2.4"
+  },
+  "peerDependencies": {
+    "prop-types": "^15.0.0",
+    "react": "^16.3.0",
+    "react-dom": "^16.3.0"
+  }
+}
