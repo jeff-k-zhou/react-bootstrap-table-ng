@@ -1,6 +1,6 @@
 {
   "name": "react-bootstrap-table-ng-example",
-  "version": "1.2.1",
+  "version": "4.18.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -41,8 +41,8 @@
   ],
   "peerDependencies": {
     "prop-types": "^15.8.1",
-    "react": "^16.4.0",
-    "react-dom": "^16.4.0"
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
@@ -75,11 +75,11 @@
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.5.2",
     "@types/node": "^16.18.48",
-    "@types/react": "^18.2.21",
-    "@types/react-dom": "^18.2.7",
+    "@types/react": "^18.3.1",
+    "@types/react-dom": "^18.3.1",
     "prop-types": "^15.8.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "react-scripts": "5.0.1",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"

@@ -1,6 +1,6 @@
 {
   "name": "react-bootstrap-table-ng",
-  "version": "0.0.1",
+  "version": "4.18.0",
   "private": true,
   "description": "Rebuilt for react-bootstrap-table",
   "main": "index.js",
@@ -45,7 +45,7 @@
     "url": "https://github.com/jeff-k-zhou/react-bootstrap-table-ng/issues"
   },
   "engines": {
-    "node": ">=16 <=18"
+    "node": ">=18 <=18"
   },
   "homepage": "https://github.com/jeff-k-zhou/react-bootstrap-table-ng#README",
   "devDependencies": {
@@ -72,14 +72,14 @@
     "@babel/preset-react": "^7.0.0",
     "@babel/preset-typescript": "^7.22.5",
     "@babel/register": "^7.17.0",
-    "@types/enzyme": "^3.10.13",
+    "@types/enzyme": "^3.10.18",
     "@types/sinon": "^10.0.16",
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^29.3.1",
     "babel-loader": "^8.2.5",
     "css-loader": "^6.7.2",
     "enzyme": "^3.11.0",
-    "enzyme-adapter-react-16": "^1.15.7",
+    "enzyme-adapter-react-18": "^1.0.0",
     "enzyme-to-json": "^3.6.2",
     "eslint": "^8.27.0",
     "eslint-config-airbnb": "^19.0.4",
@@ -101,7 +101,7 @@
     "jsdom": "^20.0.2",
     "jsdom-global": "^3.0.2",
     "lerna": "^6.3.0",
-    "react-test-renderer": "^16.4.0",
+    "react-test-renderer": "^18.3.1",
     "sass-loader": "^13.2.0",
     "sinon": "^14.0.2",
     "style-loader": "^3.3.1",
@@ -124,8 +124,8 @@
     "classnames": "^2.3.1",
     "csstype": "^3.1.2",
     "prop-types": "^15.8.1",
-    "react": "^16.14.0",
-    "react-dom": "^16.14.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "sass": "^1.56.1",
     "source-map-support": "^0.5.21",
     "ts-jest": "^29.1.1",

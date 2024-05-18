@@ -1,6 +1,6 @@
 {
   "name": "react-bootstrap-table-ng-overlay",
-  "version": "2.1.9",
+  "version": "4.18.0",
   "description": "It's a loading overlay addons for react-bootstrap-table-ng",
   "main": "./lib/index.js",
   "repository": {
@@ -42,11 +42,11 @@
     }
   ],
   "dependencies": {
-    "react-loading-overlay-ng": "^1.2.4"
+    "react-loading-overlay-ng": "^4.18.0"
   },
   "peerDependencies": {
     "prop-types": "^15.0.0",
-    "react": "^16.3.0",
-    "react-dom": "^16.3.0"
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   }
 }
