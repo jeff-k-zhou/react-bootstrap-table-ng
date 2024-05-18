@@ -1,4 +1,5 @@
 # react-bootstrap-table-ng
+This is a fork of [react-bootstrap-table-nextgen](https://github.com/TerrenceMiao/react-bootstrap-table-nextgen) which was forked from [react-bootstrap-table](https://github.com/AllenFang/react-bootstrap-table). The goal of this fork is to provide stable version with react 18 and above, bootstrap 5 and above
 
 [![Build Status](https://travis-ci.org/jeff-k-zhou/react-bootstrap-table-ng.svg?branch=master)](https://travis-ci.org/jeff-k-zhou/react-bootstrap-table-ng)
 Rebuild of [react-bootstrap-table](https://github.com/AllenFang/react-bootstrap-table)
