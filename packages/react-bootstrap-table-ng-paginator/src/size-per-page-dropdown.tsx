@@ -5,8 +5,19 @@ import SizePerPageOption from "./size-per-page-option";
 
 const sizePerPageDefaultClass = "react-bs-table-sizePerPage-dropdown";
 
+const sizePerPageDropDownDefaultProps = {
+  open: false,
+  hidden: false,
+  btnContextual: "btn-default btn-secondary",
+  variation: "dropdown",
+  className: "",
+  optionRenderer: null,
+  bootstrap4: false,
+  tableId: null,
+};
+
 const SizePerPageDropDown = (props: any) => {
-  const {
+  const { 
     open,
     tableId,
     hidden,
@@ -20,7 +31,7 @@ const SizePerPageDropDown = (props: any) => {
     optionRenderer,
     currSizePerPage,
     onSizePerPageChange,
-  } = props;
+  } = { ...sizePerPageDropDownDefaultProps, ...props };
 
   const openClass = open ? "open show" : "";
   const dropdownClasses = cs(
@@ -93,16 +104,6 @@ SizePerPageDropDown.propTypes = {
   variation: PropTypes.oneOf(["dropdown", "dropup"]),
   className: PropTypes.string,
   optionRenderer: PropTypes.func,
-};
-SizePerPageDropDown.defaultProps = {
-  open: false,
-  hidden: false,
-  btnContextual: "btn-default btn-secondary",
-  variation: "dropdown",
-  className: "",
-  optionRenderer: null,
-  bootstrap4: false,
-  tableId: null,
 };
 
 export default SizePerPageDropDown;

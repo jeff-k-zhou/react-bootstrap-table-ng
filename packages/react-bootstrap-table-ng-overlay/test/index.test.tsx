@@ -1,6 +1,6 @@
 import { render, shallow } from "enzyme";
 import React from "react";
-import LoadingOverlay from "react-loading-overlay-ng";
+import LoadingOverlay from "react-loading-overlay-nextgen";
 
 import overlayFactory from "../index";
 

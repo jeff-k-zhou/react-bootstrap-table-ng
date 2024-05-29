@@ -12,8 +12,8 @@ EditorIndicator.propTypes = {
   invalidMessage: PropTypes.string,
 };
 
-EditorIndicator.defaultProps = {
-  invalidMessage: null,
-};
+// EditorIndicator.defaultProps = {
+//   invalidMessage: null,
+// };
 
 export default EditorIndicator;

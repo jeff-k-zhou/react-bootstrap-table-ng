@@ -40,8 +40,8 @@ PaginatonList.propTypes = {
   pageButtonRenderer: PropTypes.func,
 };
 
-PaginatonList.defaultProps = {
-  pageButtonRenderer: null,
-};
+// PaginatonList.defaultProps = {
+//   pageButtonRenderer: null,
+// };
 
 export default PaginatonList;

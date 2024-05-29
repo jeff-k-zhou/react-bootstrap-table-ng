@@ -2,7 +2,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 
-import LoadingOverlay from "react-loading-overlay-ng";
+import LoadingOverlay from "react-loading-overlay-nextgen";
 
 interface TableLoadingOverlayWrapperProps {
   children: React.ReactNode;
