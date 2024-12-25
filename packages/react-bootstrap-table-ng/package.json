@@ -41,17 +41,17 @@
     }
   ],
   "dependencies": {
-    "classnames": "^2.3.1",
+    "classnames": "^2.5.1",
     "react-transition-group": "^4.4.5",
-    "underscore": "^1.13.6"
+    "underscore": "^1.13.7"
   },
   "peerDependencies": {
-    "classnames": "^2.3.1",
+    "classnames": "^2.5.1",
     "prop-types": "^15.8.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "@types/react-transition-group": "^4.4.10"
+    "@types/react-transition-group": "^4.4.12"
   }
 }

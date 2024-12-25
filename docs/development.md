@@ -5,7 +5,6 @@
 $ git clone https://github.com/jeff-k-zhou/react-bootstrap-table-ng.git
 $ cd react-bootstrap-table-ng
 $ npm install
-$ lerna bootstrap  # ./node_modules/.bin/lerna bootstrap
 ```
 ### Development
 ```bash
