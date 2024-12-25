@@ -1,6 +1,6 @@
 import { shallow } from "enzyme";
 import React from "react";
-import sinon from "sinon";
+import {stub} from "sinon";
 
 import SizePerPageDropDown from "../src/size-per-page-dropdown";
 import SizePerPageOption from "../src/size-per-page-option";
@@ -18,9 +18,9 @@ describe("SizePerPageDropDown", () => {
       page: 25,
     },
   ];
-  const onClick = sinon.stub();
-  const onBlur = sinon.stub();
-  const onSizePerPageChange = sinon.stub();
+  const onClick = stub();
+  const onBlur = stub();
+  const onSizePerPageChange = stub();
   const props = {
     currSizePerPage,
     options,

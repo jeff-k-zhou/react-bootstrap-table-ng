@@ -1,6 +1,6 @@
 import { shallow } from "enzyme";
 import React from "react";
-import sinon from "sinon";
+import {stub} from "sinon";
 
 import SizePerPageOption from "../src/size-per-page-option";
 
@@ -8,7 +8,7 @@ describe("SizePerPageOption", () => {
   let wrapper: any;
   const text = "page1";
   const page = 1;
-  const onSizePerPageChange = sinon.stub();
+  const onSizePerPageChange = stub();
 
   beforeEach(() => {
     onSizePerPageChange.reset();
@@ -28,7 +28,7 @@ describe("SizePerPageOption", () => {
     });
 
     describe("when MouseDown event happen", () => {
-      const preventDefault = sinon.stub();
+      const preventDefault = stub();
       beforeEach(() => {
         wrapper.find("a").simulate("mousedown", { preventDefault });
       });
@@ -55,7 +55,7 @@ describe("SizePerPageOption", () => {
     });
 
     describe("when MouseDown event happen", () => {
-      const preventDefault = sinon.stub();
+      const preventDefault = stub();
       beforeEach(() => {
         wrapper.find("a").simulate("mousedown", { preventDefault });
       });

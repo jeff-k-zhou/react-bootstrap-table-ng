@@ -1,6 +1,6 @@
 import { shallow } from "enzyme";
 import React from "react";
-import sinon from "sinon";
+import {stub} from "sinon";
 
 import RowPureContent from "../../src/row/row-pure-content";
 import SimpleRow from "../../src/row/simple-row";
@@ -203,7 +203,7 @@ describe("SimpleRow", () => {
   });
 
   describe("when attrs prop is defined", () => {
-    const customClickCallBack = sinon.stub();
+    const customClickCallBack = stub();
     const attrs = { "data-index": 1, onClick: customClickCallBack };
     beforeEach(() => {
       wrapper = shallow(

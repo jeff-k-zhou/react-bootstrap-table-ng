@@ -1,6 +1,6 @@
 import { shallow } from "enzyme";
 import React from "react";
-import sinon from "sinon";
+import {stub} from "sinon";
 
 import { SORT_ASC, SORT_DESC } from "..";
 import HeaderCell from "../src/header-cell";
@@ -59,7 +59,7 @@ describe("HeaderCell", () => {
       let titleCallBack: any;
 
       beforeEach(() => {
-        titleCallBack = sinon.stub().withArgs(column).returns(customTitle);
+        titleCallBack = stub().withArgs(column).returns(customTitle);
         column.headerTitle = titleCallBack;
         wrapper = shallow(<HeaderCell column={column} index={index} />);
       });
@@ -128,7 +128,7 @@ describe("HeaderCell", () => {
     const column = {
       dataField: "id",
       text: "ID",
-      headerFormatter: sinon.stub,
+      headerFormatter: stub,
     };
     const formatterResult = <h3>{column.text}</h3>;
     const formatter = sinon
@@ -169,7 +169,7 @@ describe("HeaderCell", () => {
         dataField: "id",
         text: "ID",
         headerEvents: {
-          onClick: sinon.stub(),
+          onClick: stub(),
         },
       };
 
@@ -419,7 +419,7 @@ describe("HeaderCell", () => {
         text: "ID",
         sort: true,
       };
-      onSortCallBack = sinon.stub().withArgs(column);
+      onSortCallBack = stub().withArgs(column);
       wrapper = shallow(
         <HeaderCell column={column} index={index} onSort={onSortCallBack} />
       );
@@ -795,7 +795,7 @@ describe("HeaderCell", () => {
           text: "ID",
           sort: true,
           headerEvents: {
-            onClick: sinon.stub(),
+            onClick: stub(),
           },
         };
         wrapper = shallow(

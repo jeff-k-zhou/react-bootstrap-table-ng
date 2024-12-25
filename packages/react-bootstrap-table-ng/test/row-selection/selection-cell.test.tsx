@@ -2,7 +2,7 @@ import { shallow } from "enzyme";
 import toJson from "enzyme-to-json";
 import "jsdom-global/register";
 import React from "react";
-import sinon from "sinon";
+import {stub, spy} from "sinon";
 
 import SelectionCell from "../../src/row-selection/selection-cell";
 import { shallowWithContext } from "../test-helpers/new-context";
@@ -114,14 +114,14 @@ describe("<SelectionCell />", () => {
       const rowKey = 1;
       const selected = true;
       let mockOnRowSelect: any;
-      const spy = sinon.spy(SelectionCell.prototype, "handleClick");
+      const spy1 = spy(SelectionCell.prototype, "handleClick");
 
       beforeEach(() => {
-        mockOnRowSelect = sinon.stub();
+        mockOnRowSelect = stub();
       });
 
       afterEach(() => {
-        spy.resetHistory();
+        spy1.resetHistory();
         mockOnRowSelect.reset();
       });
 
@@ -141,7 +141,7 @@ describe("<SelectionCell />", () => {
         });
 
         it("should calling handleRowClicked", () => {
-          expect(spy.calledOnce).toBe(true);
+          expect(spy1.calledOnce).toBe(true);
         });
 
         it("should calling onRowSelect callback correctly", () => {
@@ -169,7 +169,7 @@ describe("<SelectionCell />", () => {
         });
 
         it("should calling handleRowClicked", () => {
-          expect(spy.calledOnce).toBe(true);
+          expect(spy1.calledOnce).toBe(true);
         });
 
         it("should not calling onRowSelect callback", () => {

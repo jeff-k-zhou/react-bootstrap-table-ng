@@ -1,12 +1,12 @@
 import { shallow } from "enzyme";
 import React from "react";
-import sinon from "sinon";
+import {stub} from "sinon";
 
 import PageButton from "../src/page-button";
 
 describe("PageButton", () => {
   let wrapper: any;
-  const onPageChangeCallback = sinon.stub();
+  const onPageChangeCallback = stub();
   const props = {
     onPageChange: onPageChangeCallback,
     page: 2,
@@ -25,7 +25,7 @@ describe("PageButton", () => {
     describe("when clicking", () => {
       let preventDefault: any;
       beforeEach(() => {
-        preventDefault = sinon.stub();
+        preventDefault = stub();
         wrapper.find("a.page-link").simulate("click", { preventDefault });
       });
 

@@ -1,7 +1,7 @@
 import { mount } from "enzyme";
 import "jsdom-global/register";
 import React from "react";
-import sinon from "sinon";
+import {stub} from "sinon";
 import { ComparatorNumber, EQ, FILTER_TYPES } from "../..";
 import NumberFilter from "../../src/components/number";
 
@@ -9,8 +9,8 @@ describe("Number Filter", () => {
   let wrapper: any;
 
   // onFilter(x)(y) = filter result
-  const onFilter = sinon.stub();
-  const onFilterFirstReturn = sinon.stub();
+  const onFilter = stub();
+  const onFilterFirstReturn = stub();
 
   const column = {
     dataField: "price",

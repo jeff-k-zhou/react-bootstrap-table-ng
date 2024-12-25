@@ -1,7 +1,7 @@
 /* eslint react/prefer-stateless-function: 0 */
 import { shallow } from "enzyme";
 import React from "react";
-import sinon from "sinon";
+import {stub} from "sinon";
 import BootstrapTable from "../../src/bootstrap-table";
 import withContext from "../../src/contexts";
 
@@ -233,7 +233,7 @@ describe("remoteResolver", () => {
   });
 
   describe("handleRemoteCellChange", () => {
-    const onTableChangeCB = sinon.stub();
+    const onTableChangeCB = stub();
     const rowId = 1;
     const dataField = "name";
     const newValue = "test";
@@ -257,7 +257,7 @@ describe("remoteResolver", () => {
   });
 
   describe("handleSortChange", () => {
-    const onTableChangeCB = sinon.stub();
+    const onTableChangeCB = stub();
     const newSortFiled = "name";
     const newSortOrder = "asc";
     beforeEach(() => {
@@ -281,7 +281,7 @@ describe("remoteResolver", () => {
   });
 
   describe("handleRemotePageChange", () => {
-    const onTableChangeCB = sinon.stub();
+    const onTableChangeCB = stub();
     const newPage = 2;
     const newSizePerPage = 10;
     beforeEach(() => {
@@ -305,7 +305,7 @@ describe("remoteResolver", () => {
   });
 
   describe("handleRemoteSearchChange", () => {
-    const onTableChangeCB = sinon.stub();
+    const onTableChangeCB = stub();
     const searchText = "abc";
 
     beforeEach(() => {
@@ -330,7 +330,7 @@ describe("remoteResolver", () => {
   });
 
   describe("handleRemoteFilterChange", () => {
-    const onTableChangeCB = sinon.stub();
+    const onTableChangeCB = stub();
     const filters = { price: { filterVal: 20, filterType: "TEXT" } };
     beforeEach(() => {
       onTableChangeCB.reset();

@@ -4,12 +4,7 @@ import React from "react";
 import dataOperator from "../../react-bootstrap-table-ng/src/store/operators";
 import _ from "../../react-bootstrap-table-ng/src/utils";
 
-import {
-  CLICK_TO_CELL_EDIT,
-  DBCLICK_TO_CELL_EDIT,
-  DELAY_FOR_DBCLICK,
-} from "..";
-import cellEditFactory from "../index";
+import cellEditFactory, {CLICK_TO_CELL_EDIT, DBCLICK_TO_CELL_EDIT,DELAY_FOR_DBCLICK} from "../index";
 import createCellEditContext, { Consumer } from "../src/context";
 
 describe("CellEditContext", () => {

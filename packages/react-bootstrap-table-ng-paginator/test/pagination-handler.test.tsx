@@ -1,6 +1,6 @@
 import { shallow } from "enzyme";
 import React from "react";
-import sinon from "sinon";
+import {stub} from "sinon";
 
 import paginationHandler from "../src/pagination-handler";
 
@@ -24,8 +24,8 @@ describe("paginationHandler", () => {
     nextPageText: ">",
     lastPageText: ">>",
     alwaysShowAllBtns: false,
-    onPageChange: sinon.stub(),
-    onSizePerPageChange: sinon.stub(),
+    onPageChange: stub(),
+    onSizePerPageChange: stub(),
     hidePageListOnlyOnePage: false,
     hideSizePerPage: false,
     ...props,

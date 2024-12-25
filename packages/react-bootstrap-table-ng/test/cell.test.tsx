@@ -1,6 +1,6 @@
 import { shallow } from "enzyme";
 import React from "react";
-import sinon from "sinon";
+import {stub} from "sinon";
 
 import Cell from "../src/cell";
 
@@ -115,7 +115,7 @@ describe("Cell", () => {
     };
 
     beforeEach(() => {
-      onStartCallBack = sinon.stub().withArgs(rowindex, columnindex);
+      onStartCallBack = stub().withArgs(rowindex, columnindex);
     });
 
     describe("and clicktoedit is true", () => {
@@ -147,7 +147,7 @@ describe("Cell", () => {
       describe("if when column.events.onClick prop is defined", () => {
         beforeEach(() => {
           column.events = {
-            onClick: sinon.stub(),
+            onClick: stub(),
           };
         });
 
@@ -187,7 +187,7 @@ describe("Cell", () => {
       describe("if when column.events.onDoubleClick prop is defined", () => {
         beforeEach(() => {
           column.events = {
-            onDoubleClick: sinon.stub(),
+            onDoubleClick: stub(),
           };
         });
 

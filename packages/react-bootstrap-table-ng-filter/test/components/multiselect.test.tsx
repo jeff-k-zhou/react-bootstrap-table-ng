@@ -1,7 +1,7 @@
 import { mount, shallow } from "enzyme";
 import "jsdom-global/register";
 import React from "react";
-import sinon from "sinon";
+import {stub} from "sinon";
 import { FILTER_TYPES } from "../..";
 import MultiSelectFilter from "../../src/components/multiselect";
 
@@ -10,8 +10,8 @@ describe("Multi Select Filter", () => {
   let instance: any;
 
   // onFilter(x)(y) = filter result
-  const onFilter = sinon.stub();
-  const onFilterFirstReturn = sinon.stub();
+  const onFilter = stub();
+  const onFilterFirstReturn = stub();
 
   const column = {
     dataField: "quality",

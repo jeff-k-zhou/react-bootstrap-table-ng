@@ -1,7 +1,7 @@
 import { shallow } from "enzyme";
 import toJson from "enzyme-to-json";
 import React from "react";
-import sinon from "sinon";
+import {stub, spy} from "sinon";
 
 import { CHECKBOX_STATUS_CHECKED, CHECKBOX_STATUS_INDETERMINATE } from "../..";
 import SelectionHeaderCell, {
@@ -66,14 +66,14 @@ describe("<SelectionHeaderCell />", () => {
 
   describe("handleCheckBoxClick", () => {
     describe("when <th /> was clicked", () => {
-      const spy = sinon.spy(
+      const spy1 = spy(
         SelectionHeaderCell.prototype,
         "handleCheckBoxClick"
       );
-      const mockOnAllRowsSelect = sinon.stub();
+      const mockOnAllRowsSelect = stub();
 
       beforeEach(() => {
-        spy.resetHistory();
+        spy1.resetHistory();
         mockOnAllRowsSelect.reset();
       });
 
@@ -92,7 +92,7 @@ describe("<SelectionHeaderCell />", () => {
         it("should do nothing", () => {
           wrapper.find("th").simulate("click");
 
-          expect(spy.callCount).toBe(0);
+          expect(spy1.callCount).toBe(0);
           expect(mockOnAllRowsSelect.callCount).toBe(0);
         });
       });

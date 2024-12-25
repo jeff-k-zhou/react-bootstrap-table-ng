@@ -1,7 +1,7 @@
 import { mount, shallow } from "enzyme";
 import "jsdom-global/register";
 import React from "react";
-import sinon from "sinon";
+import {stub} from "sinon";
 
 import { ROW_SELECT_DISABLED } from "..";
 import Body from "../src/body";
@@ -114,7 +114,7 @@ describe("Body", () => {
         let emptyIndicationCallBack: any;
 
         beforeEach(() => {
-          emptyIndicationCallBack = sinon.stub().returns(content);
+          emptyIndicationCallBack = stub().returns(content);
           wrapper = shallow(
             <Body
               {...mockBodyResolvedProps}
@@ -169,7 +169,7 @@ describe("Body", () => {
     });
 
     describe("and it is a callback functoin", () => {
-      const rowStyleCallBack = sinon.stub().returns(rowStyle);
+      const rowStyleCallBack = stub().returns(rowStyle);
       beforeEach(() => {
         wrapper = shallow(
           <Body
@@ -225,7 +225,7 @@ describe("Body", () => {
     });
 
     describe("and it is a callback function", () => {
-      const rowClassesCallBack = sinon.stub().returns(rowClasses);
+      const rowClassesCallBack = stub().returns(rowClasses);
 
       beforeEach(() => {
         wrapper = shallow(
@@ -262,7 +262,7 @@ describe("Body", () => {
   });
 
   describe("when rowEvents prop is defined", () => {
-    const rowEvents = { onClick: sinon.stub() };
+    const rowEvents = { onClick: stub() };
 
     describe("and it is a string", () => {
       beforeEach(() => {

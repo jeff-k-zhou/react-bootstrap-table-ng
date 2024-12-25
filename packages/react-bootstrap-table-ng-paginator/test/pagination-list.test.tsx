@@ -1,13 +1,13 @@
 import { shallow } from "enzyme";
 import React from "react";
-import sinon from "sinon";
+import {stub} from "sinon";
 
 import PageButton from "../src/page-button";
 import PaginationList from "../src/pagination-list";
 
 describe("PaginationList", () => {
   let wrapper: any;
-  const onPageChange = sinon.stub();
+  const onPageChange = stub();
   const pages = [
     {
       page: 1,

@@ -1,7 +1,7 @@
 import { mount, shallow } from "enzyme";
 import "jsdom-global/register";
 import React from "react";
-import sinon from "sinon";
+import {stub} from "sinon";
 import { FILTER_TYPES } from "../..";
 import TextFilter from "../../src/components/text";
 
@@ -11,8 +11,8 @@ describe("Text Filter", () => {
   let instance: any;
 
   // onFilter(x)(y) = filter result
-  const onFilter = sinon.stub();
-  const onFilterFirstReturn = sinon.stub();
+  const onFilter = stub();
+  const onFilterFirstReturn = stub();
 
   const column = {
     dataField: "price",
@@ -211,7 +211,7 @@ describe("Text Filter", () => {
 
   describe("filter", () => {
     const event = {
-      stopPropagation: sinon.stub(),
+      stopPropagation: stub(),
       target: { value: "tester" },
     };
 

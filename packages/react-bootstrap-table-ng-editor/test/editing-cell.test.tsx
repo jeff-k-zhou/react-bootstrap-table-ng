@@ -2,7 +2,7 @@
 import { mount, shallow } from "enzyme";
 import "jsdom-global/register";
 import React from "react";
-import sinon from "sinon";
+import {stub} from "sinon";
 
 import _ from "../../react-bootstrap-table-ng/src/utils";
 import { EDITTYPE } from "..";
@@ -49,8 +49,8 @@ describe("EditingCell", () => {
   };
 
   beforeEach(() => {
-    onEscape = sinon.stub();
-    onUpdate = sinon.stub();
+    onEscape = stub();
+    onUpdate = stub();
     wrapper = mount(
       <EditingCell
         row={row}
@@ -86,7 +86,7 @@ describe("EditingCell", () => {
   it("when press ENTER on TextEditor should call onUpdate correctly", () => {
     const newValue = "test";
     const textEditor = wrapper.find(TextEditor);
-    sinon.stub(textEditor.instance(), "getValue").returns(newValue);
+    stub(textEditor.instance(), "getValue").returns(newValue);
     textEditor.simulate("keyDown", { keyCode: 13 });
     expect(onUpdate.callCount).toBe(1);
     expect(onUpdate.calledWith(row, column, newValue)).toBe(true);
@@ -310,7 +310,7 @@ describe("EditingCell", () => {
       beforeEach(() => {
         newValue = "newValue";
         validForm = { valid: false, message: "Something is invalid" };
-        validatorCallBack = sinon.stub().returns(validForm);
+        validatorCallBack = stub().returns(validForm);
         column = {
           dataField: "id",
           text: "ID",
@@ -368,7 +368,7 @@ describe("EditingCell", () => {
       beforeEach(() => {
         newValue = "newValue";
         validForm = true;
-        validatorCallBack = sinon.stub().returns(validForm);
+        validatorCallBack = stub().returns(validForm);
         column = {
           dataField: "id",
           text: "ID",
@@ -405,7 +405,7 @@ describe("EditingCell", () => {
       column = {
         dataField: "id",
         text: "ID",
-        editorRenderer: sinon.stub().returns(<TestEditor />),
+        editorRenderer: stub().returns(<TestEditor />),
       };
 
       wrapper = mount(
