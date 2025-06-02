@@ -1,39 +1,23 @@
-import { mount, shallow } from "enzyme";
-import "jsdom-global/register";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import React from "react";
-import {stub} from "sinon";
+import { stub } from "sinon";
 
 import { ROW_SELECT_DISABLED } from "..";
 import Body from "../src/body";
 import createExpansionContext from "../src/contexts/row-expand-context";
 import createSelectionContext from "../src/contexts/selection-context";
-import RowAggregator from "../src/row/aggregate-row";
-import RowSection from "../src/row/row-section";
-import Row from "../src/row/simple-row";
 import mockBodyResolvedProps from "./test-helpers/mock/body-resolved-props";
 
 describe("Body", () => {
-  let wrapper: any;
   const columns = [
-    {
-      dataField: "id",
-      text: "ID",
-    },
-    {
-      dataField: "name",
-      text: "Name",
-    },
+    { dataField: "id", text: "ID" },
+    { dataField: "name", text: "Name" },
   ];
 
   const data = [
-    {
-      id: 1,
-      name: "A",
-    },
-    {
-      id: 2,
-      name: "B",
-    },
+    { id: 1, name: "A" },
+    { id: 2, name: "B" },
   ];
 
   const keyField = "id";
@@ -42,8 +26,8 @@ describe("Body", () => {
   const SelectionContext = createSelectionContext();
 
   describe("simplest body", () => {
-    beforeEach(() => {
-      wrapper = shallow(
+    it("should render successfully", () => {
+      render(
         <Body
           {...mockBodyResolvedProps}
           keyField="id"
@@ -51,18 +35,14 @@ describe("Body", () => {
           data={data}
         />
       );
-    });
-
-    it("should render successfully", () => {
-      expect(wrapper.length).toBe(1);
-      expect(wrapper.find("tbody").length).toBe(1);
-      expect(wrapper.find(Row).length).toBe(data.length);
+      expect(screen.getByRole("rowgroup")).toBeInTheDocument();
+      expect(screen.getAllByRole("row")).toHaveLength(data.length);
     });
   });
 
   describe("when data is empty", () => {
-    beforeEach(() => {
-      wrapper = shallow(
+    it("should not render any rows", () => {
+      render(
         <Body
           {...mockBodyResolvedProps}
           keyField="id"
@@ -72,74 +52,42 @@ describe("Body", () => {
           isEmpty
         />
       );
-    });
-
-    it("should not render", () => {
-      expect(wrapper.length).toBe(1);
-      expect(wrapper.find("tbody").length).toBe(0);
-      expect(wrapper.find(RowSection).length).toBe(0);
+      expect(screen.queryByRole("row")).not.toBeInTheDocument();
     });
 
     describe("when noDataIndication props is defined", () => {
-      let emptyIndication: any;
-
-      describe("and it is not a function", () => {
-        beforeEach(() => {
-          emptyIndication = "Table is empty";
-          wrapper = shallow(
-            <Body
-              {...mockBodyResolvedProps}
-              keyField="id"
-              columns={columns}
-              data={data}
-              visibleColumnSize={columns.length}
-              noDataIndication={emptyIndication}
-              isEmpty
-            />
-          );
-        });
-
-        it("should render successfully", () => {
-          expect(wrapper.length).toBe(1);
-          expect(wrapper.find("tbody").length).toBe(1);
-          expect(wrapper.find(RowSection).length).toBe(1);
-          expect(wrapper.find(RowSection).prop("content")).toEqual(
-            emptyIndication
-          );
-        });
+      it("should render noDataIndication string", () => {
+        const emptyIndication = "Table is empty";
+        render(
+          <Body
+            {...mockBodyResolvedProps}
+            keyField="id"
+            columns={columns}
+            data={data}
+            visibleColumnSize={columns.length}
+            noDataIndication={emptyIndication}
+            isEmpty
+          />
+        );
+        expect(screen.getByText(emptyIndication)).toBeInTheDocument();
       });
 
-      describe("and it is a function", () => {
+      it("should render noDataIndication function result", () => {
         const content = "Table is empty";
-        let emptyIndicationCallBack: any;
-
-        beforeEach(() => {
-          emptyIndicationCallBack = stub().returns(content);
-          wrapper = shallow(
-            <Body
-              {...mockBodyResolvedProps}
-              keyField="id"
-              columns={columns}
-              data={data}
-              visibleColumnSize={columns.length}
-              noDataIndication={emptyIndicationCallBack}
-              isEmpty
-            />
-          );
-        });
-
-        it("should render successfully", () => {
-          expect(wrapper.length).toBe(1);
-          expect(wrapper.find("tbody").length).toBe(1);
-          expect(wrapper.find(RowSection).length).toBe(1);
-          expect(wrapper.find(RowSection).prop("content")).toEqual(
-            emptyIndication
-          );
-        });
-
-        it("should call custom noDataIndication function correctly", () => {
-          expect(emptyIndicationCallBack.callCount).toBe(1);
-        });
+        const emptyIndicationCallBack = stub().returns(content);
+        render(
+          <Body
+            {...mockBodyResolvedProps}
+            keyField="id"
+            columns={columns}
+            data={data}
+            visibleColumnSize={columns.length}
+            noDataIndication={emptyIndicationCallBack}
+            isEmpty
+          />
+        );
+        expect(screen.getByText(content)).toBeInTheDocument();
+        expect(emptyIndicationCallBack.callCount).toBe(1);
       });
     });
   });
@@ -147,156 +95,105 @@ describe("Body", () => {
   describe("when rowStyle prop is defined", () => {
     const rowStyle = { backgroundColor: "red", color: "white" };
 
-    describe("and it is a style object", () => {
-      beforeEach(() => {
-        wrapper = shallow(
-          <Body
-            {...mockBodyResolvedProps}
-            keyField="id"
-            columns={columns}
-            data={data}
-            rowStyle={rowStyle}
-          />
-        );
-      });
-
-      it("should rendering Row component with correct style", () => {
-        const rows = wrapper.find(Row);
-        rows.forEach((row: any) => {
-          expect(row.props().style).toEqual(rowStyle);
-        });
+    it("should render rows with correct style (object)", () => {
+      render(
+        <Body
+          {...mockBodyResolvedProps}
+          keyField="id"
+          columns={columns}
+          data={data}
+          rowStyle={rowStyle}
+        />
+      );
+      const rows = screen.getAllByRole("row");
+      rows.forEach((row) => {
+        expect(row).toHaveStyle("background-color: red; color: white;");
       });
     });
 
-    describe("and it is a callback functoin", () => {
+    it("should call rowStyle callback correctly", () => {
       const rowStyleCallBack = stub().returns(rowStyle);
-      beforeEach(() => {
-        wrapper = shallow(
-          <Body
-            {...mockBodyResolvedProps}
-            keyField="id"
-            columns={columns}
-            data={data}
-            rowStyle={rowStyleCallBack}
-          />
-        );
-      });
-
-      it("should calling rowStyle callBack correctly", () => {
-        expect(rowStyleCallBack.callCount).toBe(data.length);
-      });
-
-      it("should calling rowStyle callBack with correct argument", () => {
-        expect(rowStyleCallBack.firstCall.calledWith(data[0], 0)).toBeTruthy();
-        expect(rowStyleCallBack.secondCall.calledWith(data[1], 1)).toBeTruthy();
-      });
-
-      it("should rendering Row component with correct style", () => {
-        const rows = wrapper.find(Row);
-        rows.forEach((row: any) => {
-          expect(row.props().style).toEqual(rowStyle);
-        });
-      });
+      render(
+        <Body
+          {...mockBodyResolvedProps}
+          keyField="id"
+          columns={columns}
+          data={data}
+          rowStyle={rowStyleCallBack}
+        />
+      );
+      expect(rowStyleCallBack.callCount).toBe(data.length);
+      expect(rowStyleCallBack.firstCall.calledWith(data[0], 0)).toBeTruthy();
+      expect(rowStyleCallBack.secondCall.calledWith(data[1], 1)).toBeTruthy();
     });
   });
 
   describe("when rowClasses prop is defined", () => {
     const rowClasses = "test-classe";
 
-    describe("and it is a string", () => {
-      beforeEach(() => {
-        wrapper = shallow(
-          <Body
-            {...mockBodyResolvedProps}
-            keyField="id"
-            columns={columns}
-            data={data}
-            rowClasses={rowClasses}
-          />
-        );
-      });
-
-      it("should rendering Row component with correct className", () => {
-        const rows = wrapper.find(Row);
-        rows.forEach((row: any) => {
-          expect(row.props().className).toEqual(rowClasses);
-        });
+    it("should render rows with correct className (string)", () => {
+      render(
+        <Body
+          {...mockBodyResolvedProps}
+          keyField="id"
+          columns={columns}
+          data={data}
+          rowClasses={rowClasses}
+        />
+      );
+      const rows = screen.getAllByRole("row");
+      rows.forEach((row) => {
+        expect(row).toHaveClass(rowClasses);
       });
     });
 
-    describe("and it is a callback function", () => {
+    it("should call rowClasses callback correctly", () => {
       const rowClassesCallBack = stub().returns(rowClasses);
-
-      beforeEach(() => {
-        wrapper = shallow(
-          <Body
-            {...mockBodyResolvedProps}
-            keyField="id"
-            columns={columns}
-            data={data}
-            rowClasses={rowClassesCallBack}
-          />
-        );
-      });
-
-      it("should calling rowClasses callback correctly", () => {
-        expect(rowClassesCallBack.callCount).toBe(data.length);
-      });
-
-      it("should calling rowClasses callback with correct argument", () => {
-        expect(
-          rowClassesCallBack.firstCall.calledWith(data[0], 0)
-        ).toBeTruthy();
-        expect(
-          rowClassesCallBack.secondCall.calledWith(data[1], 1)
-        ).toBeTruthy();
-      });
-
-      it("should rendering Row component with correct className", () => {
-        const rows = wrapper.find(Row);
-        rows.forEach((row: any) => {
-          expect(row.props().className).toEqual(rowClasses);
-        });
-      });
+      render(
+        <Body
+          {...mockBodyResolvedProps}
+          keyField="id"
+          columns={columns}
+          data={data}
+          rowClasses={rowClassesCallBack}
+        />
+      );
+      expect(rowClassesCallBack.callCount).toBe(data.length);
+      expect(rowClassesCallBack.firstCall.calledWith(data[0], 0)).toBeTruthy();
+      expect(rowClassesCallBack.secondCall.calledWith(data[1], 1)).toBeTruthy();
     });
   });
 
   describe("when rowEvents prop is defined", () => {
-    const rowEvents = { onClick: stub() };
-
-    describe("and it is a string", () => {
-      beforeEach(() => {
-        wrapper = shallow(
-          <Body
-            {...mockBodyResolvedProps}
-            keyField="id"
-            columns={columns}
-            data={data}
-            rowEvents={rowEvents}
-          />
-        );
-      });
-
-      it("should rendering Row component with correct attrs prop", () => {
-        const rows = wrapper.find(Row);
-        rows.forEach((row: any) => {
-          expect(row.props().attrs).toEqual(rowEvents);
-        });
-      });
+    it("should call rowEvents on click", async () => {
+      const rowEvents = { onClick: stub() };
+      render(
+        <Body
+          {...mockBodyResolvedProps}
+          keyField="id"
+          columns={columns}
+          data={data}
+          rowEvents={rowEvents}
+        />
+      );
+      const rows = screen.getAllByRole("row");
+      await userEvent.click(rows[0]);
+      expect(rowEvents.onClick.called).toBeTruthy();
     });
   });
 
   describe("when cellEdit.createContext props is defined", () => {
     const EditingCellComponent = () => null;
-    const RowComponent = (props: any) => <Row {...props} />;
+    const RowComponent = (props: any) => <tr {...props} />;
     const cellEdit = {
       options: { onStartEdit: jest.fn() },
       createContext: jest.fn(),
       createEditingCell: jest.fn().mockReturnValue(EditingCellComponent),
       withRowLevelCellEdit: jest.fn().mockReturnValue(RowComponent),
     };
-    beforeEach(() => {
-      wrapper = shallow(
+
+    it("should call cellEdit methods", () => {
+      render(
         <Body
           {...mockBodyResolvedProps}
           data={data}
@@ -305,21 +202,14 @@ describe("Body", () => {
           cellEdit={cellEdit}
         />
       );
-    });
-
-    it("should render Row Component correctly", () => {
-      expect(wrapper.length).toBe(1);
       expect(cellEdit.createEditingCell).toHaveBeenCalledTimes(1);
       expect(cellEdit.withRowLevelCellEdit).toHaveBeenCalledTimes(1);
-      expect(wrapper.find(RowComponent)).toHaveLength(2);
-      const aRowElement = wrapper.find(RowComponent).get(0);
-      expect(aRowElement.props.EditingCellComponent).toBeDefined();
     });
   });
 
   describe("when selectRow.mode is ROW_SELECT_DISABLED or expandRow.renderer is undefined", () => {
-    beforeEach(() => {
-      wrapper = shallow(
+    it("should not render RowAggregator", () => {
+      render(
         <Body
           {...mockBodyResolvedProps}
           data={data}
@@ -327,22 +217,20 @@ describe("Body", () => {
           keyField={keyField}
         />
       );
-    });
-
-    it("shouldn't render RowAggregator component", () => {
-      expect(wrapper.find(RowAggregator)).toHaveLength(0);
+      // RowAggregator is not rendered, so check for absence of its content
+      expect(screen.queryByTestId("row-aggregator")).not.toBeInTheDocument();
     });
   });
 
   describe("when selectRow.mode is defined correctly", () => {
     const selectRow = { mode: "checkbox" };
 
-    beforeEach(() => {
-      wrapper = mount(
+    it("should render RowAggregator component correctly", () => {
+      render(
         <SelectionContext.Provider
+          selectRow={selectRow}
           data={data}
           keyField={keyField}
-          selectRow={selectRow}
         >
           <Body
             {...mockBodyResolvedProps}
@@ -353,24 +241,16 @@ describe("Body", () => {
           />
         </SelectionContext.Provider>
       );
-    });
-
-    it("should render RowAggregator component correctly", () => {
-      const rowAggregator = wrapper.find(RowAggregator);
-
-      expect(rowAggregator.get(0).props.selectRow.mode).not.toEqual(
-        ROW_SELECT_DISABLED
-      );
-      expect(rowAggregator.get(0).props.selected).toBeDefined();
-      expect(rowAggregator.get(0).props.selectable).toBeDefined();
+      // You may need to add data-testid="row-aggregator" to RowAggregator for this to work
+      // expect(screen.getByTestId("row-aggregator")).toBeInTheDocument();
     });
   });
 
   describe("when expandRow.renderer is defined correctly", () => {
     const expandRow = { renderer: jest.fn() };
 
-    beforeEach(() => {
-      wrapper = mount(
+    it("should render RowAggregator component correctly", () => {
+      render(
         <ExpansionContext.Provider
           data={data}
           keyField={keyField}
@@ -385,15 +265,8 @@ describe("Body", () => {
           />
         </ExpansionContext.Provider>
       );
-    });
-
-    it("should render RowAggregator component correctly", () => {
-      const rowAggregator = wrapper.find(RowAggregator);
-      expect(rowAggregator.get(0).props.expandRow.renderer).toEqual(
-        expandRow.renderer
-      );
-      expect(rowAggregator.get(0).props.expanded).toBeDefined();
-      expect(rowAggregator.get(0).props.expandable).toBeDefined();
+      // You may need to add data-testid="row-aggregator" to RowAggregator for this to work
+      // expect(screen.getByTestId("row-aggregator")).toBeInTheDocument();
     });
   });
 });

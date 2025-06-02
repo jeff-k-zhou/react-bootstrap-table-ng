@@ -1,14 +1,18 @@
-import { mount, shallow } from "enzyme";
-import "jsdom-global/register";
+/**
+ * @jest-environment jsdom
+ */
+
+import { render, screen } from "@testing-library/react";
+import "@testing-library/jest-dom";
 import React from "react";
 import _ from "../../react-bootstrap-table-ng/src/utils";
 
 import cellEditFactory, { CLICK_TO_CELL_EDIT } from "..";
 import createCellEditContext from "../src/context";
 import bindEditingCell from "../src/editing-cell-consumer";
+import { any } from "underscore";
 
 describe("Editing Cell Consumer", () => {
-  let wrapper: any;
   let cellEdit: any;
   const data = [
     {
@@ -46,7 +50,7 @@ describe("Editing Cell Consumer", () => {
     beforeEach(() => {
       cellEdit = cellEditFactory({ mode: CLICK_TO_CELL_EDIT });
       columns[1].editCellClasses = "test-class-1";
-      wrapper = shallow(
+      render(
         <Provider data={data} keyField={keyField} cellEdit={cellEdit}>
           <WithCellEditComponent
             row={row}
@@ -56,11 +60,10 @@ describe("Editing Cell Consumer", () => {
           />
         </Provider>
       );
-      wrapper = wrapper.render();
     });
 
     it("should inject className target component correctly", () => {
-      expect(wrapper.hasClass(`${columns[1].editCellClasses}`)).toBeTruthy();
+      expect(screen.getByRole('cell')).toHaveClass(columns[1].editCellClasses);
     });
   });
 
@@ -68,7 +71,7 @@ describe("Editing Cell Consumer", () => {
     beforeEach(() => {
       cellEdit = cellEditFactory({ mode: CLICK_TO_CELL_EDIT });
       columns[1].editCellStyle = { color: "pink" };
-      wrapper = mount(
+      render(
         <Provider data={data} keyField={keyField} cellEdit={cellEdit}>
           <WithCellEditComponent
             row={row}
@@ -81,9 +84,7 @@ describe("Editing Cell Consumer", () => {
     });
 
     it("should inject style target component correctly", () => {
-      expect(
-        wrapper.find(".react-bootstrap-table-editing-cell").prop("style")
-      ).toEqual(columns[1].editCellStyle);
+      expect(screen.getByRole('cell')).toHaveStyle(columns[1].editCellStyle);
     });
   });
 
@@ -93,7 +94,7 @@ describe("Editing Cell Consumer", () => {
     beforeEach(() => {
       cellEdit = cellEditFactory({ mode: CLICK_TO_CELL_EDIT });
       columns[1].editCellClasses = jest.fn().mockReturnValue(className);
-      wrapper = mount(
+      render(
         <Provider data={data} keyField={keyField} cellEdit={cellEdit}>
           <WithCellEditComponent
             row={row}
@@ -106,7 +107,7 @@ describe("Editing Cell Consumer", () => {
     });
 
     it("should inject empty className and style to target component", () => {
-      expect(wrapper.find(className)).toBeTruthy();
+      expect(screen.getByRole('cell')).toHaveClass(className);
     });
 
     it("should call column.editCellClasses function correctly", () => {
@@ -125,7 +126,7 @@ describe("Editing Cell Consumer", () => {
     beforeEach(() => {
       cellEdit = cellEditFactory({ mode: CLICK_TO_CELL_EDIT });
       columns[1].editCellStyle = jest.fn().mockReturnValue(style);
-      wrapper = mount(
+      render(
         <Provider data={data} keyField={keyField} cellEdit={cellEdit}>
           <WithCellEditComponent
             row={row}
@@ -138,9 +139,7 @@ describe("Editing Cell Consumer", () => {
     });
 
     it("should inject style target component correctly", () => {
-      expect(
-        wrapper.find(".react-bootstrap-table-editing-cell").prop("style")
-      ).toEqual(style);
+      expect(screen.getByRole('cell')).toHaveStyle(style);
     });
 
     it("should call column.editCellStyle function correctly", () => {

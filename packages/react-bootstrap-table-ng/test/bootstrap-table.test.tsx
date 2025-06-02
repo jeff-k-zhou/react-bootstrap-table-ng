@@ -1,4 +1,4 @@
-import { shallow } from "enzyme";
+import { render, screen } from "@testing-library/react";
 import React from "react";
 
 import Body from "../src/body";
@@ -7,7 +7,6 @@ import Caption from "../src/caption";
 import Header from "../src/header";
 
 describe("BootstrapTable", () => {
-  let wrapper: any;
   const columns = [
     {
       dataField: "id",
@@ -31,41 +30,44 @@ describe("BootstrapTable", () => {
   ];
 
   describe("simplest table", () => {
-    beforeEach(() => {
-      wrapper = shallow(
-        <BootstrapTable keyField="id" columns={columns} data={data} />
-      );
-    });
-
     it("should render successfully", () => {
-      expect(wrapper.length).toBe(1);
-      expect(wrapper.find("table.table").length).toBe(1);
-      expect(wrapper.find(Header).length).toBe(1);
-      expect(wrapper.find(Body).length).toBe(1);
+      render(<BootstrapTable keyField="id" columns={columns} data={data} />);
+      const table = screen.getByRole("table");
+      expect(table).toBeInTheDocument();
+      expect(table).toHaveClass("table", "table-bordered");
+      // Header and Body are rendered as children, check for their content
+      expect(screen.getByText("ID")).toBeInTheDocument();
+      expect(screen.getByText("Name")).toBeInTheDocument();
+      expect(screen.getByText("A")).toBeInTheDocument();
+      expect(screen.getByText("B")).toBeInTheDocument();
     });
 
     it("should only have classes 'table' and 'table-bordered' as default", () => {
-      expect(wrapper.find("table").prop("className")).toBe(
-        "table table-bordered"
-      );
+      render(<BootstrapTable keyField="id" columns={columns} data={data} />);
+      const table = screen.getByRole("table");
+      expect(table.className).toBe("table table-bordered");
     });
 
     it("should not have customized id as default", () => {
-      expect(wrapper.find("table").prop("id")).toBeUndefined();
+      render(<BootstrapTable keyField="id" columns={columns} data={data} />);
+      const table = screen.getByRole("table");
+      expect(table.getAttribute("id")).toBeNull();
     });
   });
 
   describe("getData", () => {
-    let instance: any;
-
-    beforeEach(() => {
-      wrapper = shallow(
-        <BootstrapTable keyField="id" columns={columns} data={data} />
-      );
-      instance = wrapper.instance();
-    });
-
     it("should return props.data", () => {
+      // getData is a class method, so we need to access the instance
+      // We'll use a ref to access the instance
+      let instance: any = null;
+      render(
+        <BootstrapTable
+          keyField="id"
+          columns={columns}
+          data={data}
+          ref={(ref) => (instance = ref)}
+        />
+      );
       expect(instance.getData()).toEqual(data);
     });
   });
@@ -73,8 +75,8 @@ describe("BootstrapTable", () => {
   describe("when props.classes was defined", () => {
     const classes = "foo";
 
-    beforeEach(() => {
-      wrapper = shallow(
+    it("should display customized classes correctly", () => {
+      render(
         <BootstrapTable
           keyField="id"
           columns={columns}
@@ -82,18 +84,16 @@ describe("BootstrapTable", () => {
           classes={classes}
         />
       );
-    });
-
-    it("should display customized classes correctly", () => {
-      expect(wrapper.find(`table.${classes}`).length).toBe(1);
+      const table = screen.getByRole("table");
+      expect(table.className).toContain(classes);
     });
   });
 
   describe("when props.wrapperClasses was defined", () => {
     const classes = "foo";
 
-    beforeEach(() => {
-      wrapper = shallow(
+    it("should display customized classes correctly", () => {
+      render(
         <BootstrapTable
           keyField="id"
           columns={columns}
@@ -101,66 +101,57 @@ describe("BootstrapTable", () => {
           wrapperClasses={classes}
         />
       );
-    });
-
-    it("should display customized classes correctly", () => {
-      expect(wrapper.find(`.${classes}`).length).toBe(1);
+      // The wrapper div should have the custom class
+      const wrapper = screen.getByRole("table").parentElement;
+      expect(wrapper).toHaveClass(classes);
     });
   });
 
   describe("when props.id was defined", () => {
     const id = "foo";
 
-    beforeEach(() => {
-      wrapper = shallow(
+    it("should display customized id correctly", () => {
+      render(
         <BootstrapTable keyField="id" columns={columns} data={data} id={id} />
       );
-    });
-
-    it("should display customized id correctly", () => {
-      expect(wrapper.find(`table#${id}`).length).toBe(1);
+      const table = screen.getByRole("table");
+      expect(table.getAttribute("id")).toBe(id);
     });
   });
 
   describe("when hover props is true", () => {
-    beforeEach(() => {
-      wrapper = shallow(
+    it("should have table-hover class on table", () => {
+      render(
         <BootstrapTable keyField="id" columns={columns} data={data} hover />
       );
-    });
-
-    it("should have table-hover class on table", () => {
-      expect(wrapper.find("table.table-hover").length).toBe(1);
+      const table = screen.getByRole("table");
+      expect(table.className).toContain("table-hover");
     });
   });
 
   describe("when striped props is true", () => {
-    beforeEach(() => {
-      wrapper = shallow(
+    it("should have table-striped class on table", () => {
+      render(
         <BootstrapTable keyField="id" columns={columns} data={data} striped />
       );
-    });
-
-    it("should have table-striped class on table", () => {
-      expect(wrapper.find("table.table-striped").length).toBe(1);
+      const table = screen.getByRole("table");
+      expect(table.className).toContain("table-striped");
     });
   });
 
   describe("when condensed props is true", () => {
-    beforeEach(() => {
-      wrapper = shallow(
+    it("should have table-condensed class on table", () => {
+      render(
         <BootstrapTable keyField="id" columns={columns} data={data} condensed />
       );
-    });
-
-    it("should have table-condensed class on table", () => {
-      expect(wrapper.find("table.table-condensed").length).toBe(1);
+      const table = screen.getByRole("table");
+      expect(table.className).toContain("table-condensed");
     });
   });
 
   describe("when bordered props is false", () => {
-    beforeEach(() => {
-      wrapper = shallow(
+    it("should not have table-bordered class on table", () => {
+      render(
         <BootstrapTable
           keyField="id"
           columns={columns}
@@ -168,16 +159,14 @@ describe("BootstrapTable", () => {
           bordered={false}
         />
       );
-    });
-
-    it("should not have table-condensed class on table", () => {
-      expect(wrapper.find("table.table-condensed").length).toBe(0);
+      const table = screen.getByRole("table");
+      expect(table.className).not.toContain("table-bordered");
     });
   });
 
   describe("when table should have a caption", () => {
-    beforeEach(() => {
-      wrapper = shallow(
+    it("should render caption correctly", () => {
+      render(
         <BootstrapTable
           caption={<span className="table-caption">test</span>}
           keyField="id"
@@ -186,11 +175,9 @@ describe("BootstrapTable", () => {
           bordered={false}
         />
       );
-    });
-
-    it("should render caption correctly", () => {
-      expect(wrapper.find(Caption).length).toBe(1);
-      expect(wrapper.find(".table-caption").length).toBe(1);
+      // Caption is rendered as a child, so check for its content
+      expect(screen.getByText("test")).toBeInTheDocument();
+      expect(screen.getByText("test")).toHaveClass("table-caption");
     });
   });
 });
