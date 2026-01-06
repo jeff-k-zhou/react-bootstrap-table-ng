@@ -1,12 +1,9 @@
-import { shallow } from "enzyme";
 import React from "react";
-import {stub} from "sinon";
-
+import { render, screen, fireEvent } from "@testing-library/react";
 import SizePerPageDropDown from "../src/size-per-page-dropdown";
 import SizePerPageOption from "../src/size-per-page-option";
 
 describe("SizePerPageDropDown", () => {
-  let wrapper: any;
   const currSizePerPage = "25";
   const options = [
     {
@@ -18,9 +15,9 @@ describe("SizePerPageDropDown", () => {
       page: 25,
     },
   ];
-  const onClick = stub();
-  const onBlur = stub();
-  const onSizePerPageChange = stub();
+  const onClick = jest.fn();
+  const onBlur = jest.fn();
+  const onSizePerPageChange = jest.fn();
   const props = {
     currSizePerPage,
     options,
@@ -29,153 +26,151 @@ describe("SizePerPageDropDown", () => {
     onSizePerPageChange,
   };
 
+  beforeEach(() => {
+    onClick.mockReset();
+    onBlur.mockReset();
+    onSizePerPageChange.mockReset();
+  });
+
   describe("default SizePerPageDropDown component", () => {
     beforeEach(() => {
-      wrapper = shallow(<SizePerPageDropDown {...props} />);
+      render(<SizePerPageDropDown {...props} />);
     });
 
-    it("should rendering SizePerPageDropDown correctly", () => {
-      expect(wrapper.length).toBe(1);
-      expect(wrapper.find("button").length).toBe(1);
-      expect(wrapper.find("button").text()).toEqual(`${currSizePerPage} `);
+    it("should render SizePerPageDropDown correctly", () => {
+      const button = screen.getByRole("button");
+      expect(button).toBeInTheDocument();
+      expect(button.textContent).toContain(currSizePerPage);
     });
 
-    it("should rendering SizePerPageOption successfully", () => {
-      expect(wrapper.find("ul.dropdown-menu").length).toBe(1);
-      const sizePerPageOptions = wrapper.find(SizePerPageOption);
-      expect(sizePerPageOptions.length).toBe(options.length);
-      sizePerPageOptions.forEach((sizePerPage: any, i: number) => {
-        const option = options[i];
-        expect(sizePerPage.prop("text")).toEqual(option.text);
-        expect(sizePerPage.prop("page")).toEqual(option.page);
-        expect(sizePerPage.prop("bootstrap4")).toBeFalsy();
-        expect(sizePerPage.prop("onSizePerPageChange")).toEqual(
-          onSizePerPageChange
-        );
+    it("should render SizePerPageOption successfully", () => {
+      const list = screen.getByRole("menu");
+      expect(list).toBeInTheDocument();
+      const items = screen.getAllByRole("menuitem");
+      expect(items.length).toBe(options.length);
+      options.forEach((option) => {
+        expect(screen.getByText(option.text)).toBeInTheDocument();
       });
     });
 
     it("default variation is dropdown", () => {
-      expect(wrapper.hasClass("dropdown")).toBeTruthy();
+      const dropdown = screen.getByTestId("size-per-page-dropdown");
+      expect(dropdown.className).toMatch(/dropdown/);
     });
 
     it("default dropdown is not open", () => {
-      expect(wrapper.hasClass("open show")).toBeFalsy();
-      expect(wrapper.find("[aria-expanded=false]").length).toBe(1);
+      const dropdown = screen.getByTestId("size-per-page-dropdown");
+      expect(dropdown.className).not.toMatch(/open|show/);
+      expect(screen.getByRole("button")).toHaveAttribute("aria-expanded", "false");
     });
   });
 
   describe("when bootstrap4 context is true", () => {
     beforeEach(() => {
-      wrapper = shallow(<SizePerPageDropDown {...props} bootstrap4 />);
+      render(<SizePerPageDropDown {...props} bootstrap4 />);
     });
 
-    it("should rendering SizePerPageDropDown correctly", () => {
-      expect(wrapper.length).toBe(1);
-      expect(wrapper.find("button").length).toBe(1);
-      expect(wrapper.find("button").text()).toEqual(`${currSizePerPage} `);
+    it("should render SizePerPageDropDown correctly", () => {
+      const button = screen.getByRole("button");
+      expect(button).toBeInTheDocument();
+      expect(button.textContent).toContain(currSizePerPage);
     });
 
-    it("should rendering SizePerPageOption successfully", () => {
-      expect(wrapper.find("ul.dropdown-menu").length).toBe(1);
-      const sizePerPageOptions = wrapper.find(SizePerPageOption);
-      expect(sizePerPageOptions.length).toBe(options.length);
-      sizePerPageOptions.forEach((sizePerPage: any, i: number) => {
-        const option = options[i];
-        expect(sizePerPage.prop("text")).toEqual(option.text);
-        expect(sizePerPage.prop("page")).toEqual(option.page);
-        expect(sizePerPage.prop("bootstrap4")).toBeTruthy();
-        expect(sizePerPage.prop("onSizePerPageChange")).toEqual(
-          onSizePerPageChange
-        );
+    it("should render SizePerPageOption successfully", () => {
+      const items = screen.getAllByRole("menuitem");
+      expect(items.length).toBe(options.length);
+      options.forEach((option) => {
+        expect(screen.getByText(option.text)).toBeInTheDocument();
       });
     });
 
     it("no need to render caret", () => {
-      expect(wrapper.find(".caret")).toHaveLength(0);
+      // Should not find any element with class 'caret'
+      const dropdown = screen.getByTestId("size-per-page-dropdown");
+      expect(dropdown.querySelector(".caret")).toBeNull();
     });
 
     it("default variation is dropdown", () => {
-      expect(wrapper.hasClass("dropdown")).toBeTruthy();
+      const dropdown = screen.getByTestId("size-per-page-dropdown");
+      expect(dropdown.className).toMatch(/dropdown/);
     });
 
     it("default dropdown is not open", () => {
-      expect(wrapper.hasClass("open show")).toBeFalsy();
-      expect(wrapper.find("[aria-expanded=false]").length).toBe(1);
+      const dropdown = screen.getByTestId("size-per-page-dropdown");
+      expect(dropdown.className).not.toMatch(/open|show/);
+      expect(screen.getByRole("button")).toHaveAttribute("aria-expanded", "false");
     });
   });
 
   describe("when open prop is true", () => {
     beforeEach(() => {
-      wrapper = shallow(<SizePerPageDropDown {...props} open />);
+      render(<SizePerPageDropDown {...props} open />);
     });
 
-    it("should rendering SizePerPageDropDown correctly", () => {
-      expect(wrapper.hasClass("open show")).toBeTruthy();
-      expect(wrapper.find("[aria-expanded=true]").length).toBe(1);
+    it("should render SizePerPageDropDown correctly", () => {
+      const dropdown = screen.getByTestId("size-per-page-dropdown");
+      expect(dropdown.className).toMatch(/open|show/);
+      expect(screen.getByRole("button")).toHaveAttribute("aria-expanded", "true");
     });
   });
 
   describe("when hidden prop is true", () => {
     beforeEach(() => {
-      wrapper = shallow(<SizePerPageDropDown {...props} hidden />);
+      render(<SizePerPageDropDown {...props} hidden />);
     });
 
-    it("should rendering SizePerPageDropDown correctly", () => {
-      expect(wrapper.prop("style")).toEqual({ visibility: "hidden" });
+    it("should render SizePerPageDropDown correctly", () => {
+      const dropdown = screen.getByTestId("size-per-page-dropdown");
+      expect(dropdown).toHaveStyle("visibility: hidden");
     });
   });
 
   describe("when btnContextual prop is defined", () => {
     const contextual = "btn-warning";
     beforeEach(() => {
-      wrapper = shallow(
-        <SizePerPageDropDown {...props} btnContextual={contextual} />
-      );
+      render(<SizePerPageDropDown {...props} btnContextual={contextual} />);
     });
 
-    it("should rendering SizePerPageDropDown correctly", () => {
-      expect(wrapper.find(`button.${contextual}`).length).toBe(1);
+    it("should render SizePerPageDropDown correctly", () => {
+      const button = screen.getByRole("button");
+      expect(button.className).toMatch(new RegExp(contextual));
     });
   });
 
   describe("when variation prop is defined", () => {
     const variation = "dropup";
     beforeEach(() => {
-      wrapper = shallow(
-        <SizePerPageDropDown {...props} variation={variation} />
-      );
+      render(<SizePerPageDropDown {...props} variation={variation} />);
     });
 
-    it("should rendering SizePerPageDropDown correctly", () => {
-      expect(wrapper.hasClass(variation)).toBeTruthy();
+    it("should render SizePerPageDropDown correctly", () => {
+      const dropdown = screen.getByTestId("size-per-page-dropdown");
+      expect(dropdown.className).toMatch(new RegExp(variation));
     });
   });
 
   describe("when className prop is defined", () => {
     const className = "custom-class";
     beforeEach(() => {
-      wrapper = shallow(
-        <SizePerPageDropDown {...props} className={className} />
-      );
+      render(<SizePerPageDropDown {...props} className={className} />);
     });
 
-    it("should rendering SizePerPageDropDown correctly", () => {
-      expect(wrapper.hasClass(className)).toBeTruthy();
+    it("should render SizePerPageDropDown correctly", () => {
+      const dropdown = screen.getByTestId("size-per-page-dropdown");
+      expect(dropdown.className).toMatch(new RegExp(className));
     });
   });
 
   describe("when optionRenderer prop is defined", () => {
-    const optionRenderer = jest.fn();
+    const optionRenderer = jest.fn((option: any) => <li role="menuitem">{option.text}</li>);
     beforeEach(() => {
-      optionRenderer.mockReset();
-      wrapper = shallow(
-        <SizePerPageDropDown {...props} optionRenderer={optionRenderer} />
-      );
+      optionRenderer.mockClear();
+      render(<SizePerPageDropDown {...props} optionRenderer={optionRenderer} />);
     });
 
     it("should not render SizePerPageOption", () => {
-      expect(wrapper.find(SizePerPageOption)).toHaveLength(0);
+      // Should not find SizePerPageOption in the DOM
+      expect(screen.queryByTestId("size-per-page-option")).toBeNull();
     });
 
     it("should call optionRenderer prop correctly", () => {

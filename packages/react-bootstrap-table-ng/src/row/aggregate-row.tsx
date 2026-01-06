@@ -3,11 +3,11 @@ import { INDICATOR_POSITION_LEFT } from "../..";
 import ExpandCell from "../row-expand/expand-cell";
 import SelectionCell from "../row-selection/selection-cell";
 import _ from "../utils";
-import eventDelegater from "./event-delegater";
+import RowEventDelegater from "./event-delegater";
 import RowPureContent from "./row-pure-content";
 import shouldUpdater, { RowProps } from "./should-updater";
 
-class RowAggregator extends shouldUpdater(eventDelegater(Component<RowProps>)) {
+class RowAggregator extends shouldUpdater(RowEventDelegater(Component<RowProps>)) {
   clickNum: number = 0;
   shouldUpdateRowContent: boolean = false;
 

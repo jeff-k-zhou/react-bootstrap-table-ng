@@ -1,7 +1,7 @@
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 
-export const shallowWithContext = (elem: any, context = {}): any => {
-  const wrapper = shallow(elem);
-  const Children = wrapper.props().children as any;
-  return shallow(Children(context));
+export const shallowWithContext = (Element: any, context: any = {}) => {
+  // If Element is a function that expects context, call it with context
+  const elementToRender = typeof Element === "function" ? Element(context) : Element;
+  return render(elementToRender);
 };

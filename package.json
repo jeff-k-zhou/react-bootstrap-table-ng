@@ -169,7 +169,7 @@
     "modulePaths": [
       "<rootDir>/packages/react-bootstrap-table-ng"
     ],
-    "testEnvironment": "node",
+    "testEnvironment": "jsdom",
     "testMatch": [
       "**/test/**/*.test.{ts,tsx}"
     ]

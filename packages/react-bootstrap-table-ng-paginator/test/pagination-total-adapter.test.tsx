@@ -1,5 +1,5 @@
-import { shallow } from "enzyme";
 import React from "react";
+import { render } from "@testing-library/react";
 import paginationTotalAdapter from "../src/pagination-total-adapter";
 
 const MockComponent = () => null;
@@ -7,8 +7,6 @@ const MockComponent = () => null;
 const PaginationTotalAdapter = paginationTotalAdapter(MockComponent);
 
 describe("paginationTotalAdapter", () => {
-  let wrapper: any;
-
   const props = {
     dataSize: 20,
     currPage: 1,
@@ -17,19 +15,19 @@ describe("paginationTotalAdapter", () => {
   };
 
   describe("render", () => {
-    beforeEach(() => {
-      wrapper = shallow(<PaginationTotalAdapter {...props} />);
-    });
-
     it("should render successfully", () => {
-      const mockComponent = wrapper.find(MockComponent);
-      expect(mockComponent).toHaveLength(1);
-      expect(mockComponent.props().from).toBeDefined();
-      expect(mockComponent.props().to).toBeDefined();
-      expect(mockComponent.props().dataSize).toEqual(props.dataSize);
-      expect(mockComponent.props().paginationTotalRenderer).toEqual(
-        props.paginationTotalRenderer
-      );
+      let receivedProps: any = null;
+      const SpyComponent = (p: any) => {
+        receivedProps = p;
+        return null;
+      };
+      const AdapterWithSpy = paginationTotalAdapter(SpyComponent);
+      render(<AdapterWithSpy {...props} />);
+      expect(receivedProps).toBeDefined();
+      expect(receivedProps.from).toBeDefined();
+      expect(receivedProps.to).toBeDefined();
+      expect(receivedProps.dataSize).toEqual(props.dataSize);
+      expect(receivedProps.paginationTotalRenderer).toEqual(props.paginationTotalRenderer);
     });
   });
 });

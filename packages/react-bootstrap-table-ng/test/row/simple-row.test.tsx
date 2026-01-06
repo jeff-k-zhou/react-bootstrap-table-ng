@@ -2,6 +2,9 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import RowPureContent from "../../src/row/row-pure-content";
+
+
+
 import SimpleRow from "../../src/row/simple-row";
 
 let defaultColumns = [
