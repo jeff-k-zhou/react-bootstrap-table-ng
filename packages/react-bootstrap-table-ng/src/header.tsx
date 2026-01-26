@@ -1,6 +1,6 @@
 import React from "react";
 
-import { INDICATOR_POSITION_LEFT } from "..";
+import { INDICATOR_POSITION_LEFT } from "./const";
 import HeaderCell from "./header-cell";
 import ExpandHeaderCell from "./row-expand/expand-header-cell";
 import withHeaderExpansion from "./row-expand/expand-header-cell-consumer";

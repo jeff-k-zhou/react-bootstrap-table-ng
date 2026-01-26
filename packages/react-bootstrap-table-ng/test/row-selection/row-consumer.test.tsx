@@ -1,12 +1,17 @@
 import React from "react";
 import { render } from "@testing-library/react";
-import createSelectionContext from "../../src/contexts/selection-context";
+import { createSelectionContext } from "../../src/contexts/selection-context";
 import withSelectionConsumer from "../../src/row-selection/row-consumer";
 
 describe("withSelectionConsumer", () => {
   let selectRow: any;
   const BaseComponent = (props: any) => (
-    <div data-testid="base" {...props} />
+    <div
+      data-testid="base"
+      data-selected={String(props.selected)}
+      data-selectable={String(props.selectable)}
+      {...props}
+    />
   );
   const WithSelectionComponent = withSelectionConsumer((props) => (
     <BaseComponent {...props} />
@@ -45,7 +50,7 @@ describe("withSelectionConsumer", () => {
 
     it("should inject selected prop as true to target component", () => {
       const { getByTestId } = renderWithContext();
-      expect(getByTestId("base")).toHaveAttribute("selected", "true");
+      expect(getByTestId("base")).toHaveAttribute("data-selected", "true");
     });
   });
 
@@ -56,7 +61,7 @@ describe("withSelectionConsumer", () => {
 
     it("should inject selected prop as false to target component", () => {
       const { getByTestId } = renderWithContext();
-      expect(getByTestId("base")).toHaveAttribute("selected", "false");
+      expect(getByTestId("base")).toHaveAttribute("data-selected", "false");
     });
   });
 
@@ -67,7 +72,7 @@ describe("withSelectionConsumer", () => {
 
     it("should inject selectable prop as true to target component", () => {
       const { getByTestId } = renderWithContext();
-      expect(getByTestId("base")).toHaveAttribute("selectable", "true");
+      expect(getByTestId("base")).toHaveAttribute("data-selectable", "true");
     });
   });
 
@@ -81,7 +86,7 @@ describe("withSelectionConsumer", () => {
 
     it("should inject selectable prop as false to target component", () => {
       const { getByTestId } = renderWithContext();
-      expect(getByTestId("base")).toHaveAttribute("selectable", "false");
+      expect(getByTestId("base")).toHaveAttribute("data-selectable", "false");
     });
   });
 

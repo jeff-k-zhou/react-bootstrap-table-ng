@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react";
 
-import { ColumnDescription, SelectRowProps } from "..";
+import { ColumnDescription, SelectRowProps } from "./types";
 import FooterCell from "./footer-cell";
 import RowTemplate, { ExpandRow } from "./row/row-template";
 import _ from "./utils";

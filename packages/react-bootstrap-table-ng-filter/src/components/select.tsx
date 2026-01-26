@@ -72,7 +72,7 @@ class SelectFilter extends Component<SelectFilterProps, SelectFilterState> {
         this.selectInput.value = filterVal;
 
         // TODO
-      // @ts-ignore
+        // @ts-ignore
         onFilter(column, FILTER_TYPES.SELECT)(filterVal);
       });
     }
@@ -83,6 +83,7 @@ class SelectFilter extends Component<SelectFilterProps, SelectFilterState> {
     const { column, onFilter, defaultValue } = this.props;
     const nextOptions = this.getOptions(this.props);
     if (defaultValue !== prevProps.defaultValue) {
+      this.selectInput.value = defaultValue;
       needFilter = true;
     } else if (!optionsEquals(nextOptions, this.options)) {
       this.options = nextOptions;
@@ -92,7 +93,7 @@ class SelectFilter extends Component<SelectFilterProps, SelectFilterState> {
       const value = this.selectInput.value;
       if (value) {
         // TODO
-      // @ts-ignore
+        // @ts-ignore
         onFilter(column, FILTER_TYPES.SELECT)(value);
       }
     }
@@ -141,10 +142,11 @@ class SelectFilter extends Component<SelectFilterProps, SelectFilterState> {
   renderOptions() {
     const optionTags = [];
     const { options } = this;
-    const { placeholder, column, withoutEmptyOption } = this.props;
-    if (!withoutEmptyOption) {
+    const { placeholder, column, withoutEmptyOption, defaultValue } = this.props;
+    const isSelected = defaultValue !== undefined && defaultValue !== "";
+    if (!withoutEmptyOption && !isSelected) {
       optionTags.push(
-        <option key="-1" value="">
+        <option key="-1" value="" data-testid="select-filter-placeholder">
           {placeholder || `Select ${column.text}...`}
         </option>
       );
@@ -186,12 +188,10 @@ class SelectFilter extends Component<SelectFilterProps, SelectFilterState> {
       ...rest
     } = this.props;
 
-    const selectClass = `filter select-filter form-control ${className} ${
-      this.state.isSelected ? "" : "placeholder-selected"
-    }`;
-    const elmId = `select-filter-column-${column.dataField}${
-      id ? `-${id}` : ""
-    }`;
+    const selectClass = `filter select-filter form-control ${className} ${this.state.isSelected ? "" : "placeholder-selected"
+      }`;
+    const elmId = `select-filter-column-${column.dataField}${id ? `-${id}` : ""
+      }`;
 
     return (
       <label className="filter-label" htmlFor={elmId}>
@@ -205,6 +205,7 @@ class SelectFilter extends Component<SelectFilterProps, SelectFilterState> {
           onChange={this.filter}
           onClick={(e) => e.stopPropagation()}
           defaultValue={this.getDefaultValue() || ""}
+          data-testid="select-filter"
         >
           {this.renderOptions()}
         </select>

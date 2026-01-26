@@ -3,7 +3,7 @@ import React from "react";
 
 import { INDICATOR_POSITION_RIGHT, SORT_ASC } from "..";
 import createExpansionContext from "../src/contexts/row-expand-context";
-import createSelectionContext from "../src/contexts/selection-context";
+import { createSelectionContext } from "../src/contexts/selection-context";
 import Header from "../src/header";
 import HeaderCell from "../src/header-cell";
 import ExpandHeaderCell from "../src/row-expand/expand-header-cell";
@@ -42,9 +42,7 @@ describe("Header", () => {
     it("should render successfully", () => {
       render(
         <table>
-          <thead>
-            <Header {...mockHeaderResolvedProps} columns={columns} />
-          </thead>
+          <Header {...mockHeaderResolvedProps} columns={columns} />
         </table>
       );
       const row = screen.getByRole("row");
@@ -62,40 +60,46 @@ describe("Header", () => {
     it("should render successfully", () => {
       render(
         <table>
-          <thead>
-            <Header
-              {...mockHeaderResolvedProps}
-              columns={columns}
-              className={className}
-            />
-          </thead>
+          <Header
+            {...mockHeaderResolvedProps}
+            columns={columns}
+            className={className}
+          />
         </table>
       );
       // Thead or tr should have the class
-      expect(screen.getByRole("row").parentElement).toHaveClass(className);
+      expect(screen.getByRole("row")).toHaveClass(className);
     });
   });
 
   describe("header with columns enable sort", () => {
     const sortField = columns[1].dataField;
+    // Enable sort on the second column to match expectation
+    const sortColumns = [
+      { ...columns[0] },
+      { ...columns[1], sort: true }
+    ];
 
     it("The HeaderCell should receive correct sorting props", () => {
       render(
         <table>
-          <thead>
-            <Header
-              {...mockHeaderResolvedProps}
-              columns={columns}
-              sortField={sortField}
-              sortOrder={SORT_ASC}
-            />
-          </thead>
+          <Header
+            {...mockHeaderResolvedProps}
+            columns={sortColumns}
+            sortField={sortField}
+            sortOrder={SORT_ASC}
+          />
         </table>
       );
-      // The second header cell should have aria-label for sorting
+      // The second header cell should have label "Name sort asc"
+      // The first should NOT have label because sort is undefined/false
       const headers = screen.getAllByRole("columnheader");
       expect(headers.length).toBe(columns.length);
-      expect(headers[0].getAttribute("aria-label")).not.toContain("sort");
+
+      // ID column is not sortable, so it should not have aria-label
+      expect(headers[0]).not.toHaveAttribute("aria-label");
+
+      // Name column IS sortable and currently sorted ASC
       expect(headers[1].getAttribute("aria-label")).toContain("sort");
     });
   });
@@ -105,9 +109,7 @@ describe("Header", () => {
       it("should not render <SelectionHeaderCell />", () => {
         render(
           <table>
-            <thead>
-              <Header {...mockHeaderResolvedProps} columns={columns} />
-            </thead>
+            <Header {...mockHeaderResolvedProps} columns={columns} />
           </table>
         );
         // Should not find any checkbox/radio header cell
@@ -125,13 +127,11 @@ describe("Header", () => {
             selectRow={selectRow}
           >
             <table>
-              <thead>
-                <Header
-                  {...mockHeaderResolvedProps}
-                  columns={columns}
-                  selectRow={selectRow}
-                />
-              </thead>
+              <Header
+                {...mockHeaderResolvedProps}
+                columns={columns}
+                selectRow={selectRow}
+              />
             </table>
           </SelectionContext.Provider>
         );
@@ -145,13 +145,11 @@ describe("Header", () => {
           render(
             <SelectionContext.Provider data={data} keyField={keyField} selectRow={selectRow}>
               <table>
-                <thead>
-                  <Header
-                    {...mockHeaderResolvedProps}
-                    columns={columns}
-                    selectRow={selectRow}
-                  />
-                </thead>
+                <Header
+                  {...mockHeaderResolvedProps}
+                  columns={columns}
+                  selectRow={selectRow}
+                />
               </table>
             </SelectionContext.Provider>
           );
@@ -166,13 +164,11 @@ describe("Header", () => {
         render(
           <SelectionContext.Provider data={data} keyField={keyField} selectRow={selectRow}>
             <table>
-              <thead>
-                <Header
-                  {...mockHeaderResolvedProps}
-                  columns={columns}
-                  selectRow={selectRow}
-                />
-              </thead>
+              <Header
+                {...mockHeaderResolvedProps}
+                columns={columns}
+                selectRow={selectRow}
+              />
             </table>
           </SelectionContext.Provider>
         );
@@ -189,13 +185,11 @@ describe("Header", () => {
               selectRow={selectRow}
             >
               <table>
-                <thead>
-                  <Header
-                    {...mockHeaderResolvedProps}
-                    columns={columns}
-                    selectRow={selectRow}
-                  />
-                </thead>
+                <Header
+                  {...mockHeaderResolvedProps}
+                  columns={columns}
+                  selectRow={selectRow}
+                />
               </table>
             </SelectionContext.Provider>
           );
@@ -210,9 +204,7 @@ describe("Header", () => {
       it("should not render <ExpandHeaderCell />", () => {
         render(
           <table>
-            <thead>
-              <Header {...mockHeaderResolvedProps} columns={columns} />
-            </thead>
+            <Header {...mockHeaderResolvedProps} columns={columns} />
           </table>
         );
         // Should not find any extra columnheader
@@ -230,13 +222,11 @@ describe("Header", () => {
         render(
           <ExpansionContext.Provider data={data} keyField={keyField} expandRow={expandRow}>
             <table>
-              <thead>
-                <Header
-                  {...mockHeaderResolvedProps}
-                  columns={columns}
-                  expandRow={expandRow}
-                />
-              </thead>
+              <Header
+                {...mockHeaderResolvedProps}
+                columns={columns}
+                expandRow={expandRow}
+              />
             </table>
           </ExpansionContext.Provider>
         );
@@ -255,13 +245,11 @@ describe("Header", () => {
         render(
           <ExpansionContext.Provider data={data} keyField={keyField} expandRow={expandRow}>
             <table>
-              <thead>
-                <Header
-                  {...mockHeaderResolvedProps}
-                  columns={columns}
-                  expandRow={expandRow}
-                />
-              </thead>
+              <Header
+                {...mockHeaderResolvedProps}
+                columns={columns}
+                expandRow={expandRow}
+              />
             </table>
           </ExpansionContext.Provider>
         );

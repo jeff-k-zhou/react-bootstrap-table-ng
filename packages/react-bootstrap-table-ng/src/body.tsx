@@ -1,6 +1,7 @@
 import React, { Component, ReactNode } from "react";
 
-import { ExpandRowProps, ROW_SELECT_DISABLED, SelectRowProps } from "..";
+import { ExpandRowProps, SelectRowProps } from "./types";
+import { ROW_SELECT_DISABLED } from "./const";
 import withRowExpansion from "./row-expand/row-consumer";
 import withRowSelection from "./row-selection/row-consumer";
 import RowAggregator from "./row/aggregate-row";
@@ -18,14 +19,14 @@ interface BodyProps {
   tabIndexCell?: boolean;
   isEmpty?: boolean;
   noDataIndication?:
-    | (() => JSX.Element | string)
-    | JSX.Element
-    | string
-    | undefined;
+  | (() => JSX.Element | string)
+  | JSX.Element
+  | string
+  | undefined;
   visibleColumnSize?: number;
   rowStyle?:
-    | React.CSSProperties
-    | ((row: any, index: number) => React.CSSProperties);
+  | React.CSSProperties
+  | ((row: any, index: number) => React.CSSProperties);
   rowClasses?: string | ((row: any, index: number) => string);
   rowEvents?: Record<string, any> | null;
   expandRow?: ExpandRowProps<any, any> | undefined;

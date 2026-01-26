@@ -108,7 +108,10 @@ describe("Select Filter", () => {
           getFilter={getFilter}
         />
       );
-      programmaticallyFilter(filterValue);
+      const { act } = require("@testing-library/react");
+      act(() => {
+        programmaticallyFilter(filterValue);
+      });
     });
 
     it("should do onFilter correctly when exported function was executed", () => {
@@ -184,14 +187,17 @@ describe("Select Filter", () => {
           defaultValue="0"
         />
       );
-      rerender(
-        <SelectFilter
-          onFilter={onFilter}
-          column={column}
-          options={options}
-          defaultValue="1"
-        />
-      );
+      const { act } = require("@testing-library/react");
+      act(() => {
+        rerender(
+          <SelectFilter
+            onFilter={onFilter}
+            column={column}
+            options={options}
+            defaultValue="1"
+          />
+        );
+      });
       expect(onFilter).toHaveBeenCalledTimes(2);
       expect(onFilter).toHaveBeenCalledWith(column, FILTER_TYPES.SELECT);
       expect(onFilterFirstReturn).toHaveBeenCalledTimes(2);
@@ -207,14 +213,17 @@ describe("Select Filter", () => {
           defaultValue="1"
         />
       );
-      rerender(
-        <SelectFilter
-          onFilter={onFilter}
-          column={column}
-          options={{ ...options, 3: "Best" }}
-          defaultValue="1"
-        />
-      );
+      const { act } = require("@testing-library/react");
+      act(() => {
+        rerender(
+          <SelectFilter
+            onFilter={onFilter}
+            column={column}
+            options={{ ...options, 3: "Best" }}
+            defaultValue="1"
+          />
+        );
+      });
       expect(onFilter).toHaveBeenCalledTimes(2);
       expect(onFilter).toHaveBeenCalledWith(column, FILTER_TYPES.SELECT);
       expect(onFilterFirstReturn).toHaveBeenCalledTimes(2);
@@ -234,7 +243,10 @@ describe("Select Filter", () => {
           ref={(ref: any) => (filterRef = ref)}
         />
       );
-      filterRef.cleanFiltered();
+      const { act } = require("@testing-library/react");
+      act(() => {
+        filterRef.cleanFiltered();
+      });
       expect(onFilter).toHaveBeenCalled();
       expect(onFilterFirstReturn).toHaveBeenCalled();
     });
@@ -249,7 +261,10 @@ describe("Select Filter", () => {
           ref={(ref: any) => (filterRef = ref)}
         />
       );
-      filterRef.cleanFiltered();
+      const { act } = require("@testing-library/react");
+      act(() => {
+        filterRef.cleanFiltered();
+      });
       expect(onFilter).toHaveBeenCalled();
       expect(onFilterFirstReturn).toHaveBeenCalled();
     });
@@ -267,14 +282,17 @@ describe("Select Filter", () => {
           ref={(ref: any) => (filterRef = ref)}
         />
       );
-      filterRef.applyFilter(value);
+      const { act } = require("@testing-library/react");
+      act(() => {
+        filterRef.applyFilter(value);
+      });
       expect(onFilter).toHaveBeenCalled();
       expect(onFilterFirstReturn).toHaveBeenCalledWith(value);
     });
   });
 
   describe("filter", () => {
-    const value = "tester";
+    const value = "0";
     it("should call onFilter and set state correctly", () => {
       render(
         <SelectFilter onFilter={onFilter} column={column} options={options} />

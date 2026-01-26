@@ -6,7 +6,7 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import React from "react";
-import { stub } from "sinon/pkg/sinon";
+import { stub } from "sinon";
 
 import _ from "../../react-bootstrap-table-ng/src/utils";
 import { EDITTYPE } from "..";
@@ -73,7 +73,7 @@ describe("EditingCell", () => {
 
   it("should render TextEditor with correct props", () => {
     const textEditor = screen.getByRole("textbox");
-    expect(textEditor).toHaveValue(""+row[column.dataField]);
+    expect(textEditor).toHaveValue("" + row[column.dataField]);
   });
 
   it("should not render EditorIndicator due to state.invalidMessage is null", () => {
@@ -316,13 +316,15 @@ describe("EditingCell", () => {
             onEscape={onEscape}
           />
         );
-       // Call beforeComplete
-        // ...existing code...
+        // Trigger validation
+        const textEditor = screen.getAllByRole("textbox")[1];
+        fireEvent.change(textEditor, { target: { value: newValue } });
+        fireEvent.keyDown(textEditor, { key: "Enter", keyCode: 13 });
       });
 
       it("should call column.validator successfully", () => {
-        //TODO: expect(validatorCallBack.callCount).toBe(1);
-        //TODO: expect(validatorCallBack.calledWith(newValue, row, column)).toBe(true);
+        expect(validatorCallBack.callCount).toBe(1);
+        expect(validatorCallBack.calledWith(newValue, row, column)).toBe(true);
       });
 
       it("should not call onUpdate", () => {
@@ -337,12 +339,12 @@ describe("EditingCell", () => {
         //TODO: ...existing code...
       });
 
-      xit("should render TextEditor with correct shake and animated class", () => {
-        //TODO: const textEditor = screen.getByRole("textbox");
-        //TODO: expect(textEditor).toHaveClass("animated shake");
+      it("should render TextEditor with correct shake and animated class", () => {
+        const textEditor = screen.getAllByRole("textbox")[1];
+        expect(textEditor).toHaveClass("animated shake");
       });
 
-      xit("should render EditorIndicator correctly", () => {
+      it("should render EditorIndicator correctly", () => {
         const indicator = screen.getByTestId("editor-indicator");
         expect(indicator).toBeInTheDocument();
         expect(indicator).toHaveTextContent(validForm.message);
@@ -369,16 +371,18 @@ describe("EditingCell", () => {
             onEscape={onEscape}
           />
         );
-        // Call beforeComplete
-        // ...existing code...
+        // Trigger validation
+        const textEditor = screen.getAllByRole("textbox")[1];
+        fireEvent.change(textEditor, { target: { value: newValue } });
+        fireEvent.keyDown(textEditor, { key: "Enter", keyCode: 13 });
       });
 
-      xit("should call column.validator successfully", () => {
+      it("should call column.validator successfully", () => {
         expect(validatorCallBack.callCount).toBe(1);
         expect(validatorCallBack.calledWith(newValue, row, column)).toBe(true);
       });
 
-      xit("should call onUpdate", () => {
+      it("should call onUpdate", () => {
         expect(onUpdate.callCount).toBe(1);
       });
     });

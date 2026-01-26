@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { INDICATOR_POSITION_LEFT } from "../..";
+import { INDICATOR_POSITION_LEFT } from "../const";
 import ExpandCell from "../row-expand/expand-cell";
 import SelectionCell from "../row-selection/selection-cell";
 import _ from "../utils";
-import RowEventDelegater from "./event-delegater";
+import { RowEventDelegater } from "./event-delegater";
 import RowPureContent from "./row-pure-content";
 import shouldUpdater, { RowProps } from "./should-updater";
 
@@ -23,7 +23,7 @@ class RowAggregator extends shouldUpdater(RowEventDelegater(Component<RowProps>)
       this.props.expandable !== nextProps.expandable ||
       this.props.selectable !== nextProps.selectable ||
       this.props.selectRow.hideSelectColumn !==
-        nextProps.selectRow.hideSelectColumn ||
+      nextProps.selectRow.hideSelectColumn ||
       this.shouldUpdatedBySelfProps(nextProps)
     ) {
       this.shouldUpdateRowContent = this.shouldRowContentUpdate(nextProps);

@@ -2,9 +2,16 @@ import React from "react";
 import { render } from "@testing-library/react";
 import standaloneAdapter from "../src/standalone-adapter";
 
-const MockStandalone = (props: any) => {
-  // Expose props for assertions
-  return <div data-testid="mock-standalone" {...props} />;
+const MockStandalone = ({ currPage, currSizePerPage, ...rest }: any) => {
+  // Expose props for assertions using data- attributes to avoid React warnings
+  return (
+    <div
+      data-testid="mock-standalone"
+      data-currpage={currPage}
+      data-currsizeperpage={currSizePerPage}
+      {...rest}
+    />
+  );
 };
 
 const MockStandaloneWithAdapter = standaloneAdapter(MockStandalone);
@@ -31,11 +38,11 @@ describe("standaloneAdapter", () => {
     });
 
     it("should convert props.page as currPage to child component", () => {
-      expect(standalone.getAttribute("currpage")).toEqual(props.page.toString());
+      expect(standalone.getAttribute("data-currpage")).toEqual(props.page.toString());
     });
 
     it("should convert props.sizePerPage as currSizePerPage to child component", () => {
-      expect(standalone.getAttribute("currsizeperpage")).toEqual(props.sizePerPage.toString());
+      expect(standalone.getAttribute("data-currsizeperpage")).toEqual(props.sizePerPage.toString());
     });
 
     it("should just pass remain props to child component", () => {

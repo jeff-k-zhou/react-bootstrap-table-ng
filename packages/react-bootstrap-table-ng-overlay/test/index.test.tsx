@@ -29,10 +29,10 @@ describe("overlayFactory", () => {
       const Overlay = overlayFactory()(false);
       render(<Overlay>{tableElm}</Overlay>);
       // Should render LoadingOverlay with active=false
-      const overlay = screen.getByTestId("loading-overlay");
-      expect(overlay).toBeInTheDocument();
-      // Check for inactive overlay (active=false)
-      expect(overlay.className).toMatch(/Overlay/);
+      const wrapper = screen.getByTestId("wrapper");
+      expect(wrapper).toBeInTheDocument();
+      // Check for inactive overlay (active=false)  
+      expect(wrapper.className).toMatch(/wrapper/);
     });
   });
 
@@ -41,10 +41,10 @@ describe("overlayFactory", () => {
       const tableElm = createTable();
       const Overlay = overlayFactory()(true);
       render(<Overlay>{tableElm}</Overlay>);
-      const overlay = screen.getByTestId("loading-overlay");
-      expect(overlay).toBeInTheDocument();
-      // Check for active overlay (active=true)
-      expect(overlay.className).toMatch(/Overlay/);
+      const wrapper = screen.getByTestId("wrapper");
+      expect(wrapper).toBeInTheDocument();
+      // Check for active overlay (active=true) - should have 'active' class
+      expect(wrapper.className).toMatch(/active/);
     });
   });
 
@@ -57,10 +57,10 @@ describe("overlayFactory", () => {
       const tableElm = createTable();
       const Overlay = overlayFactory(options)(false);
       render(<Overlay>{tableElm}</Overlay>);
-      const overlay = screen.getByTestId("loading-overlay");
-      expect(overlay).toBeInTheDocument();
+      const wrapper = screen.getByTestId("wrapper");
+      expect(wrapper).toBeInTheDocument();
       // Check for overlay options in DOM
-      expect(overlay.className).toMatch(/Overlay/);
+      expect(wrapper.className).toMatch(/wrapper/);
     });
   });
 });

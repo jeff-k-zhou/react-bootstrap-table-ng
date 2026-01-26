@@ -1,6 +1,7 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import SelectionCell from "../../src/row-selection/selection-cell";
+import { BootstrapContext } from "../../src/contexts/bootstrap";
 
 describe("<SelectionCell />", () => {
   const mode = "checkbox";
@@ -203,19 +204,19 @@ describe("<SelectionCell />", () => {
     });
 
     it("should render component with bootstrap4 class when bootstrap4 context is true", () => {
-      // Simulate bootstrap4 context by passing prop
       render(
-        <table>
-          <tbody>
-            <SelectionCell
-              rowKey={1}
-              mode={mode}
-              rowIndex={rowIndex}
-              selected={selected}
-              // bootstrap4
-            />
-          </tbody>
-        </table>
+        <BootstrapContext.Provider value={{ bootstrap4: true }}>
+          <table>
+            <tbody>
+              <SelectionCell
+                rowKey={1}
+                mode={mode}
+                rowIndex={rowIndex}
+                selected={selected}
+              />
+            </tbody>
+          </table>
+        </BootstrapContext.Provider>
       );
       const cell = screen.getByRole("cell");
       expect(cell.querySelector(".selection-input-4")).toBeInTheDocument();

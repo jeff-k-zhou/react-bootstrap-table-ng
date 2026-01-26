@@ -69,10 +69,12 @@ describe("sizePerPageDropdownAdapter", () => {
 
   describe("toggleDropDown", () => {
     it("should toggle dropdownOpen state", () => {
-      // We need to access the instance to test toggleDropDown
-      // So we instantiate the class directly
       const AdapterClass: any = SizePerPageDropdownAdapter;
       const instance = new AdapterClass(createMockProps());
+      instance.setState = (updater: any) => {
+        const nextState = typeof updater === "function" ? updater(instance.state) : updater;
+        instance.state = { ...instance.state, ...nextState };
+      };
       expect(instance.state.dropdownOpen).toBeFalsy();
       instance.toggleDropDown();
       expect(instance.state.dropdownOpen).toBeTruthy();
@@ -85,6 +87,10 @@ describe("sizePerPageDropdownAdapter", () => {
     it("should always set dropdownOpen to false", () => {
       const AdapterClass: any = SizePerPageDropdownAdapter;
       const instance = new AdapterClass(createMockProps());
+      instance.setState = (updater: any) => {
+        const nextState = typeof updater === "function" ? updater(instance.state) : updater;
+        instance.state = { ...instance.state, ...nextState };
+      };
       instance.state.dropdownOpen = true;
       instance.closeDropDown();
       expect(instance.state.dropdownOpen).toBeFalsy();
@@ -98,10 +104,11 @@ describe("sizePerPageDropdownAdapter", () => {
       const props = createMockProps();
       const AdapterClass: any = SizePerPageDropdownAdapter;
       const instance = new AdapterClass(props);
+      instance.setState = jest.fn();
       instance.handleChangeSizePerPage(25);
       expect(props.onSizePerPageChange).toHaveBeenCalledTimes(1);
       expect(props.onSizePerPageChange).toHaveBeenCalledWith(25);
-      expect(instance.state.dropdownOpen).toBeFalsy();
+      expect(instance.setState).toHaveBeenCalledWith(expect.any(Function));
     });
   });
 

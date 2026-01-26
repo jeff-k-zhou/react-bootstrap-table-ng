@@ -2,7 +2,7 @@ import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { INDICATOR_POSITION_RIGHT } from "../..";
 import createExpansionContext from "../../src/contexts/row-expand-context";
-import createSelectionContext from "../../src/contexts/selection-context";
+import { createSelectionContext } from "../../src/contexts/selection-context";
 import ExpandCell from "../../src/row-expand/expand-cell";
 import bindExpansion from "../../src/row-expand/row-consumer";
 import bindSelection from "../../src/row-selection/row-consumer";
@@ -33,6 +33,8 @@ describe("Row Aggregator", () => {
     columns,
     keyField,
     rowIndex,
+    selectable: true,
+    expandable: true,
     ...mockBodyResolvedProps,
   });
 
@@ -78,7 +80,7 @@ describe("Row Aggregator", () => {
 
     describe("if props.selectRow.clickToSelect is defined", () => {
       it("should add onClick prop to Row Component and call onRowSelect", () => {
-        const selectRow = { mode: "radio", clickToSelect: true, onRowSelect: jest.fn() };
+        const selectRow = { mode: "radio", clickToSelect: true, onSelect: jest.fn() };
         render(
           <SelectionContext.Provider data={data} keyField={keyField} selectRow={selectRow}>
             <table>
@@ -90,7 +92,7 @@ describe("Row Aggregator", () => {
         );
         const rowEl = screen.getByRole("row");
         fireEvent.click(rowEl);
-        expect(selectRow.onRowSelect).toHaveBeenCalledTimes(1);
+        expect(selectRow.onSelect).toHaveBeenCalledTimes(1);
       });
     });
   });
@@ -172,8 +174,8 @@ describe("Row Aggregator", () => {
       expect(attrs.onClick).toHaveBeenCalledTimes(1);
     });
 
-    it("should call selectRow.onRowSelect if clickToSelect is true", () => {
-      const selectRow = { mode: "radio", clickToSelect: true, onRowSelect: jest.fn() };
+    it("should call selectRow.onSelect if clickToSelect is true", () => {
+      const selectRow = { mode: "radio", clickToSelect: true, onSelect: jest.fn() };
       render(
         <SelectionContext.Provider data={data} keyField={keyField} selectRow={selectRow}>
           <table>
@@ -185,15 +187,15 @@ describe("Row Aggregator", () => {
       );
       const rowEl = screen.getByRole("row");
       fireEvent.click(rowEl);
-      expect(selectRow.onRowSelect).toHaveBeenCalledTimes(1);
+      expect(selectRow.onSelect).toHaveBeenCalledTimes(1);
     });
 
-    it("should not call selectRow.onRowSelect if not selectable", () => {
+    it("should not call selectRow.onSelect if not selectable", () => {
       const selectRow = {
         mode: "radio",
         clickToSelect: true,
         nonSelectable: [row[keyField]],
-        onRowSelect: jest.fn(),
+        onSelect: jest.fn(),
       };
       render(
         <SelectionContext.Provider data={data} keyField={keyField} selectRow={selectRow}>
@@ -206,14 +208,14 @@ describe("Row Aggregator", () => {
       );
       const rowEl = screen.getByRole("row");
       fireEvent.click(rowEl);
-      expect(selectRow.onRowSelect).not.toHaveBeenCalled();
+      expect(selectRow.onSelect).not.toHaveBeenCalled();
     });
 
-    it("should not call expandRow.onRowExpand if not expandable", () => {
+    it("should not call expandRow.onExpand if not expandable", () => {
       const expandRow = {
         renderer: jest.fn(),
         nonExpandable: [row[keyField]],
-        onRowExpand: jest.fn(),
+        onExpand: jest.fn(),
       };
       render(
         <ExpansionContext.Provider data={data} keyField={keyField} expandRow={expandRow}>
@@ -226,11 +228,11 @@ describe("Row Aggregator", () => {
       );
       const rowEl = screen.getByRole("row");
       fireEvent.click(rowEl);
-      expect(expandRow.onRowExpand).not.toHaveBeenCalled();
+      expect(expandRow.onExpand).not.toHaveBeenCalled();
     });
 
-    it("should call expandRow.onRowExpand if expandable", () => {
-      const expandRow = { renderer: jest.fn(), onRowExpand: jest.fn() };
+    it("should call expandRow.onExpand if expandable", () => {
+      const expandRow = { renderer: jest.fn(), onExpand: jest.fn() };
       render(
         <ExpansionContext.Provider data={data} keyField={keyField} expandRow={expandRow}>
           <table>
@@ -242,12 +244,12 @@ describe("Row Aggregator", () => {
       );
       const rowEl = screen.getByRole("row");
       fireEvent.click(rowEl);
-      expect(expandRow.onRowExpand).toHaveBeenCalledTimes(1);
+      expect(expandRow.onExpand).toHaveBeenCalledTimes(1);
     });
 
-    it("should call both attrs.onClick and expandRow.onRowExpand if both are defined", () => {
+    it("should call both attrs.onClick and expandRow.onExpand if both are defined", () => {
       const attrs = { onClick: jest.fn() };
-      const expandRow = { renderer: jest.fn(), onRowExpand: jest.fn() };
+      const expandRow = { renderer: jest.fn(), onExpand: jest.fn() };
       render(
         <ExpansionContext.Provider data={data} keyField={keyField} expandRow={expandRow}>
           <table>
@@ -260,12 +262,12 @@ describe("Row Aggregator", () => {
       const rowEl = screen.getByRole("row");
       fireEvent.click(rowEl);
       expect(attrs.onClick).toHaveBeenCalledTimes(1);
-      expect(expandRow.onRowExpand).toHaveBeenCalledTimes(1);
+      expect(expandRow.onExpand).toHaveBeenCalledTimes(1);
     });
 
-    it("should call both attrs.onClick and selectRow.onRowSelect if both are defined", () => {
+    it("should call both attrs.onClick and selectRow.onSelect if both are defined", () => {
       const attrs = { onClick: jest.fn() };
-      const selectRow = { mode: "radio", clickToSelect: true, onRowSelect: jest.fn() };
+      const selectRow = { mode: "radio", clickToSelect: true, onSelect: jest.fn() };
       render(
         <SelectionContext.Provider data={data} keyField={keyField} selectRow={selectRow}>
           <table>
@@ -278,7 +280,7 @@ describe("Row Aggregator", () => {
       const rowEl = screen.getByRole("row");
       fireEvent.click(rowEl);
       expect(attrs.onClick).toHaveBeenCalledTimes(1);
-      expect(selectRow.onRowSelect).toHaveBeenCalledTimes(1);
+      expect(selectRow.onSelect).toHaveBeenCalledTimes(1);
     });
   });
 });

@@ -1,4 +1,4 @@
-import { render } from "@testing-library/react";
+import { render, act } from "@testing-library/react";
 import React from "react";
 
 import { SORT_ASC, SORT_DESC } from "../..";
@@ -87,7 +87,9 @@ describe("SortContext", () => {
         renderContext(false);
         const props = mockBase.mock.calls[0][0];
         // Simulate sort
-        props.onSort(sortColumn);
+        act(() => {
+          props.onSort(sortColumn);
+        });
         expect(nextOrderSpy).toHaveBeenCalledTimes(1);
         expect(nextOrderSpy).toHaveBeenCalledWith(
           sortColumn,
@@ -101,7 +103,9 @@ describe("SortContext", () => {
       it("should call handleRemoteSortChange", () => {
         renderContext(true);
         const props = mockBase.mock.calls[0][0];
-        props.onSort(sortColumn);
+        act(() => {
+          props.onSort(sortColumn);
+        });
         expect(handleRemoteSortChange).toHaveBeenCalledTimes(1);
         expect(handleRemoteSortChange).toHaveBeenCalledWith(
           sortColumn.dataField,
@@ -117,12 +121,22 @@ describe("SortContext", () => {
         columns[0].onSort = onSortCB;
         renderContext(false);
         const props = mockBase.mock.calls[0][0];
-        props.onSort(sortColumn);
+
+        act(() => {
+          props.onSort(sortColumn);
+        });
+
         expect(onSortCB).toHaveBeenCalledTimes(1);
         expect(onSortCB).toHaveBeenCalledWith(columns[0].dataField, SORT_DESC);
 
+        // Wait for re-render and get updated props
+        const updatedProps = mockBase.mock.calls[mockBase.mock.calls.length - 1][0];
+
         // Simulate toggling sort order
-        props.onSort(sortColumn);
+        act(() => {
+          updatedProps.onSort(sortColumn);
+        });
+
         expect(onSortCB).toHaveBeenCalledTimes(2);
         expect(onSortCB).toHaveBeenCalledWith(columns[0].dataField, SORT_ASC);
       });

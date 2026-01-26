@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, createEvent } from "@testing-library/react";
 import SizePerPageOption from "../src/size-per-page-option";
 
 describe("SizePerPageOption", () => {
@@ -26,9 +26,9 @@ describe("SizePerPageOption", () => {
     describe("when MouseDown event happen", () => {
       it("should call props.onSizePerPageChange correctly", () => {
         const li = screen.getByRole("menuitem");
-        const preventDefault = jest.fn();
-        fireEvent.mouseDown(li, { preventDefault });
-        expect(preventDefault).toHaveBeenCalled();
+        const event = createEvent.mouseDown(li);
+        fireEvent(li, event);
+        expect(event.defaultPrevented).toBe(true);
         expect(onSizePerPageChange).toHaveBeenCalledTimes(1);
         expect(onSizePerPageChange).toHaveBeenCalledWith(page);
       });
@@ -50,9 +50,9 @@ describe("SizePerPageOption", () => {
     describe("when MouseDown event happen", () => {
       it("should call props.onSizePerPageChange correctly", () => {
         const li = screen.getByRole("menuitem");
-        const preventDefault = jest.fn();
-        fireEvent.mouseDown(li, { preventDefault });
-        expect(preventDefault).toHaveBeenCalled();
+        const event = createEvent.mouseDown(li);
+        fireEvent(li, event);
+        expect(event.defaultPrevented).toBe(true);
         expect(onSizePerPageChange).toHaveBeenCalledTimes(1);
         expect(onSizePerPageChange).toHaveBeenCalledWith(page);
       });

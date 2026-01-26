@@ -15,9 +15,9 @@ interface CellEventDelegaterProps {
   index: number;
 }
 
-export default function CellEventDelegater<
-  T extends new(...args: any[]) => any
->(ExtendBase: T) {
+export const CellEventDelegater = <
+  T extends new (...args: any[]) => any
+>(ExtendBase: T) => {
   return class extends ExtendBase {
     constructor(...props: any[]) {
       super(...props);

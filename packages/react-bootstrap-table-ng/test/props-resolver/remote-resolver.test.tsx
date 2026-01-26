@@ -155,6 +155,10 @@ describe("remoteResolver", () => {
     const dataField = "name";
     const newValue = "test";
 
+    beforeEach(() => {
+      onTableChangeCB.resetHistory();
+    });
+
     it("should call props.onTableChange correctly", () => {
       const instance = renderContainer({ onTableChange: onTableChangeCB });
       act(() => {
@@ -175,6 +179,11 @@ describe("remoteResolver", () => {
     const onTableChangeCB = stub();
     const newSortFiled = "name";
     const newSortOrder = "asc";
+
+    beforeEach(() => {
+      onTableChangeCB.resetHistory();
+    });
+
     it("should call props.onTableChange correctly", () => {
       const instance = renderContainer({ onTableChange: onTableChangeCB });
       act(() => {
@@ -197,6 +206,11 @@ describe("remoteResolver", () => {
     const onTableChangeCB = stub();
     const newPage = 2;
     const newSizePerPage = 10;
+
+    beforeEach(() => {
+      onTableChangeCB.resetHistory();
+    });
+
     it("should call props.onTableChange correctly", () => {
       const instance = renderContainer({ onTableChange: onTableChangeCB });
       act(() => {
@@ -218,6 +232,11 @@ describe("remoteResolver", () => {
   describe("handleRemoteSearchChange", () => {
     const onTableChangeCB = stub();
     const searchText = "abc";
+
+    beforeEach(() => {
+      onTableChangeCB.resetHistory();
+    });
+
     it("should call props.onTableChange correctly", () => {
       const instance = renderContainer({ onTableChange: onTableChangeCB });
       act(() => {
@@ -239,6 +258,10 @@ describe("remoteResolver", () => {
     const onTableChangeCB = stub();
     const filters = { price: { filterVal: 20, filterType: "TEXT" } };
 
+    beforeEach(() => {
+      onTableChangeCB.resetHistory();
+    });
+
     it("should call props.onTableChange correctly when remote pagination is disabled", () => {
       const instance = renderContainer({ onTableChange: onTableChangeCB });
       act(() => {
@@ -256,7 +279,7 @@ describe("remoteResolver", () => {
     });
 
     describe("when remote pagination is enabled", () => {
-      const createContext = () => {};
+      const createContext = () => { };
 
       it("should call onTableChange with page property by pageStartIndex", () => {
         const options = { pageStartIndex: 0 };

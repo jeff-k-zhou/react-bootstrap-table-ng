@@ -1,6 +1,6 @@
 import React from "react";
 
-import { FILTERS_POSITION_TOP } from "..";
+import { FILTERS_POSITION_TOP } from "./const";
 import FiltersCell from "./filters-cell";
 import RowTemplate from "./row/row-template";
 

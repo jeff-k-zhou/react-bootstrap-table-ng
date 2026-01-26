@@ -1,6 +1,6 @@
 /* eslint no-param-reassign: 0 */
 import React from "react";
-import { render } from "@testing-library/react";
+import { render, act } from "@testing-library/react";
 import paginationFactory from "../index";
 import Const from "../src/const";
 import createStateContext from "../src/state-context";
@@ -100,7 +100,9 @@ describe("PaginationStateContext", () => {
       });
       // Simulate page change
       const call = renderMockComponent.mock.calls[0][0];
-      call.paginationProps.onPageChange(3, 10);
+      act(() => {
+        call.paginationProps.onPageChange(3, 10);
+      });
       expect(onPageChange).toHaveBeenCalledWith(3, 10);
     });
   });
@@ -114,7 +116,9 @@ describe("PaginationStateContext", () => {
       });
       // Simulate sizePerPage change
       const call = renderMockComponent.mock.calls[0][0];
-      call.paginationProps.onSizePerPageChange(15, 2);
+      act(() => {
+        call.paginationProps.onSizePerPageChange(15, 2);
+      });
       expect(onSizePerPageChange).toHaveBeenCalledWith(15, 2);
     });
   });

@@ -1,5 +1,5 @@
 import React, { Component, MouseEvent } from "react";
-import { ROW_SELECT_SINGLE } from "../..";
+import { ROW_SELECT_SINGLE } from "../const";
 import _ from "../utils";
 import { BootstrapContext } from "../contexts/bootstrap";
 
@@ -25,13 +25,13 @@ interface SelectionCellProps {
     rowkey: any;
   }) => React.ReactNode;
   selectColumnStyle?:
-    | React.CSSProperties
-    | ((args: {
-        checked: boolean;
-        disabled?: boolean;
-        rowindex?: number;
-        rowkey: any;
-      }) => React.CSSProperties);
+  | React.CSSProperties
+  | ((args: {
+    checked: boolean;
+    disabled?: boolean;
+    rowindex?: number;
+    rowkey: any;
+  }) => React.CSSProperties);
 }
 
 export default class SelectionCell extends Component<SelectionCellProps> {
@@ -86,22 +86,22 @@ export default class SelectionCell extends Component<SelectionCellProps> {
 
     attrs.style = _.isFunction(selectColumnStyle)
       ? selectColumnStyle({
-          checked: selected,
-          disabled,
-          rowindex: rowIndex,
-          rowkey: rowKey,
-        })
+        checked: selected,
+        disabled,
+        rowindex: rowIndex,
+        rowkey: rowKey,
+      })
       : selectColumnStyle;
 
     return (
       <BootstrapContext.Consumer>
         {({ bootstrap4 }) => (
-          <td className="selection-cell" onClick={this.handleClick} {...attrs}>
+          <td className="selection-cell" onClick={this.handleClick} data-testid="selection-cell" {...attrs}>
             {selectionRenderer ? (
               selectionRenderer({
                 mode: inputType!,
                 checked: selected,
-                disabled,
+                disabled: disabled ?? false,
                 rowindex: rowIndex,
                 rowkey: rowKey,
               })
@@ -111,7 +111,7 @@ export default class SelectionCell extends Component<SelectionCellProps> {
                 checked={selected}
                 disabled={disabled ?? false}
                 className={bootstrap4 ? "selection-input-4" : ""}
-                onChange={() => {}}
+                onChange={() => { }}
               />
             )}
           </td>

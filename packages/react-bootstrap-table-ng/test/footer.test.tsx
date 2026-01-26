@@ -83,7 +83,7 @@ describe("Footer", () => {
           </tfoot>
         </table>
       );
-      expect(screen.getByRole("row").parentElement).toHaveClass(className);
+      expect(screen.getByRole("row")).toHaveClass(className);
     });
   });
 

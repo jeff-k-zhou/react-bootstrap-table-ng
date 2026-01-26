@@ -18,33 +18,30 @@ describe("Number Filter", () => {
     onFilter.mockReset();
     onFilterFirstReturn.mockReset();
     onFilter.mockReturnValue(onFilterFirstReturn);
+    jest.clearAllTimers();
   });
 
   describe("initialization", () => {
     beforeEach(() => {
       onFilter.mockReturnValue(onFilterFirstReturn);
-      render(<NumberFilter onFilter={onFilter} column={column} />);
-    });
-
-    it("should have correct state", () => {
-      // No direct state access, but input should not be selected
-      expect(screen.getByTestId("number-filter")).toBeInTheDocument();
     });
 
     it("should rendering component successfully", () => {
+      render(<NumberFilter onFilter={onFilter} column={column} />);
       expect(screen.getByTestId("number-filter")).toBeInTheDocument();
       expect(screen.getByTestId("number-filter-comparator")).toBeInTheDocument();
       expect(screen.getByTestId("number-filter-input")).toBeInTheDocument();
     });
 
     it("should rendering comparator options correctly", () => {
+      render(<NumberFilter onFilter={onFilter} column={column} />);
       const select = screen.getByTestId("number-filter-comparator");
       expect(select.querySelectorAll("option").length).toBe(ComparatorNumber);
     });
   });
 
   describe("when withoutEmptyComparatorOption prop is true", () => {
-    beforeEach(() => {
+    it("should rendering comparator options correctly", () => {
       render(
         <NumberFilter
           onFilter={onFilter}
@@ -52,9 +49,6 @@ describe("Number Filter", () => {
           withoutEmptyComparatorOption
         />
       );
-    });
-
-    it("should rendering comparator options correctly", () => {
       const select = screen.getByTestId("number-filter-comparator");
       expect(select.querySelectorAll("option").length).toBe(ComparatorNumber - 1);
     });
@@ -63,7 +57,7 @@ describe("Number Filter", () => {
   describe("when defaultValue.number props is defined", () => {
     const number = 203;
 
-    beforeEach(() => {
+    it("should rendering input successfully", () => {
       render(
         <NumberFilter
           onFilter={onFilter}
@@ -71,9 +65,6 @@ describe("Number Filter", () => {
           defaultValue={{ number }}
         />
       );
-    });
-
-    it("should rendering input successfully", () => {
       const input = screen.getByTestId("number-filter-input");
       expect(input).toBeInTheDocument();
       expect(input).toHaveValue(number);
@@ -83,7 +74,7 @@ describe("Number Filter", () => {
   describe("when defaultValue.comparator props is defined", () => {
     const comparator = EQ;
 
-    beforeEach(() => {
+    it("should rendering comparator select successfully", () => {
       render(
         <NumberFilter
           onFilter={onFilter}
@@ -91,9 +82,6 @@ describe("Number Filter", () => {
           defaultValue={{ comparator }}
         />
       );
-    });
-
-    it("should rendering comparator select successfully", () => {
       const select = screen.getByTestId("number-filter-comparator");
       expect(select).toBeInTheDocument();
       expect(select).toHaveValue(comparator);
@@ -107,7 +95,7 @@ describe("Number Filter", () => {
       programmaticallyFilter = filter;
     };
 
-    beforeEach(() => {
+    it("should do onFilter correctly when exported function was executed", () => {
       render(
         <NumberFilter
           onFilter={onFilter}
@@ -115,10 +103,10 @@ describe("Number Filter", () => {
           getFilter={getFilter}
         />
       );
-      programmaticallyFilter({ comparator, number });
-    });
-
-    it("should do onFilter correctly when exported function was executed", () => {
+      const { act } = require("@testing-library/react");
+      act(() => {
+        programmaticallyFilter({ comparator, number });
+      });
       expect(onFilter).toHaveBeenCalledTimes(1);
       expect(onFilter).toHaveBeenCalledWith(column, FILTER_TYPES.NUMBER);
       expect(onFilterFirstReturn).toHaveBeenCalledTimes(1);
@@ -130,7 +118,7 @@ describe("Number Filter", () => {
     const number = 203;
     const comparator = EQ;
 
-    beforeEach(() => {
+    it("should calling onFilter on componentDidMount", () => {
       render(
         <NumberFilter
           onFilter={onFilter}
@@ -138,9 +126,6 @@ describe("Number Filter", () => {
           defaultValue={{ number, comparator }}
         />
       );
-    });
-
-    it("should calling onFilter on componentDidMount", () => {
       expect(onFilter).toHaveBeenCalledTimes(1);
       expect(onFilter).toHaveBeenCalledWith(column, FILTER_TYPES.NUMBER, true);
       expect(onFilterFirstReturn).toHaveBeenCalledTimes(1);
@@ -151,18 +136,15 @@ describe("Number Filter", () => {
   describe("when options props is defined", () => {
     const options = [2100, 2103, 2105];
 
-    beforeEach(() => {
-      render(<NumberFilter onFilter={onFilter} column={column} options={options} />);
-    });
-
     it("should rendering number options instead of number input", () => {
+      render(<NumberFilter onFilter={onFilter} column={column} options={options} />);
       const select = screen.getByTestId("number-filter-select");
       expect(select).toBeInTheDocument();
       expect(select.querySelectorAll("option").length).toBe(options.length + 1);
     });
 
     describe("when withoutEmptyNumberOption props is defined", () => {
-      beforeEach(() => {
+      it("should rendering number options instead of number input", () => {
         render(
           <NumberFilter
             onFilter={onFilter}
@@ -171,9 +153,6 @@ describe("Number Filter", () => {
             withoutEmptyNumberOption
           />
         );
-      });
-
-      it("should rendering number options instead of number input", () => {
         const select = screen.getByTestId("number-filter-select");
         expect(select).toBeInTheDocument();
         expect(select.querySelectorAll("option").length).toBe(options.length);
@@ -181,9 +160,9 @@ describe("Number Filter", () => {
     });
 
     describe("when defaultValue.number props is defined", () => {
-      const number = 203;
+      const number = options[1];
 
-      beforeEach(() => {
+      it("should rendering number options successfully", () => {
         render(
           <NumberFilter
             onFilter={onFilter}
@@ -192,9 +171,6 @@ describe("Number Filter", () => {
             options={options}
           />
         );
-      });
-
-      it("should rendering number options successfully", () => {
         const select = screen.getByTestId("number-filter-select");
         expect(select).toBeInTheDocument();
         expect(select).toHaveValue(number.toString());
@@ -205,7 +181,7 @@ describe("Number Filter", () => {
       const number = options[1];
       const comparator = EQ;
 
-      beforeEach(() => {
+      it("should rendering number options successfully", () => {
         render(
           <NumberFilter
             onFilter={onFilter}
@@ -214,9 +190,6 @@ describe("Number Filter", () => {
             options={options}
           />
         );
-      });
-
-      it("should rendering number options successfully", () => {
         const select = screen.getByTestId("number-filter-select");
         expect(select).toBeInTheDocument();
       });
@@ -225,20 +198,19 @@ describe("Number Filter", () => {
 
   describe("when style props is defined", () => {
     const style = { backgroundColor: "red" };
-    beforeEach(() => {
+
+    it("should rendering component successfully", () => {
       render(
         <NumberFilter onFilter={onFilter} column={column} style={style} />
       );
-    });
-
-    it("should rendering component successfully", () => {
       expect(screen.getByTestId("number-filter")).toHaveStyle("background-color: red");
     });
   });
 
   describe("when numberStyle props is defined", () => {
     const numberStyle = { backgroundColor: "red" };
-    beforeEach(() => {
+
+    it("should rendering component successfully", () => {
       render(
         <NumberFilter
           onFilter={onFilter}
@@ -246,16 +218,14 @@ describe("Number Filter", () => {
           numberStyle={numberStyle}
         />
       );
-    });
-
-    it("should rendering component successfully", () => {
       expect(screen.getByTestId("number-filter-input")).toHaveStyle("background-color: red");
     });
   });
 
   describe("when comparatorStyle props is defined", () => {
     const comparatorStyle = { backgroundColor: "red" };
-    beforeEach(() => {
+
+    it("should rendering component successfully", () => {
       render(
         <NumberFilter
           onFilter={onFilter}
@@ -263,16 +233,14 @@ describe("Number Filter", () => {
           comparatorStyle={comparatorStyle}
         />
       );
-    });
-
-    it("should rendering component successfully", () => {
       expect(screen.getByTestId("number-filter-comparator")).toHaveStyle("background-color: red");
     });
   });
 
   describe("when className props is defined", () => {
     const className = "test";
-    beforeEach(() => {
+
+    it("should rendering component successfully", () => {
       render(
         <NumberFilter
           onFilter={onFilter}
@@ -280,16 +248,14 @@ describe("Number Filter", () => {
           className={className}
         />
       );
-    });
-
-    it("should rendering component successfully", () => {
       expect(screen.getByTestId("number-filter")).toHaveClass(className);
     });
   });
 
   describe("when numberClassName props is defined", () => {
     const className = "test";
-    beforeEach(() => {
+
+    it("should rendering component successfully", () => {
       render(
         <NumberFilter
           onFilter={onFilter}
@@ -297,16 +263,14 @@ describe("Number Filter", () => {
           numberClassName={className}
         />
       );
-    });
-
-    it("should rendering component successfully", () => {
       expect(screen.getByTestId("number-filter-input")).toHaveClass(className);
     });
   });
 
   describe("when comparatorClassName props is defined", () => {
     const className = "test";
-    beforeEach(() => {
+
+    it("should rendering component successfully", () => {
       render(
         <NumberFilter
           onFilter={onFilter}
@@ -314,25 +278,26 @@ describe("Number Filter", () => {
           comparatorClassName={className}
         />
       );
-    });
-
-    it("should rendering component successfully", () => {
       expect(screen.getByTestId("number-filter-comparator")).toHaveClass(className);
     });
   });
 
   describe("filter", () => {
     it("should call onFilter and set state correctly", () => {
+      jest.useFakeTimers();
       render(
         <NumberFilter
           onFilter={onFilter}
           column={column}
+          defaultValue={{ comparator: EQ }}
         />
       );
       const input = screen.getByTestId("number-filter-input");
       fireEvent.change(input, { target: { value: "123" } });
+      jest.runAllTimers();
       expect(onFilter).toHaveBeenCalled();
       expect(onFilterFirstReturn).toHaveBeenCalled();
+      jest.useRealTimers();
     });
   });
 });

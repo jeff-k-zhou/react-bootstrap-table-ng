@@ -20,7 +20,7 @@ describe("Date Filter", () => {
   describe("initialization", () => {
     it("should render component successfully", () => {
       render(<DateFilter onFilter={onFilter} column={column} />);
-      expect(screen.getByRole("textbox")).toBeInTheDocument();
+      expect(screen.getByTestId("date-filter-input")).toBeInTheDocument();
       expect(screen.getByTestId("date-filter-comparator")).toBeInTheDocument();
       expect(screen.getByTestId("date-filter")).toBeInTheDocument();
     });
@@ -57,7 +57,7 @@ describe("Date Filter", () => {
           defaultValue={{ date }}
         />
       );
-      const input = screen.getByRole("textbox");
+      const input = screen.getByTestId("date-filter-input");
       expect(input).toBeInTheDocument();
       // The defaultValue is formatted as yyyy-mm-dd
       const expectedValue = new DateFilter({ onFilter, column, defaultValue: { date } }).getDefaultDate();
@@ -143,7 +143,7 @@ describe("Date Filter", () => {
       render(
         <DateFilter onFilter={onFilter} column={column} dateStyle={dateStyle} />
       );
-      expect(screen.getByRole("textbox")).toHaveStyle("background-color: red");
+      expect(screen.getByTestId("date-filter-input")).toHaveStyle("background-color: red");
     });
   });
 
@@ -181,7 +181,7 @@ describe("Date Filter", () => {
           dateClassName={className}
         />
       );
-      expect(screen.getByRole("textbox")).toHaveClass(className);
+      expect(screen.getByTestId("date-filter-input")).toHaveClass(className);
     });
   });
 

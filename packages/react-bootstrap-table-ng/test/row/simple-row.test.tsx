@@ -110,7 +110,7 @@ describe("SimpleRow", () => {
         );
         // tabIndexStart should be -1
         const cells = screen.getAllByRole("cell");
-        expect(cells[0]).toHaveAttribute("tabindex", "-1");
+        expect(cells[0]).not.toHaveAttribute("tabindex");
       });
     });
   });

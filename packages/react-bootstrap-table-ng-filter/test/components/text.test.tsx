@@ -3,7 +3,7 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import { FILTER_TYPES } from "../..";
 import TextFilter from "../../src/components/text";
 
-jest.useFakeTimers();
+// jest.useFakeTimers();
 
 describe("Text Filter", () => {
   let programmaticallyFilter: any;
@@ -82,7 +82,10 @@ describe("Text Filter", () => {
       render(
         <TextFilter onFilter={onFilter} column={column} getFilter={getFilter} />
       );
-      programmaticallyFilter(filterValue);
+      const { act } = require("@testing-library/react");
+      act(() => {
+        programmaticallyFilter(filterValue);
+      });
     });
 
     it("should do onFilter correctly when exported function was executed", () => {
@@ -129,14 +132,20 @@ describe("Text Filter", () => {
 
   describe("componentDidUpdate", () => {
     const nextDefaultValue = "tester";
-    it("should set value and call onFilter when defaultValue changes", () => {
+    it("should set value and call onFilter when defaultValue changes", async () => {
       const { rerender } = render(
         <TextFilter onFilter={onFilter} column={column} />
       );
-      rerender(
-        <TextFilter onFilter={onFilter} column={column} defaultValue={nextDefaultValue} />
-      );
-      expect(screen.getByRole("textbox")).toHaveValue(nextDefaultValue);
+      const { act } = require("@testing-library/react");
+      act(() => {
+        rerender(
+          <TextFilter onFilter={onFilter} column={column} defaultValue={nextDefaultValue} />
+        );
+      });
+      const { waitFor } = require("@testing-library/react");
+      await waitFor(() => {
+        expect(screen.getByRole("textbox")).toHaveValue(nextDefaultValue);
+      });
       expect(onFilter).toHaveBeenCalled();
       expect(onFilterFirstReturn).toHaveBeenCalledWith(nextDefaultValue);
     });
@@ -153,7 +162,10 @@ describe("Text Filter", () => {
           ref={(ref: any) => (filterRef = ref)}
         />
       );
-      filterRef.cleanFiltered();
+      const { act } = require("@testing-library/react");
+      act(() => {
+        filterRef.cleanFiltered();
+      });
       expect(screen.getByRole("textbox")).toHaveValue(defaultValue);
       expect(onFilter).toHaveBeenCalled();
       expect(onFilterFirstReturn).toHaveBeenCalledWith(defaultValue);
@@ -171,7 +183,10 @@ describe("Text Filter", () => {
           ref={(ref: any) => (filterRef = ref)}
         />
       );
-      filterRef.applyFilter(filterText);
+      const { act } = require("@testing-library/react");
+      act(() => {
+        filterRef.applyFilter(filterText);
+      });
       expect(screen.getByRole("textbox")).toHaveValue(filterText);
       expect(onFilter).toHaveBeenCalled();
       expect(onFilterFirstReturn).toHaveBeenCalledWith(filterText);
@@ -180,15 +195,17 @@ describe("Text Filter", () => {
 
   describe("filter", () => {
     const filterText = "tester";
-    it("should set value and call onFilter with delay", () => {
+    it("should set value and call onFilter with delay", async () => {
       render(<TextFilter onFilter={onFilter} column={column} />);
       const input = screen.getByRole("textbox");
       fireEvent.change(input, { target: { value: filterText } });
-      // Simulate debounce delay
-      jest.runAllTimers();
-      expect(input).toHaveValue(filterText);
-      expect(onFilter).toHaveBeenCalled();
-      expect(onFilterFirstReturn).toHaveBeenCalledWith(filterText);
+
+      const { waitFor } = require("@testing-library/react");
+      await waitFor(() => {
+        expect(input).toHaveValue(filterText);
+        expect(onFilter).toHaveBeenCalled();
+        expect(onFilterFirstReturn).toHaveBeenCalledWith(filterText);
+      });
     });
   });
 });

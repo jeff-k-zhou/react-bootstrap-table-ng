@@ -104,7 +104,10 @@ describe("Multi Select Filter", () => {
           getFilter={getFilter}
         />
       );
-      programmaticallyFilter(filterValue);
+      const { act } = require("@testing-library/react");
+      act(() => {
+        programmaticallyFilter(filterValue);
+      });
     });
 
     it("should do onFilter correctly when exported function was executed", () => {
@@ -180,14 +183,17 @@ describe("Multi Select Filter", () => {
           defaultValue={["1"]}
         />
       );
-      rerender(
-        <MultiSelectFilter
-          onFilter={onFilter}
-          column={column}
-          options={options}
-          defaultValue={[]}
-        />
-      );
+      const { act } = require("@testing-library/react");
+      act(() => {
+        rerender(
+          <MultiSelectFilter
+            onFilter={onFilter}
+            column={column}
+            options={options}
+            defaultValue={[]}
+          />
+        );
+      });
       expect(onFilter).toHaveBeenCalled();
       expect(onFilterFirstReturn).toHaveBeenCalled();
     });
@@ -200,13 +206,16 @@ describe("Multi Select Filter", () => {
           options={options}
         />
       );
-      rerender(
-        <MultiSelectFilter
-          onFilter={onFilter}
-          column={column}
-          options={{ ...options, 3: "Best" }}
-        />
-      );
+      const { act } = require("@testing-library/react");
+      act(() => {
+        rerender(
+          <MultiSelectFilter
+            onFilter={onFilter}
+            column={column}
+            options={{ ...options, 3: "Best" }}
+          />
+        );
+      });
       expect(onFilter).toHaveBeenCalled();
       expect(onFilterFirstReturn).toHaveBeenCalled();
     });
@@ -225,7 +234,10 @@ describe("Multi Select Filter", () => {
           ref={(ref: any) => (filterRef = ref)}
         />
       );
-      filterRef.cleanFiltered();
+      const { act } = require("@testing-library/react");
+      act(() => {
+        filterRef.cleanFiltered();
+      });
       expect(onFilter).toHaveBeenCalled();
       expect(onFilterFirstReturn).toHaveBeenCalled();
     });
@@ -240,7 +252,10 @@ describe("Multi Select Filter", () => {
           ref={(ref: any) => (filterRef = ref)}
         />
       );
-      filterRef.cleanFiltered();
+      const { act } = require("@testing-library/react");
+      act(() => {
+        filterRef.cleanFiltered();
+      });
       expect(onFilter).toHaveBeenCalled();
       expect(onFilterFirstReturn).toHaveBeenCalled();
     });
@@ -258,7 +273,10 @@ describe("Multi Select Filter", () => {
           ref={(ref: any) => (filterRef = ref)}
         />
       );
-      filterRef.applyFilter(values);
+      const { act } = require("@testing-library/react");
+      act(() => {
+        filterRef.applyFilter(values);
+      });
       expect(onFilter).toHaveBeenCalled();
       expect(onFilterFirstReturn).toHaveBeenCalledWith(values);
     });
@@ -274,11 +292,12 @@ describe("Multi Select Filter", () => {
         />
       );
       const select = screen.getByRole("listbox");
+      const value = ["0"];
       fireEvent.change(select, {
-        target: { selectedOptions: [{ value: "tester" }] },
+        target: { value: ["0"] },
       });
       expect(onFilter).toHaveBeenCalled();
-      expect(onFilterFirstReturn).toHaveBeenCalled();
+      expect(onFilterFirstReturn).toHaveBeenCalledWith(value);
     });
   });
 });

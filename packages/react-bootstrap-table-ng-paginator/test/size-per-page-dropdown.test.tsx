@@ -49,7 +49,10 @@ describe("SizePerPageDropDown", () => {
       const items = screen.getAllByRole("menuitem");
       expect(items.length).toBe(options.length);
       options.forEach((option) => {
-        expect(screen.getByText(option.text)).toBeInTheDocument();
+        const matchingItems = screen.getAllByText(option.text);
+        // At least one of them should be in the menu
+        const itemInMenu = matchingItems.find(el => el.closest('[role="menu"]'));
+        expect(itemInMenu).toBeInTheDocument();
       });
     });
 
@@ -80,7 +83,9 @@ describe("SizePerPageDropDown", () => {
       const items = screen.getAllByRole("menuitem");
       expect(items.length).toBe(options.length);
       options.forEach((option) => {
-        expect(screen.getByText(option.text)).toBeInTheDocument();
+        const matchingItems = screen.getAllByText(option.text);
+        const itemInMenu = matchingItems.find(el => el.closest('[role="menu"]'));
+        expect(itemInMenu).toBeInTheDocument();
       });
     });
 

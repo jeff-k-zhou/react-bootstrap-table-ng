@@ -1,5 +1,5 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import { render, act } from "@testing-library/react";
 import BootstrapTable from "../../react-bootstrap-table-ng/src/bootstrap-table";
 import _ from "../../react-bootstrap-table-ng/src/utils";
 import { FILTER_TYPES, textFilter } from "..";
@@ -95,7 +95,9 @@ describe("FilterContext", () => {
       const filterProps = mockBase.mock.calls[0][0];
       const filterVals = ["", undefined, []];
       filterVals.forEach((filterVal) => {
-        filterProps.onFilter(columns[1], FILTER_TYPES.TEXT)(filterVal);
+        act(() => {
+          filterProps.onFilter(columns[1], FILTER_TYPES.TEXT)(filterVal);
+        });
         expect(Object.keys(filterProps.currFilters)).toHaveLength(0);
       });
     });
@@ -103,22 +105,38 @@ describe("FilterContext", () => {
     it("should update currFilters correctly for existing filterVal", () => {
       renderContext();
       const filterProps = mockBase.mock.calls[0][0];
-      filterProps.onFilter(columns[1], FILTER_TYPES.TEXT)("3");
-      expect(Object.keys(filterProps.currFilters)).toHaveLength(1);
+      act(() => {
+        filterProps.onFilter(columns[1], FILTER_TYPES.TEXT)("3");
+      });
+      // After onFilter, forceUpdate is called, so mockBase is called again with updated props
+      const updatedFilterProps = mockBase.mock.calls[1][0];
+      expect(Object.keys(updatedFilterProps.currFilters)).toHaveLength(1);
     });
 
     it("should call handleFilterChange when remote filter is enabled", () => {
       renderContext(true);
       const filterProps = mockBase.mock.calls[0][0];
-      filterProps.onFilter(columns[1], FILTER_TYPES.TEXT)("3");
+      act(() => {
+        filterProps.onFilter(columns[1], FILTER_TYPES.TEXT)("3");
+      });
       expect(handleFilterChange).toHaveBeenCalledTimes(1);
-      expect(handleFilterChange).toHaveBeenCalledWith(filterProps.currFilters);
+      // Check what was actually passed to handleFilterChange, not the stale filterProps
+      expect(handleFilterChange).toHaveBeenCalledWith(
+        expect.objectContaining({
+          name: expect.objectContaining({
+            filterVal: "3",
+            filterType: "TEXT",
+          }),
+        })
+      );
     });
 
     it("should not call handleFilterChange when remote filter is enabled but initialize argument is true", () => {
       renderContext(true);
       const filterProps = mockBase.mock.calls[0][0];
-      filterProps.onFilter(columns[1], FILTER_TYPES.TEXT, true)("3");
+      act(() => {
+        filterProps.onFilter(columns[1], FILTER_TYPES.TEXT, true)("3");
+      });
       expect(handleFilterChange).not.toHaveBeenCalled();
     });
 
@@ -131,7 +149,9 @@ describe("FilterContext", () => {
       );
       renderContext(false, customColumns);
       const filterProps = mockBase.mock.calls[0][0];
-      filterProps.onFilter(customColumns[1], FILTER_TYPES.TEXT)(filterVal);
+      act(() => {
+        filterProps.onFilter(customColumns[1], FILTER_TYPES.TEXT)(filterVal);
+      });
       expect(onFilterFn).toHaveBeenCalledTimes(1);
       expect(onFilterFn).toHaveBeenCalledWith(filterVal, data);
     });
@@ -141,7 +161,9 @@ describe("FilterContext", () => {
       const dataChangeListener = { emit: jest.fn() };
       renderContext(false, columns, dataChangeListener);
       const filterProps = mockBase.mock.calls[0][0];
-      filterProps.onFilter(columns[1], FILTER_TYPES.TEXT)(filterVal);
+      act(() => {
+        filterProps.onFilter(columns[1], FILTER_TYPES.TEXT)(filterVal);
+      });
       expect(dataChangeListener.emit).toHaveBeenCalledWith(
         "filterChanged",
         0
@@ -150,20 +172,26 @@ describe("FilterContext", () => {
 
     it("should set correct currFilters in combination", () => {
       renderContext();
-      const filterProps = mockBase.mock.calls[0][0];
-      filterProps.onFilter(columns[0], FILTER_TYPES.TEXT)("3");
+      let filterProps = mockBase.mock.calls[0][0];
+
+      act(() => { filterProps.onFilter(columns[0], FILTER_TYPES.TEXT)("3"); });
+      filterProps = mockBase.mock.calls[mockBase.mock.calls.length - 1][0];
       expect(Object.keys(filterProps.currFilters)).toHaveLength(1);
 
-      filterProps.onFilter(columns[0], FILTER_TYPES.TEXT)("2");
+      act(() => { filterProps.onFilter(columns[0], FILTER_TYPES.TEXT)("2"); });
+      filterProps = mockBase.mock.calls[mockBase.mock.calls.length - 1][0];
       expect(Object.keys(filterProps.currFilters)).toHaveLength(1);
 
-      filterProps.onFilter(columns[1], FILTER_TYPES.TEXT)("2");
+      act(() => { filterProps.onFilter(columns[1], FILTER_TYPES.TEXT)("2"); });
+      filterProps = mockBase.mock.calls[mockBase.mock.calls.length - 1][0];
       expect(Object.keys(filterProps.currFilters)).toHaveLength(2);
 
-      filterProps.onFilter(columns[1], FILTER_TYPES.TEXT)("");
+      act(() => { filterProps.onFilter(columns[1], FILTER_TYPES.TEXT)(""); });
+      filterProps = mockBase.mock.calls[mockBase.mock.calls.length - 1][0];
       expect(Object.keys(filterProps.currFilters)).toHaveLength(1);
 
-      filterProps.onFilter(columns[0], FILTER_TYPES.TEXT)("");
+      act(() => { filterProps.onFilter(columns[0], FILTER_TYPES.TEXT)(""); });
+      filterProps = mockBase.mock.calls[mockBase.mock.calls.length - 1][0];
       expect(Object.keys(filterProps.currFilters)).toHaveLength(0);
     });
   });

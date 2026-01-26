@@ -43,7 +43,7 @@ export default class ExpandCell extends Component<ExpandCellProps> {
     if (tabIndex !== undefined && tabIndex !== -1) attrs.tabIndex = tabIndex;
 
     return (
-      <td className="expand-cell" onClick={ this.handleClick } { ...attrs }>
+      <td className="expand-cell" onClick={this.handleClick} data-testid="expand-cell" {...attrs}>
         {expandColumnRenderer
           ? expandColumnRenderer({
             expandable,

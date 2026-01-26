@@ -2,7 +2,7 @@ import { render } from "@testing-library/react";
 import React from "react";
 
 import BootstrapTable from "../../src/bootstrap-table";
-import createSelectionContext from "../../src/contexts/selection-context";
+import { createSelectionContext } from "../../src/contexts/selection-context";
 import dataOperator from "../../src/store/operators";
 
 describe("SelectionContext", () => {

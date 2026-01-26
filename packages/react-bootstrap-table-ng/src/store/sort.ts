@@ -1,7 +1,7 @@
 /* eslint no-nested-ternary: 0 */
 /* eslint no-lonely-if: 0 */
 /* eslint no-underscore-dangle: 0 */
-import { SORT_ASC, SORT_DESC } from "../..";
+import { SORT_ASC, SORT_DESC } from "../const";
 import _ from "../utils";
 
 function comparator(a: any, b: any) {

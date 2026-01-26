@@ -6,7 +6,7 @@ import { stub } from "sinon";
 import { ROW_SELECT_DISABLED } from "..";
 import Body from "../src/body";
 import createExpansionContext from "../src/contexts/row-expand-context";
-import createSelectionContext from "../src/contexts/selection-context";
+import { createSelectionContext } from "../src/contexts/selection-context";
 import mockBodyResolvedProps from "./test-helpers/mock/body-resolved-props";
 
 describe("Body", () => {

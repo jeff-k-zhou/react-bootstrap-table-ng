@@ -6,7 +6,7 @@ import {
   CHECKBOX_STATUS_INDETERMINATE,
   CHECKBOX_STATUS_UNCHECKED,
   ROW_SELECT_SINGLE,
-} from "../..";
+} from "../const";
 import dataOperator from "../store/operators";
 import { getSelectionSummary } from "../store/selection";
 
@@ -35,6 +35,14 @@ export interface SelectionContextValue {
   onSelectAll?: (checked: boolean, selectedRows: any[], e: any) => void | any[];
   nonSelectable?: any[];
   hideSelectAll?: boolean;
+  selectionHeaderRenderer?: (args: {
+    mode?: string;
+    checked: boolean;
+    indeterminate: boolean;
+  }) => React.ReactNode;
+  headerColumnStyle?:
+  | React.CSSProperties
+  | ((checkedStatus: string) => React.CSSProperties);
 }
 
 interface SelectionProviderProps {
@@ -59,6 +67,15 @@ interface SelectionProviderProps {
       e: any
     ) => void | any[];
     nonSelectable?: any[];
+    hideSelectAll?: boolean;
+    selectionHeaderRenderer?: (args: {
+      mode?: string;
+      checked: boolean;
+      indeterminate: boolean;
+    }) => React.ReactNode;
+    headerColumnStyle?:
+    | React.CSSProperties
+    | ((checkedStatus: string) => React.CSSProperties);
   };
 }
 
@@ -204,7 +221,7 @@ class SelectionProvider extends Component<SelectionProviderProps> {
   }
 }
 
-export default () => ({
+export const createSelectionContext = () => ({
   Provider: SelectionProvider,
   Consumer: SelectionContext.Consumer,
 });

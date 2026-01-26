@@ -26,7 +26,7 @@ describe("Row", () => {
       const cell = screen.getByRole("cell");
       expect(cell).toBeInTheDocument();
       expect(cell).toHaveAttribute("colspan", colSpan.toString());
-      expect(cell.querySelector(".react-bs-table-no-data")).toBeInTheDocument();
+      expect(cell).toHaveClass("react-bs-table-no-data");
     });
   });
 });

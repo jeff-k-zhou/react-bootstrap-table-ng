@@ -1,6 +1,6 @@
 import React, { Component, MouseEvent } from "react";
 
-import eventDelegater from "./cell-event-delegater";
+import { CellEventDelegater as eventDelegater } from "./cell-event-delegater";
 import _ from "./utils";
 
 interface CellProps {

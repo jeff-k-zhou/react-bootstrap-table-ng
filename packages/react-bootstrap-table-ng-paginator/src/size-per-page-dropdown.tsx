@@ -17,7 +17,7 @@ const sizePerPageDropDownDefaultProps = {
 };
 
 const SizePerPageDropDown = (props: any) => {
-  const { 
+  const {
     open,
     tableId,
     hidden,
@@ -47,6 +47,7 @@ const SizePerPageDropDown = (props: any) => {
     <span
       style={{ visibility: hidden ? "hidden" : "visible" }}
       className={dropdownClasses}
+      data-testid="size-per-page-dropdown"
     >
       <button
         id={id}

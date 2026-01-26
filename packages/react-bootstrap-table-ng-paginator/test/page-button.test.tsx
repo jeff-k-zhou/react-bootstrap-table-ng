@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, createEvent } from "@testing-library/react";
 import PageButton from "../src/page-button";
 
 describe("PageButton", () => {
@@ -28,9 +28,9 @@ describe("PageButton", () => {
     describe("when clicking", () => {
       it("should call preventDefault and onPageChange prop with correct argument", () => {
         const link = screen.getByRole("link");
-        const preventDefault = jest.fn();
-        fireEvent.click(link, { preventDefault });
-        expect(preventDefault).toHaveBeenCalled();
+        const event = createEvent.click(link);
+        fireEvent(link, event);
+        expect(event.defaultPrevented).toBe(true);
         expect(onPageChangeCallback).toHaveBeenCalledTimes(1);
         expect(onPageChangeCallback).toHaveBeenCalledWith(props.page);
       });
@@ -89,7 +89,7 @@ describe("PageButton", () => {
 
     it("should render PageButton with correct title", () => {
       const link = screen.getByRole("link");
-      expect(link).toHaveAttribute("title", title);
+      expect(link.parentElement).toHaveAttribute("title", title);
     });
   });
 });

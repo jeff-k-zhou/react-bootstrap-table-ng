@@ -3,9 +3,12 @@ import React from "react";
 
 import {
   BootstrapTableProps,
+} from "./types";
+
+import {
   FILTERS_POSITION_INLINE,
   ROW_SELECT_DISABLED,
-} from "..";
+} from "./const";
 import Body from "./body";
 import Caption from "./caption";
 import Filters from "./filters";
