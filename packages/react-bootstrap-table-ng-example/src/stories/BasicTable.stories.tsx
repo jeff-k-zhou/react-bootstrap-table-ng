@@ -9,7 +9,7 @@ import bootstrapStyle from './bootstrap-style';
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta = {
   title: 'Basic Table',
-  component: BootstrapTable,
+  component: BootstrapTable as any,
   parameters: {
     // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/react/configure/story-layout
     layout: 'centered',
@@ -203,7 +203,7 @@ const expandRow = {
   showExpandColumn: true,
   renderer: (row: any) => (
     <div>
-      <p>{ `This Expand row is belong to rowKey ${row.id}` }</p>
+      <p>{`This Expand row is belong to rowKey ${row.id}`}</p>
       <p>You can render anything here, also you can add additional data on every row object</p>
       <p>expandRow.renderer callback will pass the origin row object to you</p>
     </div>

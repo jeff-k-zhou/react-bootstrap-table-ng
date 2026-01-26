@@ -11,7 +11,7 @@ import bootstrapStyle from './bootstrap-style';
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta = {
   title: 'Cell Editing',
-  component: BootstrapTable,
+  component: BootstrapTable as any,
   parameters: {
     // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/react/configure/story-layout
     layout: 'centered',
@@ -25,7 +25,7 @@ const meta = {
     sourceCode: { control: 'text', description: 'source code of the table' },
     sort: { control: 'text', description: 'sort' },
     cellEdit: { control: 'object', description: 'cell edit object' },
-    selectRow: { control: 'array', description: 'row list' },
+    selectRow: { control: 'object', description: 'row list' },
   },
   decorators: [
     (Story: any) => bootstrapStyle()(Story),
@@ -366,7 +366,7 @@ export const Validation: Story = {
     }, {
       dataField: 'price',
       text: 'Product Price',
-      validator: (newValue, row, column) => {
+      validator: (newValue: any, row: any, column: any) => {
         if (isNaN(newValue)) {
           return {
             valid: false,
@@ -916,7 +916,7 @@ export const DropdownEditorWithDynamicOptions: Story = {
       text: 'Job Type1',
       editor: {
         type: Type.SELECT,
-        getOptions: (setOptions: any, { row, column }) => {
+        getOptions: (setOptions: any, { row, column }: any) => {
           console.log(`current editing row id: ${row.id}`);
           console.log(`current editing column: ${column.dataField}`);
           return [{
@@ -1157,7 +1157,7 @@ export const DateEditor: Story = {
     }, {
       dataField: 'inStockDate',
       text: 'Stock Date',
-      formatter: (cell) => {
+      formatter: (cell: any) => {
         let dateObj = cell;
         if (typeof cell !== 'object') {
           dateObj = new Date(cell);
@@ -1211,7 +1211,7 @@ interface QualityRangerProps {
   onUpdate: (value: number) => void;
 }
 
-interface QualityRangerState {}
+interface QualityRangerState { }
 
 class QualityRanger extends React.Component<QualityRangerProps, QualityRangerState> {
   range: HTMLInputElement | null = null;
@@ -1273,7 +1273,7 @@ export const CustomEditor: Story = {
       dataField: 'quality',
       text: 'Product Quality',
       editorRenderer: (editorProps: any, value: any, row: any, column: any, rowIndex: any, columnIndex: any) => (
-        <QualityRanger { ...editorProps } value={ value } />
+        <QualityRanger {...editorProps} value={value} />
       )
     }],
     data: productsQualityGenerator(),

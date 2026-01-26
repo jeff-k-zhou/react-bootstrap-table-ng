@@ -236,14 +236,14 @@ class NumberFilter extends Component<NumberFilterProps, NumberFilterState> {
       <div
         onClick={(e) => e.stopPropagation()}
         className={`filter number-filter ${className}`}
-        style={style}
+        style={style as any}
         data-testid="number-filter"
       >
         <label className="filter-label" htmlFor={comparatorElmId}>
           <span className="sr-only">Filter comparator</span>
           <select
             ref={(n) => (this.numberFilterComparator = n)}
-            style={comparatorStyle}
+            style={comparatorStyle as any}
             id={comparatorElmId}
             className={`number-filter-comparator form-control ${comparatorClassName}`}
             onChange={this.onChangeComparator}
@@ -259,7 +259,7 @@ class NumberFilter extends Component<NumberFilterProps, NumberFilterState> {
             <select
               ref={(n) => (this.numberFilter = n)}
               id={inputElmId}
-              style={numberStyle}
+              style={numberStyle as any}
               className={selectClass}
               onChange={this.onChangeNumberSet}
               defaultValue={this.getDefaultValue()}
@@ -275,7 +275,7 @@ class NumberFilter extends Component<NumberFilterProps, NumberFilterState> {
               ref={(n) => (this.numberFilter = n)}
               id={inputElmId}
               type="number"
-              style={numberStyle}
+              style={numberStyle as any}
               className={`number-filter-input form-control ${numberClassName}`}
               placeholder={placeholder || `Enter ${column.text}...`}
               onChange={this.onChangeNumber}

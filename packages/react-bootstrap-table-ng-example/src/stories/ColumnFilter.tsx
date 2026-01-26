@@ -11,6 +11,22 @@ import "../../../react-bootstrap-table-ng/style/react-bootstrap-table-ng.scss";
 import "./stylesheet/storybook.scss";
 import "./stylesheet/tomorrow.min.css";
 
+interface ColumnFilterProps {
+  mode?: any;
+  data?: any;
+  columns?: any;
+  columns1?: any;
+  columns2?: any;
+  columns3?: any;
+  sourceCode?: any;
+  sourceCode1?: any;
+  sourceCode2?: any;
+  filter?: any;
+  expandRow?: any;
+  selectRow?: any;
+  header?: any;
+}
+
 export default ({
   mode,
   data,
@@ -25,7 +41,7 @@ export default ({
   expandRow,
   selectRow,
   header,
-}) => {
+}: ColumnFilterProps) => {
   switch (mode) {
     case "options":
       return (

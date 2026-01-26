@@ -16,6 +16,16 @@ import "../../../react-bootstrap-table-ng/style/react-bootstrap-table-ng.scss";
 import "./stylesheet/storybook.scss";
 import "./stylesheet/tomorrow.min.css";
 
+interface Bootstrap4Props {
+  mode?: any;
+  data?: any;
+  columns?: any;
+  sourceCode?: any;
+  defaultSorted?: any;
+  selectRow?: any;
+  pagination?: any;
+}
+
 export default ({
   mode,
   data,
@@ -24,7 +34,7 @@ export default ({
   defaultSorted,
   selectRow,
   pagination,
-}) => {
+}: Bootstrap4Props) => {
   switch (mode) {
     case "caption":
       const Caption = () => (
@@ -69,7 +79,7 @@ export default ({
             columns={columns}
             columnToggle
           >
-            {(props) => (
+            {(props: any) => (
               <div>
                 <ToggleList {...props.columnToggleProps} />
                 <hr />
@@ -86,7 +96,7 @@ export default ({
       return (
         <div>
           <ToolkitProvider keyField="id" data={data} columns={columns} search>
-            {(props) => (
+            {(props: any) => (
               <div>
                 <h3>Input something at below input field:</h3>
                 <SearchBar {...props.searchProps} />

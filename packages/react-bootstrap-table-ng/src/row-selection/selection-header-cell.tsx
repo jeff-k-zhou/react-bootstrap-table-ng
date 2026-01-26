@@ -95,9 +95,9 @@ export default class SelectionHeaderCell extends Component<SelectionHeaderCellPr
       attrs.onClick = this.handleCheckBoxClick;
     }
 
-    attrs.style = _.isFunction(headerColumnStyle)
+    attrs.style = (_.isFunction(headerColumnStyle)
       ? headerColumnStyle(checkedStatus!)
-      : headerColumnStyle;
+      : headerColumnStyle) as any;
 
     return (
       <BootstrapContext.Consumer>
@@ -119,7 +119,7 @@ export default class SelectionHeaderCell extends Component<SelectionHeaderCellPr
             );
           }
           return (
-            <th className="selection-cell-header" data-row-selection {...attrs}>
+            <th className="selection-cell-header" data-row-selection {...attrs as any}>
               {content}
             </th>
           );

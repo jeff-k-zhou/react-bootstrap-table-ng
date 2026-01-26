@@ -17,7 +17,19 @@ import "./stylesheet/tomorrow.min.css";
 
 const { ToggleList } = ColumnToggle;
 
-export default ({ mode, data, columns, sourceCode }) => {
+interface ColumnToggleProps {
+  mode?: any;
+  data?: any;
+  columns?: any;
+  sourceCode?: any;
+}
+
+export default ({
+  mode,
+  data,
+  columns,
+  sourceCode,
+}: ColumnToggleProps) => {
   switch (mode) {
     case "filter":
       return (
@@ -41,7 +53,7 @@ export default ({ mode, data, columns, sourceCode }) => {
         </div>
       );
     case "custom":
-      const CustomToggleList = ({ columns, onColumnToggle, toggles }) => (
+      const CustomToggleList = ({ columns, onColumnToggle, toggles }: any) => (
         <div
           className="btn-group btn-group-toggle btn-group-vertical"
           data-toggle="buttons"
@@ -51,7 +63,7 @@ export default ({ mode, data, columns, sourceCode }) => {
               ...column,
               toggle: toggles[column.dataField],
             }))
-            .map((column) => (
+            .map((column: any) => (
               <button
                 type="button"
                 key={column.dataField}

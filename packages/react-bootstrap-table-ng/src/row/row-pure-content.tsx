@@ -82,7 +82,7 @@ export default class RowPureContent extends Component<RowPureContentProps> {
         cellStyle = _.isFunction(column.style)
           ? column.style(content, row, rowIndex, index)
           : column.style;
-        cellStyle = { ...cellStyle } || {};
+        cellStyle = { ...cellStyle };
       }
 
       if (column.title) {

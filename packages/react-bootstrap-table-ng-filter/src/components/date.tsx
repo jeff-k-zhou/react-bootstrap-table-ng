@@ -163,7 +163,7 @@ class DateFilter extends Component<DateFilterProps> {
       <div
         onClick={(e) => e.stopPropagation()}
         className={`filter date-filter ${className}`}
-        style={style}
+        style={style as any}
         data-testid="date-filter"
       >
         <label className="filter-label" htmlFor={comparatorElmId}>
@@ -171,7 +171,7 @@ class DateFilter extends Component<DateFilterProps> {
           <select
             ref={(n) => (this.dateFilterComparator = n)}
             id={comparatorElmId}
-            style={comparatorStyle}
+            style={comparatorStyle as any}
             className={`date-filter-comparator form-control ${comparatorClassName}`}
             onChange={this.onChangeComparator}
             defaultValue={this.getDefaultComparator()}
@@ -186,7 +186,7 @@ class DateFilter extends Component<DateFilterProps> {
             ref={(n) => (this.inputDate = n)}
             id={inputElmId}
             className={`filter date-filter-input form-control ${dateClassName}`}
-            style={dateStyle}
+            style={dateStyle as any}
             type="date"
             onChange={this.onChangeDate}
             placeholder={placeholder || `Enter ${text}...`}

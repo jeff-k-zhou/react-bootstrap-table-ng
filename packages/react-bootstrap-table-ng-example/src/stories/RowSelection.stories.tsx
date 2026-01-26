@@ -10,7 +10,7 @@ import bootstrapStyle from './bootstrap-style';
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta = {
   title: 'Row Selection',
-  component: BootstrapTable,
+  component: BootstrapTable as any,
   parameters: {
     // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/react/configure/story-layout
     layout: 'centered',
@@ -24,9 +24,9 @@ const meta = {
     sourceCode: { control: 'text', description: 'source code of the table' },
     sourceCode1: { control: 'text', description: 'source code of the table' },
     sourceCode2: { control: 'text', description: 'source code of the table' },
-    selectRow: { control: 'array', description: 'row list' },
-    selectRow1: { control: 'array', description: 'row list' },
-    selectRow2: { control: 'array', description: 'row list' },
+    selectRow: { control: 'object', description: 'row list' },
+    selectRow1: { control: 'object', description: 'row list' },
+    selectRow2: { control: 'object', description: 'row list' },
     cellEdit: { control: 'object', description: 'cell edit object' },
     noDataIndication: { control: 'text', description: 'no data indication' },
   },
@@ -364,7 +364,7 @@ export const RowSelectAndExpand: Story = {
       showExpandColumn: true,
       renderer: (row: any) => (
         <div>
-          <p>{ `This Expand row is belong to rowKey ${row.id}` }</p>
+          <p>{`This Expand row is belong to rowKey ${row.id}`}</p>
           <p>You can render anything here, also you can add additional data on every row object</p>
           <p>expandRow.renderer callback will pass the origin row object to you</p>
         </div>
@@ -706,7 +706,7 @@ export const CustomSelection: Story = {
       mode: 'radio',
       clickToSelect: true,
       selectionHeaderRenderer: () => 'X',
-      selectionRenderer: ({ mode, ...rest }) => (
+      selectionRenderer: ({ mode, ...rest }: any) => (
         <input type={ mode } { ...rest } />
       )
     };
@@ -726,7 +726,7 @@ export const CustomSelection: Story = {
     const selectRow = {
       mode: 'checkbox',
       clickToSelect: true,
-      selectionHeaderRenderer: ({ indeterminate, ...rest }) => (
+      selectionHeaderRenderer: ({ indeterminate, ...rest }: any) => (
         <input
           type="checkbox"
           ref={ (input) => {
@@ -735,7 +735,7 @@ export const CustomSelection: Story = {
           { ...rest }
         />
       ),
-      selectionRenderer: ({ mode, ...rest }) => (
+      selectionRenderer: ({ mode, ...rest }: any) => (
         <input type={ mode } { ...rest } />
       )
     };
@@ -751,25 +751,25 @@ export const CustomSelection: Story = {
       mode: 'radio',
       clickToSelect: true,
       selectionHeaderRenderer: () => 'X',
-      selectionRenderer: ({ mode, ...rest }) => (
-        <input type={ mode } onChange={() => {}} { ...rest } />
+      selectionRenderer: ({ mode, ...rest }: any) => (
+        <input type={mode} onChange={() => { }} {...rest} />
       )
     },
     selectRow2: {
       mode: 'checkbox',
       clickToSelect: true,
-      selectionHeaderRenderer: ({ indeterminate, ...rest }) => (
+      selectionHeaderRenderer: ({ indeterminate, ...rest }: any) => (
         <input
           type="checkbox"
-          ref={ (input) => {
+          ref={(input) => {
             if (input) input.indeterminate = indeterminate;
-          } }
-          onChange={() => {}}
-          { ...rest }
+          }}
+          onChange={() => { }}
+          {...rest}
         />
       ),
-      selectionRenderer: ({ mode, ...rest }) => (
-        <input type={ mode } onChange={() => {}} { ...rest } />
+      selectionRenderer: ({ mode, ...rest }: any) => (
+        <input type={mode} onChange={() => { }} {...rest} />
       )
     }
   }
@@ -1145,7 +1145,7 @@ export const CustomSelectionColumnStyle: Story = {
         disabled,
         rowIndex,
         rowKey
-      }) => {
+      }: any) => {
         if (checked) {
           return {
             backgroundColor: 'yellow'

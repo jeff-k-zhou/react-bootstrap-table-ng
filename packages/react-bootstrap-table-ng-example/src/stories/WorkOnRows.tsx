@@ -11,6 +11,21 @@ import "../../../react-bootstrap-table-ng/style/react-bootstrap-table-ng.scss";
 import "./stylesheet/storybook.scss";
 import "./stylesheet/tomorrow.min.css";
 
+interface WorkOnRowsProps {
+  mode?: string;
+  data: any[];
+  columns: any[];
+  sourceCode?: string;
+  sourceCode1?: string;
+  sourceCode2?: string;
+  rowStyle1?: any;
+  rowStyle2?: any;
+  rowClasses1?: any;
+  rowClasses2?: any;
+  hiddenRows?: any[];
+  rowEvents?: any;
+}
+
 export default ({
   mode,
   data,
@@ -24,7 +39,7 @@ export default ({
   rowClasses2,
   hiddenRows,
   rowEvents,
-}) => {
+}: WorkOnRowsProps) => {
   switch (mode) {
     case "customize":
       return (

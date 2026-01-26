@@ -18,6 +18,30 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "paths": {
+      "react-bootstrap-table-ng": [
+        "../react-bootstrap-table-ng/index.ts"
+      ],
+      "react-bootstrap-table-ng-editor": [
+        "../react-bootstrap-table-ng-editor/index.ts"
+      ],
+      "react-bootstrap-table-ng-filter": [
+        "../react-bootstrap-table-ng-filter/index.ts"
+      ],
+      "react-bootstrap-table-ng-overlay": [
+        "../react-bootstrap-table-ng-overlay/index.ts"
+      ],
+      "react-bootstrap-table-ng-paginator": [
+        "../react-bootstrap-table-ng-paginator/index.ts"
+      ],
+      "react-bootstrap-table-ng-toolkit": [
+        "../react-bootstrap-table-ng-toolkit/index.ts"
+      ],
+      "file-saver": [
+        "node_modules/file-saver"
+      ]
+    }
   },
 }

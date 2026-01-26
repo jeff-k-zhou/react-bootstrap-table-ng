@@ -28,12 +28,14 @@ describe("Body", () => {
   describe("simplest body", () => {
     it("should render successfully", () => {
       render(
-        <Body
-          {...mockBodyResolvedProps}
-          keyField="id"
-          columns={columns}
-          data={data}
-        />
+        <table>
+          <Body
+            {...mockBodyResolvedProps}
+            keyField="id"
+            columns={columns}
+            data={data}
+          />
+        </table>
       );
       expect(screen.getByRole("rowgroup")).toBeInTheDocument();
       expect(screen.getAllByRole("row")).toHaveLength(data.length);
@@ -43,14 +45,16 @@ describe("Body", () => {
   describe("when data is empty", () => {
     it("should not render any rows", () => {
       render(
-        <Body
-          {...mockBodyResolvedProps}
-          keyField="id"
-          columns={columns}
-          data={data}
-          visibleColumnSize={columns.length}
-          isEmpty
-        />
+        <table>
+          <Body
+            {...mockBodyResolvedProps}
+            keyField="id"
+            columns={columns}
+            data={data}
+            visibleColumnSize={columns.length}
+            isEmpty
+          />
+        </table>
       );
       expect(screen.queryByRole("row")).not.toBeInTheDocument();
     });
@@ -59,15 +63,17 @@ describe("Body", () => {
       it("should render noDataIndication string", () => {
         const emptyIndication = "Table is empty";
         render(
-          <Body
-            {...mockBodyResolvedProps}
-            keyField="id"
-            columns={columns}
-            data={data}
-            visibleColumnSize={columns.length}
-            noDataIndication={emptyIndication}
-            isEmpty
-          />
+          <table>
+            <Body
+              {...mockBodyResolvedProps}
+              keyField="id"
+              columns={columns}
+              data={data}
+              visibleColumnSize={columns.length}
+              noDataIndication={emptyIndication}
+              isEmpty
+            />
+          </table>
         );
         expect(screen.getByText(emptyIndication)).toBeInTheDocument();
       });
@@ -76,15 +82,17 @@ describe("Body", () => {
         const content = "Table is empty";
         const emptyIndicationCallBack = stub().returns(content);
         render(
-          <Body
-            {...mockBodyResolvedProps}
-            keyField="id"
-            columns={columns}
-            data={data}
-            visibleColumnSize={columns.length}
-            noDataIndication={emptyIndicationCallBack}
-            isEmpty
-          />
+          <table>
+            <Body
+              {...mockBodyResolvedProps}
+              keyField="id"
+              columns={columns}
+              data={data}
+              visibleColumnSize={columns.length}
+              noDataIndication={emptyIndicationCallBack}
+              isEmpty
+            />
+          </table>
         );
         expect(screen.getByText(content)).toBeInTheDocument();
         expect(emptyIndicationCallBack.callCount).toBe(1);
@@ -97,13 +105,15 @@ describe("Body", () => {
 
     it("should render rows with correct style (object)", () => {
       render(
-        <Body
-          {...mockBodyResolvedProps}
-          keyField="id"
-          columns={columns}
-          data={data}
-          rowStyle={rowStyle}
-        />
+        <table>
+          <Body
+            {...mockBodyResolvedProps}
+            keyField="id"
+            columns={columns}
+            data={data}
+            rowStyle={rowStyle}
+          />
+        </table>
       );
       const rows = screen.getAllByRole("row");
       rows.forEach((row) => {
@@ -114,13 +124,15 @@ describe("Body", () => {
     it("should call rowStyle callback correctly", () => {
       const rowStyleCallBack = stub().returns(rowStyle);
       render(
-        <Body
-          {...mockBodyResolvedProps}
-          keyField="id"
-          columns={columns}
-          data={data}
-          rowStyle={rowStyleCallBack}
-        />
+        <table>
+          <Body
+            {...mockBodyResolvedProps}
+            keyField="id"
+            columns={columns}
+            data={data}
+            rowStyle={rowStyleCallBack}
+          />
+        </table>
       );
       expect(rowStyleCallBack.callCount).toBe(data.length);
       expect(rowStyleCallBack.firstCall.calledWith(data[0], 0)).toBeTruthy();
@@ -133,13 +145,15 @@ describe("Body", () => {
 
     it("should render rows with correct className (string)", () => {
       render(
-        <Body
-          {...mockBodyResolvedProps}
-          keyField="id"
-          columns={columns}
-          data={data}
-          rowClasses={rowClasses}
-        />
+        <table>
+          <Body
+            {...mockBodyResolvedProps}
+            keyField="id"
+            columns={columns}
+            data={data}
+            rowClasses={rowClasses}
+          />
+        </table>
       );
       const rows = screen.getAllByRole("row");
       rows.forEach((row) => {
@@ -150,13 +164,15 @@ describe("Body", () => {
     it("should call rowClasses callback correctly", () => {
       const rowClassesCallBack = stub().returns(rowClasses);
       render(
-        <Body
-          {...mockBodyResolvedProps}
-          keyField="id"
-          columns={columns}
-          data={data}
-          rowClasses={rowClassesCallBack}
-        />
+        <table>
+          <Body
+            {...mockBodyResolvedProps}
+            keyField="id"
+            columns={columns}
+            data={data}
+            rowClasses={rowClassesCallBack}
+          />
+        </table>
       );
       expect(rowClassesCallBack.callCount).toBe(data.length);
       expect(rowClassesCallBack.firstCall.calledWith(data[0], 0)).toBeTruthy();
@@ -168,13 +184,15 @@ describe("Body", () => {
     it("should call rowEvents on click", async () => {
       const rowEvents = { onClick: stub() };
       render(
-        <Body
-          {...mockBodyResolvedProps}
-          keyField="id"
-          columns={columns}
-          data={data}
-          rowEvents={rowEvents}
-        />
+        <table>
+          <Body
+            {...mockBodyResolvedProps}
+            keyField="id"
+            columns={columns}
+            data={data}
+            rowEvents={rowEvents}
+          />
+        </table>
       );
       const rows = screen.getAllByRole("row");
       await userEvent.click(rows[0]);
@@ -184,7 +202,27 @@ describe("Body", () => {
 
   describe("when cellEdit.createContext props is defined", () => {
     const EditingCellComponent = () => null;
-    const RowComponent = (props: any) => <tr {...props} />;
+    const RowComponent = ({
+      row,
+      rowIndex,
+      columns,
+      keyField,
+      cellEdit,
+      value,
+      visibleColumnSize,
+      tabIndexCell,
+      editingRowIdx,
+      editingColIdx,
+      isEditable,
+      atstart,
+      clickToEdit,
+      dbclickToEdit,
+      EditingCellComponent,
+      selectRow,
+      expandRow,
+      attrs,
+      ...props
+    }: any) => <tr {...props} />;
     const cellEdit = {
       options: { onStartEdit: jest.fn() },
       createContext: jest.fn(),
@@ -194,13 +232,15 @@ describe("Body", () => {
 
     it("should call cellEdit methods", () => {
       render(
-        <Body
-          {...mockBodyResolvedProps}
-          data={data}
-          columns={columns}
-          keyField={keyField}
-          cellEdit={cellEdit}
-        />
+        <table>
+          <Body
+            {...mockBodyResolvedProps}
+            data={data}
+            columns={columns}
+            keyField={keyField}
+            cellEdit={cellEdit}
+          />
+        </table>
       );
       expect(cellEdit.createEditingCell).toHaveBeenCalledTimes(1);
       expect(cellEdit.withRowLevelCellEdit).toHaveBeenCalledTimes(1);
@@ -210,12 +250,14 @@ describe("Body", () => {
   describe("when selectRow.mode is ROW_SELECT_DISABLED or expandRow.renderer is undefined", () => {
     it("should not render RowAggregator", () => {
       render(
-        <Body
-          {...mockBodyResolvedProps}
-          data={data}
-          columns={columns}
-          keyField={keyField}
-        />
+        <table>
+          <Body
+            {...mockBodyResolvedProps}
+            data={data}
+            columns={columns}
+            keyField={keyField}
+          />
+        </table>
       );
       // RowAggregator is not rendered, so check for absence of its content
       expect(screen.queryByTestId("row-aggregator")).not.toBeInTheDocument();
@@ -232,13 +274,15 @@ describe("Body", () => {
           data={data}
           keyField={keyField}
         >
-          <Body
-            {...mockBodyResolvedProps}
-            data={data}
-            columns={columns}
-            keyField={keyField}
-            selectRow={selectRow}
-          />
+          <table>
+            <Body
+              {...mockBodyResolvedProps}
+              data={data}
+              columns={columns}
+              keyField={keyField}
+              selectRow={selectRow}
+            />
+          </table>
         </SelectionContext.Provider>
       );
       // You may need to add data-testid="row-aggregator" to RowAggregator for this to work
@@ -256,13 +300,15 @@ describe("Body", () => {
           keyField={keyField}
           expandRow={expandRow}
         >
-          <Body
-            {...mockBodyResolvedProps}
-            data={data}
-            columns={columns}
-            keyField={keyField}
-            expandRow={expandRow}
-          />
+          <table>
+            <Body
+              {...mockBodyResolvedProps}
+              data={data}
+              columns={columns}
+              keyField={keyField}
+              expandRow={expandRow}
+            />
+          </table>
         </ExpansionContext.Provider>
       );
       // You may need to add data-testid="row-aggregator" to RowAggregator for this to work

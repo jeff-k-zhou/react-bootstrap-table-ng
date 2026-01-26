@@ -3,6 +3,7 @@
   "version": "4.18.0",
   "description": "Next generation of react-bootstrap-table",
   "main": "./lib/index.js",
+  "types": "./index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jeff-k-zhou/react-bootstrap-table-ng.git"

@@ -84,19 +84,19 @@ export default class SelectionCell extends Component<SelectionCellProps> {
     const attrs: React.HTMLAttributes<HTMLTableCellElement> = {};
     if (tabIndex !== -1) attrs.tabIndex = tabIndex;
 
-    attrs.style = _.isFunction(selectColumnStyle)
+    attrs.style = (_.isFunction(selectColumnStyle)
       ? selectColumnStyle({
         checked: selected,
         disabled,
         rowindex: rowIndex,
         rowkey: rowKey,
       })
-      : selectColumnStyle;
+      : selectColumnStyle) as any;
 
     return (
       <BootstrapContext.Consumer>
         {({ bootstrap4 }) => (
-          <td className="selection-cell" onClick={this.handleClick} data-testid="selection-cell" {...attrs}>
+          <td className="selection-cell" onClick={this.handleClick} data-testid="selection-cell" {...attrs as any}>
             {selectionRenderer ? (
               selectionRenderer({
                 mode: inputType!,

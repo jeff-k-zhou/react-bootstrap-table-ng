@@ -138,8 +138,8 @@ class Body extends Component<BodyProps> {
           };
 
           baseRowProps.style = _.isFunction(rowStyle)
-            ? rowStyle(row, index)
-            : rowStyle;
+            ? (rowStyle(row, index) as any)
+            : (rowStyle as any);
           baseRowProps.className = _.isFunction(rowClasses)
             ? rowClasses(row, index)
             : rowClasses;
