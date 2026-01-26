@@ -86,7 +86,7 @@ export default (_: any, onStartEdit?: any) =>
       this.clearTimer();
     }
 
-    UNSAFE_componentWillReceiveProps({ message }: any) {
+    componentDidUpdate({ message }: any) {
       if (_.isDefined(message)) {
         this.createTimer();
         this.setState(() => ({
@@ -228,8 +228,8 @@ export default (_: any, onStartEdit?: any) =>
         className: editorClass,
         onKeyDown: this.handleKeyDown,
         onBlur: this.handleBlur,
-        didMount: () => {},
-        onUpdate: (newValue: any) => {},
+        didMount: () => { },
+        onUpdate: (newValue: any) => { },
       };
 
       if (onStartEdit) {
