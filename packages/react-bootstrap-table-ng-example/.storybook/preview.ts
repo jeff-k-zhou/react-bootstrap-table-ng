@@ -1,4 +1,4 @@
-import { spyOn } from "@storybook/test";
+import { spyOn } from "storybook/test";
 import type { Preview } from "@storybook/react";
 
 const preview: Preview = {
