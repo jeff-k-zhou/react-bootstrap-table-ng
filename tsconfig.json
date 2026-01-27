@@ -117,6 +117,9 @@
     "skipLibCheck": true /* Skip type checking all .d.ts files. */
   },
   "exclude": [
-    "packages/react-bootstrap-table-ng-example"
+    "packages/react-bootstrap-table-ng-example",
+    "packages/**/*.d.ts",
+    "packages/**/*.js",
+    "packages/**/*.js.map"
   ]
 }

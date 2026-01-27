@@ -2,7 +2,7 @@
 
 `react-bootstrap-table-ng` separate the cell edit code base to [`react-bootstrap-table-ng-editor`](https://github.com/jeff-k-zhou/react-bootstrap-table-ng/tree/main/packages/react-bootstrap-table-ng-editor), so there's a little bit different when you use cell edit than `react-bootstrap-table`. In the following, we are going to show you how to enable the cell edit
 
-**[Live Demo For Cell Edit](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/storybook-static/?path=/docs/cell-editing--docs)**
+**[Live Demo For Cell Edit](https://react-bootstrap-table.github.io/react-bootstrap-table2/storybook/index.html?selectedKind=Cell%20Editing)**
 
 **[API&Props Definitation](https://react-bootstrap-table.github.io/react-bootstrap-table2/docs/cell-edit-props.html)**
 
@@ -184,7 +184,7 @@ const columns = [
 ```
 
 ### Textarea Editor
-Textarea editor is use `<input type="textarea">`, user can press `ENTER` to change line and in the `react-bootstrap-table2`, user allow to save result via press `SHIFT` + `ENTER`.
+Textarea editor is use `<input type="textarea">`, user can press `ENTER` to change line and in the `react-bootstrap-table-ng`, user allow to save result via press `SHIFT` + `ENTER`.
 
 ```js
 const columns = [

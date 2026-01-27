@@ -77,7 +77,7 @@ If you want to customize the pagination component completely, you may get intere
 * Standalone
 * Non-standalone
 
-`react-bootstrap-table2-paginator` have a `PaginationProvider` which is a react context and that will be easier to customize the pagination components under the scope of `PaginationProvider`. Let's introduce it step by step:
+`react-bootstrap-table-ng-paginator` have a `PaginationProvider` which is a react context and that will be easier to customize the pagination components under the scope of `PaginationProvider`. Let's introduce it step by step:
 
 #### 1. Import PaginationProvider
 
@@ -157,7 +157,7 @@ import paginationFactory, {
   PaginationListStandalone,
   SizePerPageDropdownStandalone,
   PaginationTotalStandalone
-} from 'react-bootstrap-table2-paginator';
+} from 'react-bootstrap-table-ng-paginator';
 
 <PaginationProvider
   pagination={ paginationFactory(options) }

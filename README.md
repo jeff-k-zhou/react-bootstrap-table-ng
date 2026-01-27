@@ -5,7 +5,7 @@ forked from [react-bootstrap-table-next](https://github.com/react-bootstrap-tabl
 The version number pattern is `major.minor.patch`, where `major` is the major version number of bootstrap, `minor` is the major version number of react, and `patch` is the patch version number of react-bootstrap-table-ng. For example, `4.18.0` means it is based on bootstrap 4, react 18, and react-bootstrap-table-ng patch 0 on 4.18.x. 
 
 [![Build Status](https://travis-ci.org/jeff-k-zhou/react-bootstrap-table-ng.svg?branch=master)](https://travis-ci.org/jeff-k-zhou/react-bootstrap-table-ng)
-Rebuild of [react-bootstrap-table-next](https://github.com/react-bootstrap-table/react-bootstrap-table2)
+Rebuild of [react-bootstrap-table-ng](https://github.com/jeff-k-zhou/react-bootstrap-table-ng)
 
 > Note that `react-bootstrap-table-ng`'s npm module name is [**`react-bootstrap-table-ng`**](https://www.npmjs.com/package/react-bootstrap-table-ng)
 
@@ -32,7 +32,7 @@ See [getting started](https://react-bootstrap-table.github.io/react-bootstrap-ta
 
 ## Online Demo
 
-See `react-bootstrap-table-ng` [storybook](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/storybook-static).
+See `react-bootstrap-table-ng` [storybook](https://react-bootstrap-table.github.io/react-bootstrap-table2/storybook/index.html).
 
 ## Development
 

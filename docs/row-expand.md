@@ -1,6 +1,6 @@
 
 # Row expand
-`react-bootstrap-table2` supports the row expand feature. By passing prop `expandRow` to enable this functionality. 
+`react-bootstrap-table-ng` supports the row expand feature. By passing prop `expandRow` to enable this functionality. 
 
 > Default is click to expand/collapse a row. In addition, we don't support any way to change this mechanism!
 
@@ -23,7 +23,7 @@
 
 ### <a name="renderer">expandRow.renderer - [Function]</a>
 
-Specify the content of expand row, `react-bootstrap-table2` will pass a row object as argument and expect return a react element.
+Specify the content of expand row, `react-bootstrap-table-ng` will pass a row object as argument and expect return a react element.
 
 #### values
 * **row**
@@ -111,7 +111,7 @@ const expandRow = {
 };
 ```
 
-> By default, `react-bootstrap-table2` will help you to handle the click event, it's not necessary to handle again by developer.
+> By default, `react-bootstrap-table-ng` will help you to handle the click event, it's not necessary to handle again by developer.
 
 ### <a name='expandHeaderColumnRenderer'>expandRow.expandHeaderColumnRenderer - [Function]</a>
 Provide a callback function which allow you to custom the expand indicator in the expand header column. This callback only have one argument which is an object and contain one property `isAnyExpands` which indicate if there's any rows are expanded:
@@ -125,7 +125,7 @@ const expandRow = {
 };
 ```
 
-> By default, `react-bootstrap-table2` will help you to handle the click event, it's not necessary to handle again by developer.
+> By default, `react-bootstrap-table-ng` will help you to handle the click event, it's not necessary to handle again by developer.
 
 ### <a name='showExpandColumn'>expandRow.showExpandColumn - [Bool]</a>
 Default is `false`, if you want to have a expand indicator, give this prop as `true`

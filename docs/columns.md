@@ -329,7 +329,7 @@ A new `Object` will be the result of element headerStyle.
 
 
 ## <a name='title'>column.title - [Bool | Function]</a>
-`react-bootstrap-table2` is disable [`HTML title`](https://www.w3schools.com/tags/tag_title.asp) as default. You can assign `title` as `true` to enable the HTML title on table column and take `cell content` as default value. Additionally, you could customize title via a callback. It takes **4** arguments and a `String` is expect to return: 
+`react-bootstrap-table-ng` is disable [`HTML title`](https://www.w3schools.com/tags/tag_title.asp) as default. You can assign `title` as `true` to enable the HTML title on table column and take `cell content` as default value. Additionally, you could customize title via a callback. It takes **4** arguments and a `String` is expect to return: 
 
 
 ```js
@@ -430,7 +430,7 @@ A new `String` will be the result of element headerAlign.
 ## <a name='events'>column.events - [Object]</a>
 You can assign any [HTML Event](https://www.w3schools.com/tags/ref_eventattributes.asp) on table column via `events` property.   
 
-`react-bootstrap-table2` currently only support following events which will receive some specific information:
+`react-bootstrap-table-ng` currently only support following events which will receive some specific information:
 
 * onClick
 * onDoubleClick
@@ -842,7 +842,7 @@ This is almost same as [`column.editCellClasses`](#editCellClasses), but `column
 Following is a quite example: 
 
 ```js
-import cellEditFactory, { Type } from 'react-bootstrap-table2-editor';
+import cellEditFactory, { Type } from 'react-bootstrap-table-ng-editor';
 
 const columns = [
   //...
@@ -857,13 +857,13 @@ const columns = [
 ];
 ```
 
-If you want more information, please check [here](https://github.com/react-bootstrap-table/react-bootstrap-table2/tree/master/packages/react-bootstrap-table2-editor).
+If you want more information, please check [here](https://github.com/jeff-k-zhou/react-bootstrap-table-ng/tree/master/packages/react-bootstrap-table-ng-editor).
 
 ## <a name='editorRenderer'>column.editorRenderer - [Function]</a>
 If you feel above predefined editors are not satisfied to your requirement, you can totally custom the editor via `column.editorRenderer`:
 
 ```js
-import cellEditFactory, { Type } from 'react-bootstrap-table2-editor';
+import cellEditFactory, { Type } from 'react-bootstrap-table-ng-editor';
 
 // Custom Editor
 class QualityRanger extends React.Component {
@@ -912,7 +912,7 @@ const columns = [
 ```
 
 ## <a name='filter'>column.filter - [Object]</a>
-Configure `column.filter` will able to setup a column level filter on the header column. Currently, `react-bootstrap-table2` support following filters:
+Configure `column.filter` will able to setup a column level filter on the header column. Currently, `react-bootstrap-table-ng` support following filters:
 
 * Text(`textFilter`)
 * Select(`selectFilter`)
@@ -922,7 +922,7 @@ Configure `column.filter` will able to setup a column level filter on the header
 We have a quick example to show you how to use `column.filter`:
 
 ```
-import { textFilter } from 'react-bootstrap-table2-filter';
+import { textFilter } from 'react-bootstrap-table-ng-filter';
 
 // omit...
 {
@@ -932,7 +932,7 @@ import { textFilter } from 'react-bootstrap-table2-filter';
 }
 ```
 
-For some reason of simple customization, `react-bootstrap-table2` allow you to pass some props to filter factory function. Please check [here](https://github.com/react-bootstrap-table/react-bootstrap-table2/tree/master/packages/react-bootstrap-table2-filter/README.md) for more detail tutorial.
+For some reason of simple customization, `react-bootstrap-table-ng` allow you to pass some props to filter factory function. Please check [here](https://github.com/jeff-k-zhou/react-bootstrap-table-ng/tree/master/packages/react-bootstrap-table-ng-filter/README.md) for more detail tutorial.
 
 ## <a name='filterValue'>column.filterValue - [Function]</a>
 Sometimes, if the cell/column value that you don't want to filter on them, you can define `filterValue` to return a actual value you wanna be filtered:
