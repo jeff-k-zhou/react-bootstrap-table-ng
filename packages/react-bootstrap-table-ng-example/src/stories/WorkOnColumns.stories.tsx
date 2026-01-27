@@ -9,7 +9,7 @@ import bootstrapStyle from './bootstrap-style';
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta = {
   title: 'Work On Columns',
-  component: BootstrapTable,
+  component: BootstrapTable as any,
   parameters: {
     // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/react/configure/story-layout
     layout: 'centered',
@@ -90,12 +90,12 @@ export const DisplayNestedData: Story = {
 function priceFormatter(cell: number, row: any) {
   if (row.onSale) {
     return (
-      <span><strong style={ { color: 'red' } }>$ { cell } NTD(Sales!!)</strong></span>
+      <span><strong style={{ color: 'red' }}>$ {cell} NTD(Sales!!)</strong></span>
     );
   }
 
   return (
-    <span>$ { cell } NTD</span>
+    <span>$ {cell} NTD</span>
   );
 }
 
@@ -148,9 +148,9 @@ export const ColumnFormatter: Story = {
   }
 };
 
-function rankFormatter(cell: number, row: any, rowIndex: any, formatExtraData: any[]) {
+function rankFormatter(cell: any, row: any, rowIndex: any, formatExtraData: any) {
   return (
-    <i className={ formatExtraData[cell] } />
+    <i className={formatExtraData[cell]} />
   );
 }
 
@@ -261,7 +261,7 @@ export const ColumnTitle: Story = {
     }, {
       dataField: 'name',
       text: 'Product Name',
-      title: (cell: number, row: any, rowIndex: any, colIndex: any) => `this is custom title for ${cell}`
+      title: (cell: any, row: any, rowIndex: any, colIndex: any) => `this is custom title for ${cell}`
     }, {
       dataField: 'price',
       text: 'Product Price'
@@ -450,7 +450,7 @@ export const CustomizeColumnStyle: Story = {
     }, {
       dataField: 'name',
       text: 'Product Name',
-      style: (cell, row, rowIndex, colIndex) => {
+      style: (cell: any, row: any, rowIndex: number, colIndex: any) => {
         if (rowIndex % 2 === 0) {
           return {
             backgroundColor: '#81c784'

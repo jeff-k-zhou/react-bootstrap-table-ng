@@ -12,7 +12,7 @@ import "./stylesheet/storybook.scss";
 import "./stylesheet/tomorrow.min.css";
 import { productsGenerator } from "../utils/common";
 
-interface SelectionManagmentProps {}
+interface SelectionManagmentProps { }
 
 interface SelectionManagmentState {
   selected: number[];
@@ -168,6 +168,22 @@ class SelectionManagment extends React.Component<
   }
 }
 
+interface RowSelectionProps {
+  mode?: any;
+  header?: any;
+  data?: any;
+  columns?: any;
+  sourceCode?: any;
+  sourceCode1?: any;
+  sourceCode2?: any;
+  selectRow?: any;
+  selectRow1?: any;
+  selectRow2?: any;
+  expandRow?: any;
+  cellEdit?: any;
+  noDataIndication?: any;
+}
+
 export default ({
   mode,
   header,
@@ -182,7 +198,7 @@ export default ({
   expandRow,
   cellEdit,
   noDataIndication,
-}) => {
+}: RowSelectionProps) => {
   switch (mode) {
     case "management":
       return (

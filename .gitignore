@@ -25,3 +25,5 @@ lib
 dist
 *.js.map
 *.test.tsx.snap
+
+.yarn/

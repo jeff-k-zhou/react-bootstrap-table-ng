@@ -1,6 +1,6 @@
 {
   "name": "react-bootstrap-table-ng-example",
-  "version": "1.2.1",
+  "version": "4.18.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -24,14 +24,14 @@
   "author": "Jeff Zhou",
   "contributors": [
     {
-      "name": "Terrence Miao",
-      "email": "terrence.miao@gmail.com",
-      "url": "https://github.com/TerrenceMiao"
-    },
-    {
       "name": "Allen Fang",
       "email": "ayu780129@hotmail.com",
       "url": "https://github.com/AllenFang"
+    },
+    {
+      "name": "Terrence Miao",
+      "email": "terrence.miao@gmail.com",
+      "url": "https://github.com/TerrenceMiao"
     },
     {
       "name": "Chun-MingChen",
@@ -41,47 +41,44 @@
   ],
   "peerDependencies": {
     "prop-types": "^15.8.1",
-    "react": "^16.4.0",
-    "react-dom": "^16.4.0"
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "@storybook/addon-actions": "^7.4.0",
-    "@storybook/addon-console": "^2.0.0",
-    "@storybook/addon-essentials": "^7.4.0",
-    "@storybook/addon-interactions": "^7.4.0",
-    "@storybook/addon-links": "^7.4.0",
-    "@storybook/addon-onboarding": "^1.0.8",
-    "@storybook/blocks": "^7.4.0",
-    "@storybook/preset-create-react-app": "^7.4.0",
-    "@storybook/react": "^7.4.0",
-    "@storybook/react-webpack5": "^7.4.0",
-    "@storybook/testing-library": "^0.2.0",
+    "@babel/plugin-transform-private-property-in-object": "^7.25.9",
+    "@storybook/addon-docs": "^10.2.1",
+    "@storybook/addon-links": "^10.2.1",
+    "@storybook/addon-onboarding": "^10.2.1",
+    "@storybook/preset-create-react-app": "^10.2.1",
+    "@storybook/react-webpack5": "^10.2.1",
+    "@types/file-saver": "^2.0.7",
     "babel-plugin-named-exports-order": "^0.0.2",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-preset-env": "^1.7.0",
-    "eslint-plugin-storybook": "^0.6.13",
-    "react-redux": "^8.0.2",
-    "redux": "^4.2.0",
-    "redux-thunk": "^2.4.1",
-    "rimraf": "^5.0.1",
-    "storybook": "^7.4.0",
-    "typed.js": "^2.0.12",
-    "webpack": "^5.88.2"
+    "eslint-plugin-storybook": "^10.2.1",
+    "file-saver": "^2.0.5",
+    "react-redux": "^9.2.0",
+    "redux": "^5.0.1",
+    "redux-thunk": "^3.1.0",
+    "rimraf": "^6.0.1",
+    "sass": "^1.97.3",
+    "storybook": "^10.2.1",
+    "typed.js": "^2.1.0",
+    "webpack": "^5.104.1"
   },
   "dependencies": {
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "@types/jest": "^27.5.2",
-    "@types/node": "^16.18.48",
-    "@types/react": "^18.2.21",
-    "@types/react-dom": "^18.2.7",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/jest": "^29.5.14",
+    "@types/node": "^18.15.3",
+    "@types/react": "^18.3.1",
+    "@types/react-dom": "^18.3.0",
     "prop-types": "^15.8.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1",
-    "typescript": "^4.9.5",
-    "web-vitals": "^2.1.4"
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-scripts": "^5.0.1",
+    "typescript": "^5.7.2",
+    "web-vitals": "^4.2.4"
   }
 }

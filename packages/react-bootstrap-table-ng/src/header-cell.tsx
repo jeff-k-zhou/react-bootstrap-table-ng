@@ -2,8 +2,8 @@ import cs from "classnames";
 import React, { Component } from "react";
 
 import { Property } from "csstype";
-import { FILTERS_POSITION_INLINE, SORT_DESC } from "..";
-import eventDelegater from "./cell-event-delegater";
+import { FILTERS_POSITION_INLINE, SORT_DESC } from "./const";
+import { CellEventDelegater as eventDelegater } from "./cell-event-delegater";
 import SortCaret from "./sort/caret";
 import SortSymbol from "./sort/symbol";
 import _ from "./utils";
@@ -30,53 +30,53 @@ interface HeaderCellProps {
     headerClasses?: string | ((column: any, index: number) => string);
     classes?: string | ((cell: any, row: any, rowIndex: number) => string);
     headerStyle?:
-      | React.CSSProperties
-      | ((column: any, index: number) => React.CSSProperties);
+    | React.CSSProperties
+    | ((column: any, index: number) => React.CSSProperties);
     headerSortingClasses?:
-      | string
-      | ((
-          column: any,
-          sortOrder: string,
-          isLastSorting: boolean,
-          index: number
-        ) => string);
+    | string
+    | ((
+      column: any,
+      sortOrder: string,
+      isLastSorting: boolean,
+      index: number
+    ) => string);
     headerSortingStyle?:
-      | React.CSSProperties
-      | ((
-          column: any,
-          sortOrder: string,
-          isLastSorting: boolean,
-          index: number
-        ) => React.CSSProperties);
+    | React.CSSProperties
+    | ((
+      column: any,
+      sortOrder: string,
+      isLastSorting: boolean,
+      index: number
+    ) => React.CSSProperties);
     style?:
-      | React.CSSProperties
-      | ((cell: any, row: any, rowIndex: number) => React.CSSProperties);
+    | React.CSSProperties
+    | ((cell: any, row: any, rowIndex: number) => React.CSSProperties);
     headerTitle?: boolean | ((column: any, index: number) => boolean | string);
     title?:
-      | boolean
-      | ((cell: any, row: any, rowIndex: number) => boolean | string);
+    | boolean
+    | ((cell: any, row: any, rowIndex: number) => boolean | string);
     headerEvents?: Record<string, (e: React.MouseEvent) => void>;
     events?: Record<
       string,
       (cell: any, row: any, rowIndex: number, e: React.MouseEvent) => void
     >;
     headerAlign?:
-      | Property.TextAlign
-      | ((column: any, index: number) => Property.TextAlign);
+    | Property.TextAlign
+    | ((column: any, index: number) => Property.TextAlign);
     align?: string | ((cell: any, row: any, rowIndex: number) => string);
     headerAttrs?:
-      | React.HTMLAttributes<HTMLTableHeaderCellElement>
-      | ((
-          column: any,
-          index: number
-        ) => React.HTMLAttributes<HTMLTableHeaderCellElement>);
+    | React.HTMLAttributes<HTMLTableHeaderCellElement>
+    | ((
+      column: any,
+      index: number
+    ) => React.HTMLAttributes<HTMLTableHeaderCellElement>);
     attrs?:
-      | React.HTMLAttributes<HTMLTableCellElement>
-      | ((
-          cell: any,
-          row: any,
-          rowIndex: number
-        ) => React.HTMLAttributes<HTMLTableCellElement>);
+    | React.HTMLAttributes<HTMLTableCellElement>
+    | ((
+      cell: any,
+      row: any,
+      rowIndex: number
+    ) => React.HTMLAttributes<HTMLTableCellElement>);
     sort?: boolean;
     sortFunc?: (a: any, b: any, order: string, column: any) => number;
     onSort?: (column: any, sortOrder: string) => void;
@@ -84,17 +84,17 @@ interface HeaderCellProps {
     editor?: object;
     editable?: boolean | ((cell: any, row: any, rowIndex: number) => boolean);
     editCellStyle?:
-      | React.CSSProperties
-      | ((cell: any, row: any, rowIndex: number) => React.CSSProperties);
+    | React.CSSProperties
+    | ((cell: any, row: any, rowIndex: number) => React.CSSProperties);
     editCellClasses?:
-      | string
-      | ((cell: any, row: any, rowIndex: number) => string);
+    | string
+    | ((cell: any, row: any, rowIndex: number) => string);
     editorStyle?:
-      | React.CSSProperties
-      | ((cell: any, row: any, rowIndex: number) => React.CSSProperties);
+    | React.CSSProperties
+    | ((cell: any, row: any, rowIndex: number) => React.CSSProperties);
     editorClasses?:
-      | string
-      | ((cell: any, row: any, rowIndex: number) => string);
+    | string
+    | ((cell: any, row: any, rowIndex: number) => string);
     editorRenderer?: (
       editorProps: any,
       value: any,
@@ -273,9 +273,9 @@ class HeaderCell extends eventDelegater(Component)<HeaderCellProps> {
 
     const children: React.ReactNode = headerFormatter
       ? headerFormatter(column, index, {
-          sortElement: sortSymbol,
-          filterElement,
-        })
+        sortElement: sortSymbol,
+        filterElement,
+      })
       : text;
 
     if (headerFormatter) {

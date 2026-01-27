@@ -20,8 +20,8 @@ PaginationTotal.propTypes = {
   paginationTotalRenderer: PropTypes.func,
 };
 
-PaginationTotal.defaultProps = {
-  paginationTotalRenderer: undefined,
-};
+// PaginationTotal.defaultProps = {
+//   paginationTotalRenderer: undefined,
+// };
 
 export default PaginationTotal;

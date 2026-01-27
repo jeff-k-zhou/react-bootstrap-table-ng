@@ -39,7 +39,7 @@
 * [onDataSizeChange](#onDataSizeChange)
 
 ### <a name='keyField'>keyField(**required**) - [String]</a>
-Tells `react-bootstrap-table2` which column of the data is unique. This should be the name of a property that is unique for each item in your dataset
+Tells `react-bootstrap-table-ng` which column of the data is unique. This should be the name of a property that is unique for each item in your dataset
 
 ### <a name='data'>data(**required**) - [Array]</a>
 Provides data for your table. It accepts a single Array object.
@@ -97,23 +97,23 @@ A special case for remote pagination:
 remote={ { pagination: true, filter: false, sort: false } }
 ```
 
-There is a special case for remote pagination, even you only specified the pagination need to handle as remote, `react-bootstrap-table2` will handle all the table changes(filter, sort etc) as remote mode, because `react-bootstrap-table2` only know the data of current page, but filtering, searching or sort need to work on overall data.
+There is a special case for remote pagination, even you only specified the pagination need to handle as remote, `react-bootstrap-table-ng` will handle all the table changes(filter, sort etc) as remote mode, because `react-bootstrap-table-ng` only know the data of current page, but filtering, searching or sort need to work on overall data.
 
 ### <a name='bootstrap4'>bootstrap4 - [Bool]</a>
 `true` to indicate your bootstrap version is 4. Default version is 3.
 
 ### <a name='loading'>loading - [Bool]</a>
 Telling if table is loading or not, for example: waiting data loading, filtering etc. It's **only** valid when [`remote`](#remote) is enabled.
-When `loading` is `true`, `react-bootstrap-table2` will attend to render a overlay on table via [`overlay`](#overlay) prop, if [`overlay`](#overlay) prop is not given, `react-bootstrap-table2` will ignore the overlay rendering.
+When `loading` is `true`, `react-bootstrap-table-ng` will attend to render a overlay on table via [`overlay`](#overlay) prop, if [`overlay`](#overlay) prop is not given, `react-bootstrap-table-ng` will ignore the overlay rendering.
 
 ### <a name='overlay'>overlay - [Function]</a>
-`overlay` accept a factory function which should returning a higher order component. By default, `react-bootstrap-table2-overlay` can be a good option for you:
+`overlay` accept a factory function which should returning a higher order component. By default, `react-bootstrap-table-ng-overlay` can be a good option for you:
 
 ```sh
-$ npm install react-bootstrap-table2-overlay
+$ npm install react-bootstrap-table-ng-overlay
 ```
 ```js
-import overlayFactory from 'react-bootstrap-table2-overlay';
+import overlayFactory from 'react-bootstrap-table-ng-overlay';
 
 <BootstrapTable
   data={ data }
@@ -266,16 +266,16 @@ const defaultSorted = [{
 Default sort direction when user click on header column at first time, available value is `asc` and `desc`. Default is `desc`.
 
 ### <a name='pagination'>pagination - [Object]</a>
-`pagination` allow user to render a pagination panel on the bottom of table. But pagination functionality is separated from core of `react-bootstrap-table2` so that you are suppose to install `react-bootstrap-table2-paginator` additionally.
+`pagination` allow user to render a pagination panel on the bottom of table. But pagination functionality is separated from core of `react-bootstrap-table-ng` so that you are suppose to install `react-bootstrap-table-ng-paginator` additionally.
 
 ```sh
-$ npm install react-bootstrap-table2-paginator --save
+$ npm install react-bootstrap-table-ng-paginator --save
 ```
 
-After installation of `react-bootstrap-table2-paginator`, you can enable pagination on `react-bootstrap-table2` easily:
+After installation of `react-bootstrap-table-ng-paginator`, you can enable pagination on `react-bootstrap-table-ng` easily:
 
 ```js
-import paginator from 'react-bootstrap-table2-paginator';
+import paginator from 'react-bootstrap-table-ng-paginator';
 
 // omit...
 
@@ -318,16 +318,16 @@ paginator({
 ```
 
 ### <a name='filter'>filter - [Object]</a>
-`filter` allow user to filter data by column. However, filter functionality is separated from core of `react-bootstrap-table2` so that you are suppose to install `react-bootstrap-table2-filter` firstly.
+`filter` allow user to filter data by column. However, filter functionality is separated from core of `react-bootstrap-table-ng` so that you are suppose to install `react-bootstrap-table-ng-filter` firstly.
 
 ```sh
-$ npm install react-bootstrap-table2-filter --save
+$ npm install react-bootstrap-table-ng-filter --save
 ```
 
-After installation of `react-bootstrap-table2-filter`, you can configure filter on `react-bootstrap-table2` easily:
+After installation of `react-bootstrap-table-ng-filter`, you can configure filter on `react-bootstrap-table-ng` easily:
 
 ```js
-import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
+import filterFactory, { textFilter } from 'react-bootstrap-table-ng-filter';
 
 // omit...
 const columns = [ {

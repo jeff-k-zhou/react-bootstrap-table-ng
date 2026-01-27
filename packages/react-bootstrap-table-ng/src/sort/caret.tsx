@@ -1,6 +1,6 @@
 import cs from "classnames";
 import React from "react";
-import { SORT_ASC } from "../..";
+import { SORT_ASC } from "../const";
 import { BootstrapContext } from "../contexts/bootstrap";
 
 interface SortCaretProps {
@@ -16,9 +16,9 @@ const SortCaret: React.FC<SortCaretProps> = ({ order }) => {
     <BootstrapContext.Consumer>
       {({ bootstrap4 }) =>
         bootstrap4 ? (
-          <span className={`caret-4-${order}`} />
+          <span className={`caret-4-${order}`} data-testid="sort-caret" />
         ) : (
-          <span className={orderClass}>
+          <span className={orderClass} data-testid="sort-caret">
             <span className="caret" />
           </span>
         )

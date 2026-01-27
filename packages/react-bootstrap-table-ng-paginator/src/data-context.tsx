@@ -109,7 +109,7 @@ class PaginationDataProvider extends Provider {
 
     return (
       <PaginationDataContext.Provider
-        value={{ data, setRemoteEmitter: this.remoteEmitter }}
+        value={{ data, setRemoteEmitter: this.setPaginationRemoteEmitter }}
       >
         {this.props.children}
         {this.renderDefaultPagination()}

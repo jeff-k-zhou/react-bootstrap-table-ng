@@ -1,24 +1,32 @@
-import { shallow } from "enzyme";
 import React from "react";
+import { render, screen } from "@testing-library/react";
 
 import RowSection from "../../src/row/row-section";
 
 describe("Row", () => {
   const colSpan = 3;
-  let wrapper: any;
   let content: any;
 
   describe("simplest row-section", () => {
     beforeEach(() => {
-      wrapper = shallow(<RowSection content={content} colSpan={colSpan} />);
+      content = null;
     });
 
     it("should render successfully", () => {
-      expect(wrapper.length).toBe(1);
-      expect(wrapper.find("tr").length).toBe(1);
-      expect(wrapper.find("td").length).toBe(1);
-      expect(wrapper.find("td").prop("colSpan")).toEqual(colSpan);
-      expect(wrapper.find(".react-bs-table-no-data").length).toBe(1);
+      render(
+        <table>
+          <tbody>
+            <RowSection content={content} colSpan={colSpan} />
+          </tbody>
+        </table>
+      );
+      // Should render a <tr> with a <td>
+      const row = screen.getByRole("row");
+      expect(row).toBeInTheDocument();
+      const cell = screen.getByRole("cell");
+      expect(cell).toBeInTheDocument();
+      expect(cell).toHaveAttribute("colspan", colSpan.toString());
+      expect(cell).toHaveClass("react-bs-table-no-data");
     });
   });
 });

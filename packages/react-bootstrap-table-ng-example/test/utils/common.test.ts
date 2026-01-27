@@ -1,3 +1,5 @@
+import { render, screen } from "@testing-library/react";
+import "@testing-library/jest-dom";
 import { productsGenerator } from "../../src/utils/common";
 
 describe("Utils", () => {
@@ -12,14 +14,14 @@ describe("Utils", () => {
       expect(productsGenerator().length).toEqual(5);
     });
 
-    it("should return an array with given quntity", () => {
+    it("should return an array with given quantity", () => {
       expect(productsGenerator(quantity).length).toEqual(quantity);
     });
 
     describe("when callback is defined", () => {
       const callback = (value: any, index: any) => ({
         id: index,
-        name: "react-bootstrap-table-2",
+        name: "react-bootstrap-table-ng",
       });
 
       it("should return customized products format", () => {
@@ -29,7 +31,7 @@ describe("Utils", () => {
         expect(Array.isArray(products)).toBe(true);
         expect(products.length).toBe(quantity);
         expect(product).toHaveProperty("id", 0);
-        expect(product).toHaveProperty("name", "react-bootstrap-table-2");
+        expect(product).toHaveProperty("name", "react-bootstrap-table-ng");
       });
     });
   });

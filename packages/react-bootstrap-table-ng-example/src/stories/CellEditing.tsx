@@ -138,7 +138,7 @@ class SortManagement extends Component<{}, SortManagementState> {
   }
 }
 
-interface CustomSortValueProps {}
+interface CustomSortValueProps { }
 
 interface CustomSortValueState {
   data: any[];
@@ -232,6 +232,17 @@ class CustomSortValue extends Component<
   }
 }
 
+interface CellEditingProps {
+  mode?: any;
+  header?: any;
+  data?: any;
+  columns?: any;
+  sourceCode?: any;
+  sort?: any;
+  cellEdit?: any;
+  selectRow?: any;
+}
+
 export default ({
   mode,
   header,
@@ -241,7 +252,7 @@ export default ({
   sort,
   cellEdit,
   selectRow,
-}) => {
+}: CellEditingProps) => {
   switch (mode) {
     case "management":
       return <SortManagement />;

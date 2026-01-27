@@ -1,12 +1,9 @@
-import { mount } from "enzyme";
-import "jsdom-global/register";
 import React from "react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import { ComparatorNumber, EQ, FILTER_TYPES } from "../..";
 import DateFilter from "../../src/components/date";
 
 describe("Date Filter", () => {
-  let wrapper: any;
-
   const onFilterFirstReturn = jest.fn();
   const onFilter = jest.fn().mockReturnValue(onFilterFirstReturn);
 
@@ -18,98 +15,75 @@ describe("Date Filter", () => {
   afterEach(() => {
     onFilter.mockClear();
     onFilterFirstReturn.mockClear();
-
-    // onFilter.returns(onFilterFirstReturn);
   });
 
   describe("initialization", () => {
-    beforeEach(() => {
-      wrapper = mount(<DateFilter onFilter={onFilter} column={column} />);
+    it("should render component successfully", () => {
+      render(<DateFilter onFilter={onFilter} column={column} />);
+      expect(screen.getByTestId("date-filter-input")).toBeInTheDocument();
+      expect(screen.getByTestId("date-filter-comparator")).toBeInTheDocument();
+      expect(screen.getByTestId("date-filter")).toBeInTheDocument();
     });
 
-    it("should rendering component successfully", () => {
-      expect(wrapper).toHaveLength(1);
-      expect(wrapper.find(".date-filter-input")).toHaveLength(1);
-      expect(wrapper.find(".date-filter-comparator")).toHaveLength(1);
-      expect(wrapper.find(".date-filter")).toHaveLength(1);
-    });
-
-    it("should rendering comparator options correctly", () => {
-      const select = wrapper.find("select");
-      expect(select.find("option")).toHaveLength(
-        // wrapper.prop("comparators").length + 1
-        ComparatorNumber
-      );
+    it("should render comparator options correctly", () => {
+      render(<DateFilter onFilter={onFilter} column={column} />);
+      const select = screen.getByTestId("date-filter-comparator");
+      expect(select.querySelectorAll("option").length).toBe(ComparatorNumber);
     });
   });
 
   describe("when withoutEmptyComparatorOption prop is true", () => {
-    beforeEach(() => {
-      wrapper = mount(
+    it("should render comparator options correctly", () => {
+      render(
         <DateFilter
           onFilter={onFilter}
           column={column}
           withoutEmptyComparatorOption
         />
       );
-    });
-
-    it("should rendering comparator options correctly", () => {
-      const select = wrapper.find(".date-filter-comparator");
-      expect(select.find("option")).toHaveLength(
-        // wrapper.prop("comparators").length
-        ComparatorNumber - 1
-      );
+      const select = screen.getByTestId("date-filter-comparator");
+      expect(select.querySelectorAll("option").length).toBe(ComparatorNumber - 1);
     });
   });
 
   describe("when defaultValue.date props is defined", () => {
     const date = new Date(2018, 0, 1);
 
-    beforeEach(() => {
-      wrapper = mount(
+    it("should render input successfully", () => {
+      render(
         <DateFilter
           onFilter={onFilter}
           column={column}
           defaultValue={{ date }}
         />
       );
-    });
-
-    it("should rendering input successfully", () => {
-      expect(wrapper).toHaveLength(1);
-      const input = wrapper.find(".date-filter-input");
-      expect(input).toHaveLength(1);
-      expect(input.props().defaultValue).toEqual(
-        wrapper.instance().getDefaultDate()
-      );
+      const input = screen.getByTestId("date-filter-input");
+      expect(input).toBeInTheDocument();
+      // The defaultValue is formatted as yyyy-mm-dd
+      const expectedValue = new DateFilter({ onFilter, column, defaultValue: { date } }).getDefaultDate();
+      expect(input).toHaveValue(expectedValue);
     });
   });
 
   describe("when defaultValue.comparator props is defined", () => {
     const comparator = EQ;
 
-    beforeEach(() => {
-      wrapper = mount(
+    it("should render comparator select successfully", () => {
+      render(
         <DateFilter
           onFilter={onFilter}
           column={column}
           defaultValue={{ comparator }}
         />
       );
-    });
-
-    it("should rendering comparator select successfully", () => {
-      expect(wrapper).toHaveLength(1);
-      const select = wrapper.find(".date-filter-comparator");
-      expect(select).toHaveLength(1);
-      expect(select.props().defaultValue).toEqual(comparator);
+      const select = screen.getByTestId("date-filter-comparator");
+      expect(select).toBeInTheDocument();
+      expect(select).toHaveValue(comparator);
     });
   });
 
   describe("when props.getFilter is defined", () => {
     let programmaticallyFilter: any;
-
     const comparator = EQ;
     const date = new Date(2018, 0, 1);
 
@@ -117,15 +91,11 @@ describe("Date Filter", () => {
       programmaticallyFilter = filter;
     };
 
-    beforeEach(() => {
-      wrapper = mount(
+    it("should do onFilter correctly when exported function was executed", () => {
+      render(
         <DateFilter onFilter={onFilter} column={column} getFilter={getFilter} />
       );
-
       programmaticallyFilter({ comparator, date });
-    });
-
-    it("should do onFilter correctly when exported function was executed", () => {
       expect(onFilter).toHaveBeenCalledTimes(1);
       expect(onFilter).toHaveBeenCalledWith(
         column,
@@ -137,137 +107,95 @@ describe("Date Filter", () => {
     });
   });
 
-  describe("when defaultValue.number and defaultValue.comparator props are defined", () => {
-    let date;
-    let comparator;
+  describe("when defaultValue.date and defaultValue.comparator props are defined", () => {
+    let date: Date;
+    let comparator: string;
 
-    beforeEach(() => {
+    it("should call onFilter on mount", () => {
       date = new Date();
       comparator = EQ;
-      wrapper = mount(
+      render(
         <DateFilter
           onFilter={onFilter}
           column={column}
           defaultValue={{ date, comparator }}
         />
       );
-    });
-
-    it("should calling onFilter on componentDidMount", () => {
       expect(onFilter).toHaveBeenCalledTimes(1);
       expect(onFilter).toHaveBeenCalledWith(column, FILTER_TYPES.DATE, true);
       expect(onFilterFirstReturn).toHaveBeenCalledTimes(1);
-      // expect(onFilterFirstReturn).toHaveBeenCalledWith({ comparator, date });
     });
   });
 
   describe("when style props is defined", () => {
     const style = { backgroundColor: "red" };
-    beforeEach(() => {
-      wrapper = mount(
+    it("should render component with style", () => {
+      render(
         <DateFilter onFilter={onFilter} column={column} style={style} />
       );
-    });
-
-    it("should rendering component successfully", () => {
-      expect(wrapper).toHaveLength(1);
-      expect(wrapper.find(".date-filter").prop("style")).toEqual(style);
+      expect(screen.getByTestId("date-filter")).toHaveStyle("background-color: red");
     });
   });
 
   describe("when dateStyle props is defined", () => {
     const dateStyle = { backgroundColor: "red" };
-    beforeEach(() => {
-      wrapper = mount(
+    it("should render input with dateStyle", () => {
+      render(
         <DateFilter onFilter={onFilter} column={column} dateStyle={dateStyle} />
       );
-    });
-
-    it("should rendering component successfully", () => {
-      expect(wrapper).toHaveLength(1);
-      expect(wrapper.find(".date-filter-input").prop("style")).toEqual(
-        dateStyle
-      );
+      expect(screen.getByTestId("date-filter-input")).toHaveStyle("background-color: red");
     });
   });
 
   describe("when comparatorStyle props is defined", () => {
     const comparatorStyle = { backgroundColor: "red" };
-    beforeEach(() => {
-      wrapper = mount(
+    it("should render comparator with comparatorStyle", () => {
+      render(
         <DateFilter
           onFilter={onFilter}
           column={column}
           comparatorStyle={comparatorStyle}
         />
       );
-    });
-
-    it("should rendering component successfully", () => {
-      expect(wrapper).toHaveLength(1);
-      expect(wrapper.find(".date-filter-comparator").prop("style")).toEqual(
-        comparatorStyle
-      );
+      expect(screen.getByTestId("date-filter-comparator")).toHaveStyle("background-color: red");
     });
   });
 
   describe("when className props is defined", () => {
     const className = "test";
-    beforeEach(() => {
-      wrapper = mount(
+    it("should render component with className", () => {
+      render(
         <DateFilter onFilter={onFilter} column={column} className={className} />
       );
-    });
-
-    it("should rendering component successfully", () => {
-      expect(wrapper).toHaveLength(1);
-      expect(wrapper.hasClass(className)).toBeTruthy();
+      expect(screen.getByTestId("date-filter")).toHaveClass(className);
     });
   });
 
   describe("when dateClassName props is defined", () => {
     const className = "test";
-    beforeEach(() => {
-      wrapper = mount(
+    it("should render input with dateClassName", () => {
+      render(
         <DateFilter
           onFilter={onFilter}
           column={column}
           dateClassName={className}
         />
       );
-    });
-
-    it("should rendering component successfully", () => {
-      expect(wrapper).toHaveLength(1);
-      expect(
-        wrapper
-          .find(".date-filter-input")
-          .prop("className")
-          .indexOf(className) > -1
-      ).toBeTruthy();
+      expect(screen.getByTestId("date-filter-input")).toHaveClass(className);
     });
   });
 
   describe("when comparatorClassName props is defined", () => {
     const className = "test";
-    beforeEach(() => {
-      wrapper = mount(
+    it("should render comparator with comparatorClassName", () => {
+      render(
         <DateFilter
           onFilter={onFilter}
           column={column}
           comparatorClassName={className}
         />
       );
-    });
-
-    it("should rendering component successfully", () => {
-      expect(wrapper).toHaveLength(1);
-      expect(
-        wrapper
-          .find(".date-filter-comparator")
-          .prop("className")
-          .indexOf(className) > -1
-      ).toBeTruthy();
+      expect(screen.getByTestId("date-filter-comparator")).toHaveClass(className);
     });
   });
 });

@@ -3,10 +3,15 @@ import React from "react";
 
 import { ExportCSVButtonProps } from "../..";
 
+const exportCSVButtonDefaultProps = {
+  className: "",
+  style: {},
+};
+
 const ExportCSVButton = (
   props: ExportCSVButtonProps
 ): React.ReactElement | null => {
-  const { onExport, children, className, ...rest } = props;
+  const { onExport, children, className, ...rest } = { ...exportCSVButtonDefaultProps, ...props };
 
   return (
     <button
@@ -25,10 +30,6 @@ ExportCSVButton.propTypes = {
   onExport: PropTypes.func.isRequired,
   className: PropTypes.string,
   style: PropTypes.object,
-};
-ExportCSVButton.defaultProps = {
-  className: "",
-  style: {},
 };
 
 export default ExportCSVButton;

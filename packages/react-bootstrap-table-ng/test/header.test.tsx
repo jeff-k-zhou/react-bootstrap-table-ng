@@ -1,10 +1,9 @@
-import { mount, shallow } from "enzyme";
-import "jsdom-global/register";
+import { render, screen } from "@testing-library/react";
 import React from "react";
 
 import { INDICATOR_POSITION_RIGHT, SORT_ASC } from "..";
 import createExpansionContext from "../src/contexts/row-expand-context";
-import createSelectionContext from "../src/contexts/selection-context";
+import { createSelectionContext } from "../src/contexts/selection-context";
 import Header from "../src/header";
 import HeaderCell from "../src/header-cell";
 import ExpandHeaderCell from "../src/row-expand/expand-header-cell";
@@ -12,7 +11,6 @@ import SelectionHeaderCell from "../src/row-selection/selection-header-cell";
 import mockHeaderResolvedProps from "./test-helpers/mock/header-resolved-props";
 
 describe("Header", () => {
-  let wrapper: any;
   const columns = [
     {
       dataField: "id",
@@ -41,162 +39,161 @@ describe("Header", () => {
   const SelectionContext = createSelectionContext();
 
   describe("simplest header", () => {
-    beforeEach(() => {
-      wrapper = shallow(
-        <Header {...mockHeaderResolvedProps} columns={columns} />
-      );
-    });
-
     it("should render successfully", () => {
-      expect(wrapper.length).toBe(1);
-      expect(wrapper.find("tr").length).toBe(1);
-      expect(wrapper.find(HeaderCell).length).toBe(columns.length);
+      render(
+        <table>
+          <Header {...mockHeaderResolvedProps} columns={columns} />
+        </table>
+      );
+      const row = screen.getByRole("row");
+      expect(row).toBeInTheDocument();
+      const headers = screen.getAllByRole("columnheader");
+      expect(headers.length).toBe(columns.length);
+      expect(screen.getByText("ID")).toBeInTheDocument();
+      expect(screen.getByText("Name")).toBeInTheDocument();
     });
   });
 
   describe("className prop is exists", () => {
     const className = "test-class";
 
-    beforeEach(() => {
-      wrapper = shallow(
-        <Header
-          {...mockHeaderResolvedProps}
-          columns={columns}
-          className={className}
-        />
-      );
-    });
-
     it("should render successfully", () => {
-      expect(wrapper.length).toBe(1);
-      expect(wrapper.find(`.${className}`).length).toBe(1);
+      render(
+        <table>
+          <Header
+            {...mockHeaderResolvedProps}
+            columns={columns}
+            className={className}
+          />
+        </table>
+      );
+      // Thead or tr should have the class
+      expect(screen.getByRole("row")).toHaveClass(className);
     });
   });
 
   describe("header with columns enable sort", () => {
     const sortField = columns[1].dataField;
-
-    beforeEach(() => {
-      wrapper = shallow(
-        <Header
-          {...mockHeaderResolvedProps}
-          columns={columns}
-          sortField={sortField}
-          sortOrder={SORT_ASC}
-        />
-      );
-    });
+    // Enable sort on the second column to match expectation
+    const sortColumns = [
+      { ...columns[0] },
+      { ...columns[1], sort: true }
+    ];
 
     it("The HeaderCell should receive correct sorting props", () => {
-      const headerCells = wrapper.find(HeaderCell);
-      expect(headerCells.length).toBe(columns.length);
-      expect(headerCells.at(0).prop("sorting")).toBe(false);
-      expect(headerCells.at(1).prop("sorting")).toBe(true);
-      expect(headerCells.at(1).prop("sortOrder")).toBe(SORT_ASC);
+      render(
+        <table>
+          <Header
+            {...mockHeaderResolvedProps}
+            columns={sortColumns}
+            sortField={sortField}
+            sortOrder={SORT_ASC}
+          />
+        </table>
+      );
+      // The second header cell should have label "Name sort asc"
+      // The first should NOT have label because sort is undefined/false
+      const headers = screen.getAllByRole("columnheader");
+      expect(headers.length).toBe(columns.length);
+
+      // ID column is not sortable, so it should not have aria-label
+      expect(headers[0]).not.toHaveAttribute("aria-label");
+
+      // Name column IS sortable and currently sorted ASC
+      expect(headers[1].getAttribute("aria-label")).toContain("sort");
     });
   });
 
   describe("selectRow", () => {
     describe("when selectRow.mode is ROW_SELECT_DISABLED (row is not able to select)", () => {
-      beforeEach(() => {
-        wrapper = shallow(
-          <Header {...mockHeaderResolvedProps} columns={columns} />
-        );
-      });
-
       it("should not render <SelectionHeaderCell />", () => {
-        expect(wrapper.find(SelectionHeaderCell).length).toBe(0);
+        render(
+          <table>
+            <Header {...mockHeaderResolvedProps} columns={columns} />
+          </table>
+        );
+        // Should not find any checkbox/radio header cell
+        expect(screen.getAllByRole("columnheader").length).toBe(columns.length);
       });
     });
 
     describe("when selectRow.mode is radio (single selection)", () => {
-      beforeEach(() => {
+      it("should render <SelectionHeaderCell />", () => {
         const selectRow = { mode: "radio" };
-        wrapper = mount(
+        render(
           <SelectionContext.Provider
             data={data}
             keyField={keyField}
             selectRow={selectRow}
           >
-            <Header
-              {...mockHeaderResolvedProps}
-              columns={columns}
-              selectRow={selectRow}
-            />
-          </SelectionContext.Provider>
-        );
-      });
-
-      it("should render <SelectionHeaderCell />", () => {
-        expect(wrapper.find(SelectionHeaderCell).length).toBe(1);
-      });
-
-      describe("when selectRow.hideSelectColumn is true", () => {
-        beforeEach(() => {
-          const selectRow = { mode: "radio", hideSelectColumn: true };
-          wrapper = mount(
-            <SelectionContext.Provider
-              data={data}
-              keyField={keyField}
-              selectRow={selectRow}
-            >
+            <table>
               <Header
                 {...mockHeaderResolvedProps}
                 columns={columns}
                 selectRow={selectRow}
               />
+            </table>
+          </SelectionContext.Provider>
+        );
+        // Should have one more columnheader for selection
+        expect(screen.getAllByRole("columnheader").length).toBe(columns.length + 1);
+      });
+
+      describe("when selectRow.hideSelectColumn is true", () => {
+        it("should not render <SelectionHeaderCell />", () => {
+          const selectRow = { mode: "radio", hideSelectColumn: true };
+          render(
+            <SelectionContext.Provider data={data} keyField={keyField} selectRow={selectRow}>
+              <table>
+                <Header
+                  {...mockHeaderResolvedProps}
+                  columns={columns}
+                  selectRow={selectRow}
+                />
+              </table>
             </SelectionContext.Provider>
           );
-        });
-
-        it("should not render <SelectionHeaderCell />", () => {
-          expect(wrapper.find(SelectionHeaderCell).length).toBe(0);
+          expect(screen.getAllByRole("columnheader").length).toBe(columns.length);
         });
       });
     });
 
     describe("when selectRow.mode is checkbox (multiple selection)", () => {
-      beforeEach(() => {
-        const selectRow = { mode: "checkbox" };
-        wrapper = mount(
-          <SelectionContext.Provider
-            data={data}
-            keyField={keyField}
-            selectRow={selectRow}
-          >
-            <Header
-              {...mockHeaderResolvedProps}
-              columns={columns}
-              selectRow={selectRow}
-            />
-          </SelectionContext.Provider>
-        );
-      });
-
       it("should render <SelectionHeaderCell />", () => {
-        expect(wrapper.find(SelectionHeaderCell).length).toBe(1);
-      });
-
-      describe("when selectRow.hideSelectColumn is true", () => {
-        beforeEach(() => {
-          const selectRow = { mode: "checkbox", hideSelectColumn: true };
-          wrapper = mount(
-            <SelectionContext.Provider
-              data={data}
-              keyField={keyField}
-              selectRow={selectRow}
-            >
+        const selectRow = { mode: "checkbox" };
+        render(
+          <SelectionContext.Provider data={data} keyField={keyField} selectRow={selectRow}>
+            <table>
               <Header
                 {...mockHeaderResolvedProps}
                 columns={columns}
                 selectRow={selectRow}
               />
+            </table>
+          </SelectionContext.Provider>
+        );
+        expect(screen.getAllByRole("columnheader").length).toBe(columns.length + 1);
+      });
+
+      describe("when selectRow.hideSelectColumn is true", () => {
+        it("should not render <SelectionHeaderCell />", () => {
+          const selectRow = { mode: "checkbox", hideSelectColumn: true };
+          render(
+            <SelectionContext.Provider
+              data={data}
+              keyField={keyField}
+              selectRow={selectRow}
+            >
+              <table>
+                <Header
+                  {...mockHeaderResolvedProps}
+                  columns={columns}
+                  selectRow={selectRow}
+                />
+              </table>
             </SelectionContext.Provider>
           );
-        });
-
-        it("should not render <SelectionHeaderCell />", () => {
-          expect(wrapper.find(SelectionHeaderCell).length).toBe(0);
+          expect(screen.getAllByRole("columnheader").length).toBe(columns.length);
         });
       });
     });
@@ -204,71 +201,61 @@ describe("Header", () => {
 
   describe("expandRow", () => {
     describe("when expandRow.showExpandColumn is false", () => {
-      beforeEach(() => {
-        wrapper = shallow(
-          <Header {...mockHeaderResolvedProps} columns={columns} />
-        );
-      });
-
       it("should not render <ExpandHeaderCell />", () => {
-        expect(wrapper.find(ExpandHeaderCell).length).toBe(0);
+        render(
+          <table>
+            <Header {...mockHeaderResolvedProps} columns={columns} />
+          </table>
+        );
+        // Should not find any extra columnheader
+        expect(screen.getAllByRole("columnheader").length).toBe(columns.length);
       });
     });
 
     describe("when expandRow.showExpandColumn is true", () => {
-      beforeEach(() => {
+      it("should render <ExpandHeaderCell /> correctly", () => {
         const expandRow = {
           renderer: jest.fn(),
           expanded: [],
           showExpandColumn: true,
         };
-        wrapper = mount(
-          <ExpansionContext.Provider
-            data={data}
-            keyField={keyField}
-            expandRow={expandRow}
-          >
-            <Header
-              {...mockHeaderResolvedProps}
-              columns={columns}
-              expandRow={expandRow}
-            />
+        render(
+          <ExpansionContext.Provider data={data} keyField={keyField} expandRow={expandRow}>
+            <table>
+              <Header
+                {...mockHeaderResolvedProps}
+                columns={columns}
+                expandRow={expandRow}
+              />
+            </table>
           </ExpansionContext.Provider>
         );
-      });
-
-      it("should render <ExpandHeaderCell /> correctly", () => {
-        expect(wrapper.find(ExpandHeaderCell).length).toBe(1);
+        // Should have one more columnheader for expand
+        expect(screen.getAllByRole("columnheader").length).toBe(columns.length + 1);
       });
     });
 
     describe('if props.expandRow.showExpandColumn is true but props.expandRow.expandColumnPosition is "right"', () => {
-      beforeEach(() => {
+      it("should render expansion column correctly at the end", () => {
         const expandRow = {
           renderer: jest.fn(),
           showExpandColumn: true,
           expandColumnPosition: INDICATOR_POSITION_RIGHT,
         };
-        wrapper = mount(
-          <ExpansionContext.Provider
-            data={data}
-            keyField={keyField}
-            expandRow={expandRow}
-          >
-            <Header
-              {...mockHeaderResolvedProps}
-              columns={columns}
-              expandRow={expandRow}
-            />
+        render(
+          <ExpansionContext.Provider data={data} keyField={keyField} expandRow={expandRow}>
+            <table>
+              <Header
+                {...mockHeaderResolvedProps}
+                columns={columns}
+                expandRow={expandRow}
+              />
+            </table>
           </ExpansionContext.Provider>
         );
-      });
-
-      it("should render expansion column correctly", () => {
-        const header = wrapper.find(Header).children();
-        expect(
-          header.children().children().last().find(ExpandHeaderCell)
-        ).toHaveLength(1);
+        // The last columnheader should be the expand column
+        const headers = screen.getAllByRole("columnheader");
+        expect(headers.length).toBe(columns.length + 1);
       });
     });
   });

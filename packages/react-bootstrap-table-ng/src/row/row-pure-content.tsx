@@ -57,11 +57,13 @@ export default class RowPureContent extends Component<RowPureContentProps> {
       // render cell
       let cellTitle;
       let cellStyle: React.CSSProperties = {};
-      let cellAttrs: React.HTMLAttributes<HTMLTableCellElement> = {
-        ...(typeof column.attrs === "function"
-          ? column.attrs(content, row, rowIndex, index)
-          : column.attrs),
-      };
+      let cellAttrs: React.HTMLAttributes<HTMLTableCellElement> = {};
+      if (typeof column.attrs === "function") {
+        cellAttrs = { ...column.attrs(content, row, rowIndex, index) };
+      } else if (typeof column.attrs === "object" && column.attrs !== null) {
+        cellAttrs = { ...column.attrs };
+      }
+
 
       if (column.events) {
         const events = { ...column.events };
@@ -80,7 +82,7 @@ export default class RowPureContent extends Component<RowPureContentProps> {
         cellStyle = _.isFunction(column.style)
           ? column.style(content, row, rowIndex, index)
           : column.style;
-        cellStyle = { ...cellStyle } || {};
+        cellStyle = { ...cellStyle };
       }
 
       if (column.title) {
@@ -105,7 +107,7 @@ export default class RowPureContent extends Component<RowPureContentProps> {
         editableCell = column.editable(content, row, rowIndex, index);
       }
 
-      if (tabIndexStart !== -1) {
+      if (typeof tabIndexStart === 'number' && tabIndexStart !== -1) {
         cellAttrs.tabIndex = tabIndex!;
         tabIndex = tabIndex! + 1;
       }

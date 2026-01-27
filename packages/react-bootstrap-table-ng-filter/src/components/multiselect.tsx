@@ -24,11 +24,14 @@ const getSelections = (container: any) => {
   if (container && container.selectedOptions) {
     return Array.from(container.selectedOptions).map((item: any) => item.value);
   }
+  if (container && Array.isArray(container.value)) {
+    return container.value;
+  }
   const selections = [];
-  const totalLen = container ? container.options.length : 0;
+  const totalLen = container && container.options ? container.options.length : 0;
   for (let i = 0; i < totalLen; i += 1) {
-    const option = container.options.item(i);
-    if (option.selected) selections.push(option.value);
+    const option = container.options[i];
+    if (option && option.selected) selections.push(option.value);
   }
   return selections;
 };
@@ -97,10 +100,12 @@ class MultiSelectFilter extends Component<
       placeholder,
       column,
       withoutEmptyOption = false,
+      defaultValue = [],
     } = this.props;
-    if (!withoutEmptyOption) {
+    const isSelected = defaultValue && defaultValue.length > 0;
+    if (!withoutEmptyOption && !isSelected) {
       optionTags.push(
-        <option key="-1" value="">
+        <option key="-1" value="" data-testid="multiselect-placeholder">
           {placeholder || `Select ${column.text}...`}
         </option>
       );
@@ -154,12 +159,10 @@ class MultiSelectFilter extends Component<
       ...rest
     } = this.props;
 
-    const selectClass = `filter select-filter form-control ${className} ${
-      this.state.isSelected ? "" : "placeholder-selected"
-    }`;
-    const elmId = `multiselect-filter-column-${column.dataField}${
-      id ? `-${id}` : ""
-    }`;
+    const selectClass = `filter select-filter form-control ${className} ${this.state.isSelected ? "" : "placeholder-selected"
+      }`;
+    const elmId = `multiselect-filter-column-${column.dataField}${id ? `-${id}` : ""
+      }`;
 
     return (
       <label className="filter-label" htmlFor={elmId}>
@@ -174,6 +177,7 @@ class MultiSelectFilter extends Component<
           onChange={this.filter}
           onClick={(e) => e.stopPropagation()}
           defaultValue={this.getDefaultValue()}
+          data-testid="multiselect-filter"
         >
           {this.getOptions()}
         </select>

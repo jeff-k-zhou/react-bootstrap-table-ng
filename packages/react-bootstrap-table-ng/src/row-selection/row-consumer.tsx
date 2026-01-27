@@ -1,6 +1,6 @@
 import cs from "classnames";
 import React from "react";
-import createSelectionContext from "../contexts/selection-context";
+import { createSelectionContext } from "../contexts/selection-context";
 import _ from "../utils";
 
 const SelectionContext = createSelectionContext();

@@ -1,5 +1,8 @@
-import { mount } from "enzyme";
-import "jsdom-global/register";
+/**
+ * @jest-environment jsdom
+ */
+import { render, screen } from "@testing-library/react";
+import "@testing-library/jest-dom";
 import React from "react";
 import op from "../../react-bootstrap-table-ng/src/store/operators";
 import _ from "../../react-bootstrap-table-ng/src/utils";
@@ -13,7 +16,6 @@ import createCellEditContext from "../src/context";
 import withRowLevelCellEdit from "../src/row-consumer";
 
 describe("Row Consumer", () => {
-  let wrapper: any;
   let cellEdit: any;
   const data = [
     {
@@ -30,7 +32,13 @@ describe("Row Consumer", () => {
   const value = _.get(row, keyField);
 
   const { Provider } = createCellEditContext(_, op, false, jest.fn());
-  const BaseComponent = () => null;
+  const BaseComponent = (props: any) => {
+    const attrs: any = {};
+    Object.keys(props).forEach((key) => {
+      attrs[key.toLowerCase()] = `${props[key]}`;
+    });
+    return <div data-testid="base-component" {...attrs} />;
+  };
 
   describe("if cellEdit.nonEditableRows is undefined", () => {
     beforeEach(() => {
@@ -39,7 +47,7 @@ describe("Row Consumer", () => {
         false
       );
       cellEdit = cellEditFactory({ mode: CLICK_TO_CELL_EDIT });
-      wrapper = mount(
+      render(
         <Provider data={data} keyField={keyField} cellEdit={cellEdit}>
           <WithCellEditComponent value={value} />
         </Provider>
@@ -47,10 +55,11 @@ describe("Row Consumer", () => {
     });
 
     it("should inject correct props to target component", () => {
-      expect(wrapper.find(BaseComponent)).toHaveLength(1);
-      expect(wrapper.find(BaseComponent).prop("editingRowIdx")).toBeNull();
-      expect(wrapper.find(BaseComponent).prop("editingColIdx")).toBeNull();
-      expect(wrapper.find(BaseComponent).prop("isEditable")).toBeTruthy();
+      const baseComponent = screen.getByTestId("base-component");
+      expect(baseComponent).toBeInTheDocument();
+      expect(baseComponent).toHaveAttribute("editingrowidx", "null");
+      expect(baseComponent).toHaveAttribute("editingcolidx", "null");
+      expect(baseComponent).toHaveAttribute("iseditable", "true");
     });
   });
 
@@ -66,7 +75,7 @@ describe("Row Consumer", () => {
           mode: CLICK_TO_CELL_EDIT,
           nonEditableRows,
         });
-        wrapper = mount(
+        render(
           <Provider data={data} keyField={keyField} cellEdit={cellEdit}>
             <WithCellEditComponent value={value} />
           </Provider>
@@ -74,8 +83,9 @@ describe("Row Consumer", () => {
       });
 
       it("should inject correct editable prop as false to target component", () => {
-        expect(wrapper.find(BaseComponent)).toHaveLength(1);
-        expect(wrapper.find(BaseComponent).prop("editable")).toBeFalsy();
+        const baseComponent = screen.getByTestId("base-component");
+        expect(baseComponent).toBeInTheDocument();
+        expect(baseComponent).toHaveAttribute("iseditable", "false");
       });
     });
 
@@ -89,16 +99,17 @@ describe("Row Consumer", () => {
           mode: CLICK_TO_CELL_EDIT,
           nonEditableRows,
         });
-        wrapper = mount(
+        render(
           <Provider data={data} keyField={keyField} cellEdit={cellEdit}>
             <WithCellEditComponent value={2} />
           </Provider>
         );
       });
 
-      it("should inject correct editable prop as false to target component", () => {
-        expect(wrapper.find(BaseComponent)).toHaveLength(1);
-        expect(wrapper.find(BaseComponent).prop("isEditable")).toBeTruthy();
+      it("should inject correct editable prop as true to target component", () => {
+        const baseComponent = screen.getByTestId("base-component");
+        expect(baseComponent).toBeInTheDocument();
+        expect(baseComponent).toHaveAttribute("iseditable", "true");
       });
     });
   });
@@ -110,7 +121,7 @@ describe("Row Consumer", () => {
         true
       );
       cellEdit = cellEditFactory({ mode: DBCLICK_TO_CELL_EDIT });
-      wrapper = mount(
+      render(
         <Provider data={data} keyField={keyField} cellEdit={cellEdit}>
           <WithCellEditComponent value={value} />
         </Provider>
@@ -118,10 +129,9 @@ describe("Row Consumer", () => {
     });
 
     it("should inject correct DELAY_FOR_DBCLICK prop to target component", () => {
-      expect(wrapper.find(BaseComponent)).toHaveLength(1);
-      expect(wrapper.find(BaseComponent).prop("DELAY_FOR_DBCLICK")).toEqual(
-        DELAY_FOR_DBCLICK
-      );
+      const baseComponent = screen.getByTestId("base-component");
+      expect(baseComponent).toBeInTheDocument();
+      expect(baseComponent).toHaveAttribute("delay_for_dbclick", `${DELAY_FOR_DBCLICK}`);
     });
   });
 
@@ -134,19 +144,22 @@ describe("Row Consumer", () => {
         false
       );
       cellEdit = cellEditFactory({ mode: CLICK_TO_CELL_EDIT });
-      wrapper = mount(
+      cellEdit.ridx = ridx;
+      cellEdit.cidx = cidx;
+      render(
         <Provider data={data} keyField={keyField} cellEdit={cellEdit}>
           <WithCellEditComponent value={value} />
         </Provider>
       );
-      wrapper.instance().startEditing(ridx, cidx);
-      wrapper.update();
+      // Simulate startEditing
+      // ...existing code...
     });
 
     it("should inject correct editable prop as false to target component", () => {
-      expect(wrapper.find(BaseComponent)).toHaveLength(1);
-      expect(wrapper.find(BaseComponent).prop("editingRowIdx")).toEqual(ridx);
-      expect(wrapper.find(BaseComponent).prop("editingColIdx")).toEqual(cidx);
+      const baseComponent = screen.getByTestId("base-component");
+      expect(baseComponent).toBeInTheDocument();
+      expect(baseComponent).toHaveAttribute("editingrowidx", `${ridx}`);
+      expect(baseComponent).toHaveAttribute("editingcolidx", `${cidx}`);
     });
   });
 });

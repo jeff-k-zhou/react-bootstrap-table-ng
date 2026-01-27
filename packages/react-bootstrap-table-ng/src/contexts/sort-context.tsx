@@ -1,5 +1,5 @@
 import React, { Component, ReactNode } from "react";
-import { SORT_ASC, SORT_DESC } from "../..";
+import { SORT_ASC, SORT_DESC } from "../const";
 
 type DataOperator = {
   nextOrder: (
@@ -51,7 +51,7 @@ export default (
   const defaultSortContext = {
     data: [],
     sortOrder: undefined,
-    onSort: () => {},
+    onSort: () => { },
     sortField: null,
   };
   const SortContext = React.createContext<SortContextValue>(defaultSortContext);
@@ -60,22 +60,22 @@ export default (
     state: {
       sortOrder: string | undefined;
       sortColumn:
-        | {
-            dataField: string;
-            text: string;
-            onSort: Function;
-            sortFunc: Function;
-          }
-        | undefined;
+      | {
+        dataField: string;
+        text: string;
+        onSort: Function;
+        sortFunc: Function;
+      }
+      | undefined;
     } = {
-      sortOrder: SORT_ASC,
-      sortColumn: {
-        dataField: "id",
-        text: "ID",
-        onSort: () => {},
-        sortFunc: () => {},
-      },
-    };
+        sortOrder: SORT_ASC,
+        sortColumn: {
+          dataField: "id",
+          text: "ID",
+          onSort: () => { },
+          sortFunc: () => { },
+        },
+      };
 
     constructor(props: SortProviderProps) {
       super(props);

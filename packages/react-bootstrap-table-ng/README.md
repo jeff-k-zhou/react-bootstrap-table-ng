@@ -1,7 +1,7 @@
 # react-bootstrap-table-ng
-Next generation of [`react-bootstrap-table-ng`](https://github.com/jeff-k-zhou/react-bootstrap-table-ng)
+Maintance fork of [`react-bootstrap-table2`] (https://github.com/react-bootstrap-table/react-bootstrap-table2) created by Allen Fang 
 
-**[Live Demo](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/storybook-static)**
+**[Live Demo](https://react-bootstrap-table.github.io/react-bootstrap-table2/storybook/index.html)**
 
 ## Usage
 

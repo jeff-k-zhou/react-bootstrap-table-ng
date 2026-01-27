@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 
-import eventDelegater from "./event-delegater";
+import { RowEventDelegater } from "./event-delegater";
 import RowPureContent from "./row-pure-content";
 import shouldUpdater, { RowProps } from "./should-updater";
 
 class SimpleRow extends shouldUpdater(
-  eventDelegater(Component<RowProps>)
+  RowEventDelegater(Component<RowProps>)
 ) {
   shouldUpdateRowContent = false;
 
@@ -31,11 +31,11 @@ class SimpleRow extends shouldUpdater(
     const tabIndexStart = this.props.rowIndex! * visibleColumnSize! + 1;
 
     return (
-      <tr style={ style } className={ className } { ...trAttrs }>
+      <tr style={style} className={className} {...trAttrs}>
         <RowPureContent
-          shouldUpdate={ this.shouldUpdateRowContent }
-          tabIndexStart={ tabIndexCell ? tabIndexStart : -1 }
-          { ...rest }
+          shouldUpdate={this.shouldUpdateRowContent}
+          tabIndexStart={tabIndexCell ? tabIndexStart : -1}
+          {...rest}
         />
       </tr>
     );

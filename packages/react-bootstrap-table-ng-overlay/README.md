@@ -2,12 +2,12 @@
 
 In `react-bootstrap-table-ng`, you will be easier to custom the loading or lverlay on table no matter if remote enabled or not. In the following, we have two way to do it:
 
-**[Live Demo For Table Overlay](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/storybook-static/?path=/docs/table-overlay--docs)**
+**[Live Demo For Table Overlay](https://react-bootstrap-table.github.io/react-bootstrap-table2/storybook/index.html?selectedKind=EmptyTableOverlay&selectedStory=Table%20Overlay&full=0&addons=1&stories=1&panelRight=0&addonPanel=storybook%2Factions%2Factions-panel)**
 
 -----
 
 ## Empty Table
-[**`noDataIndication`**](https://react-bootstrap-table.github.io/react-bootstrap-table2/docs/table-props.html#nodataindication-function) is a simple case you can take it, if current data size is empty, `react-bootstrap-table2` will call the `noDataIndication` prop and get the result to display on the table.
+[**`noDataIndication`**](https://react-bootstrap-table.github.io/react-bootstrap-table2/docs/table-props.html#nodataindication-function) is a simple case you can take it, if current data size is empty, `react-bootstrap-table-ng` will call the `noDataIndication` prop and get the result to display on the table.
 
 [**Here**](https://react-bootstrap-table.github.io/react-bootstrap-table2/storybook/index.html?selectedKind=EmptyTableOverlay) is a quick exmaple for `noDataIndication`.
 

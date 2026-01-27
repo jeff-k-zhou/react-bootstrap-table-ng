@@ -21,7 +21,23 @@ import "./stylesheet/tomorrow.min.css";
 const { ExportCSVButton } = CSVExport;
 const { SearchBar } = Search;
 
-export default ({ mode, data, data1, data2, columns, sourceCode }) => {
+interface ExportCSVProps {
+  mode?: any;
+  data?: any;
+  data1?: any;
+  data2?: any;
+  columns?: any;
+  sourceCode?: any;
+}
+
+export default ({
+  mode,
+  data,
+  data1,
+  data2,
+  columns,
+  sourceCode,
+}: ExportCSVProps) => {
   switch (mode) {
     case "button":
       const MyExportCSVButton = (props: any) => {

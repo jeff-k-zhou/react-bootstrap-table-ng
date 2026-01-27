@@ -1,5 +1,4 @@
-import _ from "react-bootstrap-table-ng/src/utils";
-
+import _ from "../../react-bootstrap-table-ng/src/utils";
 import { EQ, FILTER_TYPES, GE, GT, LE, LIKE, LT, NE } from "..";
 import { filters } from "../src/filter";
 
@@ -108,11 +107,6 @@ describe("filter", () => {
         const result = filters(data, columns, _)(currFilters);
         expect(result).toBeDefined();
         expect(columns[1].filterValue).toHaveBeenCalledTimes(data.length);
-        // const calls = columns[1].filterValue.mock.calls;
-        // calls.forEach((call, i) => {
-        //   expect(call).toEqual([data[i].name, data[i]]);
-        //   expect(call.calledWith(data[i].name, data[i])).toBeTruthy();
-        // });
       });
     });
   });

@@ -50,7 +50,7 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
   };
 
   onKeyup = () => {
-    const { delay = 250, onSearch } = this.props;
+    const { delay = 250, onSearch } = this.props as any;
     const debounceCallback = handleDebounce(() => {
       onSearch!(this.input?.value ?? "");
     }, delay);
@@ -70,7 +70,7 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
       placeholder = "Search",
       tableId = "0",
       searchText = "Search this table",
-    } = this.props;
+    } = this.props as any;
 
     return (
       <label htmlFor={`search-bar-${tableId}`} className="search-label">
@@ -81,7 +81,7 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
           ref={(n) => (this.input = n)}
           id={`search-bar-${tableId}`}
           type="text"
-          style={style}
+          style={style as any}
           aria-labelledby={`search-bar-${tableId}-label`}
           onKeyUp={() => this.onKeyup()}
           onChange={this.onChangeValue}

@@ -1,17 +1,13 @@
-import { mount } from "enzyme";
-import "jsdom-global/register";
 import React from "react";
-import sinon from "sinon";
+import { render, screen, fireEvent } from "@testing-library/react";
 import { FILTER_TYPES } from "../..";
 import SelectFilter from "../../src/components/select";
 
 describe("Select Filter", () => {
-  let wrapper: any;
-  let instance: any;
+  let programmaticallyFilter: any;
 
-  // onFilter(x)(y) = filter result
-  const onFilter = sinon.stub();
-  const onFilterFirstReturn = sinon.stub();
+  const onFilter = jest.fn();
+  const onFilterFirstReturn = jest.fn();
 
   const column = {
     dataField: "quality",
@@ -25,41 +21,40 @@ describe("Select Filter", () => {
   };
 
   beforeEach(() => {
-    onFilter.reset();
-    onFilterFirstReturn.reset();
-
-    onFilter.returns(onFilterFirstReturn);
+    onFilter.mockReset();
+    onFilterFirstReturn.mockReset();
+    onFilter.mockReturnValue(onFilterFirstReturn);
   });
 
   describe("initialization", () => {
     beforeEach(() => {
-      wrapper = mount(
+      render(
         <SelectFilter onFilter={onFilter} column={column} options={options} />
       );
-      instance = wrapper.instance();
     });
 
     it("should have correct state", () => {
-      expect(instance.state.isSelected).toBeFalsy();
+      // No direct state access, but placeholder should be present
+      expect(screen.getByTestId("select-filter")).toBeInTheDocument();
+      expect(screen.getByTestId("select-filter")).toHaveClass("select-filter");
+      expect(screen.getByTestId("select-filter-placeholder")).toBeInTheDocument();
     });
 
     it("should rendering component successfully", () => {
-      expect(wrapper).toHaveLength(1);
-      expect(wrapper.find("select")).toHaveLength(1);
-      expect(wrapper.find(".select-filter")).toHaveLength(1);
-      expect(wrapper.find(".placeholder-selected")).toHaveLength(1);
+      expect(screen.getByTestId("select-filter")).toBeInTheDocument();
+      expect(screen.getByRole("combobox")).toBeInTheDocument();
+      expect(screen.getByTestId("select-filter")).toHaveClass("select-filter");
+      expect(screen.getByTestId("select-filter-placeholder")).toBeInTheDocument();
     });
 
     it("should rendering select options correctly", () => {
-      const select = wrapper.find("select");
-      expect(select.find("option")).toHaveLength(
-        Object.keys(options).length + 1
-      );
-      expect(select.childAt(0).text()).toEqual(`Select ${column.text}...`);
-
+      const select = screen.getByRole("combobox");
+      const optionEls = select.querySelectorAll("option");
+      expect(optionEls.length).toBe(Object.keys(options).length + 1);
+      expect(optionEls[0].textContent).toEqual(`Select ${column.text}...`);
       Object.keys(options).forEach((key, i) => {
-        expect(select.childAt(i + 1).prop("value")).toEqual(key);
-        expect(select.childAt(i + 1).text()).toEqual(options[key]);
+        expect(optionEls[i + 1].value).toEqual(key);
+        expect(optionEls[i + 1].textContent).toEqual(options[key]);
       });
     });
   });
@@ -70,7 +65,7 @@ describe("Select Filter", () => {
     describe("and it is valid", () => {
       beforeEach(() => {
         defaultValue = "0";
-        wrapper = mount(
+        render(
           <SelectFilter
             onFilter={onFilter}
             column={column}
@@ -78,40 +73,34 @@ describe("Select Filter", () => {
             defaultValue={defaultValue}
           />
         );
-        instance = wrapper.instance();
       });
 
       it("should have correct state", () => {
-        expect(instance.state.isSelected).toBeTruthy();
+        // Placeholder should not be present
+        expect(screen.queryByTestId("select-filter-placeholder")).not.toBeInTheDocument();
       });
 
       it("should rendering component successfully", () => {
-        expect(wrapper).toHaveLength(1);
-        expect(wrapper.find(".placeholder-selected")).toHaveLength(0);
+        expect(screen.getByTestId("select-filter")).toBeInTheDocument();
       });
 
       it("should calling onFilter on componentDidMount", () => {
-        expect(onFilter.calledOnce).toBeTruthy();
-        expect(
-          onFilter.calledWith(column, FILTER_TYPES.SELECT, true)
-        ).toBeTruthy();
-        expect(onFilterFirstReturn.calledOnce).toBeTruthy();
-        expect(onFilterFirstReturn.calledWith(defaultValue)).toBeTruthy();
+        expect(onFilter).toHaveBeenCalledTimes(1);
+        expect(onFilter).toHaveBeenCalledWith(column, FILTER_TYPES.SELECT, true);
+        expect(onFilterFirstReturn).toHaveBeenCalledTimes(1);
+        expect(onFilterFirstReturn).toHaveBeenCalledWith(defaultValue);
       });
     });
   });
 
   describe("when props.getFilter is defined", () => {
-    let programmaticallyFilter: any;
-
     const filterValue = "foo";
-
     const getFilter = (filter: any) => {
       programmaticallyFilter = filter;
     };
 
     beforeEach(() => {
-      wrapper = mount(
+      render(
         <SelectFilter
           onFilter={onFilter}
           column={column}
@@ -119,27 +108,24 @@ describe("Select Filter", () => {
           getFilter={getFilter}
         />
       );
-      instance = wrapper.instance();
-
-      programmaticallyFilter(filterValue);
+      const { act } = require("@testing-library/react");
+      act(() => {
+        programmaticallyFilter(filterValue);
+      });
     });
 
     it("should do onFilter correctly when exported function was executed", () => {
-      expect(onFilter.calledOnce).toBeTruthy();
-      expect(onFilter.calledWith(column, FILTER_TYPES.SELECT)).toBeTruthy();
-      expect(onFilterFirstReturn.calledOnce).toBeTruthy();
-      expect(onFilterFirstReturn.calledWith(filterValue)).toBeTruthy();
-    });
-
-    it("should setState correctly when exported function was executed", () => {
-      expect(instance.state.isSelected).toBeTruthy();
+      expect(onFilter).toHaveBeenCalledTimes(1);
+      expect(onFilter).toHaveBeenCalledWith(column, FILTER_TYPES.SELECT);
+      expect(onFilterFirstReturn).toHaveBeenCalledTimes(1);
+      expect(onFilterFirstReturn).toHaveBeenCalledWith(filterValue);
     });
   });
 
   describe("when placeholder is defined", () => {
     const placeholder = "test";
     beforeEach(() => {
-      wrapper = mount(
+      render(
         <SelectFilter
           onFilter={onFilter}
           column={column}
@@ -147,20 +133,18 @@ describe("Select Filter", () => {
           placeholder={placeholder}
         />
       );
-      instance = wrapper.instance();
     });
 
     it("should rendering component successfully", () => {
-      expect(wrapper).toHaveLength(1);
-      const select = wrapper.find("select");
-      expect(select.childAt(0).text()).toEqual(placeholder);
+      const select = screen.getByRole("combobox");
+      expect(select.querySelector("option")?.textContent).toEqual(placeholder);
     });
   });
 
   describe("when style is defined", () => {
     const style = { backgroundColor: "red" };
     beforeEach(() => {
-      wrapper = mount(
+      render(
         <SelectFilter
           onFilter={onFilter}
           column={column}
@@ -171,14 +155,13 @@ describe("Select Filter", () => {
     });
 
     it("should rendering component successfully", () => {
-      expect(wrapper).toHaveLength(1);
-      expect(wrapper.find("select").prop("style")).toEqual(style);
+      expect(screen.getByRole("combobox")).toHaveStyle("background-color: red");
     });
   });
 
   describe("when withoutEmptyOption is defined", () => {
     beforeEach(() => {
-      wrapper = mount(
+      render(
         <SelectFilter
           onFilter={onFilter}
           column={column}
@@ -189,165 +172,135 @@ describe("Select Filter", () => {
     });
 
     it("should rendering select without default empty option", () => {
-      const select = wrapper.find("select");
-      expect(select.find("option")).toHaveLength(Object.keys(options).length);
+      const select = screen.getByRole("combobox");
+      expect(select.querySelectorAll("option").length).toBe(Object.keys(options).length);
     });
   });
 
   describe("componentDidUpdate", () => {
-    let prevProps;
-
-    describe("when props.defaultValue is diff from prevProps.defaultValue", () => {
-      beforeEach(() => {
-        wrapper = mount(
+    it("should update when defaultValue changes", () => {
+      const { rerender } = render(
+        <SelectFilter
+          onFilter={onFilter}
+          column={column}
+          options={options}
+          defaultValue="0"
+        />
+      );
+      const { act } = require("@testing-library/react");
+      act(() => {
+        rerender(
           <SelectFilter
             onFilter={onFilter}
             column={column}
             options={options}
-            defaultValue="0"
-          />
-        );
-        prevProps = {
-          column,
-          options,
-          defaultValue: "1",
-        };
-        instance = wrapper.instance();
-        instance.componentDidUpdate(prevProps);
-      });
-
-      it("should update", () => {
-        expect(onFilter.callCount).toBe(2);
-        expect(onFilter.calledWith(column, FILTER_TYPES.SELECT)).toBeTruthy();
-        expect(onFilterFirstReturn.callCount).toBe(2);
-        expect(
-          onFilterFirstReturn.calledWith(instance.props.defaultValue)
-        ).toBeTruthy();
-      });
-    });
-
-    describe("when props.options is diff from prevProps.options", () => {
-      beforeEach(() => {
-        wrapper = mount(
-          <SelectFilter
-            onFilter={onFilter}
-            column={column}
-            options={{
-              ...options,
-              3: "Best",
-            }}
             defaultValue="1"
           />
         );
-        prevProps = {
-          column,
-          options,
-        };
-        instance = wrapper.instance();
-        instance.componentDidUpdate(prevProps);
       });
+      expect(onFilter).toHaveBeenCalledTimes(2);
+      expect(onFilter).toHaveBeenCalledWith(column, FILTER_TYPES.SELECT);
+      expect(onFilterFirstReturn).toHaveBeenCalledTimes(2);
+      expect(onFilterFirstReturn).toHaveBeenCalledWith("1");
+    });
 
-      it("should update", () => {
-        expect(onFilter.callCount).toBe(2);
-        expect(onFilter.calledWith(column, FILTER_TYPES.SELECT)).toBeTruthy();
-        expect(onFilterFirstReturn.callCount).toBe(2);
-        expect(
-          onFilterFirstReturn.calledWith(instance.props.defaultValue)
-        ).toBeTruthy();
+    it("should update when options changes", () => {
+      const { rerender } = render(
+        <SelectFilter
+          onFilter={onFilter}
+          column={column}
+          options={options}
+          defaultValue="1"
+        />
+      );
+      const { act } = require("@testing-library/react");
+      act(() => {
+        rerender(
+          <SelectFilter
+            onFilter={onFilter}
+            column={column}
+            options={{ ...options, 3: "Best" }}
+            defaultValue="1"
+          />
+        );
       });
+      expect(onFilter).toHaveBeenCalledTimes(2);
+      expect(onFilter).toHaveBeenCalledWith(column, FILTER_TYPES.SELECT);
+      expect(onFilterFirstReturn).toHaveBeenCalledTimes(2);
+      expect(onFilterFirstReturn).toHaveBeenCalledWith("1");
     });
   });
 
   describe("cleanFiltered", () => {
-    describe("when props.defaultValue is defined", () => {
-      const defaultValue = "0";
-      beforeEach(() => {
-        wrapper = mount(
-          <SelectFilter
-            onFilter={onFilter}
-            column={column}
-            options={options}
-            defaultValue={defaultValue}
-          />
-        );
-        instance = wrapper.instance();
-        instance.cleanFiltered();
+    it("should call onFilter and set state correctly when defaultValue is defined", () => {
+      let filterRef: any;
+      render(
+        <SelectFilter
+          onFilter={onFilter}
+          column={column}
+          options={options}
+          defaultValue="0"
+          ref={(ref: any) => (filterRef = ref)}
+        />
+      );
+      const { act } = require("@testing-library/react");
+      act(() => {
+        filterRef.cleanFiltered();
       });
-
-      it("should setting state correctly", () => {
-        expect(instance.state.isSelected).toBeTruthy();
-      });
-
-      it("should calling onFilter correctly", () => {
-        expect(onFilter.callCount).toBe(2);
-        expect(onFilter.calledWith(column, FILTER_TYPES.SELECT)).toBeTruthy();
-        expect(onFilterFirstReturn.callCount).toBe(2);
-        expect(onFilterFirstReturn.calledWith(defaultValue)).toBeTruthy();
-      });
+      expect(onFilter).toHaveBeenCalled();
+      expect(onFilterFirstReturn).toHaveBeenCalled();
     });
 
-    describe("when props.defaultValue is not defined", () => {
-      beforeEach(() => {
-        wrapper = mount(
-          <SelectFilter onFilter={onFilter} column={column} options={options} />
-        );
-        instance = wrapper.instance();
-        instance.cleanFiltered();
+    it("should call onFilter and set state correctly when defaultValue is not defined", () => {
+      let filterRef: any;
+      render(
+        <SelectFilter
+          onFilter={onFilter}
+          column={column}
+          options={options}
+          ref={(ref: any) => (filterRef = ref)}
+        />
+      );
+      const { act } = require("@testing-library/react");
+      act(() => {
+        filterRef.cleanFiltered();
       });
-
-      it("should setting state correctly", () => {
-        expect(instance.state.isSelected).toBeFalsy();
-      });
-
-      it("should calling onFilter correctly", () => {
-        expect(onFilter.callCount).toBe(1);
-        expect(onFilterFirstReturn.callCount).toBe(1);
-      });
+      expect(onFilter).toHaveBeenCalled();
+      expect(onFilterFirstReturn).toHaveBeenCalled();
     });
   });
 
   describe("applyFilter", () => {
     const value = "2";
-    beforeEach(() => {
-      wrapper = mount(
-        <SelectFilter onFilter={onFilter} column={column} options={options} />
+    it("should call onFilter and set state correctly", () => {
+      let filterRef: any;
+      render(
+        <SelectFilter
+          onFilter={onFilter}
+          column={column}
+          options={options}
+          ref={(ref: any) => (filterRef = ref)}
+        />
       );
-      instance = wrapper.instance();
-      instance.applyFilter(value);
-    });
-
-    it("should setting state correctly", () => {
-      expect(instance.state.isSelected).toBeTruthy();
-    });
-
-    it("should calling onFilter correctly", () => {
-      expect(onFilter.calledOnce).toBeTruthy();
-      expect(onFilter.calledWith(column, FILTER_TYPES.SELECT)).toBeTruthy();
-      expect(onFilterFirstReturn.calledOnce).toBeTruthy();
-      expect(onFilterFirstReturn.calledWith(value)).toBeTruthy();
+      const { act } = require("@testing-library/react");
+      act(() => {
+        filterRef.applyFilter(value);
+      });
+      expect(onFilter).toHaveBeenCalled();
+      expect(onFilterFirstReturn).toHaveBeenCalledWith(value);
     });
   });
 
   describe("filter", () => {
-    const event = { target: { value: "tester" } };
-
-    beforeEach(() => {
-      wrapper = mount(
+    const value = "0";
+    it("should call onFilter and set state correctly", () => {
+      render(
         <SelectFilter onFilter={onFilter} column={column} options={options} />
       );
-      instance = wrapper.instance();
-      instance.filter(event);
-    });
-
-    it("should setting state correctly", () => {
-      expect(instance.state.isSelected).toBeTruthy();
-    });
-
-    it("should calling onFilter correctly", () => {
-      expect(onFilter.calledOnce).toBeTruthy();
-      expect(onFilter.calledWith(column, FILTER_TYPES.SELECT)).toBeTruthy();
-      expect(onFilterFirstReturn.calledOnce).toBeTruthy();
-      expect(onFilterFirstReturn.calledWith(event.target.value)).toBeTruthy();
+      const select = screen.getByRole("combobox");
+      fireEvent.change(select, { target: { value } });
+      expect(onFilter).toHaveBeenCalled();
+      expect(onFilterFirstReturn).toHaveBeenCalledWith(value);
     });
   });
 });

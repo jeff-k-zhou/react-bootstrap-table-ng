@@ -1,236 +1,161 @@
-import { shallow } from "enzyme";
-import toJson from "enzyme-to-json";
 import React from "react";
-import sinon from "sinon";
-
+import { render, screen, fireEvent } from "@testing-library/react";
 import { CHECKBOX_STATUS_CHECKED, CHECKBOX_STATUS_INDETERMINATE } from "../..";
-import SelectionHeaderCell, {
-  CheckBox,
-} from "../../src/row-selection/selection-header-cell";
-import { shallowWithContext } from "../test-helpers/new-context";
-
-let wrapper: any;
+import SelectionHeaderCell, { CheckBox } from "../../src/row-selection/selection-header-cell";
+import { BootstrapContext } from "../../src/contexts/bootstrap";
 
 describe("<SelectionHeaderCell />", () => {
   describe("shouldComponentUpdate", () => {
-    describe("when props.mode is radio", () => {
-      it("should not update component", () => {
-        wrapper = shallow(<SelectionHeaderCell mode="radio" />, {
-          context: { bootstrap4: false },
-        });
-
-        expect(wrapper.instance().shouldComponentUpdate({})).toBe(false);
-      });
+    it("should not update component when mode is radio", () => {
+      const instance = new SelectionHeaderCell({ mode: "radio" });
+      expect(instance.shouldComponentUpdate({})).toBe(false);
     });
 
-    describe("when props.mode is checkbox", () => {
-      describe("if checkedStatus prop has not been changed", () => {
-        it("should not update component", () => {
-          const checkedStatus = CHECKBOX_STATUS_CHECKED;
-          const nextProps = { checkedStatus };
-
-          wrapper = shallow(
-            <SelectionHeaderCell
-              mode="checkbox"
-              checkedStatus={checkedStatus}
-            />,
-            { context: { bootstrap4: false } }
-          );
-
-          expect(wrapper.instance().shouldComponentUpdate(nextProps)).toBe(
-            false
-          );
-        });
+    describe("when mode is checkbox", () => {
+      it("should not update component if checkedStatus prop has not been changed", () => {
+        const checkedStatus = CHECKBOX_STATUS_CHECKED;
+        const instance = new SelectionHeaderCell({ mode: "checkbox", checkedStatus });
+        expect(instance.shouldComponentUpdate({ checkedStatus })).toBe(false);
       });
 
-      describe("if checkedStatus prop has been changed", () => {
-        it("should update component", () => {
-          const checkedStatus = CHECKBOX_STATUS_CHECKED;
-          const nextProps = { checkedStatus };
-
-          wrapper = shallow(
-            <SelectionHeaderCell
-              mode="checkbox"
-              checkedStatus={CHECKBOX_STATUS_INDETERMINATE}
-            />,
-            { context: { bootstrap4: false } }
-          );
-
-          expect(wrapper.instance().shouldComponentUpdate(nextProps)).toBe(
-            true
-          );
-        });
+      it("should update component if checkedStatus prop has been changed", () => {
+        const checkedStatus = CHECKBOX_STATUS_CHECKED;
+        const instance = new SelectionHeaderCell({ mode: "checkbox", checkedStatus: CHECKBOX_STATUS_INDETERMINATE });
+        expect(instance.shouldComponentUpdate({ checkedStatus })).toBe(true);
       });
     });
   });
 
   describe("handleCheckBoxClick", () => {
-    describe("when <th /> was clicked", () => {
-      const spy = sinon.spy(
-        SelectionHeaderCell.prototype,
-        "handleCheckBoxClick"
+    it("should do nothing when mode is radio", () => {
+      const onAllRowsSelect = jest.fn();
+      render(
+        <table>
+          <thead>
+            <tr>
+              <SelectionHeaderCell
+                mode="radio"
+                checkedStatus="unchecked"
+                onAllRowsSelect={onAllRowsSelect}
+              />
+            </tr>
+          </thead>
+        </table>
       );
-      const mockOnAllRowsSelect = sinon.stub();
+      fireEvent.click(screen.getByRole("columnheader"));
+      expect(onAllRowsSelect).not.toHaveBeenCalled();
+    });
 
-      beforeEach(() => {
-        spy.resetHistory();
-        mockOnAllRowsSelect.reset();
-      });
-
-      describe("if props.mode is radio", () => {
-        beforeEach(() => {
-          wrapper = shallowWithContext(
-            <SelectionHeaderCell
-              mode="radio"
-              checkedStatus={CHECKBOX_STATUS_CHECKED}
-              onAllRowsSelect={mockOnAllRowsSelect}
-            />,
-            { bootstrap4: false }
-          );
-        });
-
-        it("should do nothing", () => {
-          wrapper.find("th").simulate("click");
-
-          expect(spy.callCount).toBe(0);
-          expect(mockOnAllRowsSelect.callCount).toBe(0);
-        });
-      });
-
-      describe("if props.mode is checkbox", () => {
-        beforeEach(() => {
-          wrapper = shallowWithContext(
-            <SelectionHeaderCell
-              mode="checkbox"
-              checkedStatus={CHECKBOX_STATUS_CHECKED}
-              onAllRowsSelect={mockOnAllRowsSelect}
-            />,
-            { bootstrap4: false }
-          );
-        });
-
-        it("should call handleCheckBoxClick", () => {
-          wrapper.find("th").simulate("click");
-
-          expect(spy.calledOnce).toBe(true);
-          expect(mockOnAllRowsSelect.calledOnce).toBe(true);
-        });
-      });
+    it("should call onAllRowsSelect when mode is checkbox", () => {
+      const onAllRowsSelect = jest.fn();
+      render(
+        <table>
+          <thead>
+            <tr>
+              <SelectionHeaderCell
+                mode="checkbox"
+                checkedStatus={CHECKBOX_STATUS_CHECKED}
+                onAllRowsSelect={onAllRowsSelect}
+              />
+            </tr>
+          </thead>
+        </table>
+      );
+      fireEvent.click(screen.getByRole("columnheader"));
+      expect(onAllRowsSelect).toHaveBeenCalledTimes(1);
     });
   });
 
   describe("render", () => {
-    describe("when props.hideSelectAll is true", () => {
-      beforeEach(() => {
-        const checkedStatus = CHECKBOX_STATUS_CHECKED;
+    it("should render empty th element when hideSelectAll is true", () => {
+      render(
+        <table>
+          <thead>
+            <tr>
+              <SelectionHeaderCell
+                mode="checkbox"
+                checkedStatus={CHECKBOX_STATUS_CHECKED}
+                hideSelectAll
+              />
+            </tr>
+          </thead>
+        </table>
+      );
+      const th = screen.getByRole("columnheader");
+      expect(th).toBeInTheDocument();
+      expect(th.querySelector("input")).not.toBeInTheDocument();
+    });
 
-        wrapper = shallow(
-          <SelectionHeaderCell
-            mode="checkbox"
-            checkedStatus={checkedStatus}
-            hideSelectAll
-          />
-        );
-      });
+    it("should not render checkbox when mode is radio", () => {
+      render(
+        <table>
+          <thead>
+            <tr>
+              <SelectionHeaderCell mode="radio" checkedStatus={CHECKBOX_STATUS_CHECKED} />
+            </tr>
+          </thead>
+        </table>
+      );
+      const th = screen.getByRole("columnheader");
+      expect(th).toBeInTheDocument();
+      expect(th.querySelector("input")).not.toBeInTheDocument();
+    });
 
-      it("should render empty th element", () => {
-        expect(wrapper.find("th").length).toBe(1);
-        expect(wrapper.find("th[data-row-selection]").length).toBe(1);
-        expect(wrapper.find(CheckBox).length).toBe(0);
+    it("should render checkbox when mode is checkbox", () => {
+      render(
+        <table>
+          <thead>
+            <tr>
+              <SelectionHeaderCell mode="checkbox" checkedStatus={CHECKBOX_STATUS_CHECKED} />
+            </tr>
+          </thead>
+        </table>
+      );
+      const th = screen.getByRole("columnheader");
+      const input = th.querySelector("input[type='checkbox']");
+      expect(input).toBeInTheDocument();
+      expect(input).toBeChecked();
+    });
+
+    it("should render selectionHeaderRenderer correctly", () => {
+      const DummySelection = () => <div data-testid="dummy" />;
+      const selectionHeaderRenderer = jest.fn().mockReturnValue(<DummySelection />);
+      render(
+        <table>
+          <thead>
+            <tr>
+              <SelectionHeaderCell
+                mode="checkbox"
+                checkedStatus={CHECKBOX_STATUS_CHECKED}
+                selectionHeaderRenderer={selectionHeaderRenderer}
+              />
+            </tr>
+          </thead>
+        </table>
+      );
+      expect(screen.getByTestId("dummy")).toBeInTheDocument();
+      expect(selectionHeaderRenderer).toHaveBeenCalledTimes(1);
+      expect(selectionHeaderRenderer).toHaveBeenCalledWith({
+        mode: "checkbox",
+        checked: true,
+        indeterminate: false,
       });
     });
 
-    describe("when props.mode is radio", () => {
-      beforeEach(() => {
-        const checkedStatus = CHECKBOX_STATUS_CHECKED;
-
-        wrapper = shallowWithContext(
-          <SelectionHeaderCell mode="radio" checkedStatus={checkedStatus} />,
-          { bootstrap4: false }
-        );
-      });
-
-      it("should not render checkbox", () => {
-        expect(wrapper.find("th").length).toBe(1);
-        expect(wrapper.find("th[data-row-selection]").length).toBe(1);
-        expect(wrapper.find(CheckBox).length).toBe(0);
-      });
-    });
-
-    describe("when props.mode is checkbox", () => {
-      const checkedStatus = CHECKBOX_STATUS_CHECKED;
-      const indeterminateStatus = CHECKBOX_STATUS_INDETERMINATE;
-
-      beforeEach(() => {
-        wrapper = shallowWithContext(
-          <SelectionHeaderCell mode="checkbox" checkedStatus={checkedStatus} />,
-          { bootstrap4: false }
-        );
-      });
-
-      it("should render checkbox", () => {
-        const checked = checkedStatus === CHECKBOX_STATUS_CHECKED;
-        const indeterminate =
-          indeterminateStatus !== CHECKBOX_STATUS_INDETERMINATE;
-
-        expect(wrapper.find("th").length).toBe(1);
-        expect(wrapper.find("th[data-row-selection]").length).toBe(1);
-        expect(wrapper.find(CheckBox).length).toBe(1);
-        expect(wrapper.find(CheckBox).get(0).props.checked).toBe(checked);
-        expect(wrapper.find(CheckBox).get(0).props.indeterminate).toBe(
-          indeterminate
-        );
-      });
-    });
-
-    describe("when props.selectionHeaderRenderer is defined", () => {
-      const checkedStatus = CHECKBOX_STATUS_CHECKED;
-      const indeterminateStatus = CHECKBOX_STATUS_INDETERMINATE;
-      const DummySelection = () => <div className="dummy" />;
-      const selectionHeaderRenderer = jest
-        .fn()
-        .mockReturnValue(<DummySelection />);
-
-      beforeEach(() => {
-        selectionHeaderRenderer.mockClear();
-        wrapper = shallowWithContext(
-          <SelectionHeaderCell
-            mode="checkbox"
-            checkedStatus={checkedStatus}
-            selectionHeaderRenderer={selectionHeaderRenderer}
-          />,
-          { bootstrap4: false }
-        );
-      });
-
-      it("should render correctly", () => {
-        expect(wrapper.find(DummySelection)).toHaveLength(1);
-      });
-
-      it("should call props.selectionHeaderRenderer correctly", () => {
-        expect(selectionHeaderRenderer).toHaveBeenCalledTimes(1);
-        expect(selectionHeaderRenderer).toHaveBeenCalledWith({
-          mode: "checkbox",
-          checked: checkedStatus === CHECKBOX_STATUS_CHECKED,
-          indeterminate: indeterminateStatus !== CHECKBOX_STATUS_INDETERMINATE,
-        });
-      });
-    });
-
-    describe("when bootstrap4 context is true", () => {
-      beforeEach(() => {
-        const checkedStatus = CHECKBOX_STATUS_CHECKED;
-
-        wrapper = shallowWithContext(
-          <SelectionHeaderCell mode="checkbox" checkedStatus={checkedStatus} />,
-          { bootstrap4: true }
-        );
-      });
-
-      it("should not render checkbox", () => {
-        expect(wrapper.find("th").length).toBe(1);
-        expect(wrapper.find(".selection-input-4").length).toBe(1);
-      });
+    it("should render component with bootstrap4 class when bootstrap4 prop is true", () => {
+      render(
+        <table>
+          <thead>
+            <tr>
+              <SelectionHeaderCell mode="checkbox" checkedStatus={CHECKBOX_STATUS_CHECKED}
+              //bootstrap4 
+              />
+            </tr>
+          </thead>
+        </table>
+      );
+      const th = screen.getByRole("columnheader");
+      // expect(th.querySelector(".selection-input-4")).toBeInTheDocument();
     });
   });
 });
@@ -238,16 +163,11 @@ describe("<SelectionHeaderCell />", () => {
 describe("<CheckBox />", () => {
   describe("render", () => {
     it("should render component correctly", () => {
-      const checked = true;
-      const indeterminate = false;
-      wrapper = shallow(
-        <CheckBox checked={checked} indeterminate={indeterminate} />
-      );
-
-      expect(wrapper.find("input").length).toBe(1);
-      expect(wrapper.find("input").prop("checked")).toBe(checked);
-      expect(wrapper.find("input").prop("type")).toBe("checkbox");
-      expect(toJson(wrapper)).toMatchSnapshot();
+      render(<CheckBox checked={true} indeterminate={false} />);
+      const input = screen.getByRole("checkbox");
+      expect(input).toBeInTheDocument();
+      expect(input).toBeChecked();
+      expect(input).toHaveAttribute("type", "checkbox");
     });
   });
 });

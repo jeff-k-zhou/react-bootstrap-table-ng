@@ -1,13 +1,10 @@
-import { shallow } from "enzyme";
-import "jsdom-global/register";
+import { render } from "@testing-library/react";
 import React from "react";
 
 import BootstrapTable from "../../src/bootstrap-table";
 import createDataContext from "../../src/contexts/data-context";
 
 describe("DataContext", () => {
-  let wrapper: any;
-
   const data = [
     {
       id: 1,
@@ -36,9 +33,9 @@ describe("DataContext", () => {
 
   const DataContext = createDataContext();
 
-  function shallowContext() {
-    return (
-      <DataContext.Provider data={data}>
+  function renderContext(props = {}) {
+    return render(
+      <DataContext.Provider data={data} {...props}>
         <DataContext.Consumer>
           {(dataProps) => mockBase(dataProps)}
         </DataContext.Consumer>
@@ -46,12 +43,11 @@ describe("DataContext", () => {
     );
   }
 
-  describe("default render", () => {
-    beforeEach(() => {
-      wrapper = shallow(shallowContext());
-      wrapper.render();
-    });
+  beforeEach(() => {
+    mockBase.mockClear();
+  });
 
+  describe("default render", () => {
     it("should have correct Provider property after calling createDataContext", () => {
       expect(DataContext.Provider).toBeDefined();
     });
@@ -60,66 +56,48 @@ describe("DataContext", () => {
       expect(DataContext.Consumer).toBeDefined();
     });
 
-    it("should have correct state.data", () => {
-      expect(wrapper.state().data).toEqual(data);
-    });
-
-    it("should pass correct sort props to children element", () => {
-      expect(wrapper.length).toBe(1);
-      expect(mockBase).toHaveBeenCalledWith({
-        data,
-        getData: wrapper.instance().getData,
-      });
-    });
-  });
-
-  describe("componentWillReceiveProps", () => {
-    const newData = [...data, { id: 3, name: "test" }];
-
-    beforeEach(() => {
-      wrapper = shallow(shallowContext());
-      wrapper.instance().getDerivedStateFromProps({
-        data: newData,
-      });
-    });
-
-    it.skip("should have correct state.data", () => {
-      expect(wrapper.state().data).toEqual(newData);
+    it("should provide correct data to children", () => {
+      renderContext();
+      expect(mockBase).toHaveBeenCalled();
+      const props = mockBase.mock.calls[0][0];
+      expect(props.data).toEqual(data);
+      expect(typeof props.getData).toBe("function");
     });
   });
 
   describe("getData", () => {
-    let result;
+    let getData: any;
     const fakeData = [...data, { id: 3, name: "test" }];
 
     beforeEach(() => {
-      wrapper = shallow(shallowContext());
+      renderContext();
+      getData = mockBase.mock.calls[0][0].getData;
     });
 
-    describe("if third argument is give", () => {
+    describe("if third argument is given", () => {
       it("should return the data property from third argument", () => {
-        result = wrapper.instance().getData(null, null, { data: fakeData });
+        const result = getData(null, null, { data: fakeData });
         expect(result).toEqual(fakeData);
       });
     });
 
-    describe("if second argument is give", () => {
+    describe("if second argument is given", () => {
       it("should return the data property from second argument", () => {
-        result = wrapper.instance().getData(null, { data: fakeData });
+        const result = getData(null, { data: fakeData });
         expect(result).toEqual(fakeData);
       });
     });
 
-    describe("if first argument is give", () => {
-      it("should return the data property from first argument", () => {
-        result = wrapper.instance().getData({ data: fakeData });
+    describe("if first argument is given", () => {
+      it("should return the default data", () => {
+        const result = getData({ data: fakeData });
         expect(result).toEqual(data);
       });
     });
 
-    describe("if no argument is give", () => {
+    describe("if no argument is given", () => {
       it("should return default props.data", () => {
-        result = wrapper.instance().getData();
+        const result = getData();
         expect(result).toEqual(data);
       });
     });

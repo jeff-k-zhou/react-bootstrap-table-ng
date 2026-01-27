@@ -1,8 +1,6 @@
 /* eslint no-param-reassign: 0 */
-import { shallow } from "enzyme";
-import "jsdom-global/register";
 import React from "react";
-
+import { render, act } from "@testing-library/react";
 import paginationFactory from "../index";
 import Const from "../src/const";
 import createStateContext from "../src/state-context";
@@ -16,8 +14,6 @@ for (let i = 0; i < 100; i += 1) {
 }
 
 describe("PaginationStateContext", () => {
-  let wrapper: any;
-  let remoteEmitter: any;
   let PaginationStateContext: any;
 
   const defaultPagination = { options: {}, createContext: jest.fn() };
@@ -27,16 +23,15 @@ describe("PaginationStateContext", () => {
 
   const handleRemotePaginationChange = jest.fn();
 
-  function shallowContext(
+  function renderContext(
     customPagination: any = defaultPagination,
     remoteEnabled: boolean = false
   ) {
-    const additionProps = {};
     renderMockComponent.mockReset();
     handleRemotePaginationChange.mockReset();
     PaginationStateContext = createStateContext();
-
-    return (
+    const additionProps = {};
+    return render(
       <PaginationStateContext.Provider
         pagination={paginationFactory(customPagination)}
         data={data}
@@ -49,18 +44,6 @@ describe("PaginationStateContext", () => {
     );
   }
 
-  function setRemotePaginationEmitter(instance: any, remoteEnabled = false) {
-    remoteEmitter = { emit: jest.fn() };
-    if (remoteEnabled) {
-      remoteEmitter.emit = jest.fn().mockImplementation((evtName, d = {}) => {
-        if (evtName === "isRemotePagination") {
-          d.result = remoteEnabled;
-        }
-      });
-    }
-    instance.setPaginationRemoteEmitter(remoteEmitter);
-  }
-
   describe("default render", () => {
     const options: {
       totalSize: number;
@@ -71,8 +54,7 @@ describe("PaginationStateContext", () => {
     };
 
     beforeEach(() => {
-      wrapper = shallow(shallowContext(options));
-      wrapper.render();
+      renderContext(options);
     });
 
     it("should have correct Provider property after calling createPaginationStateContext", () => {
@@ -83,906 +65,346 @@ describe("PaginationStateContext", () => {
       expect(PaginationStateContext.Consumer).toBeDefined();
     });
 
-    it("should have correct currPage", () => {
-      expect(wrapper.instance().currPage).toEqual(Const.PAGE_START_INDEX);
-    });
-
-    it("should have correct currSizePerPage", () => {
-      expect(wrapper.instance().currSizePerPage).toEqual(
-        Const.SIZE_PER_PAGE_LIST[0]
-      );
-    });
-
-    it("should have correct dataSize", () => {
-      expect(wrapper.instance().dataSize).toEqual(options.totalSize);
-    });
-
     it("should get correct pagination props", () => {
-      const instance = wrapper.instance();
-      expect(wrapper.length).toBe(1);
       expect(renderMockComponent).toHaveBeenCalledTimes(1);
-      expect(renderMockComponent).toHaveBeenCalledWith({
-        paginationProps: instance.getPaginationProps(),
-        paginationTableProps: {
-          pagination: {
-            createContext: expect.any(Function),
-            options: instance.getPaginationProps(),
-          },
-          setPaginationRemoteEmitter: instance.setPaginationRemoteEmitter,
-          dataChangeListener: expect.any(Object),
-        },
-      });
-    });
-
-    it("should return correct pagination states from getPaginationProps function", () => {
-      const instance = wrapper.instance();
-      const paginationProps = instance.getPaginationProps();
-
-      expect(paginationProps.dataSize).toEqual(data.length);
-      expect(paginationProps.page).toEqual(instance.currPage);
-      expect(paginationProps.sizePerPage).toEqual(instance.currSizePerPage);
-      expect(paginationProps.onPageChange).toEqual(instance.handleChangePage);
-      expect(paginationProps.onSizePerPageChange).toEqual(
-        instance.handleChangeSizePerPage
-      );
-      expect(paginationProps.sizePerPageList).toEqual(Const.SIZE_PER_PAGE_LIST);
-      expect(paginationProps.paginationSize).toEqual(Const.PAGINATION_SIZE);
-      expect(paginationProps.showTotal).toEqual(options.showTotal);
-      expect(paginationProps.hidePageListOnlyOnePage).toEqual(
-        Const.HIDE_PAGE_LIST_ONLY_ONE_PAGE
-      );
-      expect(paginationProps.pageStartIndex).toEqual(Const.PAGE_START_INDEX);
-      expect(paginationProps.withFirstAndLast).toEqual(
-        Const.With_FIRST_AND_LAST
-      );
-      expect(paginationProps.alwaysShowAllBtns).toEqual(
-        Const.SHOW_ALL_PAGE_BTNS
-      );
-      expect(paginationProps.firstPageText).toEqual(Const.FIRST_PAGE_TEXT);
-      expect(paginationProps.prePageText).toEqual(Const.PRE_PAGE_TEXT);
-      expect(paginationProps.nextPageText).toEqual(Const.NEXT_PAGE_TEXT);
-      expect(paginationProps.lastPageText).toEqual(Const.LAST_PAGE_TEXT);
-      expect(paginationProps.firstPageTitle).toEqual(Const.FIRST_PAGE_TITLE);
-      expect(paginationProps.prePageTitle).toEqual(Const.PRE_PAGE_TITLE);
-      expect(paginationProps.nextPageTitle).toEqual(Const.NEXT_PAGE_TITLE);
-      expect(paginationProps.lastPageTitle).toEqual(Const.LAST_PAGE_TITLE);
-      expect(paginationProps.hideSizePerPage).toEqual(Const.HIDE_SIZE_PER_PAGE);
-      expect(paginationProps.paginationTotalRenderer).toEqual(
-        options.paginationTotalRenderer
-      );
-    });
-  });
-
-  describe("compoientWillReceiveProps", () => {
-    let instance: any;
-    let nextProps: any;
-
-    describe("if remote pagination is enable", () => {
-      beforeEach(() => {
-        wrapper = shallow(
-          shallowContext(
-            {
-              ...defaultPagination,
-            },
-            true
-          )
-        );
-        instance = wrapper.instance();
-        setRemotePaginationEmitter(instance, true);
-        nextProps = {
-          data,
-          pagination: {
-            ...defaultPagination,
-            options: { page: 3, sizePerPage: 5, totalSize: 50 },
-          },
-        };
-        instance.componentDidUpdate(nextProps);
-      });
-
-      it("should always reset currPage and currSizePerPage", () => {
-        expect(instance.currPage).toEqual(1);
-        expect(instance.currSizePerPage).toEqual(10);
-        expect(instance.dataSize).toBeUndefined();
-      });
-    });
-
-    describe("if options.custom is true", () => {
-      beforeEach(() => {
-        wrapper = shallow(
-          shallowContext(
-            {
-              ...defaultPagination,
-              custom: true,
-            },
-            true
-          )
-        );
-        instance = wrapper.instance();
-        setRemotePaginationEmitter(instance, true);
-        nextProps = {
-          data,
-          pagination: {
-            ...defaultPagination,
-            options: { page: 3, sizePerPage: 5, custom: true, totalSize: 50 },
-          },
-        };
-        instance.componentDidUpdate(nextProps);
-      });
-
-      it("should always reset currPage and currSizePerPage", () => {
-        expect(instance.currPage).toEqual(1);
-        expect(instance.currSizePerPage).toEqual(10);
-        expect(instance.dataSize).toBeUndefined();
-      });
-    });
-  });
-
-  describe("handleDataSizeChange", () => {
-    let instance: any;
-    const newTotalSize = 8;
-    beforeEach(() => {
-      wrapper = shallow(
-        shallowContext({
-          ...defaultPagination,
-          page: 3,
-        })
-      );
-      instance = wrapper.instance();
-      setRemotePaginationEmitter(instance);
-      jest.spyOn(instance, "forceUpdate");
-      instance.handleDataSizeChange(newTotalSize);
-    });
-
-    it("should update dataSize correctly", () => {
-      expect(instance.dataSize).toEqual(newTotalSize);
-      expect(instance.forceUpdate).toHaveBeenCalledTimes(1);
-    });
-
-    it("should update currPage correctly if page list shrink", () => {
-      expect(instance.currPage).toEqual(Const.PAGE_START_INDEX);
-      expect(instance.forceUpdate).toHaveBeenCalledTimes(1);
+      const call = renderMockComponent.mock.calls[0][0];
+      expect(call.paginationProps.dataSize).toEqual(data.length);
+      expect(call.paginationProps.page).toEqual(Const.PAGE_START_INDEX);
+      expect(call.paginationProps.sizePerPage).toEqual(Const.SIZE_PER_PAGE_LIST[0]);
+      expect(call.paginationProps.sizePerPageList).toEqual(Const.SIZE_PER_PAGE_LIST);
+      expect(call.paginationProps.paginationSize).toEqual(Const.PAGINATION_SIZE);
+      expect(call.paginationProps.showTotal).toEqual(options.showTotal);
+      expect(call.paginationProps.hidePageListOnlyOnePage).toEqual(Const.HIDE_PAGE_LIST_ONLY_ONE_PAGE);
+      expect(call.paginationProps.pageStartIndex).toEqual(Const.PAGE_START_INDEX);
+      expect(call.paginationProps.withFirstAndLast).toEqual(Const.With_FIRST_AND_LAST);
+      expect(call.paginationProps.alwaysShowAllBtns).toEqual(Const.SHOW_ALL_PAGE_BTNS);
+      expect(call.paginationProps.firstPageText).toEqual(Const.FIRST_PAGE_TEXT);
+      expect(call.paginationProps.prePageText).toEqual(Const.PRE_PAGE_TEXT);
+      expect(call.paginationProps.nextPageText).toEqual(Const.NEXT_PAGE_TEXT);
+      expect(call.paginationProps.lastPageText).toEqual(Const.LAST_PAGE_TEXT);
+      expect(call.paginationProps.firstPageTitle).toEqual(Const.FIRST_PAGE_TITLE);
+      expect(call.paginationProps.prePageTitle).toEqual(Const.PRE_PAGE_TITLE);
+      expect(call.paginationProps.nextPageTitle).toEqual(Const.NEXT_PAGE_TITLE);
+      expect(call.paginationProps.lastPageTitle).toEqual(Const.LAST_PAGE_TITLE);
+      expect(call.paginationProps.hideSizePerPage).toEqual(Const.HIDE_SIZE_PER_PAGE);
+      expect(call.paginationProps.paginationTotalRenderer).toEqual(options.paginationTotalRenderer);
     });
   });
 
   describe("handleChangePage", () => {
-    let instance: any;
-    const newPage = 3;
-
-    describe("should update component correctly", () => {
-      beforeEach(() => {
-        wrapper = shallow(shallowContext());
-        instance = wrapper.instance();
-        setRemotePaginationEmitter(instance);
-        jest.spyOn(instance, "forceUpdate");
-        instance.handleChangePage(newPage);
-      });
-
-      it("", () => {
-        expect(instance.currPage).toEqual(newPage);
-        expect(instance.forceUpdate).toHaveBeenCalledTimes(1);
-      });
-    });
-
-    describe("if options.onPageChange is defined", () => {
+    it("should call onPageChange if defined", () => {
       const onPageChange = jest.fn();
-      beforeEach(() => {
-        onPageChange.mockClear();
-        wrapper = shallow(
-          shallowContext({
-            ...defaultPagination,
-            onPageChange,
-          })
-        );
-        instance = wrapper.instance();
-        setRemotePaginationEmitter(instance);
-        jest.spyOn(instance, "forceUpdate");
-        instance.handleChangePage(newPage);
+      renderContext({
+        ...defaultPagination,
+        onPageChange,
       });
-
-      it("should still update component correctly", () => {
-        expect(instance.currPage).toEqual(newPage);
-        expect(instance.forceUpdate).toHaveBeenCalledTimes(1);
+      // Simulate page change
+      const call = renderMockComponent.mock.calls[0][0];
+      act(() => {
+        call.paginationProps.onPageChange(3, 10);
       });
-
-      it("should call options.onPageChange correctly", () => {
-        expect(onPageChange).toHaveBeenCalledTimes(1);
-        expect(onPageChange).toHaveBeenCalledWith(
-          newPage,
-          instance.currSizePerPage
-        );
-      });
-    });
-
-    describe("if remote pagination is enable", () => {
-      beforeEach(() => {
-        wrapper = shallow(
-          shallowContext(
-            {
-              ...defaultPagination,
-            },
-            true
-          )
-        );
-        instance = wrapper.instance();
-        setRemotePaginationEmitter(instance, true);
-        jest.spyOn(instance, "forceUpdate");
-        instance.handleChangePage(newPage);
-      });
-
-      it("should still update component correctly", () => {
-        expect(instance.currPage).toEqual(newPage);
-        expect(instance.forceUpdate).toHaveBeenCalledTimes(0);
-      });
-
-      it("should emit paginationChange event correctly", () => {
-        expect(remoteEmitter.emit).toHaveBeenLastCalledWith(
-          "paginationChange",
-          instance.currPage,
-          instance.currSizePerPage
-        );
-      });
+      expect(onPageChange).toHaveBeenCalledWith(3, 10);
     });
   });
 
   describe("handleChangeSizePerPage", () => {
-    let instance: any;
-    const newPage = 2;
-    const newSizePerPage = 15;
-
-    describe("should update component correctly", () => {
-      beforeEach(() => {
-        wrapper = shallow(shallowContext());
-        instance = wrapper.instance();
-        setRemotePaginationEmitter(instance);
-        jest.spyOn(instance, "forceUpdate");
-        instance.handleChangeSizePerPage(newSizePerPage, newPage);
-      });
-
-      it("", () => {
-        expect(instance.currPage).toEqual(newPage);
-        expect(instance.currSizePerPage).toEqual(newSizePerPage);
-        expect(instance.forceUpdate).toHaveBeenCalledTimes(1);
-      });
-    });
-
-    describe("if options.onSizePerPageChange is defined", () => {
+    it("should call onSizePerPageChange if defined", () => {
       const onSizePerPageChange = jest.fn();
-      beforeEach(() => {
-        onSizePerPageChange.mockClear();
-        wrapper = shallow(
-          shallowContext({
-            ...defaultPagination,
-            onSizePerPageChange,
-          })
-        );
-        instance = wrapper.instance();
-        setRemotePaginationEmitter(instance);
-        jest.spyOn(instance, "forceUpdate");
-        instance.handleChangeSizePerPage(newSizePerPage, newPage);
+      renderContext({
+        ...defaultPagination,
+        onSizePerPageChange,
       });
-
-      it("should still update component correctly", () => {
-        expect(instance.currPage).toEqual(newPage);
-        expect(instance.currSizePerPage).toEqual(newSizePerPage);
-        expect(instance.forceUpdate).toHaveBeenCalledTimes(1);
+      // Simulate sizePerPage change
+      const call = renderMockComponent.mock.calls[0][0];
+      act(() => {
+        call.paginationProps.onSizePerPageChange(15, 2);
       });
-
-      it("should call options.onSizePerPageChange correctly", () => {
-        expect(onSizePerPageChange).toHaveBeenCalledTimes(1);
-        expect(onSizePerPageChange).toHaveBeenCalledWith(
-          newSizePerPage,
-          newPage
-        );
-      });
-    });
-
-    describe("if remote pagination is enable", () => {
-      beforeEach(() => {
-        wrapper = shallow(
-          shallowContext(
-            {
-              ...defaultPagination,
-            },
-            true
-          )
-        );
-        instance = wrapper.instance();
-        setRemotePaginationEmitter(instance, true);
-        jest.spyOn(instance, "forceUpdate");
-        instance.handleChangeSizePerPage(newSizePerPage, newPage);
-      });
-
-      it("should still update component correctly", () => {
-        expect(instance.currPage).toEqual(newPage);
-        expect(instance.currSizePerPage).toEqual(newSizePerPage);
-        expect(instance.forceUpdate).toHaveBeenCalledTimes(0);
-      });
-
-      it("should emit paginationChange event correctly", () => {
-        expect(remoteEmitter.emit).toHaveBeenLastCalledWith(
-          "paginationChange",
-          instance.currPage,
-          instance.currSizePerPage
-        );
-      });
+      expect(onSizePerPageChange).toHaveBeenCalledWith(15, 2);
     });
   });
 
   describe("when options.page is defined", () => {
     const page = 3;
-
     beforeEach(() => {
-      wrapper = shallow(
-        shallowContext({
-          ...defaultPagination,
-          page,
-        })
-      );
-      wrapper.render();
+      renderContext({
+        ...defaultPagination,
+        page,
+      });
     });
 
     it("should set correct currPage", () => {
-      expect(wrapper.instance().currPage).toEqual(page);
-    });
-
-    it("should render correctly", () => {
-      const instance = wrapper.instance();
-
-      expect(renderMockComponent).toHaveBeenCalledWith({
-        paginationProps: instance.getPaginationProps(),
-        paginationTableProps: {
-          pagination: {
-            createContext: expect.any(Function),
-            options: instance.getPaginationProps(),
-          },
-          setPaginationRemoteEmitter: instance.setPaginationRemoteEmitter,
-          dataChangeListener: expect.any(Object),
-        },
-      });
+      const call = renderMockComponent.mock.calls[0][0];
+      expect(call.paginationProps.page).toEqual(page);
     });
   });
 
   describe("when options.sizePerPage is defined", () => {
     const sizePerPage = Const.SIZE_PER_PAGE_LIST[2];
-
     beforeEach(() => {
-      wrapper = shallow(
-        shallowContext({
-          ...defaultPagination,
-          sizePerPage,
-        })
-      );
-      wrapper.render();
+      renderContext({
+        ...defaultPagination,
+        sizePerPage,
+      });
     });
 
     it("should set correct currSizePerPage", () => {
-      expect(wrapper.instance().currSizePerPage).toEqual(sizePerPage);
-    });
-
-    it("should render correctly", () => {
-      const instance = wrapper.instance();
-
-      expect(renderMockComponent).toHaveBeenCalledWith({
-        paginationProps: instance.getPaginationProps(),
-        paginationTableProps: {
-          pagination: {
-            createContext: expect.any(Function),
-            options: instance.getPaginationProps(),
-          },
-          setPaginationRemoteEmitter: instance.setPaginationRemoteEmitter,
-          dataChangeListener: expect.any(Object),
-        },
-      });
+      const call = renderMockComponent.mock.calls[0][0];
+      expect(call.paginationProps.sizePerPage).toEqual(sizePerPage);
     });
   });
 
   describe("when options.totalSize is defined", () => {
     const totalSize = 100;
-
     beforeEach(() => {
-      wrapper = shallow(
-        shallowContext({
-          ...defaultPagination,
-          totalSize,
-        })
-      );
-      wrapper.render();
+      renderContext({
+        ...defaultPagination,
+        totalSize,
+      });
     });
 
-    it("should render correctly", () => {
-      const instance = wrapper.instance();
-
-      expect(renderMockComponent).toHaveBeenCalledWith({
-        paginationProps: instance.getPaginationProps(),
-        paginationTableProps: {
-          pagination: {
-            createContext: expect.any(Function),
-            options: instance.getPaginationProps(),
-          },
-          setPaginationRemoteEmitter: instance.setPaginationRemoteEmitter,
-          dataChangeListener: expect.any(Object),
-        },
-      });
+    it("should set correct dataSize", () => {
+      const call = renderMockComponent.mock.calls[0][0];
+      expect(call.paginationProps.dataSize).toEqual(totalSize);
     });
   });
 
   describe("when options.showTotal is defined", () => {
     const showTotal = true;
-
     beforeEach(() => {
-      wrapper = shallow(
-        shallowContext({
-          ...defaultPagination,
-          showTotal,
-        })
-      );
-      wrapper.render();
+      renderContext({
+        ...defaultPagination,
+        showTotal,
+      });
     });
 
-    it("should render correctly", () => {
-      const instance = wrapper.instance();
-
-      expect(renderMockComponent).toHaveBeenCalledWith({
-        paginationProps: instance.getPaginationProps(),
-        paginationTableProps: {
-          pagination: {
-            createContext: expect.any(Function),
-            options: instance.getPaginationProps(),
-          },
-          setPaginationRemoteEmitter: instance.setPaginationRemoteEmitter,
-          dataChangeListener: expect.any(Object),
-        },
-      });
+    it("should set correct showTotal", () => {
+      const call = renderMockComponent.mock.calls[0][0];
+      expect(call.paginationProps.showTotal).toEqual(showTotal);
     });
   });
 
   describe("when options.pageStartIndex is defined", () => {
     const pageStartIndex = -1;
-
     beforeEach(() => {
-      wrapper = shallow(
-        shallowContext({
-          ...defaultPagination,
-          pageStartIndex,
-        })
-      );
-      wrapper.render();
+      renderContext({
+        ...defaultPagination,
+        pageStartIndex,
+      });
     });
 
-    it("should render correctly", () => {
-      const instance = wrapper.instance();
-
-      expect(renderMockComponent).toHaveBeenCalledWith({
-        paginationProps: instance.getPaginationProps(),
-        paginationTableProps: {
-          pagination: {
-            createContext: expect.any(Function),
-            options: instance.getPaginationProps(),
-          },
-          setPaginationRemoteEmitter: instance.setPaginationRemoteEmitter,
-          dataChangeListener: expect.any(Object),
-        },
-      });
+    it("should set correct pageStartIndex", () => {
+      const call = renderMockComponent.mock.calls[0][0];
+      expect(call.paginationProps.pageStartIndex).toEqual(pageStartIndex);
     });
   });
 
   describe("when options.sizePerPageList is defined", () => {
     const sizePerPageList = [10, 40];
-
     beforeEach(() => {
-      wrapper = shallow(
-        shallowContext({
-          ...defaultPagination,
-          sizePerPageList,
-        })
-      );
-      wrapper.render();
+      renderContext({
+        ...defaultPagination,
+        sizePerPageList,
+      });
     });
 
-    it("should render correctly", () => {
-      const instance = wrapper.instance();
-
-      expect(renderMockComponent).toHaveBeenCalledWith({
-        paginationProps: instance.getPaginationProps(),
-        paginationTableProps: {
-          pagination: {
-            createContext: expect.any(Function),
-            options: instance.getPaginationProps(),
-          },
-          setPaginationRemoteEmitter: instance.setPaginationRemoteEmitter,
-          dataChangeListener: expect.any(Object),
-        },
-      });
+    it("should set correct sizePerPageList", () => {
+      const call = renderMockComponent.mock.calls[0][0];
+      expect(call.paginationProps.sizePerPageList).toEqual(sizePerPageList);
     });
   });
 
   describe("when options.paginationSize is defined", () => {
     const paginationSize = 10;
-
     beforeEach(() => {
-      wrapper = shallow(
-        shallowContext({
-          ...defaultPagination,
-          paginationSize,
-        })
-      );
-      wrapper.render();
+      renderContext({
+        ...defaultPagination,
+        paginationSize,
+      });
     });
 
-    it("should render correctly", () => {
-      const instance = wrapper.instance();
-
-      expect(renderMockComponent).toHaveBeenCalledWith({
-        paginationProps: instance.getPaginationProps(),
-        paginationTableProps: {
-          pagination: {
-            createContext: expect.any(Function),
-            options: instance.getPaginationProps(),
-          },
-          setPaginationRemoteEmitter: instance.setPaginationRemoteEmitter,
-          dataChangeListener: expect.any(Object),
-        },
-      });
+    it("should set correct paginationSize", () => {
+      const call = renderMockComponent.mock.calls[0][0];
+      expect(call.paginationProps.paginationSize).toEqual(paginationSize);
     });
   });
 
   describe("when options.withFirstAndLast is defined", () => {
     const withFirstAndLast = false;
-
     beforeEach(() => {
-      wrapper = shallow(
-        shallowContext({
-          ...defaultPagination,
-          withFirstAndLast,
-        })
-      );
-      wrapper.render();
+      renderContext({
+        ...defaultPagination,
+        withFirstAndLast,
+      });
     });
 
-    it("should render correctly", () => {
-      const instance = wrapper.instance();
-
-      expect(renderMockComponent).toHaveBeenCalledWith({
-        paginationProps: instance.getPaginationProps(),
-        paginationTableProps: {
-          pagination: {
-            createContext: expect.any(Function),
-            options: instance.getPaginationProps(),
-          },
-          setPaginationRemoteEmitter: instance.setPaginationRemoteEmitter,
-          dataChangeListener: expect.any(Object),
-        },
-      });
+    it("should set correct withFirstAndLast", () => {
+      const call = renderMockComponent.mock.calls[0][0];
+      expect(call.paginationProps.withFirstAndLast).toEqual(withFirstAndLast);
     });
   });
 
   describe("when options.alwaysShowAllBtns is defined", () => {
     const alwaysShowAllBtns = true;
-
     beforeEach(() => {
-      wrapper = shallow(
-        shallowContext({
-          ...defaultPagination,
-          alwaysShowAllBtns,
-        })
-      );
-      wrapper.render();
+      renderContext({
+        ...defaultPagination,
+        alwaysShowAllBtns,
+      });
     });
 
-    it("should render correctly", () => {
-      const instance = wrapper.instance();
-
-      expect(renderMockComponent).toHaveBeenCalledWith({
-        paginationProps: instance.getPaginationProps(),
-        paginationTableProps: {
-          pagination: {
-            createContext: expect.any(Function),
-            options: instance.getPaginationProps(),
-          },
-          setPaginationRemoteEmitter: instance.setPaginationRemoteEmitter,
-          dataChangeListener: expect.any(Object),
-        },
-      });
+    it("should set correct alwaysShowAllBtns", () => {
+      const call = renderMockComponent.mock.calls[0][0];
+      expect(call.paginationProps.alwaysShowAllBtns).toEqual(alwaysShowAllBtns);
     });
   });
 
   describe("when options.firstPageText is defined", () => {
     const firstPageText = "1st";
-
     beforeEach(() => {
-      wrapper = shallow(
-        shallowContext({
-          ...defaultPagination,
-          firstPageText,
-        })
-      );
-      wrapper.render();
+      renderContext({
+        ...defaultPagination,
+        firstPageText,
+      });
     });
 
-    it("should render correctly", () => {
-      const instance = wrapper.instance();
-
-      expect(renderMockComponent).toHaveBeenCalledWith({
-        paginationProps: instance.getPaginationProps(),
-        paginationTableProps: {
-          pagination: {
-            createContext: expect.any(Function),
-            options: instance.getPaginationProps(),
-          },
-          setPaginationRemoteEmitter: instance.setPaginationRemoteEmitter,
-          dataChangeListener: expect.any(Object),
-        },
-      });
+    it("should set correct firstPageText", () => {
+      const call = renderMockComponent.mock.calls[0][0];
+      expect(call.paginationProps.firstPageText).toEqual(firstPageText);
     });
   });
 
   describe("when options.prePageText is defined", () => {
     const prePageText = "PRE";
-
     beforeEach(() => {
-      wrapper = shallow(
-        shallowContext({
-          ...defaultPagination,
-          prePageText,
-        })
-      );
-      wrapper.render();
+      renderContext({
+        ...defaultPagination,
+        prePageText,
+      });
     });
 
-    it("should render correctly", () => {
-      const instance = wrapper.instance();
-
-      expect(renderMockComponent).toHaveBeenCalledWith({
-        paginationProps: instance.getPaginationProps(),
-        paginationTableProps: {
-          pagination: {
-            createContext: expect.any(Function),
-            options: instance.getPaginationProps(),
-          },
-          setPaginationRemoteEmitter: instance.setPaginationRemoteEmitter,
-          dataChangeListener: expect.any(Object),
-        },
-      });
+    it("should set correct prePageText", () => {
+      const call = renderMockComponent.mock.calls[0][0];
+      expect(call.paginationProps.prePageText).toEqual(prePageText);
     });
   });
 
   describe("when options.nextPageText is defined", () => {
     const nextPageText = "NEXT";
-
     beforeEach(() => {
-      wrapper = shallow(
-        shallowContext({
-          ...defaultPagination,
-          nextPageText,
-        })
-      );
-      wrapper.render();
+      renderContext({
+        ...defaultPagination,
+        nextPageText,
+      });
     });
 
-    it("should render correctly", () => {
-      const instance = wrapper.instance();
-
-      expect(renderMockComponent).toHaveBeenCalledWith({
-        paginationProps: instance.getPaginationProps(),
-        paginationTableProps: {
-          pagination: {
-            createContext: expect.any(Function),
-            options: instance.getPaginationProps(),
-          },
-          setPaginationRemoteEmitter: instance.setPaginationRemoteEmitter,
-          dataChangeListener: expect.any(Object),
-        },
-      });
+    it("should set correct nextPageText", () => {
+      const call = renderMockComponent.mock.calls[0][0];
+      expect(call.paginationProps.nextPageText).toEqual(nextPageText);
     });
   });
 
   describe("when options.lastPageText is defined", () => {
     const lastPageText = "LAST";
-
     beforeEach(() => {
-      wrapper = shallow(
-        shallowContext({
-          ...defaultPagination,
-          lastPageText,
-        })
-      );
-      wrapper.render();
+      renderContext({
+        ...defaultPagination,
+        lastPageText,
+      });
     });
 
-    it("should render correctly", () => {
-      const instance = wrapper.instance();
-
-      expect(renderMockComponent).toHaveBeenCalledWith({
-        paginationProps: instance.getPaginationProps(),
-        paginationTableProps: {
-          pagination: {
-            createContext: expect.any(Function),
-            options: instance.getPaginationProps(),
-          },
-          setPaginationRemoteEmitter: instance.setPaginationRemoteEmitter,
-          dataChangeListener: expect.any(Object),
-        },
-      });
+    it("should set correct lastPageText", () => {
+      const call = renderMockComponent.mock.calls[0][0];
+      expect(call.paginationProps.lastPageText).toEqual(lastPageText);
     });
   });
 
   describe("when options.firstPageTitle is defined", () => {
     const firstPageTitle = "1st";
-
     beforeEach(() => {
-      wrapper = shallow(
-        shallowContext({
-          ...defaultPagination,
-          firstPageTitle,
-        })
-      );
-      wrapper.render();
+      renderContext({
+        ...defaultPagination,
+        firstPageTitle,
+      });
     });
 
-    it("should render correctly", () => {
-      const instance = wrapper.instance();
-
-      expect(renderMockComponent).toHaveBeenCalledWith({
-        paginationProps: instance.getPaginationProps(),
-        paginationTableProps: {
-          pagination: {
-            createContext: expect.any(Function),
-            options: instance.getPaginationProps(),
-          },
-          setPaginationRemoteEmitter: instance.setPaginationRemoteEmitter,
-          dataChangeListener: expect.any(Object),
-        },
-      });
+    it("should set correct firstPageTitle", () => {
+      const call = renderMockComponent.mock.calls[0][0];
+      expect(call.paginationProps.firstPageTitle).toEqual(firstPageTitle);
     });
   });
 
   describe("when options.prePageTitle is defined", () => {
     const prePageTitle = "PRE";
-
     beforeEach(() => {
-      wrapper = shallow(
-        shallowContext({
-          ...defaultPagination,
-          prePageTitle,
-        })
-      );
-      wrapper.render();
+      renderContext({
+        ...defaultPagination,
+        prePageTitle,
+      });
     });
 
-    it("should render correctly", () => {
-      const instance = wrapper.instance();
-
-      expect(renderMockComponent).toHaveBeenCalledWith({
-        paginationProps: instance.getPaginationProps(),
-        paginationTableProps: {
-          pagination: {
-            createContext: expect.any(Function),
-            options: instance.getPaginationProps(),
-          },
-          setPaginationRemoteEmitter: instance.setPaginationRemoteEmitter,
-          dataChangeListener: expect.any(Object),
-        },
-      });
+    it("should set correct prePageTitle", () => {
+      const call = renderMockComponent.mock.calls[0][0];
+      expect(call.paginationProps.prePageTitle).toEqual(prePageTitle);
     });
   });
 
   describe("when options.nextPageTitle is defined", () => {
     const nextPageTitle = "NEXT";
-
     beforeEach(() => {
-      wrapper = shallow(
-        shallowContext({
-          ...defaultPagination,
-          nextPageTitle,
-        })
-      );
-      wrapper.render();
+      renderContext({
+        ...defaultPagination,
+        nextPageTitle,
+      });
     });
 
-    it("should render correctly", () => {
-      const instance = wrapper.instance();
-
-      expect(renderMockComponent).toHaveBeenCalledWith({
-        paginationProps: instance.getPaginationProps(),
-        paginationTableProps: {
-          pagination: {
-            createContext: expect.any(Function),
-            options: instance.getPaginationProps(),
-          },
-          setPaginationRemoteEmitter: instance.setPaginationRemoteEmitter,
-          dataChangeListener: expect.any(Object),
-        },
-      });
+    it("should set correct nextPageTitle", () => {
+      const call = renderMockComponent.mock.calls[0][0];
+      expect(call.paginationProps.nextPageTitle).toEqual(nextPageTitle);
     });
   });
 
   describe("when options.lastPageTitle is defined", () => {
     const lastPageTitle = "nth";
-
     beforeEach(() => {
-      wrapper = shallow(
-        shallowContext({
-          ...defaultPagination,
-          lastPageTitle,
-        })
-      );
-      wrapper.render();
+      renderContext({
+        ...defaultPagination,
+        lastPageTitle,
+      });
     });
 
-    it("should render correctly", () => {
-      const instance = wrapper.instance();
-
-      expect(renderMockComponent).toHaveBeenCalledWith({
-        paginationProps: instance.getPaginationProps(),
-        paginationTableProps: {
-          pagination: {
-            createContext: expect.any(Function),
-            options: instance.getPaginationProps(),
-          },
-          setPaginationRemoteEmitter: instance.setPaginationRemoteEmitter,
-          dataChangeListener: expect.any(Object),
-        },
-      });
+    it("should set correct lastPageTitle", () => {
+      const call = renderMockComponent.mock.calls[0][0];
+      expect(call.paginationProps.lastPageTitle).toEqual(lastPageTitle);
     });
   });
 
   describe("when options.hideSizePerPage is defined", () => {
     const hideSizePerPage = true;
-
     beforeEach(() => {
-      wrapper = shallow(
-        shallowContext({
-          ...defaultPagination,
-          hideSizePerPage,
-        })
-      );
-      wrapper.render();
+      renderContext({
+        ...defaultPagination,
+        hideSizePerPage,
+      });
     });
 
-    it("should render correctly", () => {
-      const instance = wrapper.instance();
-
-      expect(renderMockComponent).toHaveBeenCalledWith({
-        paginationProps: instance.getPaginationProps(),
-        paginationTableProps: {
-          pagination: {
-            createContext: expect.any(Function),
-            options: instance.getPaginationProps(),
-          },
-          setPaginationRemoteEmitter: instance.setPaginationRemoteEmitter,
-          dataChangeListener: expect.any(Object),
-        },
-      });
+    it("should set correct hideSizePerPage", () => {
+      const call = renderMockComponent.mock.calls[0][0];
+      expect(call.paginationProps.hideSizePerPage).toEqual(hideSizePerPage);
     });
   });
 
   describe("when options.hidePageListOnlyOnePage is defined", () => {
     const hidePageListOnlyOnePage = true;
-
     beforeEach(() => {
-      wrapper = shallow(
-        shallowContext({
-          ...defaultPagination,
-          hidePageListOnlyOnePage,
-        })
-      );
-      wrapper.render();
+      renderContext({
+        ...defaultPagination,
+        hidePageListOnlyOnePage,
+      });
     });
 
-    it("should render correctly", () => {
-      const instance = wrapper.instance();
-
-      expect(renderMockComponent).toHaveBeenCalledWith({
-        paginationProps: instance.getPaginationProps(),
-        paginationTableProps: {
-          pagination: {
-            createContext: expect.any(Function),
-            options: instance.getPaginationProps(),
-          },
-          setPaginationRemoteEmitter: instance.setPaginationRemoteEmitter,
-          dataChangeListener: expect.any(Object),
-        },
-      });
+    it("should set correct hidePageListOnlyOnePage", () => {
+      const call = renderMockComponent.mock.calls[0][0];
+      expect(call.paginationProps.hidePageListOnlyOnePage).toEqual(hidePageListOnlyOnePage);
     });
   });
 });

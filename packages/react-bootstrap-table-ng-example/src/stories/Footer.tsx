@@ -11,12 +11,19 @@ import "../../../react-bootstrap-table-ng/style/react-bootstrap-table-ng.scss";
 import "./stylesheet/storybook.scss";
 import "./stylesheet/tomorrow.min.css";
 
+interface FooterProps {
+  data?: any;
+  columns?: any;
+  sourceCode?: any;
+  footerClasses?: any;
+}
+
 export default ({
   data,
   columns,
   sourceCode,
   footerClasses,
-}) => (
+}: FooterProps) => (
   <div>
     <BootstrapTable
       keyField="id"

@@ -180,7 +180,7 @@ class BookList extends React.Component<{}, BookListState> {
   }
 }
 
-interface StandalonePaginationListProps {}
+interface StandalonePaginationListProps { }
 
 class StandalonePaginationList extends React.Component<StandalonePaginationListProps> {
   products = productsGenerator(87);
@@ -255,7 +255,7 @@ class StandalonePaginationList extends React.Component<StandalonePaginationListP
           remoteEmitter={{}}
           isRemotePagination={() => false}
         >
-          {({ paginationProps, paginationTableProps }) => (
+          {({ paginationProps, paginationTableProps }: any) => (
             <div>
               <PaginationListStandalone {...paginationProps} />
               <BootstrapTable
@@ -273,7 +273,7 @@ class StandalonePaginationList extends React.Component<StandalonePaginationListP
   }
 }
 
-interface StandaloneSizePerPageProps {}
+interface StandaloneSizePerPageProps { }
 
 class StandaloneSizePerPage extends React.Component<StandaloneSizePerPageProps> {
   render() {
@@ -349,7 +349,7 @@ class StandaloneSizePerPage extends React.Component<StandaloneSizePerPageProps> 
           remoteEmitter={{}}
           isRemotePagination={() => false}
         >
-          {({ paginationProps, paginationTableProps }) => (
+          {({ paginationProps, paginationTableProps }: any) => (
             <div>
               <SizePerPageDropdownStandalone
                 {...paginationProps}
@@ -370,7 +370,7 @@ class StandaloneSizePerPage extends React.Component<StandaloneSizePerPageProps> 
   }
 }
 
-interface StandalonePaginationTotalProps {}
+interface StandalonePaginationTotalProps { }
 
 class StandalonePaginationTotal extends React.Component<StandalonePaginationTotalProps> {
   render() {
@@ -448,7 +448,7 @@ class StandalonePaginationTotal extends React.Component<StandalonePaginationTota
           remoteEmitter={{}}
           isRemotePagination={() => false}
         >
-          {({ paginationProps, paginationTableProps }) => (
+          {({ paginationProps, paginationTableProps }: any) => (
             <div>
               <PaginationTotalStandalone {...paginationProps} />
               <PaginationListStandalone {...paginationProps} />
@@ -467,23 +467,23 @@ class StandalonePaginationTotal extends React.Component<StandalonePaginationTota
   }
 }
 
-interface FullyCustomPaginationProps {}
+interface FullyCustomPaginationProps { }
 
 class FullyCustomPagination extends React.Component<FullyCustomPaginationProps> {
   handleNextPage =
-    ({ page, onPageChange }) =>
-    () => {
-      onPageChange(page + 1);
-    };
+    ({ page, onPageChange }: any) =>
+      () => {
+        onPageChange(page + 1);
+      };
 
   handlePrevPage =
-    ({ page, onPageChange }) =>
-    () => {
-      onPageChange(page - 1);
-    };
+    ({ page, onPageChange }: any) =>
+      () => {
+        onPageChange(page - 1);
+      };
 
   handleSizePerPage = (
-    { page, onSizePerPageChange },
+    { page, onSizePerPageChange }: any,
     newSizePerPage: number
   ) => {
     onSizePerPageChange(newSizePerPage, page);
@@ -645,7 +645,7 @@ class FullyCustomPagination extends React.Component<FullyCustomPaginationProps> 
   }
 }
 
-interface RemoteFullyCustomPaginationProps {}
+interface RemoteFullyCustomPaginationProps { }
 
 interface RemoteFullyCustomPaginationState {
   data: any;
@@ -763,7 +763,7 @@ class RemoteFullyCustomPagination extends React.Component<
     };
   }
 
-  handleTableChange = (type: string, { page, sizePerPage }) => {
+  handleTableChange = (type: string, { page, sizePerPage }: any) => {
     const currentIndex = (page - 1) * sizePerPage;
     setTimeout(() => {
       this.setState(() => ({
@@ -845,7 +845,7 @@ class PaginationFilter extends React.Component<{}, PaginationFilterState> {
     }, {
       dataField: 'quality',
       text: 'Product Quailty',
-      formatter: (cell: any) => selectOptions[cell],
+      formatter: (cell: any) => (selectOptions as any)[cell],
       filter: selectFilter({
         options: selectOptions,
         defaultValue: 0
@@ -954,7 +954,7 @@ class PaginationFilter extends React.Component<{}, PaginationFilterState> {
     }
     `;
 
-    const contentTable = ({ paginationProps, paginationTableProps }) => (
+    const contentTable = ({ paginationProps, paginationTableProps }: any) => (
       <div>
         <button className="btn btn-default" onClick={this.loadData}>Load Another Data</button>
         <PaginationListStandalone {...paginationProps} />
@@ -1101,7 +1101,7 @@ class PaginationSearch extends React.Component<{}, PaginationSearchState> {
 
     const { SearchBar } = Search;
 
-    const contentTable = ({ paginationProps, paginationTableProps }) => (
+    const contentTable = ({ paginationProps, paginationTableProps }: any) => (
       <div>
         <button className="btn btn-default" onClick={this.loadData}>Load Another Data</button>
         <PaginationListStandalone {...paginationProps} />
@@ -1145,7 +1145,21 @@ class PaginationSearch extends React.Component<{}, PaginationSearchState> {
   }
 }
 
-export default ({ mode, data, columns, sourceCode, pagination }) => {
+interface PaginationMainProps {
+  mode?: any;
+  data?: any;
+  columns?: any;
+  sourceCode?: any;
+  pagination?: any;
+}
+
+export default ({
+  mode,
+  data,
+  columns,
+  sourceCode,
+  pagination,
+}: PaginationMainProps) => {
   switch (mode) {
     case "dynamic":
       return (
