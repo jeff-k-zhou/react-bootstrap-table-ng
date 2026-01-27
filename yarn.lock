@@ -20107,7 +20107,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "react-bootstrap-table-ng-filter@workspace:packages/react-bootstrap-table-ng-filter"
   dependencies:
-    react-bootstrap-table-ng: "npm:^4.18.0"
+    react-bootstrap-table-ng: "npm:^4.18.0-beta1"
     ts-migrate: "npm:^0.1.35"
   peerDependencies:
     prop-types: ^15.8.1
@@ -20227,7 +20227,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "react-bootstrap-table-ng-paginator@workspace:packages/react-bootstrap-table-ng-paginator"
   dependencies:
-    react-bootstrap-table-ng: "npm:^4.18.0"
+    react-bootstrap-table-ng: "npm:^4.18.0-beta1"
   peerDependencies:
     prop-types: ^15.8.1
     react: ^18.3.1
@@ -20241,7 +20241,7 @@ __metadata:
   dependencies:
     "@types/file-saver": "npm:^2.0.7"
     file-saver: "npm:^2.0.5"
-    react-bootstrap-table-ng: "npm:^4.18.0"
+    react-bootstrap-table-ng: "npm:^4.18.0-beta1"
   peerDependencies:
     prop-types: ^15.8.1
     react: ^18.3.1
@@ -20249,7 +20249,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"react-bootstrap-table-ng@npm:^4.18.0, react-bootstrap-table-ng@workspace:packages/react-bootstrap-table-ng":
+"react-bootstrap-table-ng@npm:^4.18.0-beta1, react-bootstrap-table-ng@workspace:packages/react-bootstrap-table-ng":
   version: 0.0.0-use.local
   resolution: "react-bootstrap-table-ng@workspace:packages/react-bootstrap-table-ng"
   dependencies:
