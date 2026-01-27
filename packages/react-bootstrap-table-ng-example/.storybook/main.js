@@ -7,7 +7,6 @@ module.exports = {
         "@storybook/addon-links",
         "@storybook/addon-essentials",
         "@storybook/addon-interactions",
-        "@storybook/preset-create-react-app",
         "@storybook/addon-onboarding",
         "@storybook/addon-docs"
     ],
@@ -26,6 +25,14 @@ module.exports = {
   `,
 
     webpackFinal: async (config) => {
+        // Find existing rules for CSS to avoid duplication
+        config.module.rules = config.module.rules.map(rule => {
+            if (rule.test && rule.test.toString().includes('css')) {
+                return { ...rule, exclude: /\.s[ac]ss$/i };
+            }
+            return rule;
+        });
+
         config.module.rules.push({
             test: /\.(ts|tsx)$/,
             include: [
@@ -52,16 +59,29 @@ module.exports = {
                 },
             ],
         });
+        config.module.rules.push({
+            test: /\.s[ac]ss$/i,
+            use: [
+                "style-loader",
+                "css-loader",
+                {
+                    loader: "sass-loader",
+                    options: {
+                        implementation: require("sass"),
+                    },
+                },
+            ],
+        });
+        config.module.rules.push({
+            test: /\.(png|jpg|jpeg|gif|svg)$/i,
+            type: "asset/resource",
+        });
         if (config.resolve) {
             config.resolve.alias = {
                 ...(config.resolve.alias || {}),
-                "file-saver": path.resolve(
-                    __dirname,
-                    "../node_modules/file-saver"
-                ),
+                "file-saver": path.resolve(__dirname, "../../../node_modules/file-saver"),
             };
             config.resolve.modules = [
-                path.resolve(__dirname, "../node_modules"),
                 path.resolve(__dirname, "../../../node_modules"),
                 "node_modules",
                 ...(config.resolve.modules || []),

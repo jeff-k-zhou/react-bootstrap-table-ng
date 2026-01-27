@@ -91,6 +91,7 @@
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^29.7.0",
     "babel-loader": "^9.2.1",
+    "babel-preset-react-app": "^10.1.0",
     "css-loader": "^7.1.2",
     "eslint": "^9.17.0",
     "eslint-plugin-import": "^2.31.0",
@@ -115,6 +116,7 @@
     "jsdom-global": "^3.0.2",
     "lerna": "^8.1.9",
     "react-loading-overlay-nextgen": "^1.2.9",
+    "react-refresh": "^0.18.0",
     "react-test-renderer": "^18.3.1",
     "sass-loader": "^16.0.4",
     "sinon": "^19.0.2",
@@ -145,6 +147,7 @@
     "storybook": "8.6.15",
     "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
+    "typed.js": "^3.0.0",
     "typescript": "^5.7.2",
     "underscore": "^1.13.7"
   },
