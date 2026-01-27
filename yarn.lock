@@ -19802,7 +19802,6 @@ __metadata:
     sass-loader: "npm:^16.0.6"
     sinon: "npm:^19.0.2"
     source-map-support: "npm:^0.5.21"
-    storybook: "npm:^9.1.16"
     style-loader: "npm:^4.0.0"
     ts-jest: "npm:^29.2.5"
     ts-loader: "npm:^9.5.1"
