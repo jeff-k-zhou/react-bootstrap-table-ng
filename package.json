@@ -5,8 +5,9 @@
   "description": "Rebuilt for react-bootstrap-table, react-bootstrap-table-next, react-bootstrap-table-nextgen",
   "main": "index.js",
   "scripts": {
-    "build": "tsc && ./node_modules/.bin/gulp prod",
-    "watch": "tsc -w",
+    "build": "yarn clean:build && tsc && ./node_modules/.bin/gulp prod",
+    "watch": "yarn clean:build && tsc -w",
+    "clean:build": "find packages -type f \\( -name \"*.js\" -o -name \"*.js.map\" -o -name \"*.d.ts\" \\) -not -path \"*/node_modules/*\" -not -path \"*/react-bootstrap-table-ng-example/*\" -exec rm -f {} +",
     "lint": "eslint ./packages --max-warnings 0",
     "pretest": "yarn lint --cache",
     "test": "jest",
