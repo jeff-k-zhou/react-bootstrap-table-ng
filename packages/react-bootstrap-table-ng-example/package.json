@@ -24,14 +24,14 @@
   "author": "Jeff Zhou",
   "contributors": [
     {
-      "name": "Terrence Miao",
-      "email": "terrence.miao@gmail.com",
-      "url": "https://github.com/TerrenceMiao"
-    },
-    {
       "name": "Allen Fang",
       "email": "ayu780129@hotmail.com",
       "url": "https://github.com/AllenFang"
+    },
+    {
+      "name": "Terrence Miao",
+      "email": "terrence.miao@gmail.com",
+      "url": "https://github.com/TerrenceMiao"
     },
     {
       "name": "Chun-MingChen",
@@ -65,7 +65,7 @@
     "sass": "^1.97.3",
     "storybook": "^9.1.16",
     "typed.js": "^2.1.0",
-    "webpack": "^5.97.1"
+    "webpack": "^5.104.1"
   },
   "dependencies": {
     "@testing-library/jest-dom": "^6.6.3",

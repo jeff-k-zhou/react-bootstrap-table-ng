@@ -5188,7 +5188,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/eslint@npm:*":
+"@types/eslint@npm:*, @types/eslint@npm:^9.6.1":
   version: 9.6.1
   resolution: "@types/eslint@npm:9.6.1"
   dependencies:
@@ -5198,7 +5198,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/eslint@npm:^7.29.0 || ^8.4.1, @types/eslint@npm:^8.56.10":
+"@types/eslint@npm:^7.29.0 || ^8.4.1":
   version: 8.56.12
   resolution: "@types/eslint@npm:8.56.12"
   dependencies:
@@ -11144,19 +11144,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-webpack-plugin@npm:^4.2.0":
-  version: 4.2.0
-  resolution: "eslint-webpack-plugin@npm:4.2.0"
+"eslint-webpack-plugin@npm:^5.0.2":
+  version: 5.0.2
+  resolution: "eslint-webpack-plugin@npm:5.0.2"
   dependencies:
-    "@types/eslint": "npm:^8.56.10"
+    "@types/eslint": "npm:^9.6.1"
+    flatted: "npm:^3.3.3"
     jest-worker: "npm:^29.7.0"
-    micromatch: "npm:^4.0.5"
+    micromatch: "npm:^4.0.8"
     normalize-path: "npm:^3.0.0"
-    schema-utils: "npm:^4.2.0"
+    schema-utils: "npm:^4.3.0"
   peerDependencies:
     eslint: ^8.0.0 || ^9.0.0
     webpack: ^5.0.0
-  checksum: 10c0/cf5c9b7afa3c025fffadb3e1451e7a55d914c3070614bb4d57f887774d164ca4298bb777f7c3afa16f47af9869174a19d6aebb4d1ca719bc2cc49f2eccd71a3b
+  checksum: 10c0/29b8ad12ceb0cb8efeccb10d02131042ae95f9c0fdcc612c0cc9c239cb481b677de745f195e789ac0500d5f05bd09d39a36da82299d404c14c68982938a880b1
   languageName: node
   linkType: hard
 
@@ -12012,7 +12013,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"flatted@npm:^3.2.9":
+"flatted@npm:^3.2.9, flatted@npm:^3.3.3":
   version: 3.3.3
   resolution: "flatted@npm:3.3.3"
   checksum: 10c0/e957a1c6b0254aa15b8cce8533e24165abd98fadc98575db082b786b5da1b7d72062b81bfdcd1da2f4d46b6ed93bec2434e62333e9b4261d79ef2e75a10dd538
@@ -12825,7 +12826,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"gulp-sass@npm:^6.0.0":
+"gulp-sass@npm:^6.0.1":
   version: 6.0.1
   resolution: "gulp-sass@npm:6.0.1"
   dependencies:
@@ -13163,7 +13164,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"html-webpack-plugin@npm:^5.5.0, html-webpack-plugin@npm:^5.6.3":
+"html-webpack-plugin@npm:^5.5.0, html-webpack-plugin@npm:^5.6.6":
   version: 5.6.6
   resolution: "html-webpack-plugin@npm:5.6.6"
   dependencies:
@@ -19698,7 +19699,7 @@ __metadata:
     typed.js: "npm:^2.1.0"
     typescript: "npm:^5.7.2"
     web-vitals: "npm:^4.2.4"
-    webpack: "npm:^5.97.1"
+    webpack: "npm:^5.104.1"
   peerDependencies:
     prop-types: ^15.8.1
     react: ^18.3.1
@@ -19780,7 +19781,7 @@ __metadata:
     eslint-plugin-react-hooks: "npm:^5.1.0"
     eslint-plugin-react-refresh: "npm:^0.4.16"
     eslint-plugin-storybook: "npm:^9.1.16"
-    eslint-webpack-plugin: "npm:^4.2.0"
+    eslint-webpack-plugin: "npm:^5.0.2"
     file-saver: "npm:^2.0.5"
     globals: "npm:^15.14.0"
     gulp: "npm:^5.0.0"
@@ -19788,9 +19789,9 @@ __metadata:
     gulp-clean: "npm:^0.4.0"
     gulp-clean-css: "npm:^4.3.0"
     gulp-rename: "npm:^2.0.0"
-    gulp-sass: "npm:^6.0.0"
+    gulp-sass: "npm:^6.0.1"
     gulp-shell: "npm:^0.8.0"
-    html-webpack-plugin: "npm:^5.6.3"
+    html-webpack-plugin: "npm:^5.6.6"
     jest: "npm:^29.7.0"
     jest-environment-jsdom: "npm:^29.7.0"
     jsdom: "npm:^25.0.1"
@@ -19803,8 +19804,8 @@ __metadata:
     react-refresh: "npm:^0.18.0"
     react-test-renderer: "npm:^18.3.1"
     react-transition-group: "npm:^4.4.5"
-    sass: "npm:^1.83.0"
-    sass-loader: "npm:^16.0.4"
+    sass: "npm:^1.97.3"
+    sass-loader: "npm:^16.0.6"
     sinon: "npm:^19.0.2"
     source-map-support: "npm:^0.5.21"
     storybook: "npm:^9.1.16"
@@ -19815,9 +19816,9 @@ __metadata:
     typed.js: "npm:^3.0.0"
     typescript: "npm:^5.7.2"
     underscore: "npm:^1.13.7"
-    webpack: "npm:^5.97.1"
+    webpack: "npm:^5.104.1"
     webpack-cli: "npm:^6.0.1"
-    webpack-dev-server: "npm:^5.2.0"
+    webpack-dev-server: "npm:^5.2.3"
   languageName: unknown
   linkType: soft
 
@@ -21021,7 +21022,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sass-loader@npm:^16.0.4":
+"sass-loader@npm:^16.0.6":
   version: 16.0.6
   resolution: "sass-loader@npm:16.0.6"
   dependencies:
@@ -21047,7 +21048,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sass@npm:^1.83.0, sass@npm:^1.97.3":
+"sass@npm:^1.97.3":
   version: 1.97.3
   resolution: "sass@npm:1.97.3"
   dependencies:
@@ -24108,7 +24109,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"webpack-dev-server@npm:^5.2.0":
+"webpack-dev-server@npm:^5.2.3":
   version: 5.2.3
   resolution: "webpack-dev-server@npm:5.2.3"
   dependencies:
@@ -24221,7 +24222,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"webpack@npm:5, webpack@npm:^5.64.4, webpack@npm:^5.97.1":
+"webpack@npm:5, webpack@npm:^5.104.1, webpack@npm:^5.64.4":
   version: 5.104.1
   resolution: "webpack@npm:5.104.1"
   dependencies:
