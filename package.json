@@ -110,7 +110,7 @@
     "jest-environment-jsdom": "^29.7.0",
     "jsdom": "^25.0.1",
     "jsdom-global": "^3.0.2",
-    "lerna": "^8.1.9",
+    "lerna": "^9.0.3",
     "react-loading-overlay-nextgen": "^1.2.9",
     "react-refresh": "^0.18.0",
     "react-test-renderer": "^18.3.1",
