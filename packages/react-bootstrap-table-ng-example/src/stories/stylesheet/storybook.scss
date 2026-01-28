@@ -1,15 +1,15 @@
 /* customized style for storybook */
-@import "base/base";
-@import "base/github-corner";
-@import "base/code-block";
+@use "base/base";
+@use "base/github-corner";
+@use "base/code-block";
 
-@import "base-table/index";
-@import "welcome/index";
-@import "columns/index";
-@import "cell-edit/index";
-@import "row-selection/index";
-@import "rows/index";
-@import "sort/index";
-@import "search/index";
-@import "loading-overlay/index";
-@import "row-expand/index";
+@use "base-table/index" as base-table;
+@use "welcome/index" as welcome;
+@use "columns/index" as columns;
+@use "cell-edit/index" as cell-edit;
+@use "row-selection/index" as row-selection;
+@use "rows/index" as rows;
+@use "sort/index" as sort;
+@use "search/index" as search;
+@use "loading-overlay/index" as loading-overlay;
+@use "row-expand/index" as row-expand;

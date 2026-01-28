@@ -1,9 +1,11 @@
+@use "../base/base" as base;
+
 .foo {
-  background-color: $grey-500;
+  background-color: base.$grey-500;
 }
 
 table#bar {
-  background-color: $light-blue;
+  background-color: base.$light-blue;
 }
 
 div.boo {

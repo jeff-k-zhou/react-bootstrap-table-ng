@@ -7,13 +7,13 @@ interface WithBootstrapStyleProps {
   render: (loading: boolean) => React.ReactNode;
 }
 
-interface WithBootstrapStyleState{
+interface WithBootstrapStyleState {
   loading: boolean;
 }
 
 export const BOOTSTRAP_VERSION = {
-  FOUR: "4.1.3",
-  THREE: "3.3.7",
+  FOUR: "4.6.2",
+  THREE: "3.4.1",
 };
 
 class WithBootstrapStyle extends PureComponent<WithBootstrapStyleProps, WithBootstrapStyleState> {
