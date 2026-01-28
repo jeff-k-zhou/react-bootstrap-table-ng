@@ -27,3 +27,4 @@ dist
 *.test.tsx.snap
 
 .yarn/
+.nx/
