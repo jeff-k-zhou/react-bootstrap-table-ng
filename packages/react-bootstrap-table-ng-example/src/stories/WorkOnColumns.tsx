@@ -12,7 +12,7 @@ import "../../../react-bootstrap-table-ng/style/react-bootstrap-table-ng.scss";
 import "./stylesheet/storybook.scss";
 import "./stylesheet/tomorrow.min.css";
 
-interface ProductListProps {}
+interface ProductListProps { }
 
 interface ProductListState {
   products: any[];
@@ -263,7 +263,7 @@ class ProductList extends React.Component<ProductListProps, ProductListState> {
   }
 }
 
-interface DummyColumnWithRowExpandProps {}
+interface DummyColumnWithRowExpandProps { }
 
 interface DummyColumnWithRowExpandState {
   hoverIdx: any;
@@ -289,7 +289,7 @@ class DummyColumnWithRowExpand extends React.Component<
     expandByColumnOnly: true,
   };
 
-  actionFormater = (cell: any, row: any, rowIndex: number, { hoverIdx }) => {
+  actionFormater = (cell: any, row: any, rowIndex: number, { hoverIdx }: any) => {
     if (
       (hoverIdx !== null || hoverIdx !== undefined) &&
       hoverIdx === rowIndex
@@ -313,7 +313,7 @@ class DummyColumnWithRowExpand extends React.Component<
   };
 
   rowStyle = (row: any, rowIndex: number) => {
-    row.index = rowIndex;
+    (row as any).index = rowIndex;
     const style: { backgroundColor?: any; borderTop?: any } = {};
     if (rowIndex % 2 === 0) {
       style.backgroundColor = "transparent";
@@ -457,7 +457,23 @@ class DummyColumnWithRowExpand extends React.Component<
   }
 }
 
-export default ({ mode, data, columns, sourceCode, bordered, header }) => {
+interface WorkOnColumnsProps {
+  mode?: any;
+  data?: any;
+  columns?: any;
+  sourceCode?: any;
+  bordered?: any;
+  header?: any;
+}
+
+export default ({
+  mode,
+  data,
+  columns,
+  sourceCode,
+  bordered,
+  header,
+}: WorkOnColumnsProps) => {
   switch (mode) {
     case "dummy":
       return <ProductList />;

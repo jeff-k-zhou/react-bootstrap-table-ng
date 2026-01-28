@@ -11,7 +11,7 @@ import bootstrapStyle from './bootstrap-style';
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta = {
   title: 'Column Filter',
-  component: BootstrapTable,
+  component: BootstrapTable as any,
   parameters: {
     // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/react/configure/story-layout
     layout: 'centered',
@@ -224,7 +224,7 @@ export const SelectFilter: Story = {
     }, {
       dataField: 'quality',
       text: 'Product Quailty',
-      formatter: (cell: number) => selectOptions[cell],
+      formatter: (cell: number) => (selectOptions as any)[cell],
       filter: selectFilter({
         options: selectOptions
       })
@@ -249,7 +249,7 @@ export const SelectFilter: Story = {
     }, {
       dataField: 'quality',
       text: 'Product Quailty',
-      formatter: cell => selectOptions[cell],
+      formatter: cell => (selectOptions as any)[cell],
       filter: selectFilter({
         options: selectOptions
       })
@@ -303,7 +303,7 @@ export const ConfigureSelectFilterOptions: Story = {
     const columns1 = [..., {
       dataField: 'quality',
       text: 'Product Quailty',
-      formatter: cell => selectOptions[cell],
+      formatter: cell => (selectOptions as any)[cell],
       filter: selectFilter({
         options: selectOptions
       })
@@ -340,7 +340,7 @@ export const ConfigureSelectFilterOptions: Story = {
     }, {
       dataField: 'quality',
       text: 'Product Quailty',
-      formatter: (cell: number) => selectOptions[cell],
+      formatter: (cell: number) => (selectOptions as any)[cell],
       filter: selectFilter({
         options: selectOptions
       })
@@ -388,7 +388,7 @@ export const SelectFilterWithDefaultValue: Story = {
     }, {
       dataField: 'quality',
       text: 'Product Quailty',
-      formatter: (cell: number) => selectOptions[cell],
+      formatter: (cell: number) => (selectOptions as any)[cell],
       filter: selectFilter({
         options: selectOptions,
         defaultValue: 2
@@ -414,7 +414,7 @@ export const SelectFilterWithDefaultValue: Story = {
     }, {
       dataField: 'quality',
       text: 'Product Quailty',
-      formatter: cell => selectOptions[cell],
+      formatter: cell => (selectOptions as any)[cell],
       filter: selectFilter({
         options: selectOptions,
         defaultValue: 2
@@ -492,7 +492,7 @@ export const MultiSelectFilter: Story = {
     }, {
       dataField: 'quality',
       text: 'Product Quailty',
-      formatter: (cell: number) => selectOptions[cell],
+      formatter: (cell: number) => (selectOptions as any)[cell],
       filter: multiSelectFilter({
         options: selectOptions
       })
@@ -517,7 +517,7 @@ export const MultiSelectFilter: Story = {
     }, {
       dataField: 'quality',
       text: 'Product Quailty',
-      formatter: cell => selectOptions[cell],
+      formatter: cell => (selectOptions as any)[cell],
       filter: multiSelectFilter({
         options: selectOptions
       })
@@ -541,7 +541,7 @@ export const MultiSelectFilterWithDefaultValue: Story = {
     }, {
       dataField: 'quality',
       text: 'Product Quailty',
-      formatter: (cell: number) => selectOptions[cell],
+      formatter: (cell: number) => (selectOptions as any)[cell],
       filter: multiSelectFilter({
         options: selectOptions,
         defaultValue: [0, 2]
@@ -567,7 +567,7 @@ export const MultiSelectFilterWithDefaultValue: Story = {
     }, {
       dataField: 'quality',
       text: 'Product Quailty',
-      formatter: cell => selectOptions[cell],
+      formatter: cell => (selectOptions as any)[cell],
       filter: multiSelectFilter({
         options: selectOptions,
         defaultValue: [0, 2]
@@ -823,7 +823,7 @@ export const FilterPosition: Story = {
     expandRow: {
       renderer: (row: any) => (
         <div>
-          <p>{ `This Expand row is belong to rowKey ${row.id}` }</p>
+          <p>{`This Expand row is belong to rowKey ${row.id}`}</p>
           <p>You can render anything here, also you can add additional data on every row object</p>
           <p>expandRow.renderer callback will pass the origin row object to you</p>
         </div>
@@ -901,7 +901,7 @@ export const CustomSelectFilter: Story = {
     }, {
       dataField: 'quality',
       text: 'Product Quailty',
-      formatter: (cell: number) => selectOptions[cell],
+      formatter: (cell: number) => (selectOptions as any)[cell],
       filter: selectFilter({
         options: selectOptions,
         withoutEmptyOption: true,
@@ -932,7 +932,7 @@ export const CustomSelectFilter: Story = {
     }, {
       dataField: 'quality',
       text: 'Product Quailty',
-      formatter: cell => selectOptions[cell],
+      formatter: cell => (selectOptions as any)[cell],
       filter: selectFilter({
         options: selectOptions,
         withoutEmptyOption: true,
@@ -1088,7 +1088,7 @@ export const CustomMultiSelectFilter: Story = {
     }, {
       dataField: 'quality',
       text: 'Product Quailty',
-      formatter: (cell: any) => selectOptions[cell],
+      formatter: (cell: any) => (selectOptions as any)[cell],
       filter: multiSelectFilter({
         options: selectOptions,
         withoutEmptyOption: true,
@@ -1119,7 +1119,7 @@ export const CustomMultiSelectFilter: Story = {
     }, {
       dataField: 'quality',
       text: 'Product Quailty',
-      formatter: cell => selectOptions[cell],
+      formatter: cell => (selectOptions as any)[cell],
       filter: multiSelectFilter({
         options: selectOptions,
         withoutEmptyOption: true,
@@ -1262,7 +1262,7 @@ export const ProgrammaticallyTextFilter: Story = {
     );
     `,
     filter: filterFactory(),
-    header: <button className="btn btn-lg btn-primary" onClick={ handleNameFilterClick }> filter columns by 0 </button>,
+    header: <button className="btn btn-lg btn-primary" onClick={handleNameFilterClick}> filter columns by 0 </button>,
   }
 };
 
@@ -1284,7 +1284,7 @@ export const ProgrammaticallySelectFilter: Story = {
     }, {
       dataField: 'quality',
       text: 'Product Quality',
-      formatter: (cell: any) => selectOptions[cell],
+      formatter: (cell: any) => (selectOptions as any)[cell],
       filter: selectFilter({
         options: selectOptions,
         getFilter: (filter) => {
@@ -1315,7 +1315,7 @@ export const ProgrammaticallySelectFilter: Story = {
     }, {
       dataField: 'quality',
       text: 'Product Quality',
-      formatter: cell => selectOptions[cell],
+      formatter: cell => (selectOptions as any)[cell],
       filter: selectFilter({
         options: selectOptions,
         getFilter: (filter) => {
@@ -1338,7 +1338,7 @@ export const ProgrammaticallySelectFilter: Story = {
     );
     `,
     filter: filterFactory(),
-    header: <button className="btn btn-lg btn-primary" onClick={ handleQualityFilterClick }>{' filter columns by option "good" '}</button>,
+    header: <button className="btn btn-lg btn-primary" onClick={handleQualityFilterClick}>{' filter columns by option "good" '}</button>,
   }
 };
 
@@ -1410,7 +1410,7 @@ export const ProgrammaticallyNumberFilter: Story = {
     );
     `,
     filter: filterFactory(),
-    header: <button className="btn btn-lg btn-primary" onClick={ handlePriceFilterClick }> filter all columns which is greater than 2103 </button>,
+    header: <button className="btn btn-lg btn-primary" onClick={handlePriceFilterClick}> filter all columns which is greater than 2103 </button>,
   }
 };
 
@@ -1483,7 +1483,7 @@ export const ProgrammaticallyDateFilter: Story = {
     );
     `,
     filter: filterFactory(),
-    header: <button className="btn btn-lg btn-primary" onClick={ handleDateFilterClick }> filter InStock Date columns which is greater than 2018.01.01 </button>,
+    header: <button className="btn btn-lg btn-primary" onClick={handleDateFilterClick}> filter InStock Date columns which is greater than 2018.01.01 </button>,
   }
 };
 
@@ -1505,7 +1505,7 @@ export const ProgrammaticallyMultiSelectFilter: Story = {
     }, {
       dataField: 'quality',
       text: 'Product Quality',
-      formatter: (cell: number) => selectOptions[cell],
+      formatter: (cell: number) => (selectOptions as any)[cell],
       filter: multiSelectFilter({
         options: selectOptions,
         getFilter: (filter) => {
@@ -1536,7 +1536,7 @@ export const ProgrammaticallyMultiSelectFilter: Story = {
     }, {
       dataField: 'quality',
       text: 'Product Quality',
-      formatter: cell => selectOptions[cell],
+      formatter: cell => (selectOptions as any)[cell],
       filter: multiSelectFilter({
         options: selectOptions,
         getFilter: (filter) => {
@@ -1558,7 +1558,7 @@ export const ProgrammaticallyMultiSelectFilter: Story = {
     );
     `,
     filter: filterFactory(),
-    header: <button className="btn btn-lg btn-primary" onClick={ handleQualityMultiSelectFilterClick }>{' filter columns by option "good" and "unknow" '}</button>,
+    header: <button className="btn btn-lg btn-primary" onClick={handleQualityMultiSelectFilterClick}>{' filter columns by option "good" and "unknow" '}</button>,
   }
 };
 
@@ -1625,8 +1625,8 @@ export const CustomFilter: Story = {
       dataField: 'price',
       text: 'Product Price',
       filter: customFilter(),
-      filterRenderer: (onFilter:any, column: any) =>
-        <PriceFilter onFilter={ onFilter } column={ column } />
+      filterRenderer: (onFilter: any, column: any) =>
+        <PriceFilter onFilter={onFilter} column={column} />
     }],
     data: productsGenerator(8),
     sourceCode: `\
@@ -1790,8 +1790,8 @@ export const AdvanceCustomFilter: Story = {
       filter: customFilter({
         type: FILTER_TYPES.NUMBER // ask react-bootstrap-table to filter data as number
       }),
-      filterRenderer: (onFilter, column) =>
-        <AdvancePriceFilter onFilter={ onFilter } column={ column } />
+      filterRenderer: (onFilter: any, column: any) =>
+        <AdvancePriceFilter onFilter={onFilter} column={column} />
     }],
     data: productsGenerator(8),
     sourceCode: `\
@@ -1902,7 +1902,7 @@ export const PreservedOptionOrderOnSelectFilter: Story = {
       text: 'Product Quailty',
       formatter: (cell: any) => {
         const foundOption = selectFilterOptions.find((opt: any) => opt.value === cell);
-        return foundOption ? foundOption.label: "";
+        return foundOption ? foundOption.label : "";
       },
       filter: selectFilter({
         options: selectFilterOptions
@@ -1971,7 +1971,7 @@ export const ClearAllFilters: Story = {
     }, {
       dataField: 'quality',
       text: 'Product Quailty',
-      formatter: (cell: number) => selectOptions[cell],
+      formatter: (cell: number) => (selectOptions as any)[cell],
       filter: selectFilter({
         options: selectOptions,
         getFilter: (filter) => {
@@ -2057,7 +2057,7 @@ export const ClearAllFilters: Story = {
     );
     `,
     filter: filterFactory(),
-    header: <button className="btn btn-lg btn-primary" onClick={ handleAllFiltersClick }> Clear all filters </button>,
+    header: <button className="btn btn-lg btn-primary" onClick={handleAllFiltersClick}> Clear all filters </button>,
   }
 };
 
@@ -2124,7 +2124,7 @@ const filterByPrice = (filterVal: any, data?: any): void | any[] => {
 export const ImplementCustomFilterLogic: Story = {
   name: "Implement custom filter logic",
   args: {
-    columns:  [{
+    columns: [{
       dataField: 'id',
       text: 'Product ID'
     }, {
@@ -2181,6 +2181,6 @@ export const ImplementCustomFilterLogic: Story = {
     }
     `,
     filter: filterFactory({ afterFilter }),
-    header:  <h2>Implement a eq price filter</h2>,
+    header: <h2>Implement a eq price filter</h2>,
   }
 };

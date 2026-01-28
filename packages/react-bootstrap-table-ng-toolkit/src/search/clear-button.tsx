@@ -4,8 +4,8 @@ import { ClearSearchButtonProps } from "../..";
 
 const ClearButton = ({
   onClear,
-  text,
-  className,
+  text = "Clear",
+  className = "",
 }: ClearSearchButtonProps): React.ReactElement | null => (
   <button className={`btn btn-default ${className}`} onClick={onClear}>
     {text}
@@ -18,9 +18,9 @@ ClearButton.propTypes = {
   text: PropTypes.string,
 };
 
-ClearButton.defaultProps = {
-  text: "Clear",
-  className: "",
-};
+// ClearButton.defaultProps = {
+//   text: "Clear",
+//   className: "",
+// };
 
 export default ClearButton;

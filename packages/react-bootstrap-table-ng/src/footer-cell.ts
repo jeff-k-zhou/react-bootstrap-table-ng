@@ -1,8 +1,8 @@
 import cs from "classnames";
 import React, { Component, ReactNode } from "react";
 
-import { ColumnDescription } from "..";
-import eventDelegater from "./cell-event-delegater";
+import { ColumnDescription } from "./types";
+import { CellEventDelegater as eventDelegater } from "./cell-event-delegater";
 import _ from "./utils";
 
 interface FooterCellProps {

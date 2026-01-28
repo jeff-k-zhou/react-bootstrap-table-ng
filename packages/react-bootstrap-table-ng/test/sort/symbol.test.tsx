@@ -1,28 +1,32 @@
+import { render } from "@testing-library/react";
 import React from "react";
 
 import SortSymbol from "../../src/sort/symbol";
-import { shallowWithContext } from "../test-helpers/new-context";
+import { BootstrapContext } from "../../src/contexts/bootstrap";
 
 describe("SortSymbol", () => {
-  let wrapper: any;
-  beforeEach(() => {
-    wrapper = shallowWithContext(<SortSymbol />, { bootstrap4: false });
-  });
-  it("should render sort symbol correctly", () => {
-    expect(wrapper.length).toBe(1);
-    expect(wrapper.find(".order").length).toBe(1);
-    expect(wrapper.find(".caret").length).toBe(2);
-    expect(wrapper.find(".dropdown").length).toBe(1);
-    expect(wrapper.find(".dropup").length).toBe(1);
+  describe("when bootstrap4 context is false", () => {
+    it("should render sort symbol correctly", () => {
+      const { container } = render(
+        <BootstrapContext.Provider value={{ bootstrap4: false }}>
+          <SortSymbol />
+        </BootstrapContext.Provider>
+      );
+      expect(container.getElementsByClassName("order").length).toBe(1);
+      expect(container.getElementsByClassName("caret").length).toBe(2);
+      expect(container.getElementsByClassName("dropdown").length).toBe(1);
+      expect(container.getElementsByClassName("dropup").length).toBe(1);
+    });
   });
 
   describe("if bootstrap4 prop is true", () => {
-    beforeEach(() => {
-      wrapper = shallowWithContext(<SortSymbol />, { bootstrap4: true });
-    });
     it("should render sort symbol correctly", () => {
-      expect(wrapper.length).toBe(1);
-      expect(wrapper.find(".order-4").length).toBe(1);
+      const { container } = render(
+        <BootstrapContext.Provider value={{ bootstrap4: true }}>
+          <SortSymbol />
+        </BootstrapContext.Provider>
+      );
+      expect(container.getElementsByClassName("order-4").length).toBe(1);
     });
   });
 });

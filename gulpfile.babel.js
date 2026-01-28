@@ -12,31 +12,36 @@ const TEST = 'test';
 const PKG_PATH = './packages';
 const NODE_MODULES = 'node_modules';
 
-const JS_PKGS = [
+const PKG_NAMES = [
   'react-bootstrap-table-ng',
   'react-bootstrap-table-ng-editor',
   'react-bootstrap-table-ng-filter',
   'react-bootstrap-table-ng-overlay',
   'react-bootstrap-table-ng-paginator',
   'react-bootstrap-table-ng-toolkit'
-].reduce((pkg, curr) => `${curr}|${pkg}`, '');
+];
+const JS_PKGS = PKG_NAMES.join('|');
 
 const JS_SKIPS = `+(${TEST}|${LIB}|${DIST}|${NODE_MODULES})`;
 
-const STYLE_PKGS = [
+const STYLE_PKG_NAMES = [
   'react-bootstrap-table-ng',
   'react-bootstrap-table-ng-filter',
   'react-bootstrap-table-ng-paginator',
   'react-bootstrap-table-ng-toolkit'
-].reduce((pkg, curr) => `${curr}|${pkg}`, '');
+];
+const STYLE_PKGS = STYLE_PKG_NAMES.join('|');
 
 const STYLE_SKIPS = `+(${NODE_MODULES})`;
 
 
 function clean() {
+  const dirs = PKG_NAMES.map(pkg => `./packages/${pkg}/${LIB} ./packages/${pkg}/${DIST}`).join(' ');
   return gulp
-    .src(`./packages/+(${JS_PKGS})/+(${LIB}|${DIST})`, { allowEmpty: true })
-    .pipe(cleanDir());
+    .src('.', { allowEmpty: true, read: false })
+    .pipe(shell([
+      `rm -rf ${dirs}`
+    ]));
 }
 
 function scripts() {

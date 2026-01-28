@@ -11,7 +11,7 @@ import bootstrapStyle from './bootstrap-style';
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta = {
   title: 'Pagination',
-  component: BootstrapTable,
+  component: BootstrapTable as any,
   parameters: {
     // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/react/configure/story-layout
     layout: 'centered',
@@ -125,7 +125,7 @@ export const PaginationWithDynamicData: Story = {
 
 const customTotal = (from: number, to: number, size: number) => (
   <span className="react-bootstrap-table-pagination-total">
-    Showing { from } to { to } of { size } Results
+    Showing {from} to {to} of {size} Results
   </span>
 );
 
@@ -211,7 +211,7 @@ const pageButtonRenderer = ({
   disable,
   title,
   onPageChange
-}) => {
+}: any) => {
   const handleClick = (e: any) => {
     e.preventDefault();
     onPageChange(page);
@@ -229,8 +229,8 @@ const pageButtonRenderer = ({
     activeStyle.color = 'black';
   }
   return (
-    <li key={ page } className="page-item">
-      <a href="#" onClick={ handleClick } style={ activeStyle }>{ page }</a>
+    <li key={page} className="page-item">
+      <a href="#" onClick={handleClick} style={activeStyle}>{page}</a>
     </li>
   );
 };
@@ -288,13 +288,13 @@ export const CustomPageButton: Story = {
 const pageListRenderer = ({
   pages,
   onPageChange
-}) => {
+}: any) => {
   const pageWithoutIndication = pages.filter((p: any) => typeof p.page !== 'string');
   return (
     <div>
       {
         pageWithoutIndication.map((p: any) => (
-          <button key={ p.page } className="btn btn-success" onClick={ () => onPageChange(p.page) }>{ p.page }</button>
+          <button key={p.page} className="btn btn-success" onClick={() => onPageChange(p.page)}>{p.page}</button>
         ))
       }
     </div>
@@ -341,9 +341,9 @@ const sizePerPageOptionRenderer = ({
   text,
   page,
   onSizePerPageChange
-}) => (
+}: any) => (
   <li
-    key={ text }
+    key={text}
     role="presentation"
     className="dropdown-item"
   >
@@ -352,14 +352,14 @@ const sizePerPageOptionRenderer = ({
       // @ts-ignore
       tabIndex="-1"
       role="menuitem"
-      data-page={ page }
-      onMouseDown={ (e: any) => {
+      data-page={page}
+      onMouseDown={(e: any) => {
         e.preventDefault();
         onSizePerPageChange(page);
-      } }
-      style={ { color: 'red' } }
+      }}
+      style={{ color: 'red' }}
     >
-      { text }
+      {text}
     </a>
   </li>
 );
@@ -414,17 +414,17 @@ const sizePerPageRenderer = ({
   options,
   currSizePerPage,
   onSizePerPageChange
-}) => (
+}: any) => (
   <div className="btn-group" role="group">
     {
       options.map((option: any) => (
         <button
-          key={ option.text }
+          key={option.text}
           type="button"
-          onClick={ () => onSizePerPageChange(option.page) }
-          className={ `btn ${currSizePerPage === `${option.page}` ? 'btn-secondary' : 'btn-warning'}` }
+          onClick={() => onSizePerPageChange(option.page)}
+          className={`btn ${currSizePerPage === `${option.page}` ? 'btn-secondary' : 'btn-warning'}`}
         >
-          { option.text }
+          {option.text}
         </button>
       ))
     }

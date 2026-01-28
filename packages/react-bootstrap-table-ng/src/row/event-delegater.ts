@@ -1,4 +1,4 @@
-import { ROW_SELECT_DISABLED } from "../..";
+import { ROW_SELECT_DISABLED } from "../const";
 import _ from "../utils";
 
 const events: string[] = [
@@ -23,9 +23,9 @@ interface RowEventDelegaterProps {
   DELAY_FOR_DBCLICK: number;
 }
 
-export default function RowEventDelegater<
+export const RowEventDelegater = <
   T extends new (...args: any[]) => any
->(ExtendBase: T) {
+>(ExtendBase: T) => {
   return class extends ExtendBase {
     clickNum: number = 0;
 

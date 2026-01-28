@@ -58,9 +58,14 @@ class TextFilter extends Component<TextFilterProps, TextFilterState> {
     this.cleanTimer();
   }
 
-  componentDidUpdate(nextProps: any) {
-    if (nextProps.defaultValue !== this.props.defaultValue) {
-      this.applyFilter(nextProps.defaultValue);
+  componentDidUpdate(prevProps: any) {
+    if (prevProps.defaultValue !== this.props.defaultValue) {
+      const nextValue = this.props.defaultValue ?? "";
+      this.setState({ value: nextValue }, () => {
+        // TODO
+        // @ts-ignore
+        this.props.onFilter(this.props.column, FILTER_TYPES.TEXT)(nextValue);
+      });
     }
   }
 
@@ -91,10 +96,11 @@ class TextFilter extends Component<TextFilterProps, TextFilterState> {
   }
 
   applyFilter(filterText: any) {
-    this.setState(() => ({ value: filterText }));
+    const value = filterText ?? "";
+    this.setState(() => ({ value }));
     // TODO
     // @ts-ignore
-    this.props.onFilter(this.props.column, FILTER_TYPES.TEXT)(filterText);
+    this.props.onFilter(this.props.column, FILTER_TYPES.TEXT)(value);
   }
 
   handleClick(e: any) {
@@ -135,6 +141,7 @@ class TextFilter extends Component<TextFilterProps, TextFilterState> {
           onClick={this.handleClick}
           placeholder={placeholder || `Enter ${text}...`}
           value={this.state.value}
+          data-testid="text-filter"
         />
       </label>
     );

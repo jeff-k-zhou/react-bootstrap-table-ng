@@ -7,7 +7,7 @@ import bootstrapStyle from './bootstrap-style';
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta = {
   title: 'Remote',
-  component: BootstrapTable,
+  component: BootstrapTable as any,
   parameters: {
     // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/react/configure/story-layout
     layout: 'centered',

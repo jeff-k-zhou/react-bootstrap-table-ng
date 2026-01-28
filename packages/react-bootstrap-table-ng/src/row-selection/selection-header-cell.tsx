@@ -4,7 +4,7 @@ import {
   CHECKBOX_STATUS_INDETERMINATE,
   ROW_SELECT_MULTIPLE,
   ROW_SELECT_SINGLE,
-} from "../..";
+} from "../const";
 import _ from "../utils";
 import { BootstrapContext } from "../contexts/bootstrap";
 
@@ -28,7 +28,7 @@ export const CheckBox: React.FC<CheckBoxProps> = ({
         input.indeterminate = indeterminate;
       }
     }}
-    onChange={() => {}}
+    onChange={() => { }}
   />
 );
 
@@ -46,8 +46,8 @@ interface SelectionHeaderCellProps {
     indeterminate: boolean;
   }) => ReactNode;
   headerColumnStyle?:
-    | React.CSSProperties
-    | ((checkedStatus: string) => React.CSSProperties);
+  | React.CSSProperties
+  | ((checkedStatus: string) => React.CSSProperties);
 }
 
 export default class SelectionHeaderCell extends Component<SelectionHeaderCellProps> {
@@ -95,9 +95,9 @@ export default class SelectionHeaderCell extends Component<SelectionHeaderCellPr
       attrs.onClick = this.handleCheckBoxClick;
     }
 
-    attrs.style = _.isFunction(headerColumnStyle)
+    attrs.style = (_.isFunction(headerColumnStyle)
       ? headerColumnStyle(checkedStatus!)
-      : headerColumnStyle;
+      : headerColumnStyle) as any;
 
     return (
       <BootstrapContext.Consumer>
@@ -119,7 +119,7 @@ export default class SelectionHeaderCell extends Component<SelectionHeaderCellPr
             );
           }
           return (
-            <th className="selection-cell-header" data-row-selection {...attrs}>
+            <th className="selection-cell-header" data-row-selection {...attrs as any}>
               {content}
             </th>
           );

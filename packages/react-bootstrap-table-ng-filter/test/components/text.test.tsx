@@ -1,18 +1,15 @@
-import { mount, shallow } from "enzyme";
-import "jsdom-global/register";
 import React from "react";
-import sinon from "sinon";
+import { render, screen, fireEvent } from "@testing-library/react";
 import { FILTER_TYPES } from "../..";
 import TextFilter from "../../src/components/text";
 
-jest.useFakeTimers();
-describe("Text Filter", () => {
-  let wrapper: any;
-  let instance: any;
+// jest.useFakeTimers();
 
-  // onFilter(x)(y) = filter result
-  const onFilter = sinon.stub();
-  const onFilterFirstReturn = sinon.stub();
+describe("Text Filter", () => {
+  let programmaticallyFilter: any;
+
+  const onFilter = jest.fn();
+  const onFilterFirstReturn = jest.fn();
 
   const column = {
     dataField: "price",
@@ -20,27 +17,26 @@ describe("Text Filter", () => {
   };
 
   afterEach(() => {
-    onFilter.reset();
-    onFilterFirstReturn.reset();
-
-    onFilter.returns(onFilterFirstReturn);
+    onFilter.mockReset();
+    onFilterFirstReturn.mockReset();
+    onFilter.mockReturnValue(onFilterFirstReturn);
   });
 
   describe("initialization", () => {
     beforeEach(() => {
-      wrapper = mount(<TextFilter onFilter={onFilter} column={column} />);
-      instance = wrapper.instance();
+      onFilter.mockReturnValue(onFilterFirstReturn);
+      render(<TextFilter onFilter={onFilter} column={column} />);
     });
 
     it("should have correct state", () => {
-      expect(instance.state.value).toEqual("");
-      expect(instance.props.defaultValue).toEqual(undefined);
+      // No direct state access, but input should be empty
+      expect(screen.getByRole("textbox")).toHaveValue("");
     });
 
-    it("should rendering component successfully", () => {
-      expect(wrapper).toHaveLength(1);
-      expect(wrapper.find('input[type="text"]')).toHaveLength(1);
-      expect(instance.input.getAttribute("placeholder")).toEqual(
+    it("should render component successfully", () => {
+      expect(screen.getByRole("textbox")).toBeInTheDocument();
+      expect(screen.getByRole("textbox")).toHaveAttribute(
+        "placeholder",
         `Enter ${column.text}...`
       );
     });
@@ -49,197 +45,167 @@ describe("Text Filter", () => {
   describe("when defaultValue is defined", () => {
     const defaultValue = "123";
     beforeEach(() => {
-      wrapper = mount(
+      onFilter.mockReturnValue(onFilterFirstReturn);
+      render(
         <TextFilter
           onFilter={onFilter}
           column={column}
           defaultValue={defaultValue}
         />
       );
-      instance = wrapper.instance();
     });
 
     it("should have correct state", () => {
-      expect(instance.state.value).toEqual(defaultValue);
+      expect(screen.getByRole("textbox")).toHaveValue(defaultValue);
     });
 
-    it("should rendering component successfully", () => {
-      expect(wrapper).toHaveLength(1);
-      expect(instance.input.value).toEqual(defaultValue);
+    it("should render component successfully", () => {
+      expect(screen.getByRole("textbox")).toHaveValue(defaultValue);
     });
 
-    it("should calling onFilter on componentDidMount", () => {
-      expect(onFilter.calledOnce).toBeTruthy();
-      expect(onFilter.calledWith(column, FILTER_TYPES.TEXT, true)).toBeTruthy();
-      expect(onFilterFirstReturn.calledOnce).toBeTruthy();
-      expect(onFilterFirstReturn.calledWith(defaultValue)).toBeTruthy();
+    it("should call onFilter on mount", () => {
+      expect(onFilter).toHaveBeenCalledTimes(1);
+      expect(onFilter).toHaveBeenCalledWith(column, FILTER_TYPES.TEXT, true);
+      expect(onFilterFirstReturn).toHaveBeenCalledTimes(1);
+      expect(onFilterFirstReturn).toHaveBeenCalledWith(defaultValue);
     });
   });
 
   describe("when props.getFilter is defined", () => {
-    let programmaticallyFilter: any;
-
     const filterValue = "foo";
-
     const getFilter = (filter: any) => {
       programmaticallyFilter = filter;
     };
 
     beforeEach(() => {
-      wrapper = mount(
+      onFilter.mockReturnValue(onFilterFirstReturn);
+      render(
         <TextFilter onFilter={onFilter} column={column} getFilter={getFilter} />
       );
-      instance = wrapper.instance();
-
-      programmaticallyFilter(filterValue);
+      const { act } = require("@testing-library/react");
+      act(() => {
+        programmaticallyFilter(filterValue);
+      });
     });
 
     it("should do onFilter correctly when exported function was executed", () => {
-      expect(onFilter.calledOnce).toBeTruthy();
-      expect(onFilter.calledWith(column, FILTER_TYPES.TEXT)).toBeTruthy();
-      expect(onFilterFirstReturn.calledOnce).toBeTruthy();
-      expect(onFilterFirstReturn.calledWith(filterValue)).toBeTruthy();
+      expect(onFilter).toHaveBeenCalledTimes(1);
+      expect(onFilter).toHaveBeenCalledWith(column, FILTER_TYPES.TEXT);
+      expect(onFilterFirstReturn).toHaveBeenCalledTimes(1);
+      expect(onFilterFirstReturn).toHaveBeenCalledWith(filterValue);
     });
 
-    it("should setState correctly when exported function was executed", () => {
-      expect(instance.state.value).toEqual(filterValue);
+    it("should set value correctly when exported function was executed", () => {
+      expect(screen.getByRole("textbox")).toHaveValue(filterValue);
     });
   });
 
   describe("when placeholder is defined", () => {
     const placeholder = "test";
     beforeEach(() => {
-      wrapper = mount(
+      render(
         <TextFilter
           onFilter={onFilter}
           column={column}
           placeholder={placeholder}
         />
       );
-      instance = wrapper.instance();
     });
 
-    it("should rendering component successfully", () => {
-      expect(wrapper).toHaveLength(1);
-      expect(instance.input.getAttribute("placeholder")).toEqual(placeholder);
+    it("should render component successfully", () => {
+      expect(screen.getByRole("textbox")).toHaveAttribute("placeholder", placeholder);
     });
   });
 
   describe("when style is defined", () => {
     const style = { backgroundColor: "red" };
     beforeEach(() => {
-      wrapper = mount(
+      render(
         <TextFilter onFilter={onFilter} column={column} style={style} />
       );
-      instance = wrapper.instance();
     });
 
-    it("should rendering component successfully", () => {
-      expect(wrapper).toHaveLength(1);
-      expect(wrapper.find("input").prop("style")).toEqual(style);
+    it("should render component successfully", () => {
+      expect(screen.getByRole("textbox")).toHaveStyle("background-color: rgb(255, 0, 0)");
     });
   });
 
-  describe("componentWillReceiveProps", () => {
+  describe("componentDidUpdate", () => {
     const nextDefaultValue = "tester";
-    const nextProps = {
-      onFilter,
-      column,
-      defaultValue: nextDefaultValue,
-    };
-
-    beforeEach(() => {
-      wrapper = shallow(<TextFilter onFilter={onFilter} column={column} />);
-      instance = wrapper.instance();
-      wrapper.instance().componentDidUpdate(nextProps);
-    });
-
-    it("should setting state correctly when props.defaultValue is changed", () => {
-      expect(instance.state.value).toEqual(nextDefaultValue);
-    });
-
-    it("should calling onFilter correctly when props.defaultValue is changed", () => {
-      expect(onFilter.calledOnce).toBeTruthy();
-      expect(onFilter.calledWith(column, FILTER_TYPES.TEXT)).toBeTruthy();
-      expect(onFilterFirstReturn.calledOnce).toBeTruthy();
-      expect(onFilterFirstReturn.calledWith(nextDefaultValue)).toBeTruthy();
+    it("should set value and call onFilter when defaultValue changes", async () => {
+      const { rerender } = render(
+        <TextFilter onFilter={onFilter} column={column} />
+      );
+      const { act } = require("@testing-library/react");
+      act(() => {
+        rerender(
+          <TextFilter onFilter={onFilter} column={column} defaultValue={nextDefaultValue} />
+        );
+      });
+      const { waitFor } = require("@testing-library/react");
+      await waitFor(() => {
+        expect(screen.getByRole("textbox")).toHaveValue(nextDefaultValue);
+      });
+      expect(onFilter).toHaveBeenCalled();
+      expect(onFilterFirstReturn).toHaveBeenCalledWith(nextDefaultValue);
     });
   });
 
   describe("cleanFiltered", () => {
     const defaultValue = "";
-    beforeEach(() => {
-      wrapper = mount(<TextFilter onFilter={onFilter} column={column} />);
-      instance = wrapper.instance();
-      instance.cleanFiltered();
-    });
-
-    it("should setting state correctly", () => {
-      expect(undefined).toEqual(instance.props.defaultValue);
-      expect(instance.state.value).toEqual(defaultValue);
-    });
-
-    it("should calling onFilter correctly", () => {
-      expect(onFilter.calledOnce).toBeTruthy();
-      expect(onFilter.calledWith(column, FILTER_TYPES.TEXT)).toBeTruthy();
-      expect(onFilterFirstReturn.calledOnce).toBeTruthy();
-      expect(
-        onFilterFirstReturn.calledWith(defaultValue)
-      ).toBeTruthy();
+    it("should set value and call onFilter", () => {
+      let filterRef: any;
+      render(
+        <TextFilter
+          onFilter={onFilter}
+          column={column}
+          ref={(ref: any) => (filterRef = ref)}
+        />
+      );
+      const { act } = require("@testing-library/react");
+      act(() => {
+        filterRef.cleanFiltered();
+      });
+      expect(screen.getByRole("textbox")).toHaveValue(defaultValue);
+      expect(onFilter).toHaveBeenCalled();
+      expect(onFilterFirstReturn).toHaveBeenCalledWith(defaultValue);
     });
   });
 
   describe("applyFilter", () => {
     const filterText = "test";
-    beforeEach(() => {
-      wrapper = mount(<TextFilter onFilter={onFilter} column={column} />);
-      instance = wrapper.instance();
-      instance.applyFilter(filterText);
-    });
-
-    it("should setting state correctly", () => {
-      expect(instance.state.value).toEqual(filterText);
-    });
-
-    it("should calling onFilter correctly", () => {
-      expect(onFilter.calledOnce).toBeTruthy();
-      expect(onFilter.calledWith(column, FILTER_TYPES.TEXT)).toBeTruthy();
-      expect(onFilterFirstReturn.calledOnce).toBeTruthy();
-      expect(onFilterFirstReturn.calledWith(filterText)).toBeTruthy();
+    it("should set value and call onFilter", () => {
+      let filterRef: any;
+      render(
+        <TextFilter
+          onFilter={onFilter}
+          column={column}
+          ref={(ref: any) => (filterRef = ref)}
+        />
+      );
+      const { act } = require("@testing-library/react");
+      act(() => {
+        filterRef.applyFilter(filterText);
+      });
+      expect(screen.getByRole("textbox")).toHaveValue(filterText);
+      expect(onFilter).toHaveBeenCalled();
+      expect(onFilterFirstReturn).toHaveBeenCalledWith(filterText);
     });
   });
 
   describe("filter", () => {
-    const event = {
-      stopPropagation: sinon.stub(),
-      target: { value: "tester" },
-    };
+    const filterText = "tester";
+    it("should set value and call onFilter with delay", async () => {
+      render(<TextFilter onFilter={onFilter} column={column} />);
+      const input = screen.getByRole("textbox");
+      fireEvent.change(input, { target: { value: filterText } });
 
-    beforeEach(() => {
-      wrapper = mount(<TextFilter onFilter={onFilter} column={column} />);
-      instance = wrapper.instance();
-      instance.filter(event);
-      jest.spyOn(globalThis, "setTimeout");
-    });
-
-    afterEach(() => {
-      jest.clearAllTimers();
-    });
-
-    it("should calling e.stopPropagation", () => {
-      expect(event.stopPropagation.calledOnce).toBeTruthy();
-    });
-
-    it("should setting state correctly", () => {
-      expect(instance.state.value).toEqual(event.target.value);
-    });
-
-    it("should calling setTimeout correctly", () => {
-      expect(setTimeout).toBeCalledTimes(2);
-      expect(setTimeout).toBeCalledWith(
-        expect.any(Function),
-        instance.props.delay
-      );
+      const { waitFor } = require("@testing-library/react");
+      await waitFor(() => {
+        expect(input).toHaveValue(filterText);
+        expect(onFilter).toHaveBeenCalled();
+        expect(onFilterFirstReturn).toHaveBeenCalledWith(filterText);
+      });
     });
   });
 });

@@ -9,7 +9,7 @@ import bootstrapStyle from './bootstrap-style';
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta = {
   title: 'Footer',
-  component: BootstrapTable,
+  component: BootstrapTable as any,
   parameters: {
     // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/react/configure/story-layout
     layout: 'centered',
@@ -34,7 +34,7 @@ type Story = StoryObj<typeof meta>;
 export const SimpleFooter: Story = {
   name: "Simple footer",
   args: {
-    columns:[
+    columns: [
       {
         dataField: 'id',
         text: 'Product ID',
@@ -85,7 +85,7 @@ export const SimpleFooter: Story = {
 export const FunctionFooter: Story = {
   name: "Function footer",
   args: {
-    columns:[
+    columns: [
       {
         dataField: 'id',
         text: 'Product ID',
@@ -133,7 +133,7 @@ export const FunctionFooter: Story = {
   }
 };
 
-function priceFormatter(column: any, colIndex: number, { text }) {
+function priceFormatter(column: any, colIndex: number, { text }: any) {
   return (
     <h5>
       <strong>$$ {column.text} $$</strong>
@@ -144,7 +144,7 @@ function priceFormatter(column: any, colIndex: number, { text }) {
 export const ColumnFormatter: Story = {
   name: "Column formatter",
   args: {
-    columns:[
+    columns: [
       {
         dataField: 'id',
         text: 'Product ID',
@@ -203,7 +203,7 @@ export const ColumnFormatter: Story = {
 export const ColumnAlign: Story = {
   name: "Column align",
   args: {
-    columns:[{
+    columns: [{
       dataField: 'id',
       text: 'Product ID',
       footerAlign: 'center',

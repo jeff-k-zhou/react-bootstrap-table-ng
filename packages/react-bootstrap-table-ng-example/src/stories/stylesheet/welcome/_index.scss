@@ -1,3 +1,5 @@
+@use "../base/base" as base;
+
 $logo-size: 96px;
 
 .welcome {
@@ -6,7 +8,7 @@ $logo-size: 96px;
   padding: 30px 30px;
 
   &-title {
-    color: $grey-900;
+    color: base.$grey-900;
     width: 100%;
 
     display: inline-flex;
@@ -25,30 +27,80 @@ $logo-size: 96px;
 
   &-sub-title {
     font-size: 30px;
-    color: $grey-500;
+    color: base.$grey-500;
   }
 }
 
 span.love-icon {
-  color: $pink-500;
+  color: base.$pink-500;
+}
+
+.jumbotron {
+  h1 {
+    color: base.$grey-900;
+  }
+
+  .logo {
+    width: $logo-size;
+    height: $logo-size;
+  }
+
+  p {
+    color: base.$grey-500;
+  }
+
+  .btn {
+    text-transform: uppercase;
+  }
+}
+
+.footer {
+  text-align: center;
+  margin-top: 50px;
+
+  .heart {
+    color: base.$pink-500;
+  }
+}
+
+.demo-link {
+  color: base.$grey-500;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
 /* Adding cursor blinking animation */
-.typed-cursor{
+.typed-cursor {
   font-size: 30px;
-  color: $grey-500;
+  color: base.$grey-500;
   opacity: 1;
   animation: typedjsBlink 0.7s infinite;
 }
-@keyframes typedjsBlink{
-  50% { opacity: 0.0; }
+
+@keyframes typedjsBlink {
+  50% {
+    opacity: 0.0;
+  }
 }
-@-webkit-keyframes typedjsBlink{
-  0% { opacity: 1; }
-  50% { opacity: 0.0; }
-  100% { opacity: 1; }
+
+@-webkit-keyframes typedjsBlink {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.0;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
-.typed-fade-out{
+
+.typed-fade-out {
   opacity: 0;
   transition: opacity .25s;
   animation: 0;

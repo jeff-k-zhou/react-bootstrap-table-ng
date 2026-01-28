@@ -9,7 +9,7 @@ import bootstrapStyle from './bootstrap-style';
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta = {
   title: 'Row Expand',
-  component: BootstrapTable,
+  component: BootstrapTable as any,
   parameters: {
     // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/react/configure/story-layout
     layout: 'centered',
@@ -23,9 +23,9 @@ const meta = {
     sourceCode: { control: 'text', description: 'source code of the table' },
     sourceCode1: { control: 'text', description: 'source code of the table' },
     sourceCode2: { control: 'text', description: 'source code of the table' },
-    expandRow: { control: 'array', description: 'row list' },
-    expandRow1: { control: 'array', description: 'row list' },
-    expandRow2: { control: 'array', description: 'row list' },
+    expandRow: { control: 'object', description: 'row list' },
+    expandRow1: { control: 'object', description: 'row list' },
+    expandRow2: { control: 'object', description: 'row list' },
   },
   decorators: [
     (Story: any) => bootstrapStyle()(Story),
@@ -76,7 +76,7 @@ export const BasicRowExpand: Story = {
     expandRow: {
       renderer: (row: any, rowIndex: number) => (
         <div>
-          <p>{ `This Expand row is belong to rowKey ${row.id} and index: ${rowIndex}` }</p>
+          <p>{`This Expand row is belong to rowKey ${row.id} and index: ${rowIndex}`}</p>
           <p>You can render anything here, also you can add additional data on every row object</p>
           <p>expandRow.renderer callback will pass the origin row object to you</p>
         </div>
@@ -135,7 +135,7 @@ export const NoExpandableRows: Story = {
     expandRow: {
       renderer: (row: any) => (
         <div>
-          <p>{ `This Expand row is belong to rowKey ${row.id}` }</p>
+          <p>{`This Expand row is belong to rowKey ${row.id}`}</p>
           <p>You can render anything here, also you can add additional data on every row object</p>
           <p>expandRow.renderer callback will pass the origin row object to you</p>
         </div>
@@ -186,7 +186,7 @@ export const ExpandIndicator: Story = {
     expandRow: {
       renderer: (row: any) => (
         <div>
-          <p>{ `This Expand row is belong to rowKey ${row.id}` }</p>
+          <p>{`This Expand row is belong to rowKey ${row.id}`}</p>
           <p>You can render anything here, also you can add additional data on every row object</p>
           <p>expandRow.renderer callback will pass the origin row object to you</p>
         </div>
@@ -237,7 +237,7 @@ export const OnlyExpandByIndicator: Story = {
     expandRow: {
       renderer: (row: any) => (
         <div>
-          <p>{ `This Expand row is belong to rowKey ${row.id}` }</p>
+          <p>{`This Expand row is belong to rowKey ${row.id}`}</p>
           <p>You can render anything here, also you can add additional data on every row object</p>
           <p>expandRow.renderer callback will pass the origin row object to you</p>
         </div>
@@ -288,9 +288,9 @@ export const ExpandOnlyOneRowAtTheSameTime: Story = {
     `,
     expandRow: {
       onlyOneExpanding: true,
-      renderer: row => (
+      renderer: (row: any) => (
         <div>
-          <p>{ `This Expand row is belong to rowKey ${row.id}` }</p>
+          <p>{`This Expand row is belong to rowKey ${row.id}`}</p>
           <p>You can render anything here, also you can add additional data on every row object</p>
           <p>expandRow.renderer callback will pass the origin row object to you</p>
         </div>
@@ -355,19 +355,19 @@ export const CustomExpandIndicator: Story = {
     expandRow: {
       renderer: (row: any) => (
         <div>
-          <p>{ `This Expand row is belong to rowKey ${row.id}` }</p>
+          <p>{`This Expand row is belong to rowKey ${row.id}`}</p>
           <p>You can render anything here, also you can add additional data on every row object</p>
           <p>expandRow.renderer callback will pass the origin row object to you</p>
         </div>
       ),
       showExpandColumn: true,
-      expandHeaderColumnRenderer: ({ isAnyExpands }) => {
+      expandHeaderColumnRenderer: ({ isAnyExpands }: any) => {
         if (isAnyExpands) {
           return <b>-</b>;
         }
         return <b>+</b>;
       },
-      expandColumnRenderer: ({ expanded, rowKey, expandable }) => {
+      expandColumnRenderer: ({ expanded, rowKey, expandable }: any) => {
         if (expanded) {
           return (
             <b>-</b>
@@ -422,7 +422,7 @@ export const ExpandColumnPosition: Story = {
     expandRow: {
       renderer: (row: any) => (
         <div>
-          <p>{ `This Expand row is belong to rowKey ${row.id}` }</p>
+          <p>{`This Expand row is belong to rowKey ${row.id}`}</p>
           <p>You can render anything here, also you can add additional data on every row object</p>
           <p>expandRow.renderer callback will pass the origin row object to you</p>
         </div>
@@ -484,7 +484,7 @@ export const ExpandHooks: Story = {
     expandRow: {
       renderer: (row: any) => (
         <div>
-          <p>{ `This Expand row is belong to rowKey ${row.id}` }</p>
+          <p>{`This Expand row is belong to rowKey ${row.id}`}</p>
           <p>You can render anything here, also you can add additional data on every row object</p>
           <p>expandRow.renderer callback will pass the origin row object to you</p>
         </div>
@@ -556,7 +556,7 @@ export const CustomParentRowClassname: Story = {
       parentClassName: 'parent-expand-foo',
       renderer: (row: any) => (
         <div>
-          <p>{ `This Expand row is belong to rowKey ${row.id}` }</p>
+          <p>{`This Expand row is belong to rowKey ${row.id}`}</p>
           <p>You can render anything here, also you can add additional data on every row object</p>
           <p>expandRow.renderer callback will pass the origin row object to you</p>
         </div>
@@ -569,7 +569,7 @@ export const CustomParentRowClassname: Story = {
       },
       renderer: (row: any) => (
         <div>
-          <p>{ `This Expand row is belong to rowKey ${row.id}` }</p>
+          <p>{`This Expand row is belong to rowKey ${row.id}`}</p>
           <p>You can render anything here, also you can add additional data on every row object</p>
           <p>expandRow.renderer callback will pass the origin row object to you</p>
         </div>
@@ -629,7 +629,7 @@ export const CustomExpandingRowClassname: Story = {
       className: 'expanding-foo',
       renderer: (row: any) => (
         <div>
-          <p>{ `This Expand row is belong to rowKey ${row.id}` }</p>
+          <p>{`This Expand row is belong to rowKey ${row.id}`}</p>
           <p>You can render anything here, also you can add additional data on every row object</p>
           <p>expandRow.renderer callback will pass the origin row object to you</p>
         </div>
@@ -642,7 +642,7 @@ export const CustomExpandingRowClassname: Story = {
       },
       renderer: (row: any) => (
         <div>
-          <p>{ `This Expand row is belong to rowKey ${row.id}` }</p>
+          <p>{`This Expand row is belong to rowKey ${row.id}`}</p>
           <p>You can render anything here, also you can add additional data on every row object</p>
           <p>expandRow.renderer callback will pass the origin row object to you</p>
         </div>

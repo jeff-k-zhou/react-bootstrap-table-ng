@@ -16,11 +16,30 @@ import "./stylesheet/tomorrow.min.css";
 
 const { SearchBar, ClearSearchButton } = Search;
 
-export default ({ mode, data, columns, sourceCode, header }) => {
+interface TableSearchProps {
+  mode?: any;
+  data?: any;
+  columns?: any;
+  sourceCode?: any;
+  header?: any;
+}
+
+export default ({
+  mode,
+  data,
+  columns,
+  sourceCode,
+  header,
+}: TableSearchProps) => {
   switch (mode) {
     case "function":
       // Implement startWith instead of contain
-      function customMatchFunc({ searchText, value, column, row }) {
+      function customMatchFunc({
+        searchText,
+        value,
+        column,
+        row,
+      }: any) {
         if (typeof value !== "undefined") {
           return `${value}`.toLowerCase().startsWith(searchText.toLowerCase());
         }

@@ -6,33 +6,33 @@
 
 ## Preface
 
-Currently, **I still can't implement all the mainly features in legacy `react-bootstrap-table`**, so please watch our github repo or [blog](https://react-bootstrap-table.github.io/react-bootstrap-table2/blog/) to make sure the legacy features you wanted are already implemented on `react-bootstrap-table2`. Anyway, ask me by open issue is ok.   
+Currently, **I still can't implement all the mainly features in legacy `react-bootstrap-table`**, so please watch our github repo or [blog](https://react-bootstrap-table.github.io/react-bootstrap-table2/blog/) to make sure the legacy features you wanted are already implemented on `react-bootstrap-table-ng`. Anyway, ask me by open issue is ok.   
 
 -----
 
-`react-bootstrap-table2` separate some functionalities from core modules to other modules like following:
+`react-bootstrap-table-ng` separate some functionalities from core modules to other modules like following:
 
-* [`react-bootstrap-table-next`](https://www.npmjs.com/package/react-bootstrap-table-next)
+* [`react-bootstrap-table-ng`](https://www.npmjs.com/package/react-bootstrap-table-ng)
   * Core table module, include sorting and row selection
-* [`react-bootstrap-table2-filter`](https://www.npmjs.com/package/react-bootstrap-table2-filter)
+* [`react-bootstrap-table-ng-filter`](https://www.npmjs.com/package/react-bootstrap-table-ng-filter)
   * Column filter Addons
-* [`react-bootstrap-table2-editor`](https://www.npmjs.com/package/react-bootstrap-table2-editor)
+* [`react-bootstrap-table-ng-editor`](https://www.npmjs.com/package/react-bootstrap-table-ng-editor)
   * Cell Editing Addons
-* [`react-bootstrap-table2-paginator`](https://www.npmjs.com/package/react-bootstrap-table2-paginator)
+* [`react-bootstrap-table-ng-paginator`](https://www.npmjs.com/package/react-bootstrap-table-ng-paginator)
   * Pagination Addons
-* [`react-bootstrap-table2-overlay`](https://www.npmjs.com/package/react-bootstrap-table2-overlay)
+* [`react-bootstrap-table-ng-overlay`](https://www.npmjs.com/package/react-bootstrap-table-ng-overlay)
   * Overlay/Loading Addons
-* [`react-bootstrap-table2-toolkit`](https://www.npmjs.com/package/react-bootstrap-table2-toolkit)
+* [`react-bootstrap-table-ng-toolkit`](https://www.npmjs.com/package/react-bootstrap-table-ng-toolkit)
   * Table Toolkits, like search, csv, column toggle etc.
 
-This can help your application with less bundled size and also help `react-bootstrap-table2` have clean design to avoid handling to much logic in kernel module(SRP). Hence, which means you probably need to install above addons when you need specific features.
+This can help your application with less bundled size and also help `react-bootstrap-table-ng` have clean design to avoid handling to much logic in kernel module(SRP). Hence, which means you probably need to install above addons when you need specific features.
 
 ## Core Table Migration
 
-There is a big change is that there's no `TableHeaderColumn` in the `react-bootstrap-table2`, instead you are supposed to be define the `columns` prop on `BootstrapTable`: 
+There is a big change is that there's no `TableHeaderColumn` in the `react-bootstrap-table-ng`, instead you are supposed to be define the `columns` prop on `BootstrapTable`: 
 
 ```js
-import BootstrapTable from 'react-bootstrap-table-next';
+import BootstrapTable from 'react-bootstrap-table-ng';
 
 const columns = [{
   dataField: 'id',
@@ -93,7 +93,7 @@ Please see [available filter configuration](https://react-bootstrap-table.github
 - [X] Array Filter
 - [X] Programmatically Filter
 
-Remember to install [`react-bootstrap-table2-filter`](https://www.npmjs.com/package/react-bootstrap-table2-filter) firstly.   
+Remember to install [`react-bootstrap-table-ng-filter`](https://www.npmjs.com/package/react-bootstrap-table-ng-filter) firstly.   
 
 Due to no `TableHeaderColumn` so that no `filter` here, please add [`filter`](https://react-bootstrap-table.github.io/react-bootstrap-table2/docs/column-props.html#columnfilter-object) property on column definition and [`filter`](https://react-bootstrap-table.github.io/react-bootstrap-table2/docs/table-props.html#filter-object) prop on `BootstrapTable`.
 
@@ -102,7 +102,7 @@ Due to no `TableHeaderColumn` so that no `filter` here, please add [`filter`](ht
 Please see [Work with cell edit](https://react-bootstrap-table.github.io/react-bootstrap-table2/docs/basic-celledit.html).   
 Please see [available cell edit configurations](https://react-bootstrap-table.github.io/react-bootstrap-table2/docs/cell-edit-props.html).   
 
-Remember to install [`react-bootstrap-table2-editor`](https://www.npmjs.com/package/react-bootstrap-table2-editor) firstly.   
+Remember to install [`react-bootstrap-table-ng-editor`](https://www.npmjs.com/package/react-bootstrap-table-ng-editor) firstly.   
 
 No big changes for cell editing, [`validator`](https://react-bootstrap-table.github.io/react-bootstrap-table2/docs/column-props.html#columnvalidator-function) will not support the async call(Promise).
 
@@ -111,7 +111,7 @@ No big changes for cell editing, [`validator`](https://react-bootstrap-table.git
 Please see [Work with pagination](https://react-bootstrap-table.github.io/react-bootstrap-table2/docs/basic-pagination.html).   
 Please see [available pagination configurations](https://react-bootstrap-table.github.io/react-bootstrap-table2/docs/pagination-props.html).   
 
-Remember to install [`react-bootstrap-table2-paginator`](https://www.npmjs.com/package/react-bootstrap-table2-paginator) firstly.   
+Remember to install [`react-bootstrap-table-ng-paginator`](https://www.npmjs.com/package/react-bootstrap-table-ng-paginator) firstly.   
 
 ## Table Search
 Ｔhe usage of search functionality is a little bit different from legacy search. The mainly different thing is developer have to render the search input field, we do believe it will be very flexible for all the developers who want to custom the search position or search field itself.
@@ -132,11 +132,11 @@ Remember to install [`react-bootstrap-table2-paginator`](https://www.npmjs.com/p
 - [ ] Expand Column Style/Class
 
 ## Export CSV
-Export CSV functionality is like search, which is one of functionality in the `react-bootstrap-table2-toolkit`. All of the legacy functions we already implemented.
+Export CSV functionality is like search, which is one of functionality in the `react-bootstrap-table-ng-toolkit`. All of the legacy functions we already implemented.
 
 ## Remote
 
-> It's totally different in `react-bootstrap-table2`. Please [see](https://react-bootstrap-table.github.io/react-bootstrap-table2/docs/basic-remote.html).
+> It's totally different in `react-bootstrap-table-ng`. Please [see](https://react-bootstrap-table.github.io/react-bootstrap-table2/docs/basic-remote.html).
 
 
 ## Row insert/Delete

@@ -9,7 +9,7 @@ import bootstrapStyle from './bootstrap-style';
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta = {
   title: 'Table Search',
-  component: BootstrapTable,
+  component: BootstrapTable as any,
   parameters: {
     // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/react/configure/story-layout
     layout: 'centered',
@@ -36,6 +36,7 @@ type Story = StoryObj<typeof meta>;
 export const BasicSearchTable: Story = {
   name: "Basic search table",
   args: {
+    mode: undefined,
     columns: columns,
     data: productsGenerator(),
     sourceCode: `\
@@ -277,6 +278,7 @@ export const SearchHooks: Story = {
 export const SearchableColumn: Story = {
   name: "Searchable column",
   args: {
+    mode: undefined,
     columns: [{
       dataField: 'id',
       text: 'Product ID'
@@ -336,6 +338,7 @@ export const FullyCustomSearch: Story = {
   name: "Fully custom search",
   args: {
     mode: "fully",
+    header: undefined,
     columns: columns,
     data: productsGenerator(),
     sourceCode: `\
@@ -456,6 +459,7 @@ const types = ['Cloud Service', 'Message Service', 'Add Service', 'Edit Service'
 export const CustomSearchValue: Story = {
   name: "Custom search value",
   args: {
+    mode: undefined,
     columns: [{
       dataField: 'id',
       text: 'Job ID',

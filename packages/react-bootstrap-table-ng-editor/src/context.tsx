@@ -160,6 +160,10 @@ export default (
       const {
         cellEdit: {
           options: { nonEditableRows, errorMessage, ...optionsRest },
+          // @ts-ignore
+          ridx: propRidx,
+          // @ts-ignore
+          cidx: propCidx,
           ...cellEditRest
         },
       } = this.props;
@@ -167,7 +171,9 @@ export default (
       const newCellEdit = {
         ...optionsRest,
         ...cellEditRest,
-        ...this.state,
+        ridx: this.state.ridx !== null ? this.state.ridx : (propRidx ?? null),
+        cidx: this.state.cidx !== null ? this.state.cidx : (propCidx ?? null),
+        message: this.state.message,
         nonEditableRows: _.isDefined(nonEditableRows) ? nonEditableRows() : [],
         atstart: this.startEditing,
         onEscape: this.escapeEditing,

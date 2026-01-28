@@ -1,8 +1,11 @@
-.demo-sorting,
-.demo-sorting-asc {
-  background-color: $green-lighten-2;
+@use "../base/base" as base;
+
+.react-bootstrap-table table {
+  .order-4 {
+    background-color: base.$green-lighten-2;
+  }
 }
 
-.demo-sorting-desc {
-  background-color: $light-blue;
+.sort-column {
+  background-color: base.$light-blue;
 }

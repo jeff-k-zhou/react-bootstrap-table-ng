@@ -11,6 +11,16 @@ import "../../../react-bootstrap-table-ng/style/react-bootstrap-table-ng.scss";
 import "./stylesheet/storybook.scss";
 import "./stylesheet/tomorrow.min.css";
 
+interface WorkOnHeaderColumnsProps {
+  data?: any[];
+  columns?: any[];
+  sourceCode?: string;
+  filter?: any;
+  defaultSorted?: any;
+  header?: any;
+  headerClasses?: any;
+}
+
 export default ({
   data,
   columns,
@@ -19,7 +29,7 @@ export default ({
   defaultSorted,
   header,
   headerClasses,
-}) => (
+}: WorkOnHeaderColumnsProps) => (
   <div>
     {header}
     <BootstrapTable

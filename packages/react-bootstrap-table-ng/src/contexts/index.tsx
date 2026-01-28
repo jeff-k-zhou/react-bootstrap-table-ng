@@ -7,7 +7,7 @@ import { BootstrapContext } from "./bootstrap";
 import createColumnContext from "./column-context";
 import createDataContext from "./data-context";
 import createRowExpandContext from "./row-expand-context";
-import createSelectionContext from "./selection-context";
+import { createSelectionContext } from "./selection-context";
 import createSortContext from "./sort-context";
 
 const withContext = (Base: any) =>

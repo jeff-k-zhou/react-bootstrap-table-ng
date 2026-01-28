@@ -5,7 +5,7 @@ const SizePerPageOption = ({
   text,
   page,
   onSizePerPageChange,
-  bootstrap4,
+  bootstrap4 = false,
 }: any) =>
   bootstrap4 ? (
     <a
@@ -45,8 +45,8 @@ SizePerPageOption.propTypes = {
   bootstrap4: PropTypes.bool,
 };
 
-SizePerPageOption.defaultProps = {
-  bootstrap4: false,
-};
+// SizePerPageOption.defaultProps = {
+//   bootstrap4: false,
+// };
 
 export default SizePerPageOption;

@@ -93,7 +93,13 @@ class EmptyTableOverlay extends React.Component {
 }
 `;
 
-const Table = ({ data, page, sizePerPage, onTableChange, totalSize }) => (
+const Table = ({
+  data,
+  page,
+  sizePerPage,
+  onTableChange,
+  totalSize,
+}: any) => (
   <div>
     <BootstrapTable
       remote
@@ -147,7 +153,7 @@ class EmptyTableOverlay extends React.Component<{}, EmptyTableOverlayState> {
     };
   }
 
-  handleTableChange = (type: any, { page, sizePerPage }) => {
+  handleTableChange = (type: any, { page, sizePerPage }: any) => {
     const currentIndex = (page - 1) * sizePerPage;
     setTimeout(() => {
       this.setState(() => ({
@@ -251,7 +257,7 @@ const RemotePagination = ({
   sizePerPage,
   onTableChange,
   totalSize,
-}) => (
+}: any) => (
   <div>
     <BootstrapTable
       remote
@@ -307,7 +313,7 @@ interface TableOverlayState {
 class TableOverlay extends React.Component<{}, TableOverlayState> {
   products = productsGenerator(87);
 
-  constructor(props) {
+  constructor(props: any) {
     super(props);
     this.state = {
       page: 1,
@@ -317,7 +323,7 @@ class TableOverlay extends React.Component<{}, TableOverlayState> {
     };
   }
 
-  handleTableChange = (type: any, { page, sizePerPage }) => {
+  handleTableChange = (type: any, { page, sizePerPage }: any) => {
     const currentIndex = (page - 1) * sizePerPage;
     setTimeout(() => {
       this.setState(() => ({
@@ -345,7 +351,11 @@ class TableOverlay extends React.Component<{}, TableOverlayState> {
   }
 }
 
-export default ({ mode }) => {
+interface TableOverlayMainProps {
+  mode?: any;
+}
+
+export default ({ mode }: TableOverlayMainProps) => {
   switch (mode) {
     case "empty":
       return <EmptyTableOverlay />;

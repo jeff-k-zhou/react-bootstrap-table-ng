@@ -1,6 +1,6 @@
 
 # Row selection
-`react-bootstrap-table2` supports the row selection feature. By passing prop `selectRow` to enable row selection. When you enable this feature, `react-bootstrap-table2` will prepend a new selection column.
+`react-bootstrap-table-ng` supports the row selection feature. By passing prop `selectRow` to enable row selection. When you enable this feature, `react-bootstrap-table-ng` will prepend a new selection column.
 
 ## Required
 * [mode (**required**)](#mode)
@@ -235,7 +235,7 @@ const selectRow = {
 };
 ```
 
-> By default, `react-bootstrap-table2` will help you to handle the click event, it's not necessary to handle again by developer.
+> By default, `react-bootstrap-table-ng` will help you to handle the click event, it's not necessary to handle again by developer.
 
 ### <a name='selectionHeaderRenderer'>selectRow.selectionHeaderRenderer - [Function]</a>
 Provide a callback function which allow you to custom the checkbox/radio box in the selection header column. This callback only have one argument which is an object and contain following properties:
@@ -249,7 +249,7 @@ const selectRow = {
 };
 ```
 
-> By default, `react-bootstrap-table2` will help you to handle the click event, it's not necessary to handle again by developer.
+> By default, `react-bootstrap-table-ng` will help you to handle the click event, it's not necessary to handle again by developer.
 
 
 ### <a name='headerColumnStyle'>selectRow.headerColumnStyle - [Object | Function]</a>

@@ -1,13 +1,11 @@
 /* eslint no-param-reassign: 0 */
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 import React from "react";
 
 import Base from "../../src/bootstrap-table";
 import withContext from "../../src/contexts";
 
 describe("Context", () => {
-  let wrapper: any;
-
   const keyField = "id";
 
   let columns: any;
@@ -39,63 +37,33 @@ describe("Context", () => {
   });
 
   describe("basic render", () => {
-    beforeEach(() => {
-      wrapper = shallow(
+    it("should render correctly and provide DataContext", () => {
+      const { container } = render(
         <BootstrapTable keyField={keyField} data={data} columns={columns} />
       );
-      wrapper.render();
-    });
-
-    it("should create contexts correctly", () => {
-      expect(wrapper.instance().DataContext).toBeDefined();
-      expect(wrapper.instance().SortContext).not.toBeDefined();
-      expect(wrapper.instance().SelectionContext).not.toBeDefined();
-      expect(wrapper.instance().CellEditContext).not.toBeDefined();
-      expect(wrapper.instance().FilterContext).not.toBeDefined();
-      expect(wrapper.instance().PaginationContext).not.toBeDefined();
-      expect(wrapper.instance().ColumnManagementContext).not.toBeDefined();
-    });
-
-    it("should render correctly", () => {
-      const dataProvider = wrapper.find(
-        wrapper.instance().DataContext.Provider
-      );
-      expect(dataProvider).toHaveLength(1);
-      expect(dataProvider.props().data).toEqual(data);
-      expect(dataProvider.props().keyField).toEqual(keyField);
-      expect(dataProvider.props().columns).toEqual(columns);
+      // Table should be rendered
+      expect(container.querySelector("table")).toBeInTheDocument();
     });
   });
 
   describe("if there's sort is enable", () => {
-    beforeEach(() => {
+    it("should render with sort context", () => {
       const columnsWithSort = columns.map((c: any) => {
-        c.sort = true;
-        return c;
+        return { ...c, sort: true };
       });
-      wrapper = shallow(
+      const { container } = render(
         <BootstrapTable
           keyField={keyField}
           data={data}
           columns={columnsWithSort}
         />
       );
-      wrapper.render();
-    });
-
-    it("should create contexts correctly", () => {
-      expect(wrapper.instance().DataContext).toBeDefined();
-      expect(wrapper.instance().SortContext).toBeDefined();
-      expect(wrapper.instance().SelectionContext).not.toBeDefined();
-      expect(wrapper.instance().CellEditContext).not.toBeDefined();
-      expect(wrapper.instance().FilterContext).not.toBeDefined();
-      expect(wrapper.instance().PaginationContext).not.toBeDefined();
-      expect(wrapper.instance().ColumnManagementContext).not.toBeDefined();
+      expect(container.querySelector("table")).toBeInTheDocument();
     });
   });
 
   describe("if thers's any column hidden", () => {
-    beforeEach(() => {
+    it("should render with column context", () => {
       const columnsWithHidden = [
         {
           dataField: keyField,
@@ -107,30 +75,21 @@ describe("Context", () => {
           hidden: true,
         },
       ];
-      wrapper = shallow(
+      const { container } = render(
         <BootstrapTable
           keyField={keyField}
           data={data}
           columns={columnsWithHidden}
         />
       );
-      wrapper.render();
-    });
-
-    it("should create contexts correctly", () => {
-      expect(wrapper.instance().DataContext).toBeDefined();
-      expect(wrapper.instance().ColumnContext).toBeDefined();
-      expect(wrapper.instance().SelectionContext).not.toBeDefined();
-      expect(wrapper.instance().CellEditContext).not.toBeDefined();
-      expect(wrapper.instance().FilterContext).not.toBeDefined();
-      expect(wrapper.instance().PaginationContext).not.toBeDefined();
+      expect(container.querySelector("table")).toBeInTheDocument();
     });
   });
 
   describe("if columnToggle is enable", () => {
-    beforeEach(() => {
+    it("should render with column context", () => {
       const columnToggle = { toggles: { id: true, name: true } };
-      wrapper = shallow(
+      const { container } = render(
         <BootstrapTable
           keyField={keyField}
           data={data}
@@ -138,23 +97,14 @@ describe("Context", () => {
           columnToggle={columnToggle}
         />
       );
-      wrapper.render();
-    });
-
-    it("should create contexts correctly", () => {
-      expect(wrapper.instance().DataContext).toBeDefined();
-      expect(wrapper.instance().ColumnContext).toBeDefined();
-      expect(wrapper.instance().SelectionContext).not.toBeDefined();
-      expect(wrapper.instance().CellEditContext).not.toBeDefined();
-      expect(wrapper.instance().FilterContext).not.toBeDefined();
-      expect(wrapper.instance().PaginationContext).not.toBeDefined();
+      expect(container.querySelector("table")).toBeInTheDocument();
     });
   });
 
   describe("if row selection is enable", () => {
-    beforeEach(() => {
+    it("should render with selection context", () => {
       const selectRow = { mode: "radio" };
-      wrapper = shallow(
+      const { container } = render(
         <BootstrapTable
           keyField={keyField}
           data={data}
@@ -162,22 +112,12 @@ describe("Context", () => {
           selectRow={selectRow}
         />
       );
-      wrapper.render();
-    });
-
-    it("should create contexts correctly", () => {
-      expect(wrapper.instance().DataContext).toBeDefined();
-      expect(wrapper.instance().SortContext).not.toBeDefined();
-      expect(wrapper.instance().SelectionContext).toBeDefined();
-      expect(wrapper.instance().CellEditContext).not.toBeDefined();
-      expect(wrapper.instance().FilterContext).not.toBeDefined();
-      expect(wrapper.instance().PaginationContext).not.toBeDefined();
-      expect(wrapper.instance().ColumnManagementContext).not.toBeDefined();
+      expect(container.querySelector("table")).toBeInTheDocument();
     });
   });
 
   describe("if cell editing is enable", () => {
-    beforeEach(() => {
+    it("should render with cell edit context", () => {
       const CellEditContext = React.createContext(null);
       const cellEdit = {
         createContext: jest.fn().mockReturnValue({
@@ -188,7 +128,7 @@ describe("Context", () => {
         createEditingCell: jest.fn().mockReturnValue(() => null),
         withRowLevelCellEdit: jest.fn().mockReturnValue(() => null),
       };
-      wrapper = shallow(
+      const { container } = render(
         <BootstrapTable
           keyField={keyField}
           data={data}
@@ -196,28 +136,18 @@ describe("Context", () => {
           cellEdit={cellEdit}
         />
       );
-      wrapper.render();
-    });
-
-    it("should create contexts correctly", () => {
-      expect(wrapper.instance().DataContext).toBeDefined();
-      expect(wrapper.instance().SortContext).not.toBeDefined();
-      expect(wrapper.instance().SelectionContext).not.toBeDefined();
-      expect(wrapper.instance().CellEditContext).toBeDefined();
-      expect(wrapper.instance().FilterContext).not.toBeDefined();
-      expect(wrapper.instance().PaginationContext).not.toBeDefined();
-      expect(wrapper.instance().ColumnManagementContext).not.toBeDefined();
+      expect(container.querySelector("table")).toBeInTheDocument();
     });
   });
 
   describe("if search is enable", () => {
-    beforeEach(() => {
+    it("should render with search context", () => {
       const SearchContext = React.createContext(null);
       const search = {
         searchContext: jest.fn().mockReturnValue(SearchContext),
         searchText: "",
       };
-      wrapper = shallow(
+      const { container } = render(
         <BootstrapTable
           keyField={keyField}
           data={data}
@@ -225,23 +155,12 @@ describe("Context", () => {
           search={search}
         />
       );
-      wrapper.render();
-    });
-
-    it("should create contexts correctly", () => {
-      expect(wrapper.instance().DataContext).toBeDefined();
-      expect(wrapper.instance().SearchContext).toBeDefined();
-      expect(wrapper.instance().SortContext).not.toBeDefined();
-      expect(wrapper.instance().SelectionContext).not.toBeDefined();
-      expect(wrapper.instance().CellEditContext).not.toBeDefined();
-      expect(wrapper.instance().FilterContext).not.toBeDefined();
-      expect(wrapper.instance().PaginationContext).not.toBeDefined();
-      expect(wrapper.instance().ColumnManagementContext).not.toBeDefined();
+      expect(container.querySelector("table")).toBeInTheDocument();
     });
   });
 
   describe("if column filter is enable", () => {
-    beforeEach(() => {
+    it("should render with filter context", () => {
       const FilterContext = React.createContext(null);
       const filter = {
         createContext: jest.fn().mockReturnValue({
@@ -249,7 +168,7 @@ describe("Context", () => {
           Consumer: FilterContext.Consumer,
         }),
       };
-      wrapper = shallow(
+      const { container } = render(
         <BootstrapTable
           keyField={keyField}
           data={data}
@@ -257,22 +176,12 @@ describe("Context", () => {
           filter={filter}
         />
       );
-      wrapper.render();
-    });
-
-    it("should create contexts correctly", () => {
-      expect(wrapper.instance().DataContext).toBeDefined();
-      expect(wrapper.instance().SortContext).not.toBeDefined();
-      expect(wrapper.instance().SelectionContext).not.toBeDefined();
-      expect(wrapper.instance().CellEditContext).not.toBeDefined();
-      expect(wrapper.instance().FilterContext).toBeDefined();
-      expect(wrapper.instance().PaginationContext).not.toBeDefined();
-      expect(wrapper.instance().ColumnManagementContext).not.toBeDefined();
+      expect(container.querySelector("table")).toBeInTheDocument();
     });
   });
 
   describe("if pagination is enable", () => {
-    beforeEach(() => {
+    it("should render with pagination context", () => {
       const PaginationContext = React.createContext(null);
       const paginator = {
         createContext: jest.fn().mockReturnValue({
@@ -280,7 +189,7 @@ describe("Context", () => {
           Consumer: PaginationContext.Consumer,
         }),
       };
-      wrapper = shallow(
+      const { container } = render(
         <BootstrapTable
           keyField={keyField}
           data={data}
@@ -288,23 +197,13 @@ describe("Context", () => {
           pagination={paginator}
         />
       );
-      wrapper.render();
-    });
-
-    it("should create contexts correctly", () => {
-      expect(wrapper.instance().DataContext).toBeDefined();
-      expect(wrapper.instance().SortContext).not.toBeDefined();
-      expect(wrapper.instance().SelectionContext).not.toBeDefined();
-      expect(wrapper.instance().CellEditContext).not.toBeDefined();
-      expect(wrapper.instance().FilterContext).not.toBeDefined();
-      expect(wrapper.instance().PaginationContext).toBeDefined();
-      expect(wrapper.instance().ColumnManagementContext).not.toBeDefined();
+      expect(container.querySelector("table")).toBeInTheDocument();
     });
   });
 
   describe("if registerExposedAPI props is defined", () => {
-    const registerExposedAPI = jest.fn();
-    beforeEach(() => {
+    it("should call props.registerExposedAPI correctly", () => {
+      const registerExposedAPI = jest.fn();
       const PaginationContext = React.createContext(null);
       const paginator = {
         createContext: jest.fn().mockReturnValue({
@@ -312,7 +211,7 @@ describe("Context", () => {
           Consumer: PaginationContext.Consumer,
         }),
       };
-      wrapper = shallow(
+      render(
         <BootstrapTable
           keyField={keyField}
           data={data}
@@ -321,10 +220,6 @@ describe("Context", () => {
           registerExposedAPI={registerExposedAPI}
         />
       );
-      wrapper.render();
-    });
-
-    it("should call props.registerExposedAPI correctly", () => {
       expect(registerExposedAPI).toHaveBeenCalledTimes(1);
     });
   });

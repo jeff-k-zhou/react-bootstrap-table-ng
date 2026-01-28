@@ -9,7 +9,7 @@ import bootstrapStyle from './bootstrap-style';
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta = {
   title: 'Sort Table',
-  component: BootstrapTable,
+  component: BootstrapTable as any,
   parameters: {
     // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/react/configure/story-layout
     layout: 'centered',
@@ -319,8 +319,8 @@ export const OnetimeSortConfiguration: Story = {
       sortFunc: sortFunc,
       sortCaret: (order: string, column: any) => {
         if (!order) return (<span>&nbsp;&nbsp;Desc/Asc</span>);
-        else if (order === 'asc') return (<span>&nbsp;&nbsp;Desc/<span style={{color: "red"}}>Asc</span></span>);
-        else if (order === 'desc') return (<span>&nbsp;&nbsp;<span style={{color: "red"}}>Desc</span>/Asc</span>);
+        else if (order === 'asc') return (<span>&nbsp;&nbsp;Desc/<span style={{ color: "red" }}>Asc</span></span>);
+        else if (order === 'desc') return (<span>&nbsp;&nbsp;<span style={{ color: "red" }}>Desc</span>/Asc</span>);
         return null;
       }
     },
@@ -417,8 +417,8 @@ export const CustomSortCaret: Story = {
       sort: true,
       sortCaret: (order: string, column: any) => {
         if (!order) return (<span>&nbsp;&nbsp;Desc/Asc</span>);
-        else if (order === 'asc') return (<span>&nbsp;&nbsp;Desc/<span style={{color: "red"}}>Asc</span></span>);
-        else if (order === 'desc') return (<span>&nbsp;&nbsp;<span style={{color: "red"}}>Desc</span>/Asc</span>);
+        else if (order === 'asc') return (<span>&nbsp;&nbsp;Desc/<span style={{ color: "red" }}>Asc</span></span>);
+        else if (order === 'desc') return (<span>&nbsp;&nbsp;<span style={{ color: "red" }}>Desc</span>/Asc</span>);
         return null;
       }
     }, {

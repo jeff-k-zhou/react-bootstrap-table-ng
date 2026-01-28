@@ -1,20 +1,44 @@
+@use "../base/base" as base;
+
 .demo-key-row {
   font-weight: bold;
   font-size: 18px;
 }
 
 .demo-row-even {
-  background-color: $green-lighten-2;
+  background-color: base.$green-lighten-2;
 }
 
 .demo-row-odd {
-  background-color: $green-lighten-4;
+  background-color: base.$green-lighten-4;
 }
 
 .header-class {
-  background-color: $green-lighten-4;
+  background-color: base.$green-lighten-4;
 }
 
 .footer-class {
-  background-color: $green-lighten-4;
+  background-color: base.$green-lighten-4;
+}
+
+.react-bootstrap-table table {
+  thead {
+    th.price-column-header {
+      background-color: base.$green-lighten-2;
+    }
+  }
+
+  tbody {
+    td.price-column {
+      background-color: base.$green-lighten-4;
+    }
+
+    tr.tr-style-1 {
+      background-color: base.$green-lighten-4;
+    }
+
+    tr.tr-style-2 {
+      background-color: base.$green-lighten-4;
+    }
+  }
 }

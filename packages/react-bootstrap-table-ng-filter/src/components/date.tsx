@@ -155,26 +155,27 @@ class DateFilter extends Component<DateFilterProps> {
       dateClassName = "",
     } = this.props;
 
-    const comparatorElmId = `date-filter-comparator-${dataField}${
-      id ? `-${id}` : ""
-    }`;
+    const comparatorElmId = `date-filter-comparator-${dataField}${id ? `-${id}` : ""
+      }`;
     const inputElmId = `date-filter-column-${dataField}${id ? `-${id}` : ""}`;
 
     return (
       <div
         onClick={(e) => e.stopPropagation()}
         className={`filter date-filter ${className}`}
-        style={style}
+        style={style as any}
+        data-testid="date-filter"
       >
         <label className="filter-label" htmlFor={comparatorElmId}>
           <span className="sr-only">Filter comparator</span>
           <select
             ref={(n) => (this.dateFilterComparator = n)}
             id={comparatorElmId}
-            style={comparatorStyle}
+            style={comparatorStyle as any}
             className={`date-filter-comparator form-control ${comparatorClassName}`}
             onChange={this.onChangeComparator}
             defaultValue={this.getDefaultComparator()}
+            data-testid="date-filter-comparator"
           >
             {this.getComparatorOptions()}
           </select>
@@ -185,11 +186,12 @@ class DateFilter extends Component<DateFilterProps> {
             ref={(n) => (this.inputDate = n)}
             id={inputElmId}
             className={`filter date-filter-input form-control ${dateClassName}`}
-            style={dateStyle}
+            style={dateStyle as any}
             type="date"
             onChange={this.onChangeDate}
             placeholder={placeholder || `Enter ${text}...`}
             defaultValue={this.getDefaultDate()}
+            data-testid="date-filter-input"
           />
         </label>
       </div>

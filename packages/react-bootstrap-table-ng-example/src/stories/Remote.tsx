@@ -149,7 +149,7 @@ class RemoteSortComponent extends React.Component<{}, RemoteSortState> {
     };
   }
 
-  handleTableChange = (type: any, { sortField, sortOrder, data }) => {
+  handleTableChange = (type: any, { sortField, sortOrder, data }: any) => {
     setTimeout(() => {
       let result: any;
       if (sortOrder === "asc") {
@@ -311,7 +311,7 @@ class RemoteFilterComponent extends React.Component<{}, RemoteFilterState> {
     };
   }
 
-  handleTableChange = (type: any, { filters }) => {
+  handleTableChange = (type: any, { filters }: any) => {
     setTimeout(() => {
       const result = this.products.filter((row: any) => {
         let valid = true;
@@ -405,7 +405,7 @@ const RemotePagination = ({
   sizePerPage,
   onTableChange,
   totalSize,
-}) => (
+}: any) => (
   <div>
     <BootstrapTable
       remote
@@ -461,7 +461,7 @@ class RemotePaginationComponent extends React.Component<
     };
   }
 
-  handleTableChange = (type: any, { page, sizePerPage }) => {
+  handleTableChange = (type: any, { page, sizePerPage }: any) => {
     const currentIndex = (page - 1) * sizePerPage;
     setTimeout(() => {
       this.setState(() => ({
@@ -627,7 +627,7 @@ class RemoteSearchComponent extends React.Component<{}, RemoteSearchState> {
     };
   }
 
-  handleTableChange = (type: any, { searchText }) => {
+  handleTableChange = (type: any, { searchText }: any) => {
     setTimeout(() => {
       const result = this.products.filter((row: any) => {
         for (let cidx = 0; cidx < remoteSearchColumns.length; cidx += 1) {
@@ -785,7 +785,7 @@ class RemoteCellEditComponent extends React.Component<{}, RemoteCellEditState> {
 
   handleTableChange = (
     type: any,
-    { data, cellEdit: { rowId, dataField, newValue } }
+    { data, cellEdit: { rowId, dataField, newValue } }: any
   ) => {
     setTimeout(() => {
       if (newValue === "test" && dataField === "name") {
@@ -970,7 +970,13 @@ class Container extends React.Component {
 }
 `;
 
-const RemoteAll = ({ data, page, sizePerPage, onTableChange, totalSize }) => (
+const RemoteAll = ({
+  data,
+  page,
+  sizePerPage,
+  onTableChange,
+  totalSize,
+}: any) => (
   <div>
     <h3>
       When <code>remote.pagination</code> is enabled, the filtering, sorting and
@@ -1049,7 +1055,7 @@ class RemoteAllComponent extends React.Component<{}, RemoteAllState> {
 
   handleTableChange = (
     type: any,
-    { page, sizePerPage, filters, sortField, sortOrder, cellEdit }
+    { page, sizePerPage, filters, sortField, sortOrder, cellEdit }: any
   ) => {
     const currentIndex = (page - 1) * sizePerPage;
     setTimeout(() => {
@@ -1126,7 +1132,11 @@ class RemoteAllComponent extends React.Component<{}, RemoteAllState> {
   }
 }
 
-export default ({ mode }) => {
+interface RemoteMainProps {
+  mode?: any;
+}
+
+export default ({ mode }: RemoteMainProps) => {
   switch (mode) {
     case "sort":
       return <RemoteSortComponent />;

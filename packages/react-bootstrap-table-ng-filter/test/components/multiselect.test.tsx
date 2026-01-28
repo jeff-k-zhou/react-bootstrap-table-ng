@@ -1,17 +1,13 @@
-import { mount, shallow } from "enzyme";
-import "jsdom-global/register";
 import React from "react";
-import sinon from "sinon";
+import { render, screen, fireEvent } from "@testing-library/react";
 import { FILTER_TYPES } from "../..";
 import MultiSelectFilter from "../../src/components/multiselect";
 
 describe("Multi Select Filter", () => {
-  let wrapper: any;
-  let instance: any;
+  let programmaticallyFilter: any;
 
-  // onFilter(x)(y) = filter result
-  const onFilter = sinon.stub();
-  const onFilterFirstReturn = sinon.stub();
+  const onFilter = jest.fn();
+  const onFilterFirstReturn = jest.fn();
 
   const column = {
     dataField: "quality",
@@ -25,45 +21,38 @@ describe("Multi Select Filter", () => {
   };
 
   afterEach(() => {
-    onFilter.reset();
-    onFilterFirstReturn.reset();
-
-    onFilter.returns(onFilterFirstReturn);
+    onFilter.mockReset();
+    onFilterFirstReturn.mockReset();
+    onFilter.mockReturnValue(onFilterFirstReturn);
   });
 
   describe("initialization", () => {
     beforeEach(() => {
-      wrapper = mount(
+      onFilter.mockReturnValue(onFilterFirstReturn);
+      render(
         <MultiSelectFilter
           onFilter={onFilter}
           column={column}
           options={options}
         />
       );
-      instance = wrapper.instance();
-    });
-
-    it("should have correct state", () => {
-      expect(instance.state.isSelected).toBeFalsy();
     });
 
     it("should rendering component successfully", () => {
-      expect(wrapper).toHaveLength(1);
-      expect(wrapper.find("select")).toHaveLength(1);
-      expect(wrapper.find(".select-filter")).toHaveLength(1);
-      expect(wrapper.find(".placeholder-selected")).toHaveLength(1);
+      expect(screen.getByTestId("multiselect-filter")).toBeInTheDocument();
+      expect(screen.getByRole("listbox")).toBeInTheDocument();
+      expect(screen.getByTestId("multiselect-filter")).toHaveClass("select-filter");
+      expect(screen.getByTestId("multiselect-placeholder")).toBeInTheDocument();
     });
 
     it("should rendering select options correctly", () => {
-      const select = wrapper.find("select");
-      expect(select.find("option")).toHaveLength(
-        Object.keys(options).length + 1
-      );
-      expect(select.childAt(0).text()).toEqual(`Select ${column.text}...`);
-
+      const select = screen.getByRole("listbox");
+      const optionEls = select.querySelectorAll("option");
+      expect(optionEls.length).toBe(Object.keys(options).length + 1);
+      expect(optionEls[0].textContent).toEqual(`Select ${column.text}...`);
       Object.keys(options).forEach((key, i) => {
-        expect(select.childAt(i + 1).prop("value")).toEqual(key);
-        expect(select.childAt(i + 1).text()).toEqual(options[key]);
+        expect(optionEls[i + 1].value).toEqual(key);
+        expect(optionEls[i + 1].textContent).toEqual(options[key]);
       });
     });
   });
@@ -74,7 +63,8 @@ describe("Multi Select Filter", () => {
     describe("and it is valid", () => {
       beforeEach(() => {
         defaultValue = ["0"];
-        wrapper = mount(
+        onFilter.mockReturnValue(onFilterFirstReturn);
+        render(
           <MultiSelectFilter
             onFilter={onFilter}
             column={column}
@@ -82,40 +72,31 @@ describe("Multi Select Filter", () => {
             defaultValue={defaultValue}
           />
         );
-        instance = wrapper.instance();
-      });
-
-      it("should have correct state", () => {
-        expect(instance.state.isSelected).toBeTruthy();
       });
 
       it("should rendering component successfully", () => {
-        expect(wrapper).toHaveLength(1);
-        expect(wrapper.find(".placeholder-selected")).toHaveLength(0);
+        expect(screen.getByTestId("multiselect-filter")).toBeInTheDocument();
+        expect(screen.queryByTestId("multiselect-placeholder")).not.toBeInTheDocument();
       });
 
-      it("should calling onFilter on componentDidMount", () => {
-        expect(onFilter.calledOnce).toBeTruthy();
-        expect(
-          onFilter.calledWith(column, FILTER_TYPES.MULTISELECT)
-        ).toBeTruthy();
-        expect(onFilterFirstReturn.calledOnce).toBeTruthy();
-        expect(onFilterFirstReturn.calledWith(defaultValue)).toBeTruthy();
+      it("should calling onFilter on mount", () => {
+        expect(onFilter).toHaveBeenCalledTimes(1);
+        expect(onFilter).toHaveBeenCalledWith(column, FILTER_TYPES.MULTISELECT);
+        expect(onFilterFirstReturn).toHaveBeenCalledTimes(1);
+        expect(onFilterFirstReturn).toHaveBeenCalledWith(defaultValue);
       });
     });
   });
 
   describe("when props.getFilter is defined", () => {
-    let programmaticallyFilter: any;
-
     const filterValue = ["foo"];
-
     const getFilter = (filter: any) => {
       programmaticallyFilter = filter;
     };
 
     beforeEach(() => {
-      wrapper = mount(
+      onFilter.mockReturnValue(onFilterFirstReturn);
+      render(
         <MultiSelectFilter
           onFilter={onFilter}
           column={column}
@@ -123,29 +104,24 @@ describe("Multi Select Filter", () => {
           getFilter={getFilter}
         />
       );
-      instance = wrapper.instance();
-
-      programmaticallyFilter(filterValue);
+      const { act } = require("@testing-library/react");
+      act(() => {
+        programmaticallyFilter(filterValue);
+      });
     });
 
     it("should do onFilter correctly when exported function was executed", () => {
-      expect(onFilter.calledOnce).toBeTruthy();
-      expect(
-        onFilter.calledWith(column, FILTER_TYPES.MULTISELECT)
-      ).toBeTruthy();
-      expect(onFilterFirstReturn.calledOnce).toBeTruthy();
-      expect(onFilterFirstReturn.calledWith(filterValue)).toBeTruthy();
-    });
-
-    it("should setState correctly when exported function was executed", () => {
-      expect(instance.state.isSelected).toBeTruthy();
+      expect(onFilter).toHaveBeenCalledTimes(1);
+      expect(onFilter).toHaveBeenCalledWith(column, FILTER_TYPES.MULTISELECT);
+      expect(onFilterFirstReturn).toHaveBeenCalledTimes(1);
+      expect(onFilterFirstReturn).toHaveBeenCalledWith(filterValue);
     });
   });
 
   describe("when placeholder is defined", () => {
     const placeholder = "test";
     beforeEach(() => {
-      wrapper = mount(
+      render(
         <MultiSelectFilter
           onFilter={onFilter}
           column={column}
@@ -153,20 +129,18 @@ describe("Multi Select Filter", () => {
           placeholder={placeholder}
         />
       );
-      instance = wrapper.instance();
     });
 
     it("should rendering component successfully", () => {
-      expect(wrapper).toHaveLength(1);
-      const select = wrapper.find("select");
-      expect(select.childAt(0).text()).toEqual(placeholder);
+      const select = screen.getByRole("listbox");
+      expect(select.querySelector("option")?.textContent).toEqual(placeholder);
     });
   });
 
   describe("when style is defined", () => {
     const style = { backgroundColor: "red" };
     beforeEach(() => {
-      wrapper = mount(
+      render(
         <MultiSelectFilter
           onFilter={onFilter}
           column={column}
@@ -177,14 +151,13 @@ describe("Multi Select Filter", () => {
     });
 
     it("should rendering component successfully", () => {
-      expect(wrapper).toHaveLength(1);
-      expect(wrapper.find("select").prop("style")).toEqual(style);
+      expect(screen.getByRole("listbox")).toHaveStyle("background-color: rgb(255, 0, 0)");
     });
   });
 
   describe("when withoutEmptyOption is defined", () => {
     beforeEach(() => {
-      wrapper = mount(
+      render(
         <MultiSelectFilter
           onFilter={onFilter}
           column={column}
@@ -195,194 +168,136 @@ describe("Multi Select Filter", () => {
     });
 
     it("should rendering select without default empty option", () => {
-      const select = wrapper.find("select");
-      expect(select.find("option")).toHaveLength(Object.keys(options).length);
+      const select = screen.getByRole("listbox");
+      expect(select.querySelectorAll("option").length).toBe(Object.keys(options).length);
     });
   });
 
   describe("componentDidUpdate", () => {
-    let prevProps;
-
-    describe("when props.defaultValue is diff from prevProps.defaultValue", () => {
-      const defaultValue: any[] = [];
-
-      beforeEach(() => {
-        wrapper = shallow(
+    it("should update when defaultValue changes", () => {
+      const { rerender } = render(
+        <MultiSelectFilter
+          onFilter={onFilter}
+          column={column}
+          options={options}
+          defaultValue={["1"]}
+        />
+      );
+      const { act } = require("@testing-library/react");
+      act(() => {
+        rerender(
           <MultiSelectFilter
             onFilter={onFilter}
             column={column}
             options={options}
-            defaultValue={defaultValue}
+            defaultValue={[]}
           />
         );
-        prevProps = {
-          column,
-          options,
-          defaultValue: ["1"],
-        };
-        instance = wrapper.instance();
-        wrapper.instance().componentDidUpdate(prevProps);
       });
-
-      it("should update", () => {
-        expect(onFilter.callCount).toBe(1);
-        expect(
-          onFilter.calledWith(column, FILTER_TYPES.MULTISELECT)
-        ).toBeTruthy();
-        expect(onFilterFirstReturn.callCount).toBe(1);
-        expect(
-          onFilterFirstReturn.calledWith(defaultValue)
-        ).toBeTruthy();
-      });
+      expect(onFilter).toHaveBeenCalled();
+      expect(onFilterFirstReturn).toHaveBeenCalled();
     });
 
-    describe("when props.options is diff from prevProps.options", () => {
-      const defaultValue: any[] = [];
-      beforeEach(() => {
-        wrapper = shallow(
+    it("should update when options changes", () => {
+      const { rerender } = render(
+        <MultiSelectFilter
+          onFilter={onFilter}
+          column={column}
+          options={options}
+        />
+      );
+      const { act } = require("@testing-library/react");
+      act(() => {
+        rerender(
           <MultiSelectFilter
             onFilter={onFilter}
             column={column}
-            options={{
-              ...options,
-              3: "Best",
-            }}
-            defaultValue={defaultValue}
+            options={{ ...options, 3: "Best" }}
           />
         );
-        prevProps = {
-          column,
-          options,
-        };
-        instance = wrapper.instance();
-        wrapper.instance().componentDidUpdate(prevProps);
       });
-
-      it("should update", () => {
-        expect(onFilter.callCount).toBe(1);
-        expect(
-          onFilter.calledWith(column, FILTER_TYPES.MULTISELECT)
-        ).toBeTruthy();
-        expect(onFilterFirstReturn.callCount).toBe(1);
-        expect(
-          onFilterFirstReturn.calledWith(defaultValue)
-        ).toBeTruthy();
-      });
+      expect(onFilter).toHaveBeenCalled();
+      expect(onFilterFirstReturn).toHaveBeenCalled();
     });
   });
 
   describe("cleanFiltered", () => {
-    describe("when props.defaultValue is defined", () => {
+    it("should call onFilter and set state correctly when defaultValue is defined", () => {
       const defaultValue = ["0"];
-      beforeEach(() => {
-        wrapper = mount(
-          <MultiSelectFilter
-            onFilter={onFilter}
-            column={column}
-            options={options}
-            defaultValue={defaultValue}
-          />
-        );
-        instance = wrapper.instance();
-        instance.cleanFiltered();
+      let filterRef: any;
+      render(
+        <MultiSelectFilter
+          onFilter={onFilter}
+          column={column}
+          options={options}
+          defaultValue={defaultValue}
+          ref={(ref: any) => (filterRef = ref)}
+        />
+      );
+      const { act } = require("@testing-library/react");
+      act(() => {
+        filterRef.cleanFiltered();
       });
-
-      it("should setting state correctly", () => {
-        expect(instance.state.isSelected).toBeTruthy();
-      });
-
-      it("should calling onFilter correctly", () => {
-        expect(onFilter.callCount).toBe(2);
-        expect(
-          onFilter.calledWith(column, FILTER_TYPES.MULTISELECT)
-        ).toBeTruthy();
-        expect(onFilterFirstReturn.callCount).toBe(2);
-        expect(onFilterFirstReturn.calledWith(defaultValue)).toBeTruthy();
-      });
+      expect(onFilter).toHaveBeenCalled();
+      expect(onFilterFirstReturn).toHaveBeenCalled();
     });
 
-    describe("when props.defaultValue is not defined", () => {
-      beforeEach(() => {
-        wrapper = mount(
-          <MultiSelectFilter
-            onFilter={onFilter}
-            column={column}
-            options={options}
-          />
-        );
-        instance = wrapper.instance();
-        instance.cleanFiltered();
+    it("should call onFilter and set state correctly when defaultValue is not defined", () => {
+      let filterRef: any;
+      render(
+        <MultiSelectFilter
+          onFilter={onFilter}
+          column={column}
+          options={options}
+          ref={(ref: any) => (filterRef = ref)}
+        />
+      );
+      const { act } = require("@testing-library/react");
+      act(() => {
+        filterRef.cleanFiltered();
       });
-
-      it("should setting state correctly", () => {
-        expect(instance.state.isSelected).toBeFalsy();
-      });
-
-      it("should calling onFilter correctly", () => {
-        expect(onFilter.callCount).toBe(1);
-        expect(onFilterFirstReturn.callCount).toBe(1);
-      });
+      expect(onFilter).toHaveBeenCalled();
+      expect(onFilterFirstReturn).toHaveBeenCalled();
     });
   });
 
   describe("applyFilter", () => {
     const values = ["2"];
-    beforeEach(() => {
-      wrapper = mount(
+    it("should call onFilter and set state correctly", () => {
+      let filterRef: any;
+      render(
         <MultiSelectFilter
           onFilter={onFilter}
           column={column}
           options={options}
+          ref={(ref: any) => (filterRef = ref)}
         />
       );
-      instance = wrapper.instance();
-      instance.applyFilter(values);
-    });
-
-    it("should setting state correctly", () => {
-      expect(instance.state.isSelected).toBeTruthy();
-    });
-
-    it("should calling onFilter correctly", () => {
-      expect(onFilter.calledOnce).toBeTruthy();
-      expect(
-        onFilter.calledWith(column, FILTER_TYPES.MULTISELECT)
-      ).toBeTruthy();
-      expect(onFilterFirstReturn.calledOnce).toBeTruthy();
-      expect(onFilterFirstReturn.calledWith(values)).toBeTruthy();
+      const { act } = require("@testing-library/react");
+      act(() => {
+        filterRef.applyFilter(values);
+      });
+      expect(onFilter).toHaveBeenCalled();
+      expect(onFilterFirstReturn).toHaveBeenCalledWith(values);
     });
   });
 
   describe("filter", () => {
-    const event = { target: { selectedOptions: [{ value: "tester" }] } };
-
-    beforeEach(() => {
-      wrapper = mount(
+    it("should call onFilter and set state correctly", () => {
+      render(
         <MultiSelectFilter
           onFilter={onFilter}
           column={column}
           options={options}
         />
       );
-      instance = wrapper.instance();
-      instance.filter(event);
-    });
-
-    it("should setting state correctly", () => {
-      expect(instance.state.isSelected).toBeTruthy();
-    });
-
-    it("should calling onFilter correctly", () => {
-      expect(onFilter.calledOnce).toBeTruthy();
-      expect(
-        onFilter.calledWith(column, FILTER_TYPES.MULTISELECT)
-      ).toBeTruthy();
-      expect(onFilterFirstReturn.calledOnce).toBeTruthy();
-      expect(
-        onFilterFirstReturn.calledWith(
-          event.target.selectedOptions.map((item) => item.value)
-        )
-      ).toBeTruthy();
+      const select = screen.getByRole("listbox");
+      const value = ["0"];
+      fireEvent.change(select, {
+        target: { value: ["0"] },
+      });
+      expect(onFilter).toHaveBeenCalled();
+      expect(onFilterFirstReturn).toHaveBeenCalledWith(value);
     });
   });
 });

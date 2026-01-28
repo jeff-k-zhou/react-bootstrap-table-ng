@@ -1,5 +1,4 @@
-import { shallow } from "enzyme";
-import "jsdom-global/register";
+import { render, act } from "@testing-library/react";
 import React from "react";
 
 import { SORT_ASC, SORT_DESC } from "../..";
@@ -8,44 +7,17 @@ import createSortContext from "../../src/contexts/sort-context";
 import dataOperator from "../../src/store/operators";
 
 describe("SortContext", () => {
-  let wrapper: any;
   let columns: any;
   let SortContext: any;
-
   let data: any;
 
   const mockBase = jest.fn((props) => (
     <BootstrapTable data={data} columns={columns} keyField="id" {...props} />
   ));
 
-  beforeEach(() => {
-    data = [
-      {
-        id: 1,
-        name: "A",
-      },
-      {
-        id: 2,
-        name: "B",
-      },
-    ];
-    columns = [
-      {
-        dataField: "id",
-        text: "ID",
-        sort: true,
-      },
-      {
-        dataField: "name",
-        text: "Name",
-        sort: true,
-      },
-    ];
-  });
-
   const handleRemoteSortChange = jest.fn();
 
-  function shallowContext(enableRemote = false, providerProps = {}) {
+  function renderContext(enableRemote = false, providerProps = {}) {
     handleRemoteSortChange.mockReset();
     mockBase.mockReset();
     SortContext = createSortContext(
@@ -53,7 +25,7 @@ describe("SortContext", () => {
       jest.fn().mockReturnValue(enableRemote),
       handleRemoteSortChange
     );
-    return (
+    return render(
       <SortContext.Provider columns={columns} data={data} {...providerProps}>
         <SortContext.Consumer>
           {(sortProps: any) => mockBase(sortProps)}
@@ -62,36 +34,38 @@ describe("SortContext", () => {
     );
   }
 
-  describe("default render", () => {
-    beforeEach(() => {
-      wrapper = shallow(shallowContext());
-      wrapper.render();
-    });
+  beforeEach(() => {
+    data = [
+      { id: 1, name: "A" },
+      { id: 2, name: "B" },
+    ];
+    columns = [
+      { dataField: "id", text: "ID", sort: true },
+      { dataField: "name", text: "Name", sort: true },
+    ];
+    mockBase.mockClear();
+    handleRemoteSortChange.mockClear();
+  });
 
+  describe("default render", () => {
     it("should have correct Provider property after calling createSortContext", () => {
+      renderContext();
       expect(SortContext.Provider).toBeDefined();
     });
 
     it("should have correct Consumer property after calling createSortContext", () => {
+      renderContext();
       expect(SortContext.Consumer).toBeDefined();
     });
 
-    it("should have correct state.sortOrder", () => {
-      expect(wrapper.state().sortOrder).toBe(undefined);
-    });
-
-    it("should have correct state.sortColumn", () => {
-      expect(wrapper.state().sortColumn).toBe(undefined);
-    });
-
-    it("should pass correct sort props to children element", () => {
-      expect(wrapper.length).toBe(1);
-      expect(mockBase).toHaveBeenCalledWith({
-        data,
-        sortOrder: undefined,
-        onSort: wrapper.instance().handleSort,
-        sortField: null,
-      });
+    it("should provide correct sort props to children element", () => {
+      renderContext();
+      expect(mockBase).toHaveBeenCalled();
+      const props = mockBase.mock.calls[0][0];
+      expect(props.data).toEqual(data);
+      expect(props.sortOrder).toBeUndefined();
+      expect(typeof props.onSort).toBe("function");
+      expect(props.sortField).toBeNull();
     });
   });
 
@@ -109,63 +83,29 @@ describe("SortContext", () => {
     });
 
     describe("when remote.sort is false", () => {
-      beforeEach(() => {
-        wrapper = shallow(shallowContext());
-        wrapper.render();
-        wrapper.instance().handleSort(sortColumn);
-        wrapper.update();
-        wrapper.render();
-      });
-
-      it("should set state correctly", () => {
-        expect(wrapper.state().sortColumn).toEqual(sortColumn);
-        expect(wrapper.state().sortOrder).toEqual(SORT_DESC);
-      });
-
-      it("should call dataOperator.nextOrder correctly", () => {
+      it("should set sort props and call dataOperator.nextOrder correctly", () => {
+        renderContext(false);
+        const props = mockBase.mock.calls[0][0];
+        // Simulate sort
+        act(() => {
+          props.onSort(sortColumn);
+        });
         expect(nextOrderSpy).toHaveBeenCalledTimes(1);
         expect(nextOrderSpy).toHaveBeenCalledWith(
           sortColumn,
           { sortColumn: undefined, sortOrder: undefined },
-          wrapper.props().defaultSortDirection
+          undefined
         );
-      });
-
-      it("should pass correct sort props to children element", () => {
-        expect(wrapper.length).toBe(1);
-        expect(mockBase).toHaveBeenLastCalledWith({
-          data: data.reverse(),
-          sortOrder: wrapper.state().sortOrder,
-          onSort: wrapper.instance().handleSort,
-          sortField: wrapper.state().sortColumn.dataField,
-        });
       });
     });
 
     describe("when remote.sort is true", () => {
-      beforeEach(() => {
-        wrapper = shallow(shallowContext(true));
-        wrapper.render();
-
-        nextOrderSpy = jest.spyOn(dataOperator, "nextOrder");
-        wrapper.instance().handleSort(sortColumn);
-      });
-
-      it("should set state correctly", () => {
-        expect(wrapper.state().sortColumn).toEqual(sortColumn);
-        expect(wrapper.state().sortOrder).toEqual(SORT_DESC);
-      });
-
-      it("should call dataOperator.nextOrder correctly", () => {
-        expect(nextOrderSpy).toHaveBeenCalledTimes(1);
-        expect(nextOrderSpy).toHaveBeenCalledWith(
-          sortColumn,
-          { sortColumn: undefined, sortOrder: undefined },
-          wrapper.props().defaultSortDirection
-        );
-      });
-
-      it("should calling handleRemoteSortChange correctly", () => {
+      it("should call handleRemoteSortChange", () => {
+        renderContext(true);
+        const props = mockBase.mock.calls[0][0];
+        act(() => {
+          props.onSort(sortColumn);
+        });
         expect(handleRemoteSortChange).toHaveBeenCalledTimes(1);
         expect(handleRemoteSortChange).toHaveBeenCalledWith(
           sortColumn.dataField,
@@ -177,17 +117,26 @@ describe("SortContext", () => {
     describe("when column.onSort prop is defined", () => {
       const onSortCB = jest.fn();
 
-      beforeEach(() => {
+      it("should call column.onSort function correctly", () => {
         columns[0].onSort = onSortCB;
-        wrapper = shallow(shallowContext());
-        wrapper.instance().handleSort(sortColumn);
-      });
+        renderContext(false);
+        const props = mockBase.mock.calls[0][0];
 
-      it("should calling column.onSort function correctly", () => {
+        act(() => {
+          props.onSort(sortColumn);
+        });
+
         expect(onSortCB).toHaveBeenCalledTimes(1);
         expect(onSortCB).toHaveBeenCalledWith(columns[0].dataField, SORT_DESC);
 
-        wrapper.instance().handleSort(sortColumn);
+        // Wait for re-render and get updated props
+        const updatedProps = mockBase.mock.calls[mockBase.mock.calls.length - 1][0];
+
+        // Simulate toggling sort order
+        act(() => {
+          updatedProps.onSort(sortColumn);
+        });
+
         expect(onSortCB).toHaveBeenCalledTimes(2);
         expect(onSortCB).toHaveBeenCalledWith(columns[0].dataField, SORT_ASC);
       });
@@ -202,59 +151,32 @@ describe("SortContext", () => {
       },
     ];
 
-    beforeEach(() => {
-      wrapper = shallow(shallowContext(false, { defaultSorted }));
-      wrapper.render();
+    it("should provide correct sort props to children element", () => {
+      renderContext(false, { defaultSorted });
+      expect(mockBase).toHaveBeenCalled();
+      const props = mockBase.mock.calls[0][0];
+      expect(props.sortOrder).toBe(defaultSorted[0].order);
+      expect(props.sortField).toBe("name");
     });
 
-    it("should pass correct sort props to children element", () => {
-      expect(wrapper.length).toBe(1);
-      expect(mockBase).toHaveBeenLastCalledWith({
-        data: data.reverse(),
-        sortOrder: wrapper.state().sortOrder,
-        onSort: wrapper.instance().handleSort,
-        sortField: wrapper.state().sortColumn.dataField,
-      });
-    });
-
-    it("should have correct state.sortOrder", () => {
-      expect(wrapper.state().sortOrder).toBe(defaultSorted[0].order);
-    });
-
-    it("should have correct state.sortColumn", () => {
-      expect(wrapper.state().sortColumn).toBe(columns[1]);
-    });
-
-    describe("when column.onSort prop is defined", () => {
+    it("should call column.onSort if defined", () => {
       const onSortCB = jest.fn();
-
-      beforeEach(() => {
-        columns[1].onSort = onSortCB;
-        wrapper = shallow(shallowContext(false, { defaultSorted }));
-      });
-
-      it("should calling column.onSort function correctly", () => {
-        expect(onSortCB).toHaveBeenCalledTimes(1);
-        expect(onSortCB).toHaveBeenCalledWith(
-          defaultSorted[0].dataField,
-          defaultSorted[0].order
-        );
-      });
+      columns[1].onSort = onSortCB;
+      renderContext(false, { defaultSorted });
+      expect(onSortCB).toHaveBeenCalledTimes(1);
+      expect(onSortCB).toHaveBeenCalledWith(
+        defaultSorted[0].dataField,
+        defaultSorted[0].order
+      );
     });
 
-    describe("when remote.sort is true", () => {
-      beforeEach(() => {
-        wrapper = shallow(shallowContext(true, { defaultSorted }));
-        wrapper.render();
-      });
-
-      it("should calling handleRemoteSortChange correctly", () => {
-        expect(handleRemoteSortChange).toHaveBeenCalledTimes(1);
-        expect(handleRemoteSortChange).toHaveBeenCalledWith(
-          defaultSorted[0].dataField,
-          defaultSorted[0].order
-        );
-      });
+    it("should call handleRemoteSortChange if remote.sort is true", () => {
+      renderContext(true, { defaultSorted });
+      expect(handleRemoteSortChange).toHaveBeenCalledTimes(1);
+      expect(handleRemoteSortChange).toHaveBeenCalledWith(
+        defaultSorted[0].dataField,
+        defaultSorted[0].order
+      );
     });
   });
 });

@@ -7,10 +7,13 @@ const PaginatonList = (props: any) => (
   <ul className="pagination react-bootstrap-table-page-btns-ul">
     {props.pages.map((pageProps: any) => {
       if (props.pageButtonRenderer) {
-        return props.pageButtonRenderer({
-          ...pageProps,
-          onPageChange: props.onPageChange,
-        });
+        return React.cloneElement(
+          props.pageButtonRenderer({
+            ...pageProps,
+            onPageChange: props.onPageChange,
+          }),
+          { key: pageProps.page }
+        );
       }
       return (
         <PageButton
@@ -40,8 +43,8 @@ PaginatonList.propTypes = {
   pageButtonRenderer: PropTypes.func,
 };
 
-PaginatonList.defaultProps = {
-  pageButtonRenderer: null,
-};
+// PaginatonList.defaultProps = {
+//   pageButtonRenderer: null,
+// };
 
 export default PaginatonList;

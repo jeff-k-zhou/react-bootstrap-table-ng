@@ -1,6 +1,6 @@
 import React, { Component, MouseEvent } from "react";
 
-import eventDelegater from "./cell-event-delegater";
+import { CellEventDelegater as eventDelegater } from "./cell-event-delegater";
 import _ from "./utils";
 
 interface CellProps {
@@ -77,7 +77,17 @@ class Cell extends eventDelegater(Component)<CellProps> {
   }
 
   render() {
-    const { row, column, atstart, ...rest } = this.props;
+    const {
+      row,
+      column,
+      atstart,
+      rowindex,
+      columnindex,
+      editable,
+      clicktoedit,
+      dbclicktoedit,
+      ...rest
+    } = this.props;
     const { dataField, formatter, formatExtraData } = column;
     const attrs = this.delegate({ ...rest });
     let content = column.isDummyField ? null : _.get(row, dataField);
@@ -86,16 +96,16 @@ class Cell extends eventDelegater(Component)<CellProps> {
       content = column.formatter(
         content,
         row,
-        this.props.rowindex,
+        rowindex,
         formatExtraData
       );
     }
 
-    if (this.props.clicktoedit === "true" && this.props.editable === "true") {
+    if (clicktoedit === "true" && editable === "true") {
       attrs.onClick = this.createHandleEditingCell(attrs.onClick);
     } else if (
-      this.props.dbclicktoedit === "true" &&
-      this.props.editable === "true"
+      dbclicktoedit === "true" &&
+      editable === "true"
     ) {
       attrs.onDoubleClick = this.createHandleEditingCell(attrs.onDoubleClick);
     }

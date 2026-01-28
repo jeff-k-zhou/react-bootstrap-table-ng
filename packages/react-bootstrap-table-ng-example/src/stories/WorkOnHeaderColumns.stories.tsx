@@ -10,7 +10,7 @@ import bootstrapStyle from './bootstrap-style';
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta = {
   title: 'Work On Header Columns',
-  component: BootstrapTable,
+  component: BootstrapTable as any,
   parameters: {
     // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/react/configure/story-layout
     layout: 'centered',
@@ -34,7 +34,7 @@ type Story = StoryObj<typeof meta>;
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
 function priceFormatter(column: any, colIndex: number) {
   return (
-    <h5><strong>$$ { column.text } $$</strong></h5>
+    <h5><strong>$$ {column.text} $$</strong></h5>
   );
 }
 
@@ -83,12 +83,12 @@ export const ColumnFormatter: Story = {
   }
 };
 
-function priceFormatterWithFilterAndSort(column: any, colIndex: number, { sortElement, filterElement }) {
+function priceFormatterWithFilterAndSort(column: any, colIndex: number, { sortElement, filterElement }: any) {
   return (
-    <div style={ { display: 'flex', flexDirection: 'column' } }>
-      { filterElement }
-      { column.text }
-      { sortElement }
+    <div style={{ display: 'flex', flexDirection: 'column' }}>
+      {filterElement}
+      {column.text}
+      {sortElement}
     </div>
   );
 }

@@ -47,6 +47,27 @@ const handleGetCurrentFilter = () => {
   console.log(node.filterContext.currFilters);
 };
 
+interface BasicTableProps {
+  mode?: any;
+  id?: any;
+  classes?: any;
+  headerWrapperClasses?: any;
+  bodyClasses?: any;
+  wrapperClasses?: any;
+  data?: any;
+  caption?: any;
+  columns?: any;
+  selectRow?: any;
+  expandRow?: any;
+  sourceCode?: any;
+  striped?: any;
+  hover?: any;
+  condensed?: any;
+  bordered?: any;
+  noDataIndication?: any;
+  tabIndexCell?: any;
+}
+
 export default ({
   mode,
   id,
@@ -66,7 +87,7 @@ export default ({
   bordered,
   noDataIndication,
   tabIndexCell,
-}) => {
+}: BasicTableProps) => {
   switch (mode) {
     case "idAndClass":
       return (

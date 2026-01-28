@@ -84,6 +84,7 @@ export default (
           if (!initialize) {
             handleFilterChange(this.currFilters);
           }
+          this.forceUpdate();
           return;
         }
         this.doFilter(this.props);

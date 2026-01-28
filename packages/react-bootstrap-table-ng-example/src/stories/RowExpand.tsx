@@ -142,6 +142,19 @@ class RowExpandManagement extends React.Component<RowExpandManagementProps, RowE
   }
 }
 
+interface RowExpandProps {
+  mode?: any;
+  header?: any;
+  data?: any;
+  columns?: any;
+  sourceCode?: any;
+  sourceCode1?: any;
+  sourceCode2?: any;
+  expandRow?: any;
+  expandRow1?: any;
+  expandRow2?: any;
+}
+
 export default ({
   mode,
   header,
@@ -153,7 +166,7 @@ export default ({
   expandRow,
   expandRow1,
   expandRow2,
-}) => {
+}: RowExpandProps) => {
   switch (mode) {
     case "management":
       return (

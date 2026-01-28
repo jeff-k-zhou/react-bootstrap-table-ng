@@ -1,13 +1,10 @@
-import { shallow } from "enzyme";
 import React from "react";
-import sinon from "sinon";
-
+import { render, screen } from "@testing-library/react";
 import PageButton from "../src/page-button";
 import PaginationList from "../src/pagination-list";
 
 describe("PaginationList", () => {
-  let wrapper: any;
-  const onPageChange = sinon.stub();
+  const onPageChange = jest.fn();
   const pages = [
     {
       page: 1,
@@ -30,23 +27,28 @@ describe("PaginationList", () => {
   ];
 
   beforeEach(() => {
-    wrapper = shallow(
-      <PaginationList pages={pages} onPageChange={onPageChange} />
-    );
+    onPageChange.mockReset();
   });
 
-  it("should rendering PaginatonList correctly", () => {
-    expect(wrapper.length).toBe(1);
-    expect(wrapper.find("ul.react-bootstrap-table-page-btns-ul").length).toBe(
-      1
-    );
-    expect(wrapper.find(PageButton).length).toBe(pages.length);
+  it("should render PaginationList correctly", () => {
+    render(<PaginationList pages={pages} onPageChange={onPageChange} />);
+    // Check for the ul element with the correct class
+    const ul = screen.getByRole("list");
+    expect(ul).toHaveClass("react-bootstrap-table-page-btns-ul");
+    // There should be as many PageButton components as pages
+    const items = screen.getAllByRole("listitem");
+    expect(items.length).toBe(pages.length);
+    // Check that each button has the correct title
+    pages.forEach((p) => {
+      expect(screen.getByTitle(p.title)).toBeInTheDocument();
+    });
   });
 
   describe("when props.pageButtonRenderer is existing", () => {
-    const pageButtonRenderer = jest.fn().mockReturnValue(null);
+    const pageButtonRenderer = jest.fn().mockReturnValue(<li>Custom</li>);
     beforeEach(() => {
-      wrapper = shallow(
+      pageButtonRenderer.mockClear();
+      render(
         <PaginationList
           pages={pages}
           onPageChange={onPageChange}
@@ -56,8 +58,12 @@ describe("PaginationList", () => {
     });
 
     it("should call props.pageButtonRenderer correctly", () => {
-      expect(wrapper.length).toBe(1);
       expect(pageButtonRenderer).toHaveBeenCalledTimes(pages.length);
+    });
+
+    it("should render custom page buttons", () => {
+      // Should render the custom li elements
+      expect(screen.getAllByText("Custom").length).toBe(pages.length);
     });
   });
 });

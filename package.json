@@ -1,14 +1,17 @@
 {
-  "name": "react-bootstrap-table-ng",
-  "version": "0.0.1",
+  "name": "react-bootstrap-table-ng-monorepo",
+  "version": "4.18.0",
   "private": true,
-  "description": "Rebuilt for react-bootstrap-table",
+  "description": "Rebuilt for react-bootstrap-table, react-bootstrap-table-next, react-bootstrap-table-nextgen",
+  "workspaces": [
+    "packages/*"
+  ],
   "main": "index.js",
   "scripts": {
-    "postinstall": "lerna bootstrap",
-    "build": "tsc && ./node_modules/.bin/gulp prod",
-    "watch": "tsc -w",
-    "lint": "eslint ./packages --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "build": "yarn clean:build && tsc && ./node_modules/.bin/gulp prod",
+    "watch": "yarn clean:build && tsc -w",
+    "clean:build": "find packages -type f \\( -name \"*.js\" -o -name \"*.js.map\" -o -name \"*.d.ts\" \\) -not -path \"*/node_modules/*\" -not -path \"*/react-bootstrap-table-ng-example/*\" -exec rm -f {} +",
+    "lint": "eslint ./packages --max-warnings 0",
     "pretest": "yarn lint --cache",
     "test": "jest",
     "test:coverage": "jest --coverage",
@@ -25,14 +28,14 @@
   "author": "Jeff Zhou",
   "contributors": [
     {
-      "name": "Terrence Miao",
-      "email": "terrence.miao@gmail.com",
-      "url": "https://github.com/TerrenceMiao"
-    },
-    {
       "name": "Allen Fang",
       "email": "ayu780129@hotmail.com",
       "url": "https://github.com/AllenFang"
+    },
+    {
+      "name": "Terrence Miao",
+      "email": "terrence.miao@gmail.com",
+      "url": "https://github.com/TerrenceMiao"
     },
     {
       "name": "Chun-MingChen",
@@ -45,93 +48,110 @@
     "url": "https://github.com/jeff-k-zhou/react-bootstrap-table-ng/issues"
   },
   "engines": {
-    "node": ">=16 <=18"
+    "node": ">=18"
   },
   "homepage": "https://github.com/jeff-k-zhou/react-bootstrap-table-ng#README",
   "devDependencies": {
-    "@babel/cli": "^7.19.3",
-    "@babel/core": "^7.20.2",
-    "@babel/eslint-parser": "^7.17.0",
-    "@babel/plugin-proposal-class-properties": "^7.0.0",
-    "@babel/plugin-proposal-decorators": "^7.20.2",
-    "@babel/plugin-proposal-do-expressions": "^7.0.0",
-    "@babel/plugin-proposal-export-default-from": "^7.0.0",
-    "@babel/plugin-proposal-export-namespace-from": "^7.0.0",
-    "@babel/plugin-proposal-function-bind": "^7.0.0",
-    "@babel/plugin-proposal-function-sent": "^7.0.0",
-    "@babel/plugin-proposal-json-strings": "^7.0.0",
-    "@babel/plugin-proposal-logical-assignment-operators": "^7.0.0",
-    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.0.0",
-    "@babel/plugin-proposal-numeric-separator": "^7.0.0",
-    "@babel/plugin-proposal-optional-chaining": "^7.0.0",
-    "@babel/plugin-proposal-pipeline-operator": "^7.0.0",
-    "@babel/plugin-proposal-throw-expressions": "^7.0.0",
-    "@babel/plugin-syntax-dynamic-import": "^7.0.0",
-    "@babel/plugin-syntax-import-meta": "^7.0.0",
-    "@babel/preset-env": "^7.20.2",
-    "@babel/preset-react": "^7.0.0",
-    "@babel/preset-typescript": "^7.22.5",
-    "@babel/register": "^7.17.0",
-    "@types/enzyme": "^3.10.13",
-    "@types/sinon": "^10.0.16",
+    "@babel/cli": "^7.28.6",
+    "@babel/core": "^7.28.6",
+    "@babel/eslint-parser": "^7.28.6",
+    "@babel/plugin-proposal-decorators": "^7.28.6",
+    "@babel/plugin-proposal-do-expressions": "^7.28.6",
+    "@babel/plugin-proposal-export-default-from": "^7.27.1",
+    "@babel/plugin-proposal-function-bind": "^7.27.1",
+    "@babel/plugin-proposal-function-sent": "^7.27.1",
+    "@babel/plugin-proposal-pipeline-operator": "^7.28.6",
+    "@babel/plugin-proposal-throw-expressions": "^7.27.1",
+    "@babel/plugin-syntax-dynamic-import": "^7.8.3",
+    "@babel/plugin-syntax-import-meta": "^7.10.4",
+    "@babel/plugin-transform-class-properties": "^7.28.6",
+    "@babel/plugin-transform-export-namespace-from": "^7.27.1",
+    "@babel/plugin-transform-json-strings": "^7.28.6",
+    "@babel/plugin-transform-logical-assignment-operators": "^7.28.6",
+    "@babel/plugin-transform-nullish-coalescing-operator": "^7.28.6",
+    "@babel/plugin-transform-numeric-separator": "^7.28.6",
+    "@babel/plugin-transform-optional-chaining": "^7.28.6",
+    "@babel/preset-env": "^7.28.6",
+    "@babel/preset-react": "^7.28.5",
+    "@babel/preset-typescript": "^7.28.5",
+    "@babel/register": "^7.28.6",
+    "@eslint/eslintrc": "^3.3.3",
+    "@eslint/js": "^9.39.2",
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/file-saver": "^2.0.7",
+    "@types/jest": "^29.5.14",
+    "@types/react-transition-group": "^4.4.12",
+    "@types/sinon": "^21.0.0",
     "babel-core": "^7.0.0-bridge.0",
-    "babel-jest": "^29.3.1",
-    "babel-loader": "^8.2.5",
-    "css-loader": "^6.7.2",
-    "enzyme": "^3.11.0",
-    "enzyme-adapter-react-16": "^1.15.7",
-    "enzyme-to-json": "^3.6.2",
-    "eslint": "^8.27.0",
-    "eslint-config-airbnb": "^19.0.4",
-    "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-jsx-a11y": "^6.5.1",
-    "eslint-plugin-react": "^7.31.10",
-    "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-react-refresh": "^0.4.1",
-    "eslint-webpack-plugin": "^3.1.1",
-    "gulp": "BonnierNews/gulp#semver:^4.2.0",
+    "babel-jest": "^30.2.0",
+    "babel-loader": "^10.0.0",
+    "babel-preset-react-app": "^10.1.0",
+    "css-loader": "^7.1.3",
+    "eslint": "^9.39.2",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.4.26",
+    "eslint-webpack-plugin": "^5.0.2",
+    "globals": "^17.2.0",
+    "gulp": "^5.0.1",
     "gulp-babel": "^8.0.0",
     "gulp-clean": "^0.4.0",
     "gulp-clean-css": "^4.3.0",
-    "gulp-rename": "^2.0.0",
-    "gulp-sass": "^5.1.0",
+    "gulp-rename": "^2.1.0",
+    "gulp-sass": "^6.0.1",
     "gulp-shell": "^0.8.0",
-    "html-webpack-plugin": "^5.5.0",
-    "jest": "^29.3.1",
-    "jsdom": "^20.0.2",
+    "html-webpack-plugin": "^5.6.6",
+    "jest": "^30.2.0",
+    "jest-environment-jsdom": "^30.2.0",
+    "jsdom": "^27.4.0",
     "jsdom-global": "^3.0.2",
-    "lerna": "^6.3.0",
-    "react-test-renderer": "^16.4.0",
-    "sass-loader": "^13.2.0",
-    "sinon": "^14.0.2",
-    "style-loader": "^3.3.1",
-    "ts-loader": "^9.4.4",
-    "webpack": "^5.75.0",
-    "webpack-cli": "^4.10.0",
-    "webpack-dev-server": "^4.11.1"
+    "lerna": "^9.0.3",
+    "react-loading-overlay-nextgen": "^1.2.9",
+    "react-refresh": "^0.18.0",
+    "react-test-renderer": "^18.3.1",
+    "sass-loader": "^16.0.6",
+    "sinon": "^21.0.1",
+    "style-loader": "^4.0.0",
+    "ts-loader": "^9.5.4",
+    "webpack": "^5.104.1",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.3"
   },
   "resolutions": {
-    "cheerio": "1.0.0-rc.10",
-    "semver": "^7.5.2"
+    "semver": "^7.7.3"
   },
   "dependencies": {
-    "@types/jest": "^29.5.3",
-    "@types/node": "^20.4.8",
-    "@types/prop-types": "^15.7.5",
-    "@types/react": "^18.2.18",
-    "@types/react-dom": "^18.2.7",
-    "@types/underscore": "^1.11.6",
-    "classnames": "^2.3.1",
-    "csstype": "^3.1.2",
+    "@types/node": "^22.10.5",
+    "@types/prop-types": "^15.7.15",
+    "@types/react": "^18.3.2",
+    "@types/react-dom": "^18.3.1",
+    "@types/underscore": "^1.13.0",
+    "classnames": "^2.5.1",
+    "csstype": "^3.2.3",
+    "file-saver": "^2.0.5",
     "prop-types": "^15.8.1",
-    "react": "^16.14.0",
-    "react-dom": "^16.14.0",
-    "sass": "^1.56.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-transition-group": "^4.4.5",
+    "sass": "^1.97.3",
     "source-map-support": "^0.5.21",
-    "ts-jest": "^29.1.1",
-    "ts-node": "^10.9.1",
-    "typescript": "^5.1.6",
-    "underscore": "^1.13.1"
+    "ts-jest": "^29.4.6",
+    "ts-node": "^10.9.2",
+    "typed.js": "^3.0.0",
+    "typescript": "^5.9.3",
+    "underscore": "^1.13.7"
+  },
+  "overrides": {
+    "@typescript-eslint/utils": "^8.18.2",
+    "cheerio": "1.0.0",
+    "react-scripts": "^5.0.1",
+    "read-package-json": "^7.0.1",
+    "typescript": "^5.9.3"
   },
   "jest": {
     "collectCoverageFrom": [
@@ -142,15 +162,30 @@
     "roots": [
       "<rootDir>/packages"
     ],
-    "setupFiles": [
-      "<rootDir>/enzyme-setup.js"
+    "setupFilesAfterEnv": [
+      "<rootDir>/setupTests.js"
     ],
     "modulePaths": [
       "<rootDir>/packages/react-bootstrap-table-ng"
     ],
-    "testEnvironment": "node",
+    "testEnvironment": "jsdom",
     "testMatch": [
       "**/test/**/*.test.{ts,tsx}"
+    ],
+    "transform": {
+      "^.+\\.[jt]sx?$": "babel-jest"
+    },
+    "moduleFileExtensions": [
+      "js",
+      "jsx",
+      "ts",
+      "tsx",
+      "json",
+      "node"
+    ],
+    "transformIgnorePatterns": [
+      "node_modules/(?!(sinon|@some-other-esm-package|cheerio))"
     ]
-  }
+  },
+  "packageManager": "yarn@4.12.0"
 }

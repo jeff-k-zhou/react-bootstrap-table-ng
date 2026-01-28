@@ -1,4 +1,4 @@
-import { TYPE_BOOLEAN, TYPE_DATE, TYPE_NUMBER, TYPE_STRING } from "../..";
+import { TYPE_BOOLEAN, TYPE_DATE, TYPE_NUMBER, TYPE_STRING } from "../const";
 
 export const typeConvert = (type: any, value: any) => {
   if (type === TYPE_STRING) {

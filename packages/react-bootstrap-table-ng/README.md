@@ -1,7 +1,7 @@
 # react-bootstrap-table-ng
-Next generation of [`react-bootstrap-table-ng`](https://github.com/jeff-k-zhou/react-bootstrap-table-ng)
+Maintance fork of [`react-bootstrap-table2`] (https://github.com/react-bootstrap-table/react-bootstrap-table2) created by Allen Fang 
 
-**[Live Demo](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/storybook-static)**
+**[Live Demo](https://react-bootstrap-table.github.io/react-bootstrap-table2/storybook/index.html)**
 
 ## Usage
 
@@ -13,7 +13,7 @@ npm install react-bootstrap-table-ng --save
 
 ### Include CSS
 
-> react-bootstrap-table-ng need you to add bootstrap css in your application firstly. About bootstrap css, we only compatible with bootstrap 3 but will start to compatible for bootstrap 4 on v0.2.0
+> react-bootstrap-table-ng need you to add bootstrap css in your application firstly.
 
 ```js
 // es5

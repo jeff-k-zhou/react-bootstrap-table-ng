@@ -35,7 +35,7 @@ class WithoutPaginationCase extends React.Component<
     this.state = { rowCount: this.products1.length };
   }
 
-  handleDataChange = ({ dataSize }) => {
+  handleDataChange = ({ dataSize }: any) => {
     this.setState({ rowCount: dataSize });
   };
 
@@ -119,7 +119,7 @@ class WithPaginationCase extends React.Component<{}, WithPaginationCaseState> {
     this.state = { rowCount: this.products2.length };
   }
 
-  handleDataChange = ({ dataSize }) => {
+  handleDataChange = ({ dataSize }: any) => {
     this.setState({ rowCount: dataSize });
   };
 
@@ -558,7 +558,11 @@ class LodadDataWithFilterAndPaginationComponent extends React.Component<
   }
 }
 
-export default ({ mode }) => {
+interface DataProps {
+  mode?: any;
+}
+
+export default ({ mode }: DataProps) => {
   switch (mode) {
     case "data":
       return (

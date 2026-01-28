@@ -1,13 +1,10 @@
-import { shallow } from "enzyme";
-import "jsdom-global/register";
+import { render } from "@testing-library/react";
 import React from "react";
 
 import BootstrapTable from "../../src/bootstrap-table";
 import createColumnContext from "../../src/contexts/column-context";
 
 describe("ColumnManagementContext", () => {
-  let wrapper: any;
-
   const data = [
     {
       id: 1,
@@ -36,13 +33,9 @@ describe("ColumnManagementContext", () => {
 
   const ColumnContext = createColumnContext();
 
-  function shallowContext(options = {}) {
-    return (
-      <ColumnContext.Provider
-        data={data}
-        columns={columns}
-        {...options}
-      >
+  function renderContext(options = {}) {
+    return render(
+      <ColumnContext.Provider data={data} columns={columns} {...options}>
         <ColumnContext.Consumer>
           {(columnToggleProps) => mockBase(columnToggleProps)}
         </ColumnContext.Consumer>
@@ -50,12 +43,11 @@ describe("ColumnManagementContext", () => {
     );
   }
 
-  describe("default render", () => {
-    beforeEach(() => {
-      wrapper = shallow(shallowContext());
-      wrapper.render();
-    });
+  beforeEach(() => {
+    mockBase.mockClear();
+  });
 
+  describe("default render", () => {
     it("should have correct Provider property after calling createColumnManagementContext", () => {
       expect(ColumnContext.Provider).toBeDefined();
     });
@@ -63,48 +55,51 @@ describe("ColumnManagementContext", () => {
     it("should have correct Consumer property after calling createColumnManagementContext", () => {
       expect(ColumnContext.Consumer).toBeDefined();
     });
+
+    it("should provide all columns by default", () => {
+      renderContext();
+      expect(mockBase).toHaveBeenCalled();
+      const props = mockBase.mock.calls[0][0];
+      expect(props.columns).toHaveLength(columns.length);
+      expect(props.columns[0].dataField).toEqual("id");
+      expect(props.columns[1].dataField).toEqual("name");
+    });
   });
 
   describe("when toggles props exist", () => {
-    beforeEach(() => {
-      wrapper = shallow(
-        shallowContext({
-          toggles: {
-            id: true,
-            name: false,
-          },
-        })
-      );
-    });
-
-    it("should render component with correct columns props", () => {
-      expect(wrapper.prop("value").columns).toHaveLength(columns.length - 1);
-      expect(wrapper.prop("value").columns[0].dataField).toEqual("id");
+    it("should provide only toggled columns", () => {
+      renderContext({
+        toggles: {
+          id: true,
+          name: false,
+        },
+      });
+      expect(mockBase).toHaveBeenCalled();
+      const props = mockBase.mock.calls[0][0];
+      expect(props.columns).toHaveLength(columns.length - 1);
+      expect(props.columns[0].dataField).toEqual("id");
     });
   });
 
   describe("if there is any column.hidden is true", () => {
-    beforeEach(() => {
-      wrapper = shallow(
-        shallowContext({
-          columns: [
-            {
-              dataField: "id",
-              text: "ID",
-            },
-            {
-              dataField: "name",
-              text: "Name",
-              hidden: true,
-            },
-          ],
-        })
-      );
-    });
-
-    it("should render component with correct columns props", () => {
-      expect(wrapper.prop("value").columns).toHaveLength(columns.length - 1);
-      expect(wrapper.prop("value").columns[0].dataField).toEqual("id");
+    it("should provide only visible columns", () => {
+      renderContext({
+        columns: [
+          {
+            dataField: "id",
+            text: "ID",
+          },
+          {
+            dataField: "name",
+            text: "Name",
+            hidden: true,
+          },
+        ],
+      });
+      expect(mockBase).toHaveBeenCalled();
+      const props = mockBase.mock.calls[0][0];
+      expect(props.columns).toHaveLength(columns.length - 1);
+      expect(props.columns[0].dataField).toEqual("id");
     });
   });
 });

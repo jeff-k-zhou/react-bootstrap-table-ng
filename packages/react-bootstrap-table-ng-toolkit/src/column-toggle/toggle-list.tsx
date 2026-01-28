@@ -7,9 +7,9 @@ const ToggleList = ({
   columns,
   onColumnToggle,
   toggles,
-  contextual,
-  className,
-  btnClassName,
+  btnClassName = "",
+  className = "",
+  contextual = "primary"
 }: ToggleListProps): React.ReactElement | null => (
   <div
     className={`btn-group btn-group-toggle ${className}`}
@@ -46,10 +46,10 @@ ToggleList.propTypes = {
   contextual: PropTypes.string,
 };
 
-ToggleList.defaultProps = {
-  btnClassName: "",
-  className: "",
-  contextual: "primary",
-};
+// ToggleList.defaultProps = {
+//   btnClassName: "",
+//   className: "",
+//   contextual: "primary",
+// };
 
 export default ToggleList;

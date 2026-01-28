@@ -1,6 +1,7 @@
 import React from "react";
 
-import { INDICATOR_POSITION_LEFT, SelectRowProps } from "../..";
+import { SelectRowProps } from "../types";
+import { INDICATOR_POSITION_LEFT } from "../const";
 
 export interface ExpandRow {
   showExpandColumn?: boolean;
