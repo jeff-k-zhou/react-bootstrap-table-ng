@@ -1,6 +1,6 @@
 {
   "name": "react-bootstrap-table-ng-example",
-  "version": "4.18.0-beta1",
+  "version": "4.18.0-beta2",
   "description": "Storybook for react-bootstrap-table-ng",
   "main": "index.js",
   "scripts": {
