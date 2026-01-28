@@ -54,6 +54,6 @@
     "react-bootstrap-table-ng": "^4.18.0-beta1"
   },
   "devDependencies": {
-    "@types/file-saver": "^2.0.7"
+    "@types/file-saver": "^2.0.5"
   }
 }

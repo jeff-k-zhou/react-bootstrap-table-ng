@@ -133,7 +133,7 @@ describe("Date Filter", () => {
       render(
         <DateFilter onFilter={onFilter} column={column} style={style} />
       );
-      expect(screen.getByTestId("date-filter")).toHaveStyle("background-color: red");
+      expect(screen.getByTestId("date-filter")).toHaveStyle("background-color: rgb(255, 0, 0)");
     });
   });
 
@@ -143,7 +143,7 @@ describe("Date Filter", () => {
       render(
         <DateFilter onFilter={onFilter} column={column} dateStyle={dateStyle} />
       );
-      expect(screen.getByTestId("date-filter-input")).toHaveStyle("background-color: red");
+      expect(screen.getByTestId("date-filter-input")).toHaveStyle("background-color: rgb(255, 0, 0)");
     });
   });
 
@@ -157,7 +157,7 @@ describe("Date Filter", () => {
           comparatorStyle={comparatorStyle}
         />
       );
-      expect(screen.getByTestId("date-filter-comparator")).toHaveStyle("background-color: red");
+      expect(screen.getByTestId("date-filter-comparator")).toHaveStyle("background-color: rgb(255, 0, 0)");
     });
   });
 

@@ -117,7 +117,7 @@ describe("Body", () => {
       );
       const rows = screen.getAllByRole("row");
       rows.forEach((row) => {
-        expect(row).toHaveStyle("background-color: red; color: white;");
+        expect(row).toHaveStyle("background-color: rgb(255, 0, 0); color: rgb(255, 255, 255)");
       });
     });
 

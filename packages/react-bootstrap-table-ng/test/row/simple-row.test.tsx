@@ -194,7 +194,7 @@ describe("SimpleRow", () => {
           </tbody>
         </table>
       );
-      expect(screen.getByRole("row")).toHaveStyle("background-color: red");
+      expect(screen.getByRole("row")).toHaveStyle("background-color: rgb(255, 0, 0)");
     });
   });
 

@@ -116,7 +116,7 @@ describe("EditingCell", () => {
     });
 
     it("should render component with style successfully", () => {
-      expect(screen.getAllByRole("cell")[1]).toHaveStyle(customStyle);
+      expect(screen.getAllByRole("cell")[1]).toHaveStyle("background-color: rgb(255, 0, 0)");
     });
   });
 
@@ -228,7 +228,7 @@ describe("EditingCell", () => {
 
       it("should render TextEditor with correct props", () => {
         const textEditor = screen.getAllByRole("textbox");
-        expect(textEditor[1]).toHaveStyle(style);
+        expect(textEditor[1]).toHaveStyle("color: rgb(255, 0, 0)");
       });
 
       it("should call column.editorStyle correctly", () => {
@@ -262,7 +262,7 @@ describe("EditingCell", () => {
 
       it("should render TextEditor with correct props", () => {
         const textEditor = screen.getAllByRole("textbox");
-        expect(textEditor[1]).toHaveStyle(style);
+        expect(textEditor[1]).toHaveStyle("color: rgb(255, 0, 0)");
       });
     });
   });

@@ -84,7 +84,7 @@ describe("Editing Cell Consumer", () => {
     });
 
     it("should inject style target component correctly", () => {
-      expect(screen.getByRole('cell')).toHaveStyle(columns[1].editCellStyle);
+      expect(screen.getByRole("cell")).toHaveStyle("color: rgb(255, 192, 203)");
     });
   });
 
@@ -139,7 +139,7 @@ describe("Editing Cell Consumer", () => {
     });
 
     it("should inject style target component correctly", () => {
-      expect(screen.getByRole('cell')).toHaveStyle(style);
+      expect(screen.getByRole("cell")).toHaveStyle("color: rgb(0, 0, 255)");
     });
 
     it("should call column.editCellStyle function correctly", () => {

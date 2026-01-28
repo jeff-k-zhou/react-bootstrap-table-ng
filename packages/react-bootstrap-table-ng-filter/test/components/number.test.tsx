@@ -203,7 +203,7 @@ describe("Number Filter", () => {
       render(
         <NumberFilter onFilter={onFilter} column={column} style={style} />
       );
-      expect(screen.getByTestId("number-filter")).toHaveStyle("background-color: red");
+      expect(screen.getByTestId("number-filter")).toHaveStyle("background-color: rgb(255, 0, 0)");
     });
   });
 
@@ -218,7 +218,7 @@ describe("Number Filter", () => {
           numberStyle={numberStyle}
         />
       );
-      expect(screen.getByTestId("number-filter-input")).toHaveStyle("background-color: red");
+      expect(screen.getByTestId("number-filter-input")).toHaveStyle("background-color: rgb(255, 0, 0)");
     });
   });
 
@@ -233,7 +233,7 @@ describe("Number Filter", () => {
           comparatorStyle={comparatorStyle}
         />
       );
-      expect(screen.getByTestId("number-filter-comparator")).toHaveStyle("background-color: red");
+      expect(screen.getByTestId("number-filter-comparator")).toHaveStyle("background-color: rgb(255, 0, 0)");
     });
   });
 

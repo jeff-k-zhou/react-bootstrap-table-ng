@@ -151,7 +151,7 @@ describe("Multi Select Filter", () => {
     });
 
     it("should rendering component successfully", () => {
-      expect(screen.getByRole("listbox")).toHaveStyle("background-color: red");
+      expect(screen.getByRole("listbox")).toHaveStyle("background-color: rgb(255, 0, 0)");
     });
   });
 

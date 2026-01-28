@@ -155,7 +155,7 @@ describe("Select Filter", () => {
     });
 
     it("should rendering component successfully", () => {
-      expect(screen.getByRole("combobox")).toHaveStyle("background-color: red");
+      expect(screen.getByRole("combobox")).toHaveStyle("background-color: rgb(255, 0, 0)");
     });
   });
 

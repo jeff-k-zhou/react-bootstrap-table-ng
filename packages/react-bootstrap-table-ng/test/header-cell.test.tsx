@@ -118,7 +118,7 @@ describe("HeaderCell", () => {
           </table>
         );
         const th = screen.getByRole("columnheader");
-        expect(th).toHaveStyle({ textAlign: column.headerAlign });
+        expect(th).toHaveStyle({ "text-align": column.headerAlign });
       });
     });
 
@@ -139,7 +139,7 @@ describe("HeaderCell", () => {
           </table>
         );
         const th = screen.getByRole("columnheader");
-        expect(th).toHaveStyle({ textAlign: customAlign });
+        expect(th).toHaveStyle({ "text-align": customAlign });
         expect(alignCallBack.callCount).toBe(1);
         expect(alignCallBack.calledWith(column, index)).toBe(true);
       });
@@ -243,7 +243,7 @@ describe("HeaderCell", () => {
           </table>
         );
         const th = screen.getByRole("columnheader");
-        expect(th).toHaveStyle({ backgroundColor: "red" });
+        expect(th).toHaveStyle("background-color: rgb(255, 0, 0)");
       });
     });
 
@@ -264,7 +264,7 @@ describe("HeaderCell", () => {
           </table>
         );
         const th = screen.getByRole("columnheader");
-        expect(th).toHaveStyle({ backgroundColor: "red" });
+        expect(th).toHaveStyle("background-color: rgb(255, 0, 0)");
         expect(styleCallBack.callCount).toBe(1);
         expect(styleCallBack.calledWith(column, index)).toBe(true);
       });
@@ -342,7 +342,7 @@ describe("HeaderCell", () => {
         expect(th).toHaveAttribute("data-test", "test");
         expect(th.title).toBe("title");
         expect(th).toHaveClass("attrs-class");
-        expect(th).toHaveStyle({ backgroundColor: "attrs-style-test" });
+        expect(th).toHaveStyle("background-color: rgba(0, 0, 0, 0)");
       });
 
       it("title should be overwritten by headerTitle", () => {
@@ -390,7 +390,7 @@ describe("HeaderCell", () => {
           </table>
         );
         const th = screen.getByRole("columnheader");
-        expect(th).toHaveStyle({ backgroundColor: "red" });
+        expect(th).toHaveStyle("background-color: rgb(255, 0, 0)");
       });
 
       it("style.textAlign should be overwritten by headerAlign", () => {
@@ -406,7 +406,7 @@ describe("HeaderCell", () => {
           </table>
         );
         const th = screen.getByRole("columnheader");
-        expect(th).toHaveStyle({ textAlign: "center" });
+        expect(th).toHaveStyle({ "text-align": "center" });
       });
     });
 

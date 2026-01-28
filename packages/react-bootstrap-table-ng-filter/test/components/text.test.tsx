@@ -126,7 +126,7 @@ describe("Text Filter", () => {
     });
 
     it("should render component successfully", () => {
-      expect(screen.getByRole("textbox")).toHaveStyle("background-color: red");
+      expect(screen.getByRole("textbox")).toHaveStyle("background-color: rgb(255, 0, 0)");
     });
   });
 

@@ -202,7 +202,7 @@ describe("RowPureContent", () => {
           </tbody>
         </table>
       );
-      expect(screen.getAllByRole("cell")[columnIndex]).toHaveStyle("background-color: red");
+      expect(screen.getAllByRole("cell")[columnIndex]).toHaveStyle("background-color: rgb(255, 0, 0)");
     });
 
     it("should render Cell with style function", () => {
@@ -223,7 +223,7 @@ describe("RowPureContent", () => {
           </tbody>
         </table>
       );
-      expect(screen.getAllByRole("cell")[columnIndex]).toHaveStyle("background-color: red");
+      expect(screen.getAllByRole("cell")[columnIndex]).toHaveStyle("background-color: rgb(255, 0, 0)");
       expect(styleCallBack).toHaveBeenCalledTimes(1);
       expect(styleCallBack).toHaveBeenCalledWith(
         row[columns[columnIndex].dataField],
@@ -472,7 +472,7 @@ describe("RowPureContent", () => {
       // expect(cell).toHaveAttribute("data-test", "test");
       // expect(cell).toHaveAttribute("title", "title");
       // expect(cell).toHaveClass("attrs-class");
-      expect(cell).toHaveStyle("background-color: attrs-style-test");
+      expect(cell).toHaveStyle({ backgroundColor: "attrs-style-test" });
       // expect(cell).toHaveStyle("display: none");
       // expect(cell).toHaveStyle("text-align: right");
     });
@@ -537,7 +537,7 @@ describe("RowPureContent", () => {
           </tbody>
         </table>
       );
-      expect(screen.getAllByRole("cell")[columnIndex]).toHaveStyle("background-color: red");
+      expect(screen.getAllByRole("cell")[columnIndex]).toHaveStyle("background-color: rgb(255, 0, 0)");
     });
 
     it("should overwrite attrs.style.textAlign with column.align", () => {
