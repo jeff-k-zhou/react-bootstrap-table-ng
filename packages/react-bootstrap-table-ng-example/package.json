@@ -1,6 +1,6 @@
 {
   "name": "react-bootstrap-table-ng-example",
-  "version": "4.18.0-beta2",
+  "version": "4.18.0",
   "description": "Storybook for react-bootstrap-table-ng",
   "main": "index.js",
   "scripts": {
@@ -77,6 +77,7 @@
     "@types/react-dom": "^18.3.0",
     "prop-types": "^15.8.1",
     "react": "^18.3.1",
+    "react-bootstrap-table-ng": "^4.18.0",
     "react-dom": "^18.3.1",
     "react-scripts": "^5.0.1",
     "typescript": "^5.9.3",
