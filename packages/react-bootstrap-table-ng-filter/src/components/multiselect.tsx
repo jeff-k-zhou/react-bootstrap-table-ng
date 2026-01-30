@@ -169,7 +169,7 @@ class MultiSelectFilter extends Component<
         <span className="sr-only">Filter by {column.text}</span>
         <select
           {...rest}
-          ref={(n) => (this.selectInput = n)}
+          ref={(n) => { this.selectInput = n; }}
           id={elmId}
           style={style}
           multiple

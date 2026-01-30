@@ -51,7 +51,7 @@ class TextAreaEditor extends Component<TextEditorProps> {
     const editorClass = cs(className, "form-control editor edit-textarea");
     return (
       <textarea
-        ref={(node) => (this.text = node)}
+        ref={(node) => { this.text = node; }}
         // type="textarea"
         className={editorClass}
         {...rest}

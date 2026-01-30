@@ -36,7 +36,7 @@ class TextEditor extends Component<TextEditorProps> {
     const editorClass = cs(className, "form-control editor edit-text");
     return (
       <input
-        ref={(node) => (this.text = node)}
+        ref={(node) => { this.text = node; }}
         type="text"
         className={editorClass}
         {...rest}

@@ -169,7 +169,7 @@ class DateFilter extends Component<DateFilterProps> {
         <label className="filter-label" htmlFor={comparatorElmId}>
           <span className="sr-only">Filter comparator</span>
           <select
-            ref={(n) => (this.dateFilterComparator = n)}
+            ref={(n) => { this.dateFilterComparator = n; }}
             id={comparatorElmId}
             style={comparatorStyle as any}
             className={`date-filter-comparator form-control ${comparatorClassName}`}
@@ -183,7 +183,7 @@ class DateFilter extends Component<DateFilterProps> {
         <label htmlFor={inputElmId}>
           <span className="sr-only">Enter ${text}</span>
           <input
-            ref={(n) => (this.inputDate = n)}
+            ref={(n) => { this.inputDate = n; }}
             id={inputElmId}
             className={`filter date-filter-input form-control ${dateClassName}`}
             style={dateStyle as any}

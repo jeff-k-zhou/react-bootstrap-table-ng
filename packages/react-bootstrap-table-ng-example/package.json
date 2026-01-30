@@ -1,6 +1,6 @@
 {
   "name": "react-bootstrap-table-ng-example",
-  "version": "4.18.0",
+  "version": "4.19.0",
   "description": "Storybook for react-bootstrap-table-ng",
   "main": "index.js",
   "scripts": {
@@ -41,8 +41,8 @@
   ],
   "peerDependencies": {
     "prop-types": "^15.8.1",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react": "^18.0 || ^18.0.0 || ^19.0 || ^19.0.0",
+    "react-dom": "^18.0 || ^18.0.0 || ^19.0 || ^19.0.0"
   },
   "devDependencies": {
     "@babel/plugin-transform-private-property-in-object": "^7.25.9",
@@ -73,12 +73,12 @@
     "@testing-library/user-event": "^14.6.1",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.10.5",
-    "@types/react": "^18.3.1",
-    "@types/react-dom": "^18.3.0",
+    "@types/react": "^19.2.10",
+    "@types/react-dom": "^19.2.3",
     "prop-types": "^15.8.1",
-    "react": "^18.3.1",
-    "react-bootstrap-table-ng": "^4.18.0",
-    "react-dom": "^18.3.1",
+    "react": "^19.2.4",
+    "react-bootstrap-table-ng": "^4.19.0",
+    "react-dom": "^19.2.4",
     "react-scripts": "^5.0.1",
     "typescript": "^5.9.3",
     "web-vitals": "^5.1.0"

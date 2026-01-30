@@ -1,6 +1,6 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import LoadingOverlay from "react-loading-overlay-nextgen";
+import LoadingOverlay from "../src/loading-overlay";
 import overlayFactory from "../index";
 
 describe("overlayFactory", () => {

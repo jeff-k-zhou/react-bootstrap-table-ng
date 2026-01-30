@@ -1,4 +1,4 @@
-import { SyntheticEvent } from "react";
+import React, { SyntheticEvent } from "react";
 import {
     CHECKBOX_STATUS_CHECKED,
     CHECKBOX_STATUS_INDETERMINATE,
@@ -58,7 +58,7 @@ export type ColumnSortFunc<T, E extends keyof T = any> = (
 export type ColumnSortCaret<T extends object = any, E = any> = (
     order: "asc" | "desc" | undefined,
     column: ColumnDescription<T, E>
-) => JSX.Element | string | null;
+) => React.ReactElement | string | null;
 
 export type HeaderSortingClasses<T extends object = any, E = any> =
     | string
@@ -89,8 +89,8 @@ export type HeaderFormatter<T extends object = any> = (
     column: ColumnDescription<T>,
     colIndex: number,
     components: {
-        sortElement: JSX.Element;
-        filterElement: JSX.Element;
+        sortElement: React.ReactElement;
+        filterElement: React.ReactElement;
     }
 ) => React.ReactNode;
 
@@ -165,13 +165,13 @@ export interface ColumnDescription<T extends object = any, E = any> {
     | undefined;
     filter?: boolean | TableColumnFilterProps | undefined;
     filterValue?: ((cell: T[keyof T], row: T) => string) | undefined;
-    filterRenderer?: ((filterHandler: Function, column: any) => JSX.Element) | undefined;
+    filterRenderer?: ((filterHandler: Function, column: any) => React.ReactElement) | undefined;
     headerAlign?: CellAlignment | undefined;
     headerFormatter?: HeaderFormatter<T> | undefined;
     headerSortingClasses?: HeaderSortingClasses<T, E> | undefined;
     formatExtraData?:
     | ({
-        tooltipFormatter?: ((row: T) => JSX.Element) | undefined;
+        tooltipFormatter?: ((row: T) => React.ReactElement) | undefined;
     } & E)
     | undefined;
     width?: number | undefined;
@@ -321,19 +321,19 @@ export type PaginationOptions = Partial<{
     /**
      * the text of first page button
      */
-    firstPageText: string | JSX.Element;
+    firstPageText: string | React.ReactElement;
     /**
      * the text of previous page button
      */
-    prePageText: string | JSX.Element;
+    prePageText: string | React.ReactElement;
     /**
      * the text of next page button
      */
-    nextPageText: string | JSX.Element;
+    nextPageText: string | React.ReactElement;
     /**
      * the text of last page button
      */
-    lastPageText: string | JSX.Element;
+    lastPageText: string | React.ReactElement;
     /**
      * the title of next page button
      */
@@ -361,7 +361,7 @@ export type PaginationOptions = Partial<{
     /**
      * custom page button inside the pagination list
      */
-    pageButtonRenderer: (options: PageButtonRendererOptions) => JSX.Element;
+    pageButtonRenderer: (options: PageButtonRendererOptions) => React.ReactElement;
     /**
      * callback function when page was changing
      */
@@ -373,17 +373,17 @@ export type PaginationOptions = Partial<{
     /**
      * custom pagination list component
      */
-    pageListRenderer: (options: PageListRendererOptions) => JSX.Element;
+    pageListRenderer: (options: PageListRendererOptions) => React.ReactElement;
     /**
      * custom size per page
      */
-    sizePerPageRenderer: (options: SizePerPageRendererOptions) => JSX.Element;
+    sizePerPageRenderer: (options: SizePerPageRendererOptions) => React.ReactElement;
     /**
      * custom size per page dropdown component
      */
     sizePerPageOptionRenderer: (
         options: SizePerPageOptionRendererOptions
-    ) => JSX.Element;
+    ) => React.ReactElement;
     /**
      * custom the pagination total
      */
@@ -391,7 +391,7 @@ export type PaginationOptions = Partial<{
         from: number,
         to: number,
         size: number
-    ) => JSX.Element;
+    ) => React.ReactElement;
 }>;
 
 export interface SizePerPageOptionRendererOptions {
@@ -514,14 +514,14 @@ export interface SelectRowProps<T> {
         mode: string;
         rowIndex: number;
         rowKey: string;
-    }) => JSX.Element)
+    }) => React.ReactElement)
     | undefined;
     selectionHeaderRenderer?:
     | ((options: {
         mode: string;
         checked: boolean;
         indeterminate: boolean;
-    }) => JSX.Element)
+    }) => React.ReactElement)
     | undefined;
     headerColumnStyle?:
     | ((status: string) => React.CSSProperties | undefined)
@@ -605,8 +605,8 @@ export interface BootstrapTableProps<T extends object = any, K = number> {
     }>
     | undefined;
     noDataIndication?:
-    | (() => JSX.Element | string)
-    | JSX.Element
+    | (() => React.ReactElement | string)
+    | React.ReactElement
     | string
     | undefined;
     striped?: boolean | undefined;
@@ -623,7 +623,7 @@ export interface BootstrapTableProps<T extends object = any, K = number> {
     /**
      * Same as HTML caption tag, you can set it as String or a React JSX.
      */
-    caption?: JSX.Element | string | undefined;
+    caption?: React.ReactElement | string | undefined;
     pagination?: { options?: PaginationOptions | undefined } | undefined;
     filter?: unknown | undefined;
     cellEdit?: any;
@@ -699,7 +699,7 @@ export interface ExpandHeaderColumnRenderer {
     isAnyExpands: boolean;
 }
 export interface ExpandRowProps<T, K = number> {
-    renderer: ((row: T, rowIndex: number) => JSX.Element) | undefined;
+    renderer: ((row: T, rowIndex: number) => React.ReactElement) | undefined;
     expanded?: K[] | undefined;
     onExpand?:
     | ((row: T, isExpand: boolean, rowIndex: number, e: SyntheticEvent) => void)
@@ -712,10 +712,10 @@ export interface ExpandRowProps<T, K = number> {
     onlyOneExpanding?: boolean | undefined;
     expandByColumnOnly?: boolean | undefined;
     expandColumnRenderer?:
-    | ((props: ExpandColumnRendererProps) => JSX.Element)
+    | ((props: ExpandColumnRendererProps) => React.ReactElement)
     | undefined;
     expandHeaderColumnRenderer?:
-    | ((props: ExpandHeaderColumnRenderer) => JSX.Element)
+    | ((props: ExpandHeaderColumnRenderer) => React.ReactElement)
     | undefined;
     expandColumnPosition?: "left" | "right" | undefined;
     className?:

@@ -78,7 +78,7 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
           {searchText}
         </span>
         <input
-          ref={(n) => (this.input = n)}
+          ref={(n) => { this.input = n; }}
           id={`search-bar-${tableId}`}
           type="text"
           style={style as any}

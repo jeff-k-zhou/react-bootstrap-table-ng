@@ -29,7 +29,7 @@ const Filters: React.FC<FiltersProps> = (props) => {
   } = props;
 
   function renderContent() {
-    const filterColumns: JSX.Element[] = [];
+    const filterColumns: React.ReactElement[] = [];
     let showFiltersRow = false;
 
     columns.forEach((column, i) => {

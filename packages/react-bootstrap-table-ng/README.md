@@ -13,7 +13,7 @@ npm install react-bootstrap-table-ng --save
 
 ### Include CSS
 
-> react-bootstrap-table-ng need you to add bootstrap css in your application firstly.
+> react-bootstrap-table-ng needs you to add bootstrap css in your application firstly.
 
 ```js
 // es5

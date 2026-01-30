@@ -60,7 +60,7 @@ export interface TableToolkitProps<T extends object = any> {
   data: T[];
   ref?: any;
   columns: Array<ColumnDescription<T>>;
-  children: (props: ToolkitContextType) => JSX.Element;
+  children: (props: ToolkitContextType) => React.ReactElement;
   exportCSV?: boolean | CSVProps | undefined;
   columnToggle?: { [dataField: string]: boolean } | boolean | undefined;
   setDependencyModules?: Function;
@@ -110,7 +110,7 @@ export interface ExportCSVButtonProps {
   className?: string | undefined;
 }
 
-export interface SearchBarProps <T = any> extends SearchProps<T> {
+export interface SearchBarProps<T = any> extends SearchProps<T> {
   className?: string | undefined;
   style?: React.CSSProperties | undefined;
   delay?: number | undefined;

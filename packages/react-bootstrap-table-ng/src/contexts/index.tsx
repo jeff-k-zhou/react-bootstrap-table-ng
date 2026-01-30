@@ -148,7 +148,7 @@ const withContext = (Base: any) =>
         columnToggleProps: any
       ) => (
         <Base
-          ref={(n: any) => (this.table = n)}
+          ref={(n: any) => { this.table = n; }}
           {...this.props}
           {...sortProps}
           {...filterProps}
@@ -212,7 +212,7 @@ const withContext = (Base: any) =>
       ) => (
         <this.SelectionContext.Provider
           {...baseProps}
-          ref={(n: any) => (this.selectionContext = n)}
+          ref={(n: any) => { this.selectionContext = n; }}
           selectRow={this.props.selectRow}
           data={rootProps.getData(
             filterProps,
@@ -286,7 +286,7 @@ const withContext = (Base: any) =>
         sortProps: any
       ) => (
         <this.PaginationContext.Provider
-          ref={(n: any) => (this.paginationContext = n)}
+          ref={(n: any) => { this.paginationContext = n; }}
           pagination={this.props.pagination}
           data={rootProps.getData(filterProps, searchProps, sortProps)}
           bootstrap4={this.props.bootstrap4}
@@ -325,7 +325,7 @@ const withContext = (Base: any) =>
       ) => (
         <this.SortContext.Provider
           {...baseProps}
-          ref={(n: any) => (this.sortContext = n)}
+          ref={(n: any) => { this.sortContext = n; }}
           defaultSorted={this.props.defaultSorted}
           defaultSortDirection={this.props.defaultSortDirection}
           sort={this.props.sort}
@@ -354,7 +354,7 @@ const withContext = (Base: any) =>
       ) => (
         <this.SearchContext.Provider
           {...baseProps}
-          ref={(n: any) => (this.searchContext = n)}
+          ref={(n: any) => { this.searchContext = n; }}
           data={rootProps.getData(filterProps)}
           searchText={this.props.search.searchText}
           dataChangeListener={this.props.dataChangeListener}
@@ -370,7 +370,7 @@ const withContext = (Base: any) =>
       return (rootProps: any) => (
         <this.FilterContext.Provider
           {...baseProps}
-          ref={(n: any) => (this.filterContext = n)}
+          ref={(n: any) => { this.filterContext = n; }}
           data={rootProps.getData()}
           filter={this.props.filter.options || {}}
           dataChangeListener={this.props.dataChangeListener}
@@ -393,7 +393,7 @@ const withContext = (Base: any) =>
       }) => (
         <this.CellEditContext.Provider
           {...baseProps}
-          ref={(n: any) => (this.cellEditContext = n)}
+          ref={(n: any) => { this.cellEditContext = n; }}
           selectRow={this.props.selectRow}
           cellEdit={this.props.cellEdit}
           data={rootProps.getData()}

@@ -35,7 +35,7 @@ class DateEditor extends Component<DateEditorProps> {
     const editorClass = cs(className, "form-control editor edit-date");
     return (
       <input
-        ref={(node) => (this.date = node)}
+        ref={(node) => { this.date = node; }}
         type="date"
         className={editorClass}
         {...rest}
