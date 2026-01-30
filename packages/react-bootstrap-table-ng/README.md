@@ -7,7 +7,7 @@ Changelog:
 - Upgraded Storybook to 10.2.1
 - Upgraded Yarn to 4.12.0
 - Converted all test cases from Enzyme to React Testing Library (RTL), Removed Enzyme related dependencies
-- Updated most ependencies
+- Updated most dependencies
 
 
 **[Live Demo](https://react-bootstrap-table.github.io/react-bootstrap-table2/storybook/index.html)**
