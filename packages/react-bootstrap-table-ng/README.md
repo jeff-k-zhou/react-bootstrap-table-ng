@@ -1,6 +1,15 @@
 # react-bootstrap-table-ng
 Maintance fork of [`react-bootstrap-table2`] (https://github.com/react-bootstrap-table/react-bootstrap-table2) created by Allen Fang 
 
+Changelog:
+- Support React 18 and React 19
+- Support Bootstrap 3.4.1 and Bootstrap 4.6.2
+- Upgraded Storybook to 10.2.1
+- Upgraded Yarn to 4.12.0
+- Converted all test cases from Enzyme to React Testing Library (RTL), Removed Enzyme related dependencies
+- Updated most ependencies
+
+
 **[Live Demo](https://react-bootstrap-table.github.io/react-bootstrap-table2/storybook/index.html)**
 
 ## Usage
