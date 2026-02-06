@@ -280,6 +280,6 @@ import ToolkitProvider, { ColumnToggle } from 'react-bootstrap-table-ng-toolkit'
 </ToolkitProvider>
 ```
 
-> `columnToggleProps` props have enough information to let you custom the toggle list: [demo]([Live Demo For Export CSV](https://react-bootstrap-table.github.io/react-bootstrap-table2/storybook/index.html?selectedKind=Export%20CSV&selectedStory=Custom%20Column%20Toggle))
+> `columnToggleProps` props have enough information to let you custom the toggle list: [demo]([Live Demo For Export CSV](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/storybook/index.html?selectedKind=Export%20CSV&selectedStory=Custom%20Column%20Toggle))
 
 If you want to have default visibility on specified column, you can just give `true` or `false` on `column.hidden`.

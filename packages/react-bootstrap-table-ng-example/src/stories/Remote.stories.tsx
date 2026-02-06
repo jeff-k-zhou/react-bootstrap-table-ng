@@ -68,3 +68,11 @@ export const RemoteAll: Story = {
     mode: "all",
   }
 };
+
+export const RemoteAllCustom: Story = {
+  name: "Remote all + custom toolbars",
+  args: {
+    mode: "all-custom",
+  }
+};
+

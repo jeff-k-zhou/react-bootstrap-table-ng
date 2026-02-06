@@ -4,7 +4,8 @@
   "private": true,
   "description": "Rebuilt for react-bootstrap-table, react-bootstrap-table-next, react-bootstrap-table-nextgen",
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "website"
   ],
   "main": "index.js",
   "scripts": {
@@ -19,6 +20,7 @@
     "storybook": "cd ./packages/react-bootstrap-table-ng-example && yarn storybook",
     "gh-pages:clean": "cd ./packages/react-bootstrap-table-ng-example && yarn gh-pages:clean",
     "gh-pages:build": "cd ./packages/react-bootstrap-table-ng-example && yarn gh-pages:build",
+    "gh-pages:deploy": "cd ./packages/react-bootstrap-table-ng-example && yarn gh-pages:deploy",
     "release": "yarn install && yarn build && lerna publish"
   },
   "repository": {

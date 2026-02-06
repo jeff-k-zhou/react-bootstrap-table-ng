@@ -2,12 +2,14 @@
   "name": "react-bootstrap-table-ng-example",
   "version": "4.19.0",
   "description": "Storybook for react-bootstrap-table-ng",
+  "homepage": "http://jeff-k-zhou.github.io/react-bootstrap-table-ng",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "storybook": "storybook dev -p 6006",
     "gh-pages:clean": "rimraf ./storybook-static",
-    "gh-pages:build": "storybook build"
+    "gh-pages:build": "storybook build",
+    "gh-pages:deploy": "gh-pages -d storybook-static"
   },
   "eslintConfig": {
     "extends": [
@@ -58,6 +60,7 @@
     "babel-preset-env": "^1.7.0",
     "eslint-plugin-storybook": "^10.2.1",
     "file-saver": "^2.0.5",
+    "gh-pages": "^6.0.0",
     "react-redux": "^9.2.0",
     "redux": "^5.0.1",
     "redux-thunk": "^3.1.0",

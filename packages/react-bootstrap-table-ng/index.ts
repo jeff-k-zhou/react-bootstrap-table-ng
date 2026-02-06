@@ -781,6 +781,11 @@ export type TableColumnFilterProps<FV = any, T extends object = any> = Partial<{
    *  how long will trigger filtering after user typing, default is 500 ms
    */
   delay: number;
+  /**
+   * force update the table when filter value changes for remote filtering
+   */
+  forceUpdate: boolean;
+
   /*
    * export filter function to allow users to access filter method externally.
    */

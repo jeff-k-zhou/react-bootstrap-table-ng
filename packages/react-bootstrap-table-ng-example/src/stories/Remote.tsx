@@ -8,9 +8,13 @@ import filterFactory, {
   LIKE,
   textFilter,
 } from "../../../react-bootstrap-table-ng-filter";
-import paginationFactory from "../../../react-bootstrap-table-ng-paginator";
+import overlayFactory from "../../../react-bootstrap-table-ng-overlay";
+import paginationFactory, {
+  PaginationProvider, PaginationListStandalone,
+  PaginationTotalStandalone, SizePerPageDropdownStandalone
+} from "../../../react-bootstrap-table-ng-paginator";
 import ToolkitProvider, {
-  Search,
+  Search, CSVExport
 } from "../../../react-bootstrap-table-ng-toolkit";
 import Code from "../components/common/code-block";
 import { productsGenerator } from "../utils/common";
@@ -1132,6 +1136,450 @@ class RemoteAllComponent extends React.Component<{}, RemoteAllState> {
   }
 }
 
+
+const remoteAllExportSourceCode = `\
+import BootstrapTable from 'react-bootstrap-table-ng';
+import cellEditFactory from 'react-bootstrap-table-ng-editor';
+import filterFactory, {
+  LIKE,
+  textFilter,
+} from 'react-bootstrap-table-ng-filter';
+import paginationFactory, { 
+  PaginationProvider, PaginationListStandalone, PaginationTotalStandalone, SizePerPageDropdownStandalone
+} from 'react-bootstrap-table-ng-paginator';
+import ToolkitProvider, {
+  Search, CSVExport 
+} from 'react-bootstrap-table-ng-toolkit';
+// import ... 
+
+const productColumns = [
+  {
+    dataField: "id",
+    text: "Product ID",
+    sort: true,
+  },
+  {
+    dataField: "name",
+    text: "Product Name",
+    filter: textFilter(),
+    sort: true,
+  },
+  {
+    dataField: "price",
+    text: "Product Price",
+    filter: textFilter(),
+    sort: true,
+    hidden: true,
+  },
+];
+
+const { ExportCSVButton } = CSVExport;
+
+//leslint-disable-next-line react/proprtypes
+const CustomToggleList = ({ columns, onColumnToggle, toggles }) => (
+  <div className="btn-group btn-group-toggle" data-toggle="buttons" style={{ marginBottom: '10px' }}>
+    {columns
+      .filter(column => !(column.toggleHidden === true))
+      .map(column => ({
+        ...column,
+        toggle: toggles[column.dataField]
+      }))
+      .map(column => (
+        <button
+          type="button"
+          key={column.dataField}
+          className={\`btn \${column.toggle ? 'btn-primary' : 'btn-default'}\`}
+          data-toggle="button"
+          aria-pressed={column.toggle ? 'true' : 'false'}
+          onClick={() => onColumnToggle(column.dataField)}
+        >
+          {column.text}
+        </button>
+      ))}
+  </div>
+);
+
+const customPaginationTotal = (from: number, to: number, totalSize: number) => (
+  <span className="react-bootstrap-table-pagination-total">
+    {from} to {to} of {totalSize} rows
+  </span>
+);
+
+
+const allExportProducts = productsGenerator(487);
+
+class RemoteAllExportComponent extends React.Component {
+  constructor(props: any) {
+    super(props);
+    this.state = {
+      page: 1,
+      data: allExportProducts.slice(0, 10),
+      totalSize: allExportProducts.length,
+      sizePerPage: 10,
+      allData: allExportProducts,
+    };
+    this.handleTableChange = this.handleTableChange.bind(this);
+  }
+
+  handleTableChange = (
+    type: any,
+    { page, sizePerPage, filters, sortField, sortOrder, cellEdit }: any
+  ) => {
+    setTimeout(() => {
+      // Handle cell editing
+      if (type === "cellEdit") {
+        const { rowId, dataField, newValue } = cellEdit;
+        products = products.map((row: any) => {
+          if (row.id === rowId) {
+            const newRow = { ...row };
+            newRow[dataField] = newValue;
+            return newRow;
+          }
+          return row;
+        });
+      }
+      let result = allExportProducts;
+      // Handle column filters
+      result = result.filter((row: any) => {
+        let valid = true;
+        for (const dataField in filters) {
+          const { filterVal, filterType, comparator } = filters[dataField];
+
+          if (filterType === "TEXT") {
+            if (comparator === LIKE) {
+              valid = row[dataField].toString().indexOf(filterVal) > -1;
+            } else {
+              valid = row[dataField] === filterVal;
+            }
+          }
+          if (!valid) break;
+        }
+        return valid;
+      });
+      // Handle column sort
+      if (sortOrder === "asc") {
+        result = result.sort((a: any, b: any) => {
+          if (a[sortField] > b[sortField]) {
+            return 1;
+          } else if (b[sortField] > a[sortField]) {
+            return -1;
+          }
+          return 0;
+        });
+      } else {
+        result = result.sort((a: any, b: any) => {
+          if (a[sortField] > b[sortField]) {
+            return -1;
+          } else if (b[sortField] > a[sortField]) {
+            return 1;
+          }
+          return 0;
+        });
+      }
+      this.setState(() => ({
+        page: page,
+        data: result.slice((page - 1) * sizePerPage, page * sizePerPage),
+        totalSize: result.length,
+        sizePerPage: sizePerPage,
+        allData: result,
+      }));
+    }, 2000);
+  };
+
+  render() {
+    return (
+      <ToolkitProvider
+        keyField="id"
+        data={this.state.data}
+        columns={productColumns}
+        search
+        columnToggle
+        exportCSV={{
+          fileName: 'products-export.csv',
+          noAutoBOM: false,
+          blobType: 'text/csv;charset=ansi',
+          data: this.state.allData
+        }}
+      >
+        {props => (
+          <PaginationProvider
+            pagination={paginationFactory({
+              custom: true,
+              page: this.state.page,
+              sizePerPage: this.state.sizePerPage,
+              totalSize: this.state.totalSize,
+              sizePerPageList: [10, 25, 50, 100],
+              showSizePerPage: true,
+              showTotal: true,
+              paginationTotalRenderer: customPaginationTotal,
+            })}
+          >
+            {({ paginationProps, paginationTableProps }) => (
+              <div>
+                <CustomToggleList {...props.columnToggleProps} />
+                <div>
+                  <SizePerPageDropdownStandalone {...paginationProps} />
+                  <PaginationTotalStandalone {...paginationProps} />
+                  <ExportCSVButton {...props.csvProps}
+                    className="btn-warning"
+                    style={{ marginLeft: '20px' }}
+                  >Export CSV</ExportCSVButton>
+                  <PaginationListStandalone {...paginationProps} />
+                </div>
+                <BootstrapTable
+                  remote
+                  striped
+                  hover
+                  condensed
+                  defaultSorted={[
+                    {
+                      dataField: "name",
+                      order: "desc",
+                    },
+                  ]}
+                  {...props.baseProps}
+                  filter={filterFactory()}
+                  overlay={overlayFactory({ spinner: true })}
+                  onTableChange={this.handleTableChange}
+                  cellEdit={cellEditFactory({
+                    mode: "click",
+                  })}
+                  {...paginationTableProps}
+                />
+                <div style={{ marginBottom: '20px' }}>
+                  <SizePerPageDropdownStandalone {...paginationProps} />
+                  <PaginationTotalStandalone {...paginationProps} />
+                  <ExportCSVButton {...props.csvProps}
+                    className="btn-warning"
+                    style={{ marginLeft: '20px' }}
+                  >Export CSV</ExportCSVButton>
+                  <PaginationListStandalone {...paginationProps} />
+                </div>
+                <Code>{remoteAllExportSourceCode}</Code>
+              </div>
+            )}
+          </PaginationProvider>
+        )}
+      </ToolkitProvider>
+    );
+  }
+}
+`;
+
+const productColumns = [
+  {
+    dataField: "id",
+    text: "Product ID",
+    filter: textFilter(),
+    sort: true,
+  },
+  {
+    dataField: "name",
+    text: "Product Name",
+    filter: textFilter(),
+    sort: true,
+  },
+  {
+    dataField: "price",
+    text: "Product Price",
+    filter: textFilter(),
+    sort: true,
+    hidden: true,
+  },
+];
+
+const { ExportCSVButton } = CSVExport;
+
+//leslint-disable-next-line react/proprtypes
+const CustomToggleList = ({ columns, onColumnToggle, toggles }) => (
+  <div className="btn-group btn-group-toggle" data-toggle="buttons" style={{ marginBottom: '10px' }}>
+    {columns
+      .filter(column => !(column.toggleHidden === true))
+      .map(column => ({
+        ...column,
+        toggle: toggles[column.dataField]
+      }))
+      .map(column => (
+        <button
+          type="button"
+          key={column.dataField}
+          className={`btn ${column.toggle ? 'btn-primary' : 'btn-default'}`}
+          data-toggle="button"
+          aria-pressed={column.toggle ? 'true' : 'false'}
+          onClick={() => onColumnToggle(column.dataField)}
+        >
+          {column.text}
+        </button>
+      ))}
+  </div>
+);
+
+const customPaginationTotal = (from: number, to: number, totalSize: number) => (
+  <span className="react-bootstrap-table-pagination-total" style={{ marginLeft: '10px' }}>
+    {from} to {to} of {totalSize} rows
+  </span>
+);
+
+
+const allExportProducts = productsGenerator(487);
+
+class RemoteAllCustomComponent extends React.Component {
+  constructor(props: any) {
+    super(props);
+    this.state = {
+      page: 1,
+      data: allExportProducts.slice(0, 10),
+      totalSize: allExportProducts.length,
+      sizePerPage: 10,
+      allData: allExportProducts,
+    };
+    this.handleTableChange = this.handleTableChange.bind(this);
+  }
+
+  handleTableChange = (
+    type: any,
+    { page, sizePerPage, filters, sortField, sortOrder, cellEdit }: any
+  ) => {
+    setTimeout(() => {
+      // Handle cell editing
+      if (type === "cellEdit") {
+        const { rowId, dataField, newValue } = cellEdit;
+        products = products.map((row: any) => {
+          if (row.id === rowId) {
+            const newRow = { ...row };
+            newRow[dataField] = newValue;
+            return newRow;
+          }
+          return row;
+        });
+      }
+      let result = allExportProducts;
+      // Handle column filters
+      result = result.filter((row: any) => {
+        let valid = true;
+        for (const dataField in filters) {
+          const { filterVal, filterType, comparator } = filters[dataField];
+
+          if (filterType === "TEXT") {
+            if (comparator === LIKE) {
+              valid = row[dataField].toString().indexOf(filterVal) > -1;
+            } else {
+              valid = row[dataField] === filterVal;
+            }
+          }
+          if (!valid) break;
+        }
+        return valid;
+      });
+      // Handle column sort
+      if (sortOrder === "asc") {
+        result = result.sort((a: any, b: any) => {
+          if (a[sortField] > b[sortField]) {
+            return 1;
+          } else if (b[sortField] > a[sortField]) {
+            return -1;
+          }
+          return 0;
+        });
+      } else {
+        result = result.sort((a: any, b: any) => {
+          if (a[sortField] > b[sortField]) {
+            return -1;
+          } else if (b[sortField] > a[sortField]) {
+            return 1;
+          }
+          return 0;
+        });
+      }
+      this.setState(() => ({
+        page: page,
+        data: result.slice((page - 1) * sizePerPage, page * sizePerPage),
+        totalSize: result.length,
+        sizePerPage: sizePerPage,
+        allData: result,
+      }));
+    }, 2000);
+  };
+
+  render() {
+    return (
+      <ToolkitProvider
+        keyField="id"
+        data={this.state.data}
+        columns={productColumns}
+        search
+        columnToggle
+        exportCSV={{
+          fileName: 'products-export.csv',
+          noAutoBOM: false,
+          blobType: 'text/csv;charset=ansi',
+          data: this.state.allData
+        }}
+      >
+        {props => (
+          <PaginationProvider
+            pagination={paginationFactory({
+              custom: true,
+              page: this.state.page,
+              sizePerPage: this.state.sizePerPage,
+              totalSize: this.state.totalSize,
+              sizePerPageList: [10, 25, 50, 100],
+              showSizePerPage: true,
+              showTotal: true,
+              paginationTotalRenderer: customPaginationTotal,
+            })}
+          >
+            {({ paginationProps, paginationTableProps }) => (
+              <div>
+                <CustomToggleList {...props.columnToggleProps} />
+                <div>
+                  <SizePerPageDropdownStandalone {...paginationProps} />
+                  <PaginationTotalStandalone {...paginationProps} />
+                  <ExportCSVButton {...props.csvProps}
+                    className="btn-warning"
+                    style={{ marginLeft: '20px' }}
+                  >Export CSV</ExportCSVButton>
+                  <PaginationListStandalone {...paginationProps} />
+                </div>
+                <BootstrapTable
+                  remote
+                  striped
+                  hover
+                  condensed
+                  defaultSorted={[
+                    {
+                      dataField: "name",
+                      order: "desc",
+                    },
+                  ]}
+                  {...props.baseProps}
+                  filter={filterFactory()}
+                  overlay={overlayFactory({ spinner: true })}
+                  onTableChange={this.handleTableChange}
+                  cellEdit={cellEditFactory({
+                    mode: "click",
+                  })}
+                  {...paginationTableProps}
+                />
+                <div style={{ marginBottom: '20px' }}>
+                  <SizePerPageDropdownStandalone {...paginationProps} />
+                  <PaginationTotalStandalone {...paginationProps} />
+                  <ExportCSVButton {...props.csvProps}
+                    className="btn-warning"
+                    style={{ marginLeft: '20px' }}
+                  >Export CSV</ExportCSVButton>
+                  <PaginationListStandalone {...paginationProps} />
+                </div>
+                <Code>{remoteAllExportSourceCode}</Code>
+              </div>
+            )}
+          </PaginationProvider>
+        )}
+      </ToolkitProvider>
+    );
+  }
+}
+
 interface RemoteMainProps {
   mode?: any;
 }
@@ -1150,5 +1598,7 @@ export default ({ mode }: RemoteMainProps) => {
       return <RemoteCellEditComponent />;
     case "all":
       return <RemoteAllComponent />;
+    case "all-custom":
+      return <RemoteAllCustomComponent />;
   }
 };
