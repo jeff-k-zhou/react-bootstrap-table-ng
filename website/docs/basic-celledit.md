@@ -4,7 +4,7 @@ title: Cell Edit
 sidebar_label: Cell Edit
 ---
 
-`react-bootstrap-table-ng` separate the cell edit code base to [`react-bootstrap-table-ng-editor`](https://github.com/jeff-k-zhou/react-bootstrap-table-ng/tree/develop/packages/react-bootstrap-table-ng-editor), so there's a little bit different when you use cell edit than `react-bootstrap-table`. In the following, we are going to show you how to enable the cell edit
+`react-bootstrap-table-ng` separate the cell edit code base to [`react-bootstrap-table-ng-editor`](https://github.com/jeff-k-zhou/react-bootstrap-table-ng/tree/main/packages/react-bootstrap-table-ng-editor), so there's a little bit different when you use cell edit than `react-bootstrap-table`. In the following, we are going to show you how to enable the cell edit
 
 **[Live Demo For Cell Edit](pathname:///react-bootstrap-table-ng/storybook/index.html?selectedKind=Cell%20Editing)**   
 **[API & Props Definition](./cell-edit-props)**

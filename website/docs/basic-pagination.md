@@ -4,7 +4,7 @@ title: Pagination
 sidebar_label: Pagination
 ---
 
-`react-bootstrap-table-ng` separate the pagination code base to [`react-bootstrap-table-ng-pagination`](https://github.com/jeff-k-zhou/react-bootstrap-table-ng/tree/develop/packages/react-bootstrap-table-ng-pagination), so there's a little bit different when you use pagination. In the following, we are going to show you how to enable and configure the a pagination table
+`react-bootstrap-table-ng` separate the pagination code base to [`react-bootstrap-table-ng-paginator`](https://github.com/jeff-k-zhou/react-bootstrap-table-ng/tree/main/packages/react-bootstrap-table-ng-paginator), so there's a little bit different when you use pagination. In the following, we are going to show you how to enable and configure the a pagination table
 
 **[Live Demo For Pagination](pathname:///react-bootstrap-table-ng/storybook/index.html?selectedKind=Pagination)**   
 **[API & Props Definition](./pagination-props)**
@@ -14,16 +14,16 @@ sidebar_label: Pagination
 ## Install
 
 ```sh
-$ npm install react-bootstrap-table-ng-pagination --save
+$ npm install react-bootstrap-table-ng-paginator --save
 ```
 ## Add CSS
 
 ```js
 // es5 
-require('react-bootstrap-table-ng-pagination/dist/react-bootstrap-table-ng-pagination.min.css');
+require('react-bootstrap-table-ng-paginator/dist/react-bootstrap-table-ng-paginator.min.css');
 
 // es6
-import 'react-bootstrap-table-ng-pagination/dist/react-bootstrap-table-ng-pagination.min.css';
+import 'react-bootstrap-table-ng-paginator/dist/react-bootstrap-table-ng-paginator.min.css';
 ```
 
 ## How
@@ -31,7 +31,7 @@ import 'react-bootstrap-table-ng-pagination/dist/react-bootstrap-table-ng-pagina
 Let's enable a pagination on your table:
 
 ```js
-import paginationFactory from 'react-bootstrap-table-ng-pagination';
+import paginationFactory from 'react-bootstrap-table-ng-paginator';
 // omit...
 
 ```js
