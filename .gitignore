@@ -23,8 +23,13 @@ storybook-static
 # build
 lib
 dist
+build
 *.js.map
 *.test.tsx.snap
 
 .yarn/
 .nx/
+.docusaurus/
+*build.log
+*build_output*
+*build_error*

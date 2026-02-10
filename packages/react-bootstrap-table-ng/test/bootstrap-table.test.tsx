@@ -65,7 +65,7 @@ describe("BootstrapTable", () => {
           keyField="id"
           columns={columns}
           data={data}
-          ref={(ref) => (instance = ref)}
+          ref={(ref) => { instance = ref; }}
         />
       );
       expect(instance.getData()).toEqual(data);

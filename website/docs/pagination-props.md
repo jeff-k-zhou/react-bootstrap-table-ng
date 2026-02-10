@@ -1,0 +1,313 @@
+---
+id: pagination-props
+title: Pagination Props
+---
+
+Following we list all props for `paginationFactory` from [`react-bootstrap-table-ng-paginator`](https://www.npmjs.com/package/react-bootstrap-table-ng-paginator).
+
+```js
+import paginationFactory from 'react-bootstrap-table-ng-paginator';
+
+const pagination = paginationFactory({
+  page: 2,
+  ...
+});
+
+`<BootstrapTable` pagination={ pagination } ... />`
+```
+
+## Required
+**NONE**
+
+## Optional
+* [custom](#paginationcustom-bool)
+* [page](#paginationpage-number)
+* [sizePerPage](#paginationsizeperpage-number)
+* [totalSize](#paginationtotalsize-number)
+* [pageStartIndex](#paginationpagestartindex-number)
+* [paginationSize](#paginationpaginationsize-number)
+* [sizePerPageList](#paginationsizeperpagelist-array)
+* [withFirstAndLast](#paginationwithfirstandlast-bool)
+* [alwaysShowAllBtns](#paginationalwaysshowallbtns-bool)
+* [firstPageText](#paginationfirstpagetext-any)
+* [prePageText](#paginationprepagetext-any)
+* [nextPageText](#paginationnextpagetext-any)
+* [lastPageText](#paginationlastpagetext-any)
+* [firstPageTitle](#paginationfirstpagetitle-any)
+* [prePageTitle](#paginationprepagetitle-any)
+* [nextPageTitle](#paginationnextpagetitle-any)
+* [lastPageTitle](#paginationlastpagetitle-any)
+* [hideSizePerPage](#paginationhidesizeperpage-bool)
+* [disablePageTitle](#paginationdisablepagetitle-bool)
+* [hidePageListOnlyOnePage](#paginationhidepagelistonlyonepage-bool)
+* [onPageChange](#paginationonpagechange-function)
+* [onSizePerPageChange](#paginationonsizeperpagechange-function)
+* [showTotal](#paginationshowtotal-bool)
+* [pageButtonRenderer](#paginationpagebuttonrenderer-function)
+* [pageListRenderer](#paginationpagelistrenderer-function)
+* [sizePerPageRenderer](#paginationsizeperpagerenderer-function)
+* [sizePerPageOptionRenderer](#paginationsizeperpageoptionrenderer-function)
+* [paginationTotalRenderer](#paginationpaginationtotalrenderer-function)
+-----
+
+## pagination.custom - [Bool] {#paginationcustom-bool}
+Default is false, you will enable it only when you need to implement a [customization completely](./basic-pagination#completely-customization).
+
+
+## pagination.page - [Number] {#paginationpage-number}
+Use `pagination.page` specify the current page when table render.
+
+> It's necessary value when [remote](./table-props#remote-bool-object) pagination is enabled.
+
+## pagination.sizePerPage - [Number] {#paginationsizeperpage-number}
+Use `pagination.sizePerPage` specify the current size per page when table render.
+
+> It's necessary value when [remote](./table-props#remote-bool-object) pagination is enabled.
+
+## pagination.totalSize - [Number] {#paginationtotalsize-number}
+This props will be necessary value for below two cases:
+
+### remote mode
+
+Because `react-bootstrap-table-ng` will never know the totally data size actually. Remeber to assign `totalSize` when you enable the remote pagination.
+
+### Customization
+When you need to implement a [customization completely](./basic-pagination#completely-customization). You have to give props.
+
+
+## pagination.pageStartIndex - [Number] {#paginationpagestartindex-number}
+Default is **1**, which means the first page index is start from 1. If your first page want to start from **0**, you can control it via `pageStartIndex`.
+
+## pagination.paginationSize - [Number] {#paginationpaginationsize-number}
+Default is **5**, which means the size of pagination.
+
+## pagination.sizePerPageList - [Array] {#paginationsizeperpagelist-array}
+Default size per page have **10**, **25**, **30**, **50**. You can assign a number of array to replace this default list. However, `sizePerPageList` is flexible to let you decide the text display on the dropdown list:
+
+```js
+[ {
+  text: '5th', value: 5
+}, {
+  text: '10th', value: 10
+}, {
+  text: 'All', value: data.length
+} ]
+```
+
+## pagination.withFirstAndLast - [Bool] {#paginationwithfirstandlast-bool}
+Default is `true`, you can disable it if you don't want to show the **"Go to first"** and **"Go to last"** page buttons.
+
+## pagination.alwaysShowAllBtns - [Bool] {#paginationalwaysshowallbtns-bool}
+Default is `false`, which means `react-bootstrap-table-ng` will hide the next or previouse page button if unnecessary. Anyway, you can still show them always via `alwaysShowAllBtns` prop.   
+If you also enable `withFirstAndLast`, this prop also keep to show first and last page when you enable it.
+
+## pagination.firstPageText - [Any] {#paginationfirstpagetext-any}
+A quick way to specify the text on the first page button.
+
+## pagination.prePageText - [Any] {#paginationprepagetext-any}
+A quick way to specify the text on the previous page button.
+
+## pagination.nextPageText - [Any] {#paginationnextpagetext-any}
+A quick way to specify the text on the next page button.
+
+## pagination.lastPageText - [Any] {#paginationlastpagetext-any}
+A quick way to specify the text on the last page button.
+
+## pagination.firstPageTitle - [Any] {#paginationfirstpagetitle-any}
+A quick way to specify the title on the first page button.
+
+## pagination.prePageTitle - [Any] {#paginationprepagetitle-any}
+A quick way to specify the title on the previous page button.
+
+## pagination.nextPageTitle - [Any] {#paginationnextpagetitle-any}
+A quick way to specify the title on the next page button.
+
+## pagination.lastPageTitle - [Any] {#paginationlastpagetitle-any}
+A quick way to specify the title on the last page button.
+
+## pagination.hideSizePerPage - [Bool] {#paginationhidesizeperpage-bool}
+You can hide the size per page dropdown.
+
+## pagination.hidePageListOnlyOnePage - [Bool] {#paginationhidepagelistonlyonepage-bool}
+You can hide the pagination when there's only one page in table. Default is `false`.
+
+## pagination.showTotal - [Bool] {#paginationshowtotal-bool}
+Default is `false`, if enable will display a text to indicate the row range of current page.
+
+## pagination.disablePageTitle - [Bool] {#paginationdisablepagetitle-bool}
+Default is `false`, if enable will remove the `title` attribute from each page button.
+
+## pagination.pageButtonRenderer - [Function] {#paginationpagebuttonrenderer-function}
+Custom the page button inside the pagination list. This callback function have one argument which is an object and contain following props:
+
+* `page`: Page number
+* `active`: If this page is current page or not.
+* `disabled`: If this page is disabled or not.
+* `title`: Page title
+* `onPageChange`: Call it when you need to change page
+
+Following is a minimal example:
+```js
+const pageButtonRenderer = ({
+  page,
+  active,
+  disabled,
+  title,
+  onPageChange
+}) => {
+  const handleClick = (e) => {
+    e.preventDefault();
+    onPageChange(page);
+  };
+  // ....
+  return (
+    <li className="page-item">
+      <a href="#" onClick={ handleClick } ....>{ page }</a>
+    </li>
+  );
+};
+
+const options = {
+  pageButtonRenderer
+};
+
+`<BootstrapTable` keyField="id" data={ products } columns={ columns } pagination={ paginationFactory(options) } />`
+```
+
+
+## pagination.pageListRenderer - [Function] {#paginationpagelistrenderer-function}
+Custom the pagination list component, this callback function have one argument which is an object and contain following props:
+
+* `pages`: Current page
+* `onPageChange`: Call it when you need to change page
+
+Below is a minimal example: 
+```js
+const pageListRenderer = ({
+  pages,
+  onPageChange
+}) => {
+  // just exclude <, <<, >>, >
+  const pageWithoutIndication = pages.filter(p => typeof p.page !== 'string');
+  return (
+    <div>
+      {
+        pageWithoutIndication.map(p => (
+          <button className="btn btn-success" onClick={ () => onPageChange(p.page) }>{ p.page }</button>
+        ))
+      }
+    </div>
+  );
+};
+
+const options = {
+  pageListRenderer
+};
+
+`<BootstrapTable` keyField="id" data={ products } columns={ columns } pagination={ paginationFactory(options) } />`
+```
+
+## pagination.sizePerPageRenderer - [Function] {#paginationsizeperpagerenderer-function}
+Custom the size per page dropdown component, this callback function have one argument which is an object and contain following props:
+
+* `options`: Dropdown option.
+* `currSizePerPage`: Current size per page.
+* `onSizePerPageChange`: Call it when you need to change size per page.
+
+
+Below is a minimal example: 
+```js
+const sizePerPageRenderer = ({
+  options,
+  currSizePerPage,
+  onSizePerPageChange
+}) => (
+  <div className="btn-group" role="group">
+    {
+      options.map(option => (
+        <button
+          key={ option.text }
+          type="button"
+          onClick={ () => onSizePerPageChange(option.page) }
+          className={ `btn ${currSizePerPage === `${option.page}` ? 'btn-secondary' : 'btn-warning'}` }
+        >
+          { option.text }
+        </button>
+      ))
+    }
+  </div>
+);
+
+const options = {
+  sizePerPageRenderer
+};
+
+`<BootstrapTable` keyField="id" data={ products } columns={ columns } pagination={ paginationFactory(options) } />`
+```
+
+## pagination.sizePerPageOptionRenderer - [Function] {#paginationsizeperpageoptionrenderer-function}
+Custom the option of size per page dropdown component, this callback function have one argument which is an object and contain following props:
+
+* `text`: The text of option.
+* `page`: The size per page of option.
+* `onSizePerPageChange`: Call it when you need to change size per page.
+
+Below is a minimal example: 
+```js
+const sizePerPageOptionRenderer = ({
+  text,
+  page,
+  onSizePerPageChange
+}) => (
+  <li
+    key={ text }
+    role="presentation"
+    className="dropdown-item"
+  >
+    <a
+      href="#"
+      tabIndex="-1"
+      role="menuitem"
+      data-page={ page }
+      onMouseDown={ (e) => {
+        e.preventDefault();
+        onSizePerPageChange(page);
+      } }
+      style={ { color: 'red' } }
+    >
+      { text }
+    </a>
+  </li>
+);
+
+const options = {
+  sizePerPageOptionRenderer
+};
+
+`<BootstrapTable` keyField="id" data={ products } columns={ columns } pagination={ paginationFactory(options) } />`
+```
+
+## pagination.paginationTotalRenderer - [Function] {#paginationpaginationtotalrenderer-function}
+Custom the total information, this callbacok function have three arguments: `from`, `to` and `size`. Following is an example:
+
+```js
+const customTotal = (from, to, size) => (
+  <span className="react-bootstrap-table-pagination-total">
+    Showing { from } to { to } of { size } Results
+  </span>
+);
+```
+
+## pagination.onPageChange - [Function] {#paginationonpagechange-function}
+Accept a callback function and will be called when page changed. This callback function get below arguments:
+
+**Arguments**
+* page
+* sizePerPage
+
+## pagination.onSizePerPageChange - [Function] {#paginationonsizeperpagechange-function}
+Accept a callback function and will be called when size per page changed. This callback function get below arguments:
+
+**Arguments**
+* page
+* sizePerPage

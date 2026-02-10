@@ -32,7 +32,7 @@ See [getting started](https://react-bootstrap-table.github.io/react-bootstrap-ta
 
 ## Online Demo
 
-See `react-bootstrap-table-ng` [storybook](https://react-bootstrap-table.github.io/react-bootstrap-table2/storybook/index.html).
+See `react-bootstrap-table-ng` [storybook](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/storybook/index.html).
 
 ## Development
 

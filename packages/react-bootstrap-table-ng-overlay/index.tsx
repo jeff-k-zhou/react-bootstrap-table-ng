@@ -2,7 +2,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 
-import LoadingOverlay from "react-loading-overlay-nextgen";
+import LoadingOverlay from "./src/loading-overlay";
 
 interface TableLoadingOverlayWrapperProps {
   children: React.ReactNode;
@@ -40,7 +40,7 @@ export default (options?: any) => (loading?: boolean) =>
     render() {
       return (
         <LoadingOverlay
-          ref={(n: any) => (this.overlay = n)}
+          ref={(n: any) => { this.overlay = n; }}
           {...options}
           active={loading}
         >

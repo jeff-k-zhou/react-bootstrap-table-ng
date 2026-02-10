@@ -19,8 +19,8 @@ interface BodyProps {
   tabIndexCell?: boolean;
   isEmpty?: boolean;
   noDataIndication?:
-  | (() => JSX.Element | string)
-  | JSX.Element
+  | (() => React.ReactElement | string)
+  | React.ReactElement
   | string
   | undefined;
   visibleColumnSize?: number;

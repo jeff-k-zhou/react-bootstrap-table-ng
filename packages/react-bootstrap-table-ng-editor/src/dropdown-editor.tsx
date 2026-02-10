@@ -80,7 +80,7 @@ class DropDownEditor extends Component<
     return (
       <select
         {...attr}
-        ref={(node) => (this.select = node)}
+        ref={(node) => { this.select = node; }}
         defaultValue={defaultValue}
       >
         {this.state.options.map(({ label, value }: any) => (

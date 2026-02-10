@@ -1,5 +1,6 @@
+// This file has been automatically migrated to valid ESM format by Storybook.
 import type { StorybookConfig } from "@storybook/react-webpack5";
-import path from "path";
+import path, { dirname } from "path";
 import { fileURLToPath } from "url";
 import * as sass from "sass";
 
@@ -10,19 +11,30 @@ const config: StorybookConfig = {
     stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
 
     addons: [
-        "@storybook/addon-links",
-        "@storybook/addon-onboarding",
-        "@storybook/addon-docs",
+        getAbsolutePath("@storybook/addon-links"),
+        //getAbsolutePath("@storybook/addon-onboarding"),
+        getAbsolutePath("@storybook/addon-docs"),
     ],
 
     framework: {
-        name: "@storybook/react-webpack5",
+        name: getAbsolutePath("@storybook/react-webpack5"),
         options: {},
     },
 
     staticDirs: ["../public"],
+    managerHead: (head) => `
+    ${process.env.NODE_ENV === "production"
+            ? `<base href="/react-bootstrap-table-ng/storybook/">`
+            : ""
+        }
+    ${head}
+  `,
 
     previewHead: (head) => `
+    ${process.env.NODE_ENV === "production"
+            ? `<base href="/react-bootstrap-table-ng/storybook/">`
+            : ""
+        }
     ${head}
     <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
     <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous"> -->
@@ -105,8 +117,15 @@ const config: StorybookConfig = {
                 ...(config.resolve.modules || []),
             ];
         }
+        if (config.output && process.env.NODE_ENV === "production") {
+            config.output.publicPath = "../storybook/";
+        }
         return config;
     },
 };
 
 export default config;
+
+function getAbsolutePath(value: string): any {
+    return dirname(fileURLToPath(import.meta.resolve(`${value}/package.json`)));
+}

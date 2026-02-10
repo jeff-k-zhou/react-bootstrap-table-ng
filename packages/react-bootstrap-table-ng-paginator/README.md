@@ -41,24 +41,24 @@ import paginationFactory from 'react-bootstrap-table-ng-paginator';
 
 `react-bootstrap-table-ng` give some simple ways to customize something like text, styling etc, following is all the props we support for basic customization:
 
-* [paginationSize](https://react-bootstrap-table.github.io/react-bootstrap-table2/docs/pagination-props.html#paginationpaginationsize-number)
-* [sizePerPageList](https://react-bootstrap-table.github.io/react-bootstrap-table2/docs/pagination-props.html#paginationsizeperpagelist-array)
-* [withFirstAndLast](https://react-bootstrap-table.github.io/react-bootstrap-table2/docs/pagination-props.html#paginationwithfirstandlast-bool)
-* [alwaysShowAllBtns](https://react-bootstrap-table.github.io/react-bootstrap-table2/docs/pagination-props.html#paginationalwaysshowallbtns-bool)
-* [firstPageText](https://react-bootstrap-table.github.io/react-bootstrap-table2/docs/pagination-props.html#paginationfirstpagetext-any)
-* [prePageText](https://react-bootstrap-table.github.io/react-bootstrap-table2/docs/pagination-props.html#paginationprepagetext-any)
-* [nextPageText](https://react-bootstrap-table.github.io/react-bootstrap-table2/docs/pagination-props.html#paginationnextpagetext-any)
-* [lastPageText](https://react-bootstrap-table.github.io/react-bootstrap-table2/docs/pagination-props.html#paginationlastpagetext-any)
-* [firstPageTitle](https://react-bootstrap-table.github.io/react-bootstrap-table2/docs/pagination-props.html#paginationfirstpagetitle-any)
-* [prePageTitle](https://react-bootstrap-table.github.io/react-bootstrap-table2/docs/pagination-props.html#paginationprepagetitle-any)
-* [nextPageTitle](https://react-bootstrap-table.github.io/react-bootstrap-table2/docs/pagination-props.html#paginationnextpagetitle-any)
-* [lastPageTitle](https://react-bootstrap-table.github.io/react-bootstrap-table2/docs/pagination-props.html#paginationlastpagetitle-any)
-* [hideSizePerPage](https://react-bootstrap-table.github.io/react-bootstrap-table2/docs/pagination-props.html#paginationhidesizeperpage-bool)
-* [hidePageListOnlyOnePage](https://react-bootstrap-table.github.io/react-bootstrap-table2/docs/pagination-props.html#paginationhidepagelistonlyonepage-bool)
-* [showTotal](https://react-bootstrap-table.github.io/react-bootstrap-table2/docs/pagination-props.html#paginationshowtotal-bool)
+* [paginationSize](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/docs/pagination-props.html#paginationpaginationsize-number)
+* [sizePerPageList](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/docs/pagination-props.html#paginationsizeperpagelist-array)
+* [withFirstAndLast](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/docs/pagination-props.html#paginationwithfirstandlast-bool)
+* [alwaysShowAllBtns](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/docs/pagination-props.html#paginationalwaysshowallbtns-bool)
+* [firstPageText](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/docs/pagination-props.html#paginationfirstpagetext-any)
+* [prePageText](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/docs/pagination-props.html#paginationprepagetext-any)
+* [nextPageText](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/docs/pagination-props.html#paginationnextpagetext-any)
+* [lastPageText](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/docs/pagination-props.html#paginationlastpagetext-any)
+* [firstPageTitle](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/docs/pagination-props.html#paginationfirstpagetitle-any)
+* [prePageTitle](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/docs/pagination-props.html#paginationprepagetitle-any)
+* [nextPageTitle](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/docs/pagination-props.html#paginationnextpagetitle-any)
+* [lastPageTitle](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/docs/pagination-props.html#paginationlastpagetitle-any)
+* [hideSizePerPage](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/docs/pagination-props.html#paginationhidesizeperpage-bool)
+* [hidePageListOnlyOnePage](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/docs/pagination-props.html#paginationhidepagelistonlyonepage-bool)
+* [showTotal](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/docs/pagination-props.html#paginationshowtotal-bool)
 * [disablePageTitle](https://react-bootstrap-table.github.io/react-bootstrap-table2/docs/pagination-props.html#paginationdisablepagetitle-bool)
 
-You can check [this online demo](https://react-bootstrap-table.github.io/react-bootstrap-table2/storybook/index.html?selectedKind=Pagination&selectedStory=Custom%20Pagination&full=0&addons=1&stories=1&panelRight=0&addonPanel=storybook%2Factions%2Factions-panel) for above props usage.
+You can check [this online demo](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/storybook/index.html?selectedKind=Pagination&selectedStory=Custom%20Pagination&full=0&addons=1&stories=1&panelRight=0&addonPanel=storybook%2Factions%2Factions-panel) for above props usage.
 
 ### Advance Customization
 
@@ -245,4 +245,4 @@ In most of case, `page`, `sizePerPage`, `onPageChange` and `onSizePerPageChange`
 * `onPageChange`: Call it when you nede to change page. This function accept one number argument which indicate the new page
 * `onSizePerPageChange`: Call it when you nede to change size per page. This function accept two number argument which indicate the new sizePerPage and new page
 
-[Here](https://react-bootstrap-table.github.io/react-bootstrap-table2/storybook/index.html?selectedKind=Pagination&selectedStory=Fully%20Custom%20Pagination&full=0&addons=1&stories=1&panelRight=0&addonPanel=storybook%2Factions%2Factions-panel) is a online example.
+[Here](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/storybook/index.html?selectedKind=Pagination&selectedStory=Fully%20Custom%20Pagination&full=0&addons=1&stories=1&panelRight=0&addonPanel=storybook%2Factions%2Factions-panel) is a online example.

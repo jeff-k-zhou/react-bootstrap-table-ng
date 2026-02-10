@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-webpack5';
 
 // import bootstrap style by given version
 import BootstrapTable from './Remote';
@@ -68,3 +68,11 @@ export const RemoteAll: Story = {
     mode: "all",
   }
 };
+
+export const RemoteAllCustom: Story = {
+  name: "Remote all + custom toolbars",
+  args: {
+    mode: "all-custom",
+  }
+};
+

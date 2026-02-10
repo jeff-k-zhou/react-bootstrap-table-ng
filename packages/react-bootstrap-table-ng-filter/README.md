@@ -2,9 +2,9 @@
 
 `react-bootstrap-table-ng` separate the filter core code base to [`react-bootstrap-table-ng-filter`](https://github.com/jeff-k-zhou/react-bootstrap-table-ng/tree/main/packages/react-bootstrap-table-ng-filter), so there's a little bit different when you use column filter than `react-bootstrap-table`. In the following, we are going to show you how to enable the column filter:
 
-**[Live Demo For Column Filter](https://react-bootstrap-table.github.io/react-bootstrap-table2/storybook/index.html?selectedKind=Column%20Filter)**
+**[Live Demo For Column Filter](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/storybook/index.html?selectedKind=Column%20Filter)**
 
-**[API&Props Definitation](https://react-bootstrap-table.github.io/react-bootstrap-table2/docs/filter-props.html)**
+**[API&Props Definitation](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/docs/filter-props.html)**
 
 -----
 

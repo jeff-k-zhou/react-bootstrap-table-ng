@@ -132,7 +132,7 @@ class TextFilter extends Component<TextFilterProps, TextFilterState> {
         <span className="sr-only">Filter by {text}</span>
         <input
           {...rest}
-          ref={(n) => (this.input = n)}
+          ref={(n) => { this.input = n; }}
           type="text"
           id={elmId}
           className={`filter text-filter form-control ${className}`}
