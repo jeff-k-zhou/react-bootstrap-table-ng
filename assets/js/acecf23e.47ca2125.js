@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunkreact_bootstrap_table_ng_website=globalThis.webpackChunkreact_bootstrap_table_ng_website||[]).push([[1903],{9531(t){t.exports=JSON.parse('{"blogBasePath":"/react-bootstrap-table-ng/blog","blogTitle":"Blog","authorsListPath":"/react-bootstrap-table-ng/blog/authors"}')}}]);

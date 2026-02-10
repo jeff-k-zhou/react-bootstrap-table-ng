@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunkreact_bootstrap_table_ng_website=globalThis.webpackChunkreact_bootstrap_table_ng_website||[]).push([[9858],{5516(e){e.exports=JSON.parse('{"name":"docusaurus-plugin-content-blog","id":"default"}')}}]);

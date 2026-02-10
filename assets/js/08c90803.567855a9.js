@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunkreact_bootstrap_table_ng_website=globalThis.webpackChunkreact_bootstrap_table_ng_website||[]).push([[3040],{4126(t){t.exports=JSON.parse('{"authors":[{"name":"Allen Fang","title":"Main Maintainer","url":"https://twitter.com/allenfang_tw","imageURL":"https://github.com/allenfang.png","key":"allenfang","page":null,"count":62}]}')}}]);
