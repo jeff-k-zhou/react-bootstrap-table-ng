@@ -1286,6 +1286,10 @@ class RemoteAllExportComponent extends React.Component {
     }, 2000);
   };
 
+  handleExport = onExport => e => {
+    onExport(this.state.allData);
+  };
+
   render() {
     return (
       <ToolkitProvider
@@ -1323,6 +1327,7 @@ class RemoteAllExportComponent extends React.Component {
                   <ExportCSVButton {...props.csvProps}
                     className="btn-warning"
                     style={{ marginLeft: '20px' }}
+                    onClick={this.handleExport(props.csvProps.onExport)}
                   >Export CSV</ExportCSVButton>
                   <PaginationListStandalone {...paginationProps} />
                 </div>
@@ -1352,6 +1357,7 @@ class RemoteAllExportComponent extends React.Component {
                   <ExportCSVButton {...props.csvProps}
                     className="btn-warning"
                     style={{ marginLeft: '20px' }}
+                    onClick={this.handleExport(props.csvProps.onExport)}
                   >Export CSV</ExportCSVButton>
                   <PaginationListStandalone {...paginationProps} />
                 </div>
@@ -1492,13 +1498,17 @@ class RemoteAllCustomComponent extends React.Component {
         });
       }
       this.setState(() => ({
-        page: page,
+        page: page * sizePerPage < result.length ? page : Math.ceil(result.length / sizePerPage),
         data: result.slice((page - 1) * sizePerPage, page * sizePerPage),
         totalSize: result.length,
         sizePerPage: sizePerPage,
         allData: result,
       }));
     }, 2000);
+  };
+
+  handleExport = onExport => e => {
+    onExport(this.state.allData);
   };
 
   render() {
@@ -1538,6 +1548,7 @@ class RemoteAllCustomComponent extends React.Component {
                   <ExportCSVButton {...props.csvProps}
                     className="btn-warning"
                     style={{ marginLeft: '20px' }}
+                    onClick={this.handleExport(props.csvProps.onExport)}
                   >Export CSV</ExportCSVButton>
                   <PaginationListStandalone {...paginationProps} />
                 </div>
@@ -1567,6 +1578,7 @@ class RemoteAllCustomComponent extends React.Component {
                   <ExportCSVButton {...props.csvProps}
                     className="btn-warning"
                     style={{ marginLeft: '20px' }}
+                    onClick={this.handleExport(props.csvProps.onExport)}
                   >Export CSV</ExportCSVButton>
                   <PaginationListStandalone {...paginationProps} />
                 </div>

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-webpack5';
 
 // import bootstrap style by given version
 import cellEditFactory, { Type } from '../../../react-bootstrap-table-ng-editor';

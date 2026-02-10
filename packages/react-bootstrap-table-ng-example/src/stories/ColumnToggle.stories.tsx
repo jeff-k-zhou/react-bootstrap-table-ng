@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-webpack5';
 
 // import bootstrap style by given version
 import { textFilter } from '../../../react-bootstrap-table-ng-filter';

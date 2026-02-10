@@ -1,6 +1,6 @@
 {
   "name": "react-bootstrap-table-ng-monorepo",
-  "version": "4.19.0",
+  "version": "4.19.1",
   "private": true,
   "description": "Rebuilt for react-bootstrap-table, react-bootstrap-table-next, react-bootstrap-table-nextgen",
   "workspaces": [
@@ -17,10 +17,14 @@
     "test": "jest",
     "test:coverage": "jest --coverage",
     "test:watch": "jest --coverage --watch",
+    "storybook:clean": "cd ./packages/react-bootstrap-table-ng-example && yarn gh-pages:clean",
+    "storybook:build": "cd ./packages/react-bootstrap-table-ng-example && yarn gh-pages:build",
+    "storybook:deploy": "cd ./packages/react-bootstrap-table-ng-example && yarn gh-pages:deploy",
     "storybook": "cd ./packages/react-bootstrap-table-ng-example && yarn storybook",
-    "gh-pages:clean": "cd ./packages/react-bootstrap-table-ng-example && yarn gh-pages:clean",
-    "gh-pages:build": "cd ./packages/react-bootstrap-table-ng-example && yarn gh-pages:build",
-    "gh-pages:deploy": "cd ./packages/react-bootstrap-table-ng-example && yarn gh-pages:deploy",
+    "website:clean": "cd website && yarn clear",
+    "website:build": "cd website && yarn clear && cd .. && yarn workspace react-bootstrap-table-ng-example gh-pages:clean && yarn workspace react-bootstrap-table-ng-example gh-pages:build && cp -R packages/react-bootstrap-table-ng-example/storybook-static/storybook website/static && cd website && yarn build",
+    "website:deploy": "cd  website && yarn gh-pages:deploy",
+    "website": "cd website && npm run serve",
     "release": "yarn install && yarn build && lerna publish"
   },
   "repository": {

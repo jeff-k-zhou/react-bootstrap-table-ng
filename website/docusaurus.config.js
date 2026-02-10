@@ -6,6 +6,8 @@
 
 import { themes as prismThemes } from 'prism-react-renderer';
 
+const baseUrl = '/react-bootstrap-table-ng/';
+
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'react-bootstrap-table-ng',
@@ -21,7 +23,8 @@ const config = {
   url: 'https://jeff-k-zhou.github.io',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/react-bootstrap-table-ng/',
+  baseUrl: baseUrl,
+  trailingSlash: false,
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
@@ -63,8 +66,7 @@ const config = {
           sidebarPath: './sidebars.js',
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/jeff-k-zhou/react-bootstrap-table-ng/tree/main/packages/react-bootstrap-table-ng/docs/',
+          // editUrl: 'https://github.com/jeff-k-zhou/react-bootstrap-table-ng/tree/main/website/',
         },
         blog: {
           showReadingTime: true,
@@ -74,8 +76,7 @@ const config = {
           },
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/jeff-k-zhou/react-bootstrap-table-ng/tree/main/website/blog/',
+          // editUrl:'https://github.com/jeff-k-zhou/react-bootstrap-table-ng/tree/main/website/',
           // Useful options to enforce blogging best practices
           onInlineTags: 'warn',
           onInlineAuthors: 'warn',
@@ -97,10 +98,10 @@ const config = {
         respectPrefersColorScheme: true,
       },
       navbar: {
-        title: 'react-bootstrap-table-ng',
+        title: '',
         logo: {
           alt: 'react-bootstrap-table-ng Logo',
-          src: 'img/logo/hybrid-white-large.svg',
+          src: 'img/logo/hybrid-white-large-ng.svg',
         },
         items: [
           {
@@ -114,6 +115,11 @@ const config = {
             sidebarId: 'api',
             position: 'left',
             label: 'API',
+          },
+          {
+            href: 'pathname://' + baseUrl + 'storybook/',
+            label: 'Live Demo',
+            position: 'left',
           },
           { to: '/blog', label: 'Blog', position: 'left' },
           {

@@ -1,6 +1,6 @@
 {
   "name": "react-bootstrap-table-ng-filter",
-  "version": "4.19.0",
+  "version": "4.19.1",
   "description": "It's a column filter addon for react-bootstrap-table-ng",
   "main": "./lib/index.js",
   "repository": {
@@ -42,12 +42,12 @@
     }
   ],
   "peerDependencies": {
-    "prop-types": "^15.8.1",
+    "prop-types": ">=15.8.1",
     "react": "^18.0 || ^18.0.0 || ^19.0 || ^19.0.0",
     "react-dom": "^18.0 || ^18.0.0 || ^19.0 || ^19.0.0"
   },
   "dependencies": {
-    "react-bootstrap-table-ng": "^4.19.0"
+    "react-bootstrap-table-ng": "^4.19.1"
   },
   "devDependencies": {
     "ts-migrate": "^0.1.35"

@@ -4,11 +4,11 @@ The goal of this fork is to provide stable version with react 18 and above, boot
 
 ## Changes on top of [`react-bootstrap-table-next`]
 - Support React 18 and React 19
-- Support Bootstrap 3.4.1 and Bootstrap 4.6.2
-- Upgraded Storybook to 10.2.1
+- Support Bootstrap 3x up to 3.4.1 and Bootstrap 4x up to 4.6.2
+- Upgraded Storybook to 10.2.7
 - Upgraded Yarn to 4.12.0
 - Converted all test cases from Enzyme to React Testing Library (RTL), Removed Enzyme related dependencies
-- Updated most dependencies
+- Updated most dependencies to their latest stable versions to fix vulnerabilities
 
 ## Release Notes
 https://github.com/jeff-k-zhou/react-bootstrap-table-ng/releases
@@ -52,7 +52,7 @@ See the below table on which version of react-bootstrap-table-ng you should be u
   </tbody>
 </table>
 
-**[Live Demo](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/index.html)**
+**[Live Demo](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/storybook/index.html)**
 
 ## Usage
 
