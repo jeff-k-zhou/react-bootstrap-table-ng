@@ -1,6 +1,6 @@
 {
   "name": "react-bootstrap-table-ng-website",
-  "version": "4.19.1",
+  "version": "4.19.2",
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",

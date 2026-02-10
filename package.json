@@ -1,6 +1,6 @@
 {
   "name": "react-bootstrap-table-ng-monorepo",
-  "version": "4.19.1",
+  "version": "4.19.2",
   "private": true,
   "description": "Rebuilt for react-bootstrap-table, react-bootstrap-table-next, react-bootstrap-table-nextgen",
   "workspaces": [
@@ -56,7 +56,7 @@
   "engines": {
     "node": ">=18"
   },
-  "homepage": "https://github.com/jeff-k-zhou/react-bootstrap-table-ng#README",
+  "homepage": "https://jeff-k-zhou.github.io/react-bootstrap-table-ng/",
   "devDependencies": {
     "@babel/cli": "^7.28.6",
     "@babel/core": "^7.28.6",

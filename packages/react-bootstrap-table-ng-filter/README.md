@@ -2,11 +2,11 @@
 
 `react-bootstrap-table-ng` separate the filter core code base to [`react-bootstrap-table-ng-filter`](https://github.com/jeff-k-zhou/react-bootstrap-table-ng/tree/main/packages/react-bootstrap-table-ng-filter), so there's a little bit different when you use column filter than `react-bootstrap-table`. In the following, we are going to show you how to enable the column filter:
 
-**[Live Demo For Column Filter](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/storybook/index.html?selectedKind=Column%20Filter)**
+**[Live Demo For Column Filter](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/storybook/?path=/docs/column-filter--docs)**
 
 **[API&Props Definitation](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/docs/filter-props.html)**
 
------
+---
 
 ## Install
 
@@ -16,25 +16,26 @@ $ npm install react-bootstrap-table-ng-filter --save
 
 You can get all types of filters via import and these filters are a factory function to create a individual filter instance. Currently, we support following filters:
 
-* TextFilter
-* SelectFilter
-* MultiSelectFilter
-* NumberFilter
-* DateFilter
-* CustomFilter
-* **Coming soon!**
+- TextFilter
+- SelectFilter
+- MultiSelectFilter
+- NumberFilter
+- DateFilter
+- CustomFilter
+- **Coming soon!**
 
 ## Add CSS
 
 ```js
 // es5
-require('react-bootstrap-table-ng-filter/dist/react-bootstrap-table-ng-filter.min.css');
+require("react-bootstrap-table-ng-filter/dist/react-bootstrap-table-ng-filter.min.css");
 
 // es6
-import 'react-bootstrap-table-ng-filter/dist/react-bootstrap-table-ng-filter.min.css';
+import "react-bootstrap-table-ng-filter/dist/react-bootstrap-table-ng-filter.min.css";
 ```
 
 ## Text Filter
+
 Following is a quick demo for enable the column filter on **Product Price** column!!
 
 ```js
@@ -72,6 +73,7 @@ const priceFilter = textFilter({
 ```
 
 ## Select Filter
+
 A quick example:
 
 ```js
@@ -137,6 +139,7 @@ const columns = [
   })
 }];
 ```
+
 ### Function as options
 
 ```js
@@ -301,12 +304,14 @@ const columns = [..., {
 ```
 
 In custom filter case, you are suppose to finish following two steps:
+
 1. Call `customFilter` and pass to `column.filter`
 2. Give `column.filterRenderer` as a callback function and return your custom filter element.
 
 ### column.filterRenderer
 
 This function will pass two argument to you:
+
 1. `onFilter`: call it to trigger filter when you need.
 2. `column`: Just the column object!
 
@@ -316,13 +321,12 @@ In the end, please remember to return your custom filter element!
 
 `customFilter` function just same as `textFilter`, `selectFilter` etc, it is for customization reason. However, in the custom filter case, there's only one props is valid: `type`
 
-
 ```js
-import filterFactory, { FILTER_TYPES } from 'react-bootstrap-table-ng-filter';
+import filterFactory, { FILTER_TYPES } from "react-bootstrap-table-ng-filter";
 
 const customFilter = customFilter({
-  type: FILTER_TYPES.NUMBER,  // default is FILTER_TYPES.TEXT
-})
+  type: FILTER_TYPES.NUMBER, // default is FILTER_TYPES.TEXT
+});
 ```
 
 `type` is a way to ask `react-bootstrap-table` to filter you data as number, select, date or normal text.
@@ -330,34 +334,37 @@ const customFilter = customFilter({
 ### FILTER_TYPES
 
 Following properties is valid in `FILTER_TYPES`:
-* TEXT
-* SELECT
-* NUMBER
-* DATE
-* MULTISELECT
+
+- TEXT
+- SELECT
+- NUMBER
+- DATE
+- MULTISELECT
 
 ### Position
+
 Default filter is rendered inside the table column header, but you can choose to render them as a row by `filterPosition`:
 
 #### Render in the top of table body
 
 ```js
 <BootstrapTable
-  keyField='id'
-  data={ products }
-  columns={ columns }
-  filter={ filterFactory() }
+  keyField="id"
+  data={products}
+  columns={columns}
+  filter={filterFactory()}
   filterPosition="top"
 />
 ```
 
 #### Render in the bottom of table body
+
 ```js
 <BootstrapTable
-  keyField='id'
-  data={ products }
-  columns={ columns }
-  filter={ filterFactory() }
+  keyField="id"
+  data={products}
+  columns={columns}
+  filter={filterFactory()}
   filterPosition="bottom"
 />
 ```
@@ -367,6 +374,7 @@ Default filter is rendered inside the table column header, but you can choose to
 `filterFactory` is a factory function for initializing some internal config. Below is available options for `filterFactory`:
 
 ### afterFilter
+
 This hook function will be called with two arguments(new filter result and filter object) when filtering completed.
 
 ```js
@@ -379,9 +387,9 @@ export default () => (
   <div>
     <BootstrapTable
       keyField="id"
-      data={ products }
-      columns={ columns }
-      filter={ filterFactory({ afterFilter }) }
+      data={products}
+      columns={columns}
+      filter={filterFactory({ afterFilter })}
     />
   </div>
 );
