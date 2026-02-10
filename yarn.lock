@@ -15699,7 +15699,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"gh-pages@npm:^6.0.0":
+"gh-pages@npm:^6.3.0":
   version: 6.3.0
   resolution: "gh-pages@npm:6.3.0"
   dependencies:
@@ -25268,7 +25268,7 @@ __metadata:
     babel-preset-env: "npm:^1.7.0"
     eslint-plugin-storybook: "npm:^10.2.7"
     file-saver: "npm:^2.0.5"
-    gh-pages: "npm:^6.0.0"
+    gh-pages: "npm:^6.3.0"
     prop-types: "npm:^15.8.1"
     react: "npm:^19.2.4"
     react-bootstrap-table-ng: "npm:^4.19.1"
@@ -25448,6 +25448,7 @@ __metadata:
     "@docusaurus/types": "npm:3.9.2"
     "@mdx-js/react": "npm:^3.0.0"
     clsx: "npm:^2.0.0"
+    gh-pages: "npm:^6.3.0"
     prism-react-renderer: "npm:^2.3.0"
     react: "npm:^19.0.0"
     react-dom: "npm:^19.0.0"
