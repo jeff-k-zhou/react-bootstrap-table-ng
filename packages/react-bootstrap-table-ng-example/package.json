@@ -84,5 +84,6 @@
     "react-scripts": "^5.0.1",
     "typescript": "^5.9.3",
     "web-vitals": "^5.1.0"
-  }
+  },
+  "gitHead": "c0e26baa2da7e7a68a023ad06522632f5c548d11"
 }

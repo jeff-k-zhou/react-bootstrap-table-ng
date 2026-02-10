@@ -51,5 +51,6 @@
   },
   "devDependencies": {
     "ts-migrate": "^0.1.35"
-  }
+  },
+  "gitHead": "c0e26baa2da7e7a68a023ad06522632f5c548d11"
 }
