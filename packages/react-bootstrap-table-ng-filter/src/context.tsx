@@ -86,7 +86,7 @@ export default (
           }
           // TODO: Why we need to forceUpdate here? 
           // It seems the filter component should be controlled by the parent component/Provider
-          // Introduce tadditional property forceUpdate (default to false) to avoid infinite loop of this.forceUpdate(), will need to refactor the filter component to be controlled by the parent component/Provider
+          // Introduce additional property, forceUpdate (default to false), to avoid infinite loop of this.forceUpdate(), will need to refactor the filter component to be controlled by the parent component/Provider
           if (filter.props === undefined || filter.props.forceUpdate === undefined || filter.props.forceUpdate == false) return;
           this.forceUpdate();
         }
