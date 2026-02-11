@@ -25,7 +25,7 @@ See the below table on which version of react-bootstrap-table-ng you should be u
   <thead>
     <tr>
       <th rowspan="2">react-bootstrap-table-ng</th>
-      <th colspan="3">Dependencies</th>
+      <th colspan="3">Compatible React/Bootstrap/React-Bootstrap versions</th>
     </tr>
     <tr>
       <th>react</th>
