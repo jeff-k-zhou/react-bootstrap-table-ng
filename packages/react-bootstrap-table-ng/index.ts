@@ -5,15 +5,15 @@ import withContext from "./src/contexts";
 
 export default withContext(BootstrapTable);
 
-// Type definitions for react-bootstrap-table-next 4.0
-// Project: https://github.com/react-bootstrap-table/react-bootstrap-table2#readme
+// Type definitions for react-bootstrap-table-ng 
+// Project: https://github.com/jeff-k-zhou/react-bootstrap-table-ng#readme
 // Definitions by: Wlad Meixner <https://github.com/gosticks>
 //                Valentin Slobozanin <https://github.com/ignefolio>
 //                Jakub Różbicki <https://github.com/jrozbicki>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 // TypeScript Version: 3.0
 
-// documentation taken from https://react-bootstrap-table.github.io/react-bootstrap-table2/docs/table-props.html
+// documentation taken from https://jeff-k-zhou.github.io/react-bootstrap-table-ng/docs/table-props.html
 
 export * from "./src/const";
 import {
@@ -308,7 +308,7 @@ export type TableChangeHandler<T> = (
 /**
  * All possible pagination options handled by the pagination plugin
  *
- * Consult [documentation](https://react-bootstrap-table.github.io/react-bootstrap-table2/docs/pagination-props.html)
+ * Consult [documentation](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/docs/pagination-props.html)
  */
 export type PaginationOptions = Partial<{
   custom: boolean;
@@ -708,7 +708,7 @@ export interface BootstrapTableProps<T extends object = any, K = number> {
 /**
  * Search props
  *
- * Consult [documentation](https://react-bootstrap-table.github.io/react-bootstrap-table2/docs/search-props.html)
+ * Consult [documentation](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/docs/search-props.html)
  */
 export interface SearchProps<T> {
   placeholder?: string | undefined;

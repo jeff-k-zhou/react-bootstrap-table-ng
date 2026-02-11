@@ -278,7 +278,7 @@ export type TableChangeHandler<T> = (
 /**
  * All possible pagination options handled by the pagination plugin
  *
- * Consult [documentation](https://react-bootstrap-table.github.io/react-bootstrap-table2/docs/pagination-props.html)
+ * Consult [documentation](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/docs/pagination-props.html)
  */
 export type PaginationOptions = Partial<{
     custom: boolean;
@@ -672,7 +672,7 @@ export interface BootstrapTableProps<T extends object = any, K = number> {
 /**
  * Search props
  *
- * Consult [documentation](https://react-bootstrap-table.github.io/react-bootstrap-table2/docs/search-props.html)
+ * Consult [documentation](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/docs/search-props.html)
  */
 export interface SearchProps<T> {
     placeholder?: string | undefined;

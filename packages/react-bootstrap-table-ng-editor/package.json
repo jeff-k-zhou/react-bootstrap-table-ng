@@ -1,6 +1,6 @@
 {
   "name": "react-bootstrap-table-ng-editor",
-  "version": "4.19.1",
+  "version": "4.19.2",
   "description": "It's the editor addon for react-bootstrap-table-ng",
   "main": "./lib/index.js",
   "scripts": {
@@ -45,7 +45,7 @@
     }
   ],
   "dependencies": {
-    "react-bootstrap-table-ng": "^4.19.1"
+    "react-bootstrap-table-ng": "^4.19.2"
   },
   "peerDependencies": {
     "prop-types": ">=15.8.1",

@@ -1,6 +1,6 @@
 {
   "name": "react-bootstrap-table-ng-toolkit",
-  "version": "4.19.1",
+  "version": "4.19.2",
   "description": "The toolkit for react-bootstrap-table-ng",
   "main": "./lib/index.js",
   "repository": {
@@ -51,7 +51,7 @@
   },
   "dependencies": {
     "file-saver": "^2.0.5",
-    "react-bootstrap-table-ng": "^4.19.1"
+    "react-bootstrap-table-ng": "^4.19.2"
   },
   "devDependencies": {
     "@types/file-saver": "^2.0.5"

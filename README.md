@@ -1,8 +1,9 @@
 # react-bootstrap-table-ng
-This is a fork of [react-bootstrap-table-nextgen](https://github.com/TerrenceMiao/react-bootstrap-table-nextgen) which was original 
-forked from [react-bootstrap-table-next](https://github.com/react-bootstrap-table/react-bootstrap-table2). The goal of this fork is to provide stable version with react 18 and above, bootstrap 4 and above. 
 
-The version number pattern is `major.minor.patch`, where `major` is the major version number of bootstrap, `minor` is the major version number of react, and `patch` is the patch version number of react-bootstrap-table-ng. For example, `4.18.0` means it is based on bootstrap 4, react 18, and react-bootstrap-table-ng patch 0 on 4.18.x. 
+This is a fork of [react-bootstrap-table-nextgen](https://github.com/TerrenceMiao/react-bootstrap-table-nextgen) which was original
+forked from [react-bootstrap-table-next](https://github.com/react-bootstrap-table/react-bootstrap-table2). The goal of this fork is to provide stable version with react 18 and above, bootstrap 4 and above.
+
+The version number pattern is `major.minor.patch`, where `major` is the major version number of bootstrap, `minor` is the major version number of react, and `patch` is the patch version number of react-bootstrap-table-ng. For example, `4.18.0` means it is based on bootstrap 4, react 18, and react-bootstrap-table-ng patch 0 on 4.18.x.
 
 [![Build Status](https://travis-ci.org/jeff-k-zhou/react-bootstrap-table-ng.svg?branch=master)](https://travis-ci.org/jeff-k-zhou/react-bootstrap-table-ng)
 Rebuild of [react-bootstrap-table-ng](https://github.com/jeff-k-zhou/react-bootstrap-table-ng)
@@ -24,11 +25,11 @@ Not only does this reduce the bundle size of your apps but also helps us have a 
 
 ## Migration
 
-If you are coming from the legacy [`react-bootstrap-table`](https://github.com/AllenFang/react-bootstrap-table/), please check out the [migration guide](./docs/migration.md).
+If you are coming from the legacy [`react-bootstrap-table`](https://github.com/AllenFang/react-bootstrap-table/), please check out the [migration guide](./website/docs/migration.md).
 
 ## Usage
 
-See [getting started](https://react-bootstrap-table.github.io/react-bootstrap-table2/docs/getting-started.html).
+See [getting started](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/docs/getting-started).
 
 ## Online Demo
 
@@ -36,7 +37,7 @@ See `react-bootstrap-table-ng` [storybook](https://jeff-k-zhou.github.io/react-b
 
 ## Development
 
-Please check the [development guide](./docs/development.md).
+Please check the [development guide](./website/docs/development.md).
 
 ## Running storybook example on your local machine
 

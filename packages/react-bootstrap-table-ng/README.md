@@ -1,19 +1,24 @@
 # react-bootstrap-table-ng
-Maintance fork of [`react-bootstrap-table2`] (https://github.com/react-bootstrap-table/react-bootstrap-table2) / npm package [`react-bootstrap-table-next`] (https://www.npmjs.com/package/react-bootstrap-table-next) created by Allen Fang. 
+
+Maintance fork of [`react-bootstrap-table2`] (https://github.com/react-bootstrap-table/react-bootstrap-table2) / npm package [`react-bootstrap-table-next`] (https://www.npmjs.com/package/react-bootstrap-table-next) created by Allen Fang.
+
 The goal of this fork is to provide stable version with react 18 and above, bootstrap 4 and above.
 
 ## Changes on top of [`react-bootstrap-table-next`]
+
 - Support React 18 and React 19
-- Support Bootstrap 3x up to 3.4.1 and Bootstrap 4x up to 4.6.2
+- Support Bootstrap 3.x up to 3.4.1 and Bootstrap 4.x up to 4.6.2
 - Upgraded Storybook to 10.2.7
 - Upgraded Yarn to 4.12.0
 - Converted all test cases from Enzyme to React Testing Library (RTL), Removed Enzyme related dependencies
 - Updated most dependencies to their latest stable versions to fix vulnerabilities
 
 ## Release Notes
+
 https://github.com/jeff-k-zhou/react-bootstrap-table-ng/releases
 
 ## React and Bootstrap compatibility
+
 See the below table on which version of react-bootstrap-table-ng you should be using in your project.
 
 <table>
@@ -68,10 +73,10 @@ npm install react-bootstrap-table-ng --save
 
 ```js
 // es5
-require('react-bootstrap-table-ng/dist/react-bootstrap-table-ng.min.css');
+require("react-bootstrap-table-ng/dist/react-bootstrap-table-ng.min.css");
 
 // es6
-import 'react-bootstrap-table-ng/dist/react-bootstrap-table-ng.min.css';
+import "react-bootstrap-table-ng/dist/react-bootstrap-table-ng.min.css";
 ```
 
 ### Your First Table
