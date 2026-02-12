@@ -1,7 +1,14 @@
-import PropTypes from "prop-types";
+
 import React from "react";
 
-const PaginationTotal = (props: any) => {
+interface PaginationTotalProps {
+  from: number;
+  to: number;
+  dataSize: number;
+  paginationTotalRenderer?: (from: number, to: number, dataSize: number) => React.ReactElement | null;
+}
+
+const PaginationTotal = (props: PaginationTotalProps) => {
   if (props.paginationTotalRenderer) {
     return props.paginationTotalRenderer(props.from, props.to, props.dataSize);
   }
@@ -13,15 +20,8 @@ const PaginationTotal = (props: any) => {
   );
 };
 
-PaginationTotal.propTypes = {
-  from: PropTypes.number.isRequired,
-  to: PropTypes.number.isRequired,
-  dataSize: PropTypes.number.isRequired,
-  paginationTotalRenderer: PropTypes.func,
+PaginationTotal.defaultProps = {
+  paginationTotalRenderer: undefined,
 };
-
-// PaginationTotal.defaultProps = {
-//   paginationTotalRenderer: undefined,
-// };
 
 export default PaginationTotal;

@@ -11,6 +11,7 @@ The goal of this fork is to provide stable version with react 18 and above, boot
 - Upgraded Storybook to 10.2.7
 - Upgraded Yarn to 4.12.0
 - Converted all test cases from Enzyme to React Testing Library (RTL), Removed Enzyme related dependencies
+- Converted PropTypes to typescript types, and removed prop-types from dependency.
 - Updated most dependencies to their latest stable versions to fix vulnerabilities
 
 ## Release Notes

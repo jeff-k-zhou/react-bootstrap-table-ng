@@ -92,27 +92,15 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
       </label>
     );
   }
+  static defaultProps = {
+    className: '',
+    style: {},
+    placeholder: 'Search',
+    delay: 250,
+    searchText: '',
+    tableId: '0',
+    srText: 'Search this table'
+  };
 }
-
-// SearchBar.propTypes = {
-//   onSearch: PropTypes.func.isRequired,
-//   className: PropTypes.string,
-//   placeholder: PropTypes.string,
-//   style: PropTypes.object,
-//   delay: PropTypes.number,
-//   searchText: PropTypes.string,
-//   tableId: PropTypes.string,
-//   srText: PropTypes.string
-// };
-
-// SearchBar.defaultProps = {
-//   className: '',
-//   style: {},
-//   placeholder: 'Search',
-//   delay: 250,
-//   searchText: '',
-//   tableId: '0',
-//   srText: 'Search this table'
-// };
 
 export default SearchBar;

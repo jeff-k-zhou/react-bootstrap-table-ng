@@ -91,34 +91,14 @@ class DropDownEditor extends Component<
       </select>
     );
   }
+  static defaultProps = {
+    className: '',
+    defaultValue: '',
+    style: {},
+    options: [],
+    didMount: undefined,
+    getOptions: undefined
+  };
 }
-
-// DropDownEditor.propTypes = {
-//   row: PropTypes.object.isRequired,
-//   column: PropTypes.object.isRequired,
-//   defaultValue: PropTypes.oneOfType([
-//     PropTypes.string,
-//     PropTypes.number
-//   ]),
-//   className: PropTypes.string,
-//   style: PropTypes.object,
-//   options: PropTypes.oneOfType([
-//     PropTypes.arrayOf(PropTypes.shape({
-//       label: PropTypes.string,
-//       value: PropTypes.any
-//     }))
-//   ]),
-//   didMount: PropTypes.func,
-//   getOptions: PropTypes.func
-// };
-
-// DropDownEditor.defaultProps = {
-//   className: '',
-//   defaultValue: '',
-//   style: {},
-//   options: [],
-//   didMount: undefined,
-//   getOptions: undefined
-// };
 
 export default DropDownEditor;

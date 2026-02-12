@@ -1,5 +1,5 @@
 /* eslint-disable import/no-anonymous-default-export */
-import PropTypes from "prop-types";
+
 import React from "react";
 
 import BootstrapTable from "../../../react-bootstrap-table-ng";
@@ -121,7 +121,12 @@ class Container extends React.Component {
 }
 `;
 
-const RemoteSort = (props: any) => (
+interface RemoteSortProps {
+  data: any[];
+  onTableChange: (type: any, context: any) => void;
+}
+
+const RemoteSort = (props: RemoteSortProps) => (
   <div>
     <BootstrapTable
       remote={{ sort: true }}
@@ -134,10 +139,6 @@ const RemoteSort = (props: any) => (
   </div>
 );
 
-RemoteSort.propTypes = {
-  data: PropTypes.array.isRequired,
-  onTableChange: PropTypes.func.isRequired,
-};
 
 interface RemoteSortState {
   data: any;
@@ -282,7 +283,12 @@ class Container extends React.Component {
 }
 `;
 
-const RemoteFilter = (props: any) => (
+interface RemoteFilterProps {
+  data: any[];
+  onTableChange: (type: any, context: any) => void;
+}
+
+const RemoteFilter = (props: RemoteFilterProps) => (
   <div>
     <BootstrapTable
       remote={{ filter: true }}
@@ -296,10 +302,6 @@ const RemoteFilter = (props: any) => (
   </div>
 );
 
-RemoteFilter.propTypes = {
-  data: PropTypes.array.isRequired,
-  onTableChange: PropTypes.func.isRequired,
-};
 
 interface RemoteFilterState {
   data: any;
@@ -403,13 +405,21 @@ class Container extends React.Component {
 }
 `;
 
+interface RemotePaginationProps {
+  data: any[];
+  page: number;
+  totalSize: number;
+  sizePerPage: number;
+  onTableChange: (type: any, context: any) => void;
+}
+
 const RemotePagination = ({
   data,
   page,
   sizePerPage,
   onTableChange,
   totalSize,
-}: any) => (
+}: RemotePaginationProps) => (
   <div>
     <BootstrapTable
       remote
@@ -436,13 +446,6 @@ const RemotePagination = ({
   </div>
 );
 
-RemotePagination.propTypes = {
-  data: PropTypes.array.isRequired,
-  page: PropTypes.number.isRequired,
-  totalSize: PropTypes.number.isRequired,
-  sizePerPage: PropTypes.number.isRequired,
-  onTableChange: PropTypes.func.isRequired,
-};
 
 interface RemotePaginationState {
   data: any;
@@ -589,7 +592,12 @@ class Container extends React.Component {
 }
 `;
 
-const RemoteSearch = (props: any) => (
+interface RemoteSearchProps {
+  data: any[];
+  onTableChange: (type: any, context: any) => void;
+}
+
+const RemoteSearch = (props: RemoteSearchProps) => (
   <div>
     <ToolkitProvider
       keyField="id"
@@ -612,10 +620,6 @@ const RemoteSearch = (props: any) => (
   </div>
 );
 
-RemoteSearch.propTypes = {
-  data: PropTypes.array.isRequired,
-  onTableChange: PropTypes.func.isRequired,
-};
 
 interface RemoteSearchState {
   data: any;
@@ -733,7 +737,13 @@ class Container extends React.Component {
 }
 `;
 
-const RemoteCellEdit = (props: any) => {
+interface RemoteCellEditProps {
+  data: any[];
+  onTableChange: (type: any, context: any) => void;
+  errorMessage: string;
+}
+
+const RemoteCellEdit = (props: RemoteCellEditProps) => {
   const cellEdit = {
     mode: "click",
     errorMessage: props.errorMessage,
@@ -767,11 +777,6 @@ const RemoteCellEdit = (props: any) => {
   );
 };
 
-RemoteCellEdit.propTypes = {
-  data: PropTypes.array.isRequired,
-  onTableChange: PropTypes.func.isRequired,
-  errorMessage: PropTypes.string.isRequired,
-};
 
 interface RemoteCellEditState {
   data: any;
@@ -876,13 +881,6 @@ const RemoteAll = ({ data, page, sizePerPage, onTableChange, totalSize }) => (
   </div>
 );
 
-RemoteAll.propTypes = {
-  data: PropTypes.array.isRequired,
-  page: PropTypes.number.isRequired,
-  totalSize: PropTypes.number.isRequired,
-  sizePerPage: PropTypes.number.isRequired,
-  onTableChange: PropTypes.func.isRequired
-};
 
 class Container extends React.Component {
   constructor(props) {
@@ -974,13 +972,21 @@ class Container extends React.Component {
 }
 `;
 
+interface RemoteAllProps {
+  data: any[];
+  page: number;
+  totalSize: number;
+  sizePerPage: number;
+  onTableChange: (type: any, context: any) => void;
+}
+
 const RemoteAll = ({
   data,
   page,
   sizePerPage,
   onTableChange,
   totalSize,
-}: any) => (
+}: RemoteAllProps) => (
   <div>
     <h3>
       When <code>remote.pagination</code> is enabled, the filtering, sorting and
@@ -1027,14 +1033,6 @@ const RemoteAll = ({
     <Code>{remoteAllSourceCode}</Code>
   </div>
 );
-
-RemoteAll.propTypes = {
-  data: PropTypes.array.isRequired,
-  page: PropTypes.number.isRequired,
-  totalSize: PropTypes.number.isRequired,
-  sizePerPage: PropTypes.number.isRequired,
-  onTableChange: PropTypes.func.isRequired,
-};
 
 let products = productsGenerator(87);
 
@@ -1286,8 +1284,8 @@ class RemoteAllExportComponent extends React.Component {
     }, 2000);
   };
 
-  handleExport = onExport => e => {
-    onExport(this.state.allData);
+  handleExport = (onExport: any) => (e: any) => {
+    onExport((this.state as any).allData);
   };
 
   render() {
@@ -1397,7 +1395,18 @@ const productColumns = [
 const { ExportCSVButton } = CSVExport;
 
 //leslint-disable-next-line react/proprtypes
-const CustomToggleList = ({ columns, onColumnToggle, toggles }) => (
+interface CustomToggleListProps {
+  columns: any[];
+  onColumnToggle: (dataField: string) => void;
+  toggles: any;
+}
+
+const CustomToggleList = ({
+  columns,
+  onColumnToggle,
+  toggles,
+}: CustomToggleListProps) => (
+
   <div className="btn-group btn-group-toggle" data-toggle="buttons" style={{ marginBottom: '10px' }}>
     {columns
       .filter(column => !(column.toggleHidden === true))

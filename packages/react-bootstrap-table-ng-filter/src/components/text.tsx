@@ -1,7 +1,4 @@
-/* eslint react/require-default-props: 0 */
-/* eslint react/prop-types: 0 */
-/* eslint no-return-assign: 0 */
-/* eslint camelcase: 0 */
+
 import React, { Component } from "react";
 
 import { FILTER_TYPES, TextFilterProps } from "../..";
@@ -146,29 +143,14 @@ class TextFilter extends Component<TextFilterProps, TextFilterState> {
       </label>
     );
   }
+
+  static defaultProps = {
+    delay: 500,
+    filterState: {},
+    defaultValue: "",
+    caseSensitive: false,
+    id: null,
+  };
 }
-
-// TextFilter.propTypes = {
-//   onFilter: PropTypes.func.isRequired,
-//   column: PropTypes.object.isRequired,
-//   id: PropTypes.string,
-//   filterState: PropTypes.object,
-//   comparator: PropTypes.oneOf([LIKE, EQ]),
-//   defaultValue: PropTypes.string,
-//   delay: PropTypes.number,
-//   placeholder: PropTypes.string,
-//   style: PropTypes.object,
-//   className: PropTypes.string,
-//   caseSensitive: PropTypes.bool,
-//   getFilter: PropTypes.func,
-// };
-
-// TextFilter.defaultProps = {
-//   delay: FILTER_DELAY,
-//   filterState: {},
-//   defaultValue: "",
-//   caseSensitive: false,
-//   id: null,
-// };
 
 export default TextFilter;

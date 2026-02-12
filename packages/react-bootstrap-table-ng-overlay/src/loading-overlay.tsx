@@ -11,7 +11,7 @@ import STYLES from "./loading-overlay-styles";
 
 export type LoadingOverlayStyles = {
   content?: (base: React.CSSProperties) => React.CSSProperties;
-  overlay?: (base: React.CSSProperties) => React.CSSProperties;
+  overlay?: (base: React.CSSProperties, state?: any) => React.CSSProperties;
   spinner?: (base: React.CSSProperties) => React.CSSProperties;
   wrapper?: (base: React.CSSProperties, props?: any) => React.CSSProperties;
 };
@@ -59,15 +59,15 @@ export interface LoadingOverlayProps {
 }
 
 export interface LoadingOverlayState {
-  overflowCSS: any;
+  overflowCSS: Record<string, string>;
 }
 
 class LoadingOverlay extends React.Component<
   LoadingOverlayProps,
   LoadingOverlayState
 > {
-  wrapper: any = createRef();
-  nodeRef: any = createRef();
+  wrapper = createRef<HTMLDivElement>();
+  nodeRef = createRef<HTMLDivElement>();
 
   constructor(props: LoadingOverlayProps) {
     super(props);
@@ -75,6 +75,7 @@ class LoadingOverlay extends React.Component<
   }
 
   componentDidMount() {
+    if (!this.wrapper.current) return;
     const wrapperStyle = window.getComputedStyle(this.wrapper.current);
     const overflowCSS = ["overflow", "overflowX", "overflowY"].reduce(
       (m: Record<string, string>, i: string) => {
@@ -88,7 +89,7 @@ class LoadingOverlay extends React.Component<
 
   componentDidUpdate(prevProps: LoadingOverlayProps) {
     const { active } = this.props;
-    if (active) this.wrapper.current.scrollTop = 0;
+    if (active && this.wrapper.current) this.wrapper.current.scrollTop = 0;
   }
 
   /**
@@ -107,7 +108,7 @@ class LoadingOverlay extends React.Component<
    * Convenience cx wrapper to add prefix classes to each of the child
    * elements for styling purposes.
    */
-  cx = (names: any, ...args: any[]) => {
+  cx = (names: string | (string | boolean | undefined)[], ...args: any[]) => {
     const arr = Array.isArray(names) ? names : [names];
     return cx(
       ...arr.map((name) =>
@@ -145,7 +146,7 @@ class LoadingOverlay extends React.Component<
           classNames="_loading-overlay-transition"
           timeout={fadeSpeed}
           unmountOnExit
-          ref={this.nodeRef}
+          nodeRef={this.nodeRef}
           addEndListener={() => { }}
         >
           {(state) => (

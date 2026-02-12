@@ -42,7 +42,6 @@
     }
   ],
   "peerDependencies": {
-    "prop-types": ">=15.8.1",
     "react": "^18.0 || ^18.0.0 || ^19.0 || ^19.0.0",
     "react-dom": "^18.0 || ^18.0.0 || ^19.0 || ^19.0.0"
   },
@@ -77,7 +76,6 @@
     "@types/node": "^22.10.5",
     "@types/react": "^19.2.10",
     "@types/react-dom": "^19.2.3",
-    "prop-types": "^15.8.1",
     "react": "^19.2.4",
     "react-bootstrap-table-ng": "^4.19.2",
     "react-dom": "^19.2.4",

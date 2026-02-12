@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import React from "react";
 
 import { ExportCSVButtonProps } from "../..";
@@ -25,11 +24,6 @@ const ExportCSVButton = (
   );
 };
 
-ExportCSVButton.propTypes = {
-  children: PropTypes.node.isRequired,
-  onExport: PropTypes.func.isRequired,
-  className: PropTypes.string,
-  style: PropTypes.object,
-};
+
 
 export default ExportCSVButton;

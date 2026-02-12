@@ -2,7 +2,7 @@
 /* eslint react/require-default-props: 0 */
 /* eslint camelcase: 0 */
 /* eslint react/no-unused-prop-types: 0 */
-import PropTypes from "prop-types";
+
 import React from "react";
 import {
   CLICK_TO_CELL_EDIT,
@@ -23,22 +23,7 @@ export default (
     CellEditProviderProps,
     CellEditProviderState
   > {
-    static propTypes = {
-      data: PropTypes.array.isRequired,
-      selectRow: PropTypes.object,
-      options: PropTypes.shape({
-        mode: PropTypes.oneOf([CLICK_TO_CELL_EDIT, DBCLICK_TO_CELL_EDIT])
-          .isRequired,
-        onErrorMessageDisappear: PropTypes.func,
-        blurToSave: PropTypes.bool,
-        beforeSaveCell: PropTypes.func,
-        afterSaveCell: PropTypes.func,
-        onStartEdit: PropTypes.func,
-        nonEditableRows: PropTypes.func,
-        timeToCloseMessage: PropTypes.number,
-        errorMessage: PropTypes.any,
-      }),
-    };
+
 
     constructor(props: any) {
       super(props);

@@ -1,4 +1,4 @@
-import PropTypes from "prop-types";
+
 import React from "react";
 
 interface DefaultComponentProps {
@@ -6,9 +6,7 @@ interface DefaultComponentProps {
 }
 
 export default class DefaultComponent extends React.Component<DefaultComponentProps> {
-  static propTypes = {
-    children: PropTypes.string,
-  };
+
 
   static defaultProps = {
     children: "",

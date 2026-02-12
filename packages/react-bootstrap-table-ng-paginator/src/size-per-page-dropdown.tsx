@@ -1,5 +1,5 @@
 import cs from "classnames";
-import PropTypes from "prop-types";
+
 import React from "react";
 import SizePerPageOption from "./size-per-page-option";
 
@@ -16,7 +16,26 @@ const sizePerPageDropDownDefaultProps = {
   tableId: null,
 };
 
-const SizePerPageDropDown = (props: any) => {
+interface SizePerPageDropDownProps {
+  currSizePerPage: string | number;
+  options: Array<{
+    text: string;
+    page: number;
+  }>;
+  onClick: (e: React.MouseEvent) => void;
+  onBlur: (e: React.FocusEvent) => void;
+  onSizePerPageChange: (sizePerPage: number) => void;
+  bootstrap4?: boolean;
+  tableId?: string;
+  open?: boolean;
+  hidden?: boolean;
+  btnContextual?: string;
+  variation?: "dropdown" | "dropup";
+  className?: string;
+  optionRenderer?: (props: any) => React.ReactElement | null;
+}
+
+const SizePerPageDropDown = (props: SizePerPageDropDownProps) => {
   const {
     open,
     tableId,
@@ -91,20 +110,6 @@ const SizePerPageDropDown = (props: any) => {
   );
 };
 
-SizePerPageDropDown.propTypes = {
-  currSizePerPage: PropTypes.string.isRequired,
-  options: PropTypes.array.isRequired,
-  onClick: PropTypes.func.isRequired,
-  onBlur: PropTypes.func.isRequired,
-  onSizePerPageChange: PropTypes.func.isRequired,
-  bootstrap4: PropTypes.bool,
-  tableId: PropTypes.string,
-  open: PropTypes.bool,
-  hidden: PropTypes.bool,
-  btnContextual: PropTypes.string,
-  variation: PropTypes.oneOf(["dropdown", "dropup"]),
-  className: PropTypes.string,
-  optionRenderer: PropTypes.func,
-};
+
 
 export default SizePerPageDropDown;

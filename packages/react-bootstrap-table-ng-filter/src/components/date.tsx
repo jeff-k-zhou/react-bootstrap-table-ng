@@ -197,65 +197,25 @@ class DateFilter extends Component<DateFilterProps> {
       </div>
     );
   }
+
+  static defaultProps = {
+    delay: 0,
+    defaultValue: {
+      date: undefined,
+      comparator: ''
+    },
+    filterState: {},
+    withoutEmptyComparatorOption: false,
+    comparators: legalComparators,
+    placeholder: undefined,
+    style: undefined,
+    className: '',
+    comparatorStyle: undefined,
+    comparatorClassName: '',
+    dateStyle: undefined,
+    dateClassName: '',
+    id: null
+  };
 }
-
-// DateFilter.propTypes = {
-//   onFilter: PropTypes.func.isRequired,
-//   column: PropTypes.object.isRequired,
-//   id: PropTypes.string,
-//   filterState: PropTypes.object,
-//   delay: PropTypes.number,
-//   defaultValue: PropTypes.shape({
-//     date: PropTypes.oneOfType([PropTypes.object]),
-//     comparator: PropTypes.oneOf([...legalComparators, ''])
-//   }),
-//   /* eslint consistent-return: 0 */
-//   comparators: (props: any, propName: any) => {
-//     if (!props[propName]) {
-//       return;
-//     }
-//     for (let i = 0; i < props[propName].length; i += 1) {
-//       let comparatorIsValid = false;
-//       for (let j = 0; j < legalComparators.length; j += 1) {
-//         if (legalComparators[j] === props[propName][i] || props[propName][i] === '') {
-//           comparatorIsValid = true;
-//           break;
-//         }
-//       }
-//       if (!comparatorIsValid) {
-//         return new Error(`Date comparator provided is not supported.
-//           Use only ${legalComparators}`);
-//       }
-//     }
-//   },
-//   placeholder: PropTypes.string,
-//   withoutEmptyComparatorOption: PropTypes.bool,
-//   style: PropTypes.object,
-//   comparatorStyle: PropTypes.object,
-//   dateStyle: PropTypes.object,
-//   className: PropTypes.string,
-//   comparatorClassName: PropTypes.string,
-//   dateClassName: PropTypes.string,
-//   getFilter: PropTypes.func
-// };
-
-// DateFilter.defaultProps = {
-//   delay: 0,
-//   defaultValue: {
-//     date: undefined,
-//     comparator: ''
-//   },
-//   filterState: {},
-//   withoutEmptyComparatorOption: false,
-//   comparators: legalComparators,
-//   placeholder: undefined,
-//   style: undefined,
-//   className: '',
-//   comparatorStyle: undefined,
-//   comparatorClassName: '',
-//   dateStyle: undefined,
-//   dateClassName: '',
-//   id: null
-// };
 
 export default DateFilter;

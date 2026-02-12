@@ -1,5 +1,4 @@
 import { css } from "@emotion/css";
-import PropTypes from "prop-types";
 import React from "react";
 import { LoadingOverlayStyles } from "./loading-overlay";
 
@@ -22,10 +21,5 @@ const Spinner: React.FC<SpinnerProps> = ({ getStyles, cx }) => (
     </svg>
   </div>
 );
-
-Spinner.propTypes = {
-  getStyles: PropTypes.func.isRequired,
-  cx: PropTypes.func.isRequired,
-};
 
 export default Spinner;

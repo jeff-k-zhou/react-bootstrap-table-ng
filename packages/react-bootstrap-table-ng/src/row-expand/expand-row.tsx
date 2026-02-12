@@ -48,18 +48,4 @@ class ExpandRow extends React.Component<ExpandRowProps> {
   }
 }
 
-// ExpandRow.propTypes = {
-//   children: PropTypes.node,
-//   expanded: PropTypes.bool,
-//   onClosed: PropTypes.func,
-//   className: PropTypes.string,
-// };
-
-// ExpandRow.defaultProps = {
-//   children: null,
-//   expanded: false,
-//   onClosed: undefined,
-//   className: "",
-// };
-
 export default ExpandRow;

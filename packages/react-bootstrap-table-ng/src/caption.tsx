@@ -17,12 +17,4 @@ const Caption: FC<CaptionProps> = (props) => {
   return caption;
 };
 
-// Caption.propTypes = {
-//   children: PropTypes.oneOfType([
-//     PropTypes.node,
-//     PropTypes.string
-//   ]),
-//   bootstrap4: PropTypes.bool
-// };
-
 export default Caption;

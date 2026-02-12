@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import React from "react";
 import { ColumnDescription } from "react-bootstrap-table-ng";
 import { ToggleListProps } from "../..";
@@ -37,14 +36,7 @@ const ToggleList = ({
   </div>
 );
 
-ToggleList.propTypes = {
-  columns: PropTypes.array.isRequired,
-  toggles: PropTypes.object.isRequired,
-  onColumnToggle: PropTypes.func.isRequired,
-  btnClassName: PropTypes.string,
-  className: PropTypes.string,
-  contextual: PropTypes.string,
-};
+
 
 // ToggleList.defaultProps = {
 //   btnClassName: "",

@@ -1,5 +1,3 @@
-/* eslint no-return-assign: 0 */
-import PropTypes from "prop-types";
 import React from "react";
 
 import LoadingOverlay from "./src/loading-overlay";
@@ -10,9 +8,6 @@ interface TableLoadingOverlayWrapperProps {
 
 export default (options?: any) => (loading?: boolean) =>
   class TableLoadingOverlayWrapper extends React.Component<TableLoadingOverlayWrapperProps> {
-    static propTypes = {
-      children: PropTypes.element.isRequired,
-    };
 
     overlay: any;
 

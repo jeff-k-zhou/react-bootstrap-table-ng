@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-webpack5';
-import PropTypes from "prop-types";
+
 import React from "react";
 
 // import bootstrap style by given version
@@ -1568,11 +1568,7 @@ interface PriceFilterProps {
 }
 
 class PriceFilter extends React.Component<PriceFilterProps> {
-  static propTypes = {
-    column: PropTypes.object.isRequired,
-    onFilter: PropTypes.func.isRequired,
-  };
-
+  
   private input: HTMLInputElement | null;
 
   constructor(props: PriceFilterProps) {
@@ -1633,12 +1629,14 @@ export const CustomFilter: Story = {
     import BootstrapTable from 'react-bootstrap-table-ng';
     import filterFactory, { textFilter, customFilter } from 'react-bootstrap-table-ng-filter';
 
-    class PriceFilter extends React.Component {
-      static propTypes = {
-        column: PropTypes.object.isRequired,
-        onFilter: PropTypes.func.isRequired
-      }
-      constructor(props) {
+    interface PriceFilterProps {
+      column: any;
+      onFilter: (value: string) => void;
+    }
+
+    class PriceFilter extends React.Component<PriceFilterProps> {
+      
+      constructor(props: PriceFilterProps) {
         super(props);
         this.filter = this.filter.bind(this);
         this.getValue = this.getValue.bind(this);
@@ -1695,10 +1693,6 @@ interface AdvancePriceFilterProps {
 }
 
 class AdvancePriceFilter extends React.Component<AdvancePriceFilterProps, { value: number }> {
-  static propTypes = {
-    column: PropTypes.object.isRequired,
-    onFilter: PropTypes.func.isRequired,
-  };
 
   private range: HTMLInputElement | null;
   private showValue: HTMLParagraphElement | null;
@@ -1798,12 +1792,14 @@ export const AdvanceCustomFilter: Story = {
     import BootstrapTable from 'react-bootstrap-table-ng';
     import filterFactory, { textFilter, customFilter, Comparator, FILTER_TYPES } from 'react-bootstrap-table-ng-filter';
 
-    class PriceFilter extends React.Component {
-      static propTypes = {
-        column: PropTypes.object.isRequired,
-        onFilter: PropTypes.func.isRequired
-      }
-      constructor(props) {
+    interface PriceFilterProps {
+      column: any;
+      onFilter: (value: string) => void;
+    }
+
+    class PriceFilter extends React.Component<PriceFilterProps> {
+    
+      constructor(props: PriceFilterProps) {
         super(props);
         this.filter = this.filter.bind(this);
         this.getValue = this.getValue.bind(this);

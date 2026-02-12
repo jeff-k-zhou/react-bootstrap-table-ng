@@ -43,17 +43,6 @@ class PageButton extends Component<PageButtonProps> {
   }
 }
 
-// PageButton.propTypes = {
-//   onPageChange: PropTypes.func.isRequired,
-//   page: PropTypes.oneOfType([
-//     PropTypes.node,
-//     PropTypes.number,
-//     PropTypes.string,
-//   ]).isRequired,
-//   active: PropTypes.bool.isRequired,
-//   disabled: PropTypes.bool.isRequired,
-//   className: PropTypes.string,
-//   title: PropTypes.string,
-// };
+
 
 export default PageButton;

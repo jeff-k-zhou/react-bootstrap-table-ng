@@ -42,20 +42,11 @@ class DateEditor extends Component<DateEditorProps> {
       />
     );
   }
+  static defaultProps = {
+    className: '',
+    defaultValue: '',
+    didMount: undefined
+  };
 }
-
-// DateEditor.propTypes = {
-//   className: PropTypes.oneOfType([
-//     PropTypes.string,
-//     PropTypes.object
-//   ]),
-//   defaultValue: PropTypes.string,
-//   didMount: PropTypes.func
-// };
-// DateEditor.defaultProps = {
-//   className: '',
-//   defaultValue: '',
-//   didMount: undefined
-// };
 
 export default DateEditor;

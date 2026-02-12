@@ -1,4 +1,4 @@
-import PropTypes from "prop-types";
+
 import React from "react";
 import { PaginationOptions } from "react-bootstrap-table-ng";
 
@@ -62,9 +62,7 @@ const CustomizableProvider = (props: PaginationProviderProps) => (
   </Provider>
 );
 
-CustomizableProvider.propTypes = {
-  children: PropTypes.func.isRequired,
-};
+
 
 export const PaginationProvider = CustomizableProvider;
 export {
