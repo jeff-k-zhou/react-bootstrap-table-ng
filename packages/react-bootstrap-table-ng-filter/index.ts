@@ -1,6 +1,6 @@
 // The inferred type of 'default' cannot be named without a reference to 'react-bootstrap-table-ng/node_modules/@types/prop-types'.
 // This is likely not portable. A type annotation is necessary.ts(2742)
-import PropTypes from "prop-types";
+
 import { CSSProperties, SyntheticEvent } from "react";
 import {
   ColumnDescription,

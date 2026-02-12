@@ -59,22 +59,13 @@ class TextAreaEditor extends Component<TextEditorProps> {
       />
     );
   }
+  static defaultProps = {
+    className: "",
+    defaultValue: "",
+    autoSelectText: false,
+    onKeyDown: undefined,
+    didMount: undefined,
+  };
 }
-
-// TextAreaEditor.propTypes = {
-//   className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-//   defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-//   onKeyDown: PropTypes.func,
-//   autoSelectText: PropTypes.bool,
-//   didMount: PropTypes.func,
-// };
-
-// TextAreaEditor.defaultProps = {
-//   className: "",
-//   defaultValue: "",
-//   autoSelectText: false,
-//   onKeyDown: undefined,
-//   didMount: undefined,
-// };
 
 export default TextAreaEditor;

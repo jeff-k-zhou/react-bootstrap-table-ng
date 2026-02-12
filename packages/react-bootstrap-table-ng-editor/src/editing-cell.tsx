@@ -4,7 +4,7 @@
 /* eslint jsx-a11y/no-noninteractive-element-interactions: 0 */
 /* eslint camelcase: 0 */
 import cs from "classnames";
-import PropTypes from "prop-types";
+
 import React, { Component } from "react";
 
 import { EDITTYPE, TIME_TO_CLOSE_MESSAGE } from "..";
@@ -44,18 +44,7 @@ interface EditingCellState {
 
 export default (_: any, onStartEdit?: any) =>
   class EditingCell extends Component<EditingCellProps, EditingCellState> {
-    static propTypes = {
-      row: PropTypes.object.isRequired,
-      rowIndex: PropTypes.number.isRequired,
-      column: PropTypes.object.isRequired,
-      columnIndex: PropTypes.number.isRequired,
-      onUpdate: PropTypes.func.isRequired,
-      onEscape: PropTypes.func.isRequired,
-      timeToCloseMessage: PropTypes.number,
-      autoSelectText: PropTypes.bool,
-      className: PropTypes.string,
-      style: PropTypes.object,
-    };
+
 
     static defaultProps = {
       timeToCloseMessage: TIME_TO_CLOSE_MESSAGE,

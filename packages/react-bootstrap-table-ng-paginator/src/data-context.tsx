@@ -1,7 +1,7 @@
 /* eslint react/prop-types: 0 */
 /* eslint react/require-default-props: 0 */
 /* eslint no-lonely-if: 0 */
-import PropTypes from "prop-types";
+
 import React from "react";
 
 import { PaginationDataProviderProps } from "..";
@@ -15,11 +15,7 @@ const { Provider } = createBaseContext();
 const PaginationDataContext = React.createContext<any>(null);
 
 class PaginationDataProvider extends Provider {
-  static propTypes = {
-    data: PropTypes.array.isRequired,
-    remoteEmitter: PropTypes.object.isRequired,
-    isRemotePagination: PropTypes.func.isRequired,
-  };
+
 
   componentDidUpdate(nextProps: PaginationDataProviderProps) {
     super.componentDidUpdate(nextProps);

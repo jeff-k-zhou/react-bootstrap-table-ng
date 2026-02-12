@@ -28,40 +28,11 @@ const ToolkitContext = React.createContext<ToolkitContextType>({
 });
 
 class ToolkitProvider extends statelessDecorator(React.Component) {
-  // static propTypes = {
-  //   keyField: PropTypes.string.isRequired,
-  //   data: PropTypes.array.isRequired,
-  //   columns: PropTypes.array.isRequired,
-  //   children: PropTypes.node.isRequired,
-  //   bootstrap4: PropTypes.bool,
-  //   search: PropTypes.oneOfType([
-  //     PropTypes.bool,
-  //     PropTypes.shape({
-  //       defaultSearch: PropTypes.string,
-  //       searchFormatted: PropTypes.bool,
-  //     }),
-  //   ]),
-  //   exportCSV: PropTypes.oneOfType([
-  //     PropTypes.bool,
-  //     PropTypes.shape({
-  //       fileName: PropTypes.string,
-  //       separator: PropTypes.string,
-  //       ignoreHeader: PropTypes.bool,
-  //       ignoreFooter: PropTypes.bool,
-  //       noAutoBOM: PropTypes.bool,
-  //       blobType: PropTypes.string,
-  //       exportAll: PropTypes.bool,
-  //       onlyExportFiltered: PropTypes.bool,
-  //       onlyExportSelection: PropTypes.bool,
-  //     }),
-  //   ]),
-  // };
-
-  // static defaultProps = {
-  //   search: false,
-  //   exportCSV: false,
-  //   bootstrap4: false,
-  // };
+  static defaultProps = {
+    search: false,
+    exportCSV: false,
+    bootstrap4: false,
+  };
 
   _: any;
   state: any;

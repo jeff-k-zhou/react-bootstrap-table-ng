@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import React from "react";
 import { ClearSearchButtonProps } from "../..";
 
@@ -12,11 +11,7 @@ const ClearButton = ({
   </button>
 );
 
-ClearButton.propTypes = {
-  onClear: PropTypes.func.isRequired,
-  className: PropTypes.string,
-  text: PropTypes.string,
-};
+
 
 // ClearButton.defaultProps = {
 //   text: "Clear",

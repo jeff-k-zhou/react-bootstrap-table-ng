@@ -184,32 +184,15 @@ class MultiSelectFilter extends Component<
       </label>
     );
   }
+  static defaultProps = {
+    defaultValue: [],
+    filterState: {},
+    className: "",
+    withoutEmptyOption: false,
+    comparator: EQ,
+    caseSensitive: true,
+    id: null,
+  };
 }
-
-// MultiSelectFilter.propTypes = {
-//   onFilter: PropTypes.func.isRequired,
-//   column: PropTypes.object.isRequired,
-//   options: PropTypes.object.isRequired,
-//   id: PropTypes.string,
-//   filterState: PropTypes.object,
-//   comparator: PropTypes.oneOf([LIKE, EQ]),
-//   placeholder: PropTypes.string,
-//   style: PropTypes.object,
-//   className: PropTypes.string,
-//   withoutEmptyOption: PropTypes.bool,
-//   defaultValue: PropTypes.array,
-//   caseSensitive: PropTypes.bool,
-//   getFilter: PropTypes.func,
-// };
-
-// MultiSelectFilter.defaultProps = {
-//   defaultValue: [],
-//   filterState: {},
-//   className: "",
-//   withoutEmptyOption: false,
-//   comparator: EQ,
-//   caseSensitive: true,
-//   id: null,
-// };
 
 export default MultiSelectFilter;

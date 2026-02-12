@@ -1,12 +1,19 @@
-import PropTypes from "prop-types";
+
 import React from "react";
+
+interface SizePerPageOptionProps {
+  text: string;
+  page: number;
+  onSizePerPageChange: (page: number) => void;
+  bootstrap4?: boolean;
+}
 
 const SizePerPageOption = ({
   text,
   page,
   onSizePerPageChange,
   bootstrap4 = false,
-}: any) =>
+}: SizePerPageOptionProps) =>
   bootstrap4 ? (
     <a
       href="#"
@@ -38,15 +45,8 @@ const SizePerPageOption = ({
     </li>
   );
 
-SizePerPageOption.propTypes = {
-  text: PropTypes.string.isRequired,
-  page: PropTypes.number.isRequired,
-  onSizePerPageChange: PropTypes.func.isRequired,
-  bootstrap4: PropTypes.bool,
+SizePerPageOption.defaultProps = {
+  bootstrap4: false,
 };
-
-// SizePerPageOption.defaultProps = {
-//   bootstrap4: false,
-// };
 
 export default SizePerPageOption;

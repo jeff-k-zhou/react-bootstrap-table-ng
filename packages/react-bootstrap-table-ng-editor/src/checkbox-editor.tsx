@@ -68,22 +68,13 @@ class CheckBoxEditor extends Component<
       />
     );
   }
+  static defaultProps = {
+    className: "",
+    value: "on:off",
+    defaultValue: false,
+    onChange: undefined,
+    didMount: undefined,
+  };
 }
-
-// CheckBoxEditor.propTypes = {
-//   className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-//   value: PropTypes.string,
-//   defaultValue: PropTypes.any,
-//   onChange: PropTypes.func,
-//   didMount: PropTypes.func,
-// };
-
-// CheckBoxEditor.defaultProps = {
-//   className: "",
-//   value: "on:off",
-//   defaultValue: false,
-//   onChange: undefined,
-//   didMount: undefined,
-// };
 
 export default CheckBoxEditor;

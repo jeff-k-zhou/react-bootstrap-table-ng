@@ -1,5 +1,5 @@
 /* eslint-disable import/no-anonymous-default-export */
-import PropTypes from "prop-types";
+
 import React from "react";
 
 import BootstrapTable from "../../../react-bootstrap-table-ng";
@@ -93,13 +93,21 @@ class EmptyTableOverlay extends React.Component {
 }
 `;
 
+interface TableProps {
+  data: any[];
+  page: number;
+  totalSize: number;
+  sizePerPage: number;
+  onTableChange: (type: any, context: any) => void;
+}
+
 const Table = ({
   data,
   page,
   sizePerPage,
   onTableChange,
   totalSize,
-}: any) => (
+}: TableProps) => (
   <div>
     <BootstrapTable
       remote
@@ -127,13 +135,6 @@ const Table = ({
   </div>
 );
 
-Table.propTypes = {
-  data: PropTypes.array.isRequired,
-  page: PropTypes.number.isRequired,
-  totalSize: PropTypes.number.isRequired,
-  sizePerPage: PropTypes.number.isRequired,
-  onTableChange: PropTypes.func.isRequired,
-};
 
 interface EmptyTableOverlayState {
   data: any;
@@ -201,14 +202,14 @@ const RemotePagination = ({ loading, data, page, sizePerPage, onTableChange, tot
   </div>
 );
 
-RemotePagination.propTypes = {
-  data: PropTypes.array.isRequired,
-  page: PropTypes.number.isRequired,
-  loading: PropTypes.bool.isRequired,
-  totalSize: PropTypes.number.isRequired,
-  sizePerPage: PropTypes.number.isRequired,
-  onTableChange: PropTypes.func.isRequired
-};
+interface RemotePaginationProps {
+  data: any[];
+  page: number;
+  loading: boolean;
+  totalSize: number;
+  sizePerPage: number;
+  onTableChange: (type: any, context: any) => void;
+}
 
 class Container extends React.Component {
   constructor(props) {
@@ -250,6 +251,15 @@ class Container extends React.Component {
 }
 `;
 
+interface RemotePaginationProps {
+  data: any[];
+  page: number;
+  loading: boolean;
+  totalSize: number;
+  sizePerPage: number;
+  onTableChange: (type: any, context: any) => void;
+}
+
 const RemotePagination = ({
   loading,
   data,
@@ -257,7 +267,7 @@ const RemotePagination = ({
   sizePerPage,
   onTableChange,
   totalSize,
-}: any) => (
+}: RemotePaginationProps) => (
   <div>
     <BootstrapTable
       remote
@@ -294,14 +304,6 @@ const RemotePagination = ({
   </div>
 );
 
-RemotePagination.propTypes = {
-  data: PropTypes.array.isRequired,
-  page: PropTypes.number.isRequired,
-  loading: PropTypes.bool.isRequired,
-  totalSize: PropTypes.number.isRequired,
-  sizePerPage: PropTypes.number.isRequired,
-  onTableChange: PropTypes.func.isRequired,
-};
 
 interface TableOverlayState {
   data: any;

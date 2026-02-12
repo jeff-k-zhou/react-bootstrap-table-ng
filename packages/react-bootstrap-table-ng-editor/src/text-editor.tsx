@@ -43,26 +43,12 @@ class TextEditor extends Component<TextEditorProps> {
       />
     );
   }
+  static defaultProps = {
+    className: null,
+    defaultValue: '',
+    autoSelectText: false,
+    didMount: undefined
+  };
 }
-
-// TextEditor.propTypes = {
-//   className: PropTypes.oneOfType([
-//     PropTypes.string,
-//     PropTypes.object
-//   ]),
-//   defaultValue: PropTypes.oneOfType([
-//     PropTypes.string,
-//     PropTypes.number
-//   ]),
-//   autoSelectText: PropTypes.bool,
-//   didMount: PropTypes.func
-// };
-
-// TextEditor.defaultProps = {
-//   className: null,
-//   defaultValue: '',
-//   autoSelectText: false,
-//   didMount: undefined
-// };
 
 export default TextEditor;

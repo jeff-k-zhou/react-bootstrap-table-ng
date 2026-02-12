@@ -1,5 +1,5 @@
 /* eslint no-return-assign: 0 */
-import PropTypes from "prop-types";
+
 import React, { Fragment, PureComponent } from "react";
 
 interface WithBootstrapStyleProps {
@@ -17,10 +17,7 @@ export const BOOTSTRAP_VERSION = {
 };
 
 class WithBootstrapStyle extends PureComponent<WithBootstrapStyleProps, WithBootstrapStyleState> {
-  static propTypes = {
-    version: PropTypes.string.isRequired,
-    render: PropTypes.func.isRequired,
-  };
+
 
   style: HTMLLinkElement | null = null;
 

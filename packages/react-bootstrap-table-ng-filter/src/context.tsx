@@ -1,7 +1,7 @@
 /* eslint react/prop-types: 0 */
 /* eslint react/require-default-props: 0 */
 /* eslint camelcase: 0 */
-import PropTypes from "prop-types";
+
 import React from "react";
 
 import { EQ, FILTER_TYPES, LIKE } from "..";
@@ -23,11 +23,7 @@ export default (
   const FilterContext = React.createContext<any>({});
 
   class FilterProvider extends React.Component<FilterProviderProps> {
-    static propTypes = {
-      data: PropTypes.array.isRequired,
-      columns: PropTypes.array.isRequired,
-      dataChangeListener: PropTypes.object,
-    };
+
 
     currFilters: { [key: string]: any };
     clearFilters: { [key: string]: any };
@@ -86,7 +82,7 @@ export default (
           }
           // TODO: Why we need to forceUpdate here? 
           // It seems the filter component should be controlled by the parent component/Provider
-          // Introduce tadditional property forceUpdate (default to false) to avoid infinite loop of this.forceUpdate(), will need to refactor the filter component to be controlled by the parent component/Provider
+          // Introduce additional property, forceUpdate (default to false), to avoid infinite loop of this.forceUpdate(), will need to refactor the filter component to be controlled by the parent component/Provider
           if (filter.props === undefined || filter.props.forceUpdate === undefined || filter.props.forceUpdate == false) return;
           this.forceUpdate();
         }

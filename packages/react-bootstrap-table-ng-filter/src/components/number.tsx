@@ -287,72 +287,27 @@ class NumberFilter extends Component<NumberFilterProps, NumberFilterState> {
       </div>
     );
   }
+
+  static defaultProps = {
+    delay: FILTER_DELAY,
+    options: undefined,
+    defaultValue: {
+      number: undefined,
+      comparator: "",
+    },
+    filterState: {},
+    withoutEmptyComparatorOption: false,
+    withoutEmptyNumberOption: false,
+    comparators: legalComparators,
+    placeholder: undefined,
+    style: undefined,
+    className: "",
+    comparatorStyle: undefined,
+    comparatorClassName: "",
+    numberStyle: undefined,
+    numberClassName: "",
+    id: null,
+  };
 }
-
-// NumberFilter.propTypes = {
-//   onFilter: PropTypes.func.isRequired,
-//   column: PropTypes.object.isRequired,
-//   id: PropTypes.string,
-//   filterState: PropTypes.object,
-//   options: PropTypes.arrayOf(PropTypes.number),
-//   defaultValue: PropTypes.shape({
-//     number: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-//     comparator: PropTypes.oneOf([...legalComparators, ""]),
-//   }),
-//   delay: PropTypes.number,
-//   /* eslint consistent-return: 0 */
-//   comparators: (props: any, propName: any) => {
-//     if (!props[propName]) {
-//       return;
-//     }
-//     for (let i = 0; i < props[propName].length; i += 1) {
-//       let comparatorIsValid = false;
-//       for (let j = 0; j < legalComparators.length; j += 1) {
-//         if (
-//           legalComparators[j] === props[propName][i] ||
-//           props[propName][i] === ""
-//         ) {
-//           comparatorIsValid = true;
-//           break;
-//         }
-//       }
-//       if (!comparatorIsValid) {
-//         return new Error(`Number comparator provided is not supported.
-//           Use only ${legalComparators}`);
-//       }
-//     }
-//   },
-//   placeholder: PropTypes.string,
-//   withoutEmptyComparatorOption: PropTypes.bool,
-//   withoutEmptyNumberOption: PropTypes.bool,
-//   style: PropTypes.object,
-//   className: PropTypes.string,
-//   comparatorStyle: PropTypes.object,
-//   comparatorClassName: PropTypes.string,
-//   numberStyle: PropTypes.object,
-//   numberClassName: PropTypes.string,
-//   getFilter: PropTypes.func,
-// };
-
-// NumberFilter.defaultProps = {
-//   delay: FILTER_DELAY,
-//   options: undefined,
-//   defaultValue: {
-//     number: undefined,
-//     comparator: "",
-//   },
-//   filterState: {},
-//   withoutEmptyComparatorOption: false,
-//   withoutEmptyNumberOption: false,
-//   comparators: legalComparators,
-//   placeholder: undefined,
-//   style: undefined,
-//   className: "",
-//   comparatorStyle: undefined,
-//   comparatorClassName: "",
-//   numberStyle: undefined,
-//   numberClassName: "",
-//   id: null,
-// };
 
 export default NumberFilter;

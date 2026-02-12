@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import React from "react";
 
 import { TableToolkitProps } from ".";
@@ -14,8 +13,6 @@ const Toolkitprovider = (
   </ToolkitContext.Provider>
 );
 
-Toolkitprovider.propTypes = {
-  children: PropTypes.func.isRequired,
-};
+
 
 export default Toolkitprovider;

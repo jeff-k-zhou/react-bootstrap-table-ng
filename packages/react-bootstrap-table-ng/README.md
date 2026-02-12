@@ -11,6 +11,7 @@ The goal of this fork is to provide stable version with react 18 and above, boot
 - Upgraded Storybook to 10.2.7
 - Upgraded Yarn to 4.12.0
 - Converted all test cases from Enzyme to React Testing Library (RTL), Removed Enzyme related dependencies
+- Converted PropTypes to typescript types, and removed prop-types from dependency.
 - Updated most dependencies to their latest stable versions to fix vulnerabilities
 
 ## Release Notes
@@ -25,7 +26,7 @@ See the below table on which version of react-bootstrap-table-ng you should be u
   <thead>
     <tr>
       <th rowspan="2">react-bootstrap-table-ng</th>
-      <th colspan="3">Dependencies</th>
+      <th colspan="3">Compatible React/Bootstrap/React-Bootstrap versions</th>
     </tr>
     <tr>
       <th>react</th>

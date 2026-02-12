@@ -3,7 +3,7 @@
 /* eslint react/no-unused-prop-types: 0 */
 /* eslint class-methods-use-this: 0 */
 import React, { Component } from "react";
-import { FILTER_TYPES, SelectFilterProps } from "../..";
+import { EQ, FILTER_TYPES, SelectFilterProps } from "../..";
 
 function optionsEquals(currOpts: any, prevOpts: any) {
   if (Array.isArray(currOpts)) {
@@ -212,32 +212,15 @@ class SelectFilter extends Component<SelectFilterProps, SelectFilterState> {
       </label>
     );
   }
+  static defaultProps = {
+    defaultValue: '',
+    filterState: {},
+    className: '',
+    withoutEmptyOption: false,
+    comparator: EQ,
+    caseSensitive: true,
+    id: null
+  };
 }
-
-// SelectFilter.propTypes = {
-//   onFilter: PropTypes.func.isRequired,
-//   column: PropTypes.object.isRequired,
-//   id: PropTypes.string,
-//   filterState: PropTypes.object,
-//   options: PropTypes.oneOfType([PropTypes.object, PropTypes.array]).isRequired,
-//   comparator: PropTypes.oneOf([LIKE, EQ]),
-//   placeholder: PropTypes.string,
-//   style: PropTypes.object,
-//   className: PropTypes.string,
-//   withoutEmptyOption: PropTypes.bool,
-//   defaultValue: PropTypes.any,
-//   caseSensitive: PropTypes.bool,
-//   getFilter: PropTypes.func
-// };
-
-// SelectFilter.defaultProps = {
-//   defaultValue: '',
-//   filterState: {},
-//   className: '',
-//   withoutEmptyOption: false,
-//   comparator: EQ,
-//   caseSensitive: true,
-//   id: null
-// };
 
 export default SelectFilter;

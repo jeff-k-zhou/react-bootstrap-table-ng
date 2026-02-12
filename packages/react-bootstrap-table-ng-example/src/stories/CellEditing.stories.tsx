@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+
 import type { Meta, StoryObj } from '@storybook/react-webpack5';
 
 // import bootstrap style by given version
@@ -1216,10 +1216,6 @@ interface QualityRangerState { }
 class QualityRanger extends React.Component<QualityRangerProps, QualityRangerState> {
   range: HTMLInputElement | null = null;
 
-  static propTypes = {
-    value: PropTypes.number,
-    onUpdate: PropTypes.func.isRequired,
-  };
 
   static defaultProps = {
     value: 0,
@@ -1281,11 +1277,15 @@ export const CustomEditor: Story = {
     import BootstrapTable from 'react-bootstrap-table-ng';
     import cellEditFactory from 'react-bootstrap-table-ng-editor';
 
-    class QualityRanger extends React.Component {
-      static propTypes = {
-        value: PropTypes.number,
-        onUpdate: PropTypes.func.isRequired
-      }
+    interface QualityRangerProps {
+      value?: number;
+      onUpdate: (value: number) => void;
+    }
+
+    interface QualityRangerState { }
+
+    class QualityRanger extends React.Component<QualityRangerProps, QualityRangerState> {
+
       static defaultProps = {
         value: 0
       }

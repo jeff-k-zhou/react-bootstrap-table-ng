@@ -1,19 +1,28 @@
-import PropTypes from "prop-types";
+
 import React from "react";
 
 import PageButton from "./page-button";
 
-const PaginatonList = (props: any) => (
+interface PaginationListProps {
+  pages: Array<{
+    page: React.ReactNode | number | string;
+    active?: boolean;
+    disabled?: boolean;
+    title?: string;
+  }>;
+  onPageChange: (page: any) => void;
+  pageButtonRenderer?: (props: any) => React.ReactElement | null;
+}
+
+const PaginatonList = (props: PaginationListProps) => (
   <ul className="pagination react-bootstrap-table-page-btns-ul">
     {props.pages.map((pageProps: any) => {
       if (props.pageButtonRenderer) {
-        return React.cloneElement(
-          props.pageButtonRenderer({
-            ...pageProps,
-            onPageChange: props.onPageChange,
-          }),
-          { key: pageProps.page }
-        );
+        const element = props.pageButtonRenderer({
+          ...pageProps,
+          onPageChange: props.onPageChange,
+        });
+        return element ? React.cloneElement(element, { key: pageProps.page }) : null;
       }
       return (
         <PageButton
@@ -26,25 +35,8 @@ const PaginatonList = (props: any) => (
   </ul>
 );
 
-PaginatonList.propTypes = {
-  pages: PropTypes.arrayOf(
-    PropTypes.shape({
-      page: PropTypes.oneOfType([
-        PropTypes.node,
-        PropTypes.number,
-        PropTypes.string,
-      ]),
-      active: PropTypes.bool,
-      disable: PropTypes.bool,
-      title: PropTypes.string,
-    })
-  ).isRequired,
-  onPageChange: PropTypes.func.isRequired,
-  pageButtonRenderer: PropTypes.func,
+PaginatonList.defaultProps = {
+  pageButtonRenderer: null,
 };
-
-// PaginatonList.defaultProps = {
-//   pageButtonRenderer: null,
-// };
 
 export default PaginatonList;
