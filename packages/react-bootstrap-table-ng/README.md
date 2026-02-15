@@ -36,8 +36,8 @@ See the below table on which version of react-bootstrap-table-ng you should be u
   </thead>
   <tbody>
     <tr>
-      <td rowspan="2">5.19.x</td>
-      <td rowspan="2">18.x - 19.x</td>
+      <td rowspan="3">5.19.x</td>
+      <td rowspan="3">18.x - 19.x</td>
       <td>5.x</td>
       <td>2.x</td>
     </tr>
