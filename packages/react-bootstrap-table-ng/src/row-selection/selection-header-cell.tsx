@@ -101,7 +101,7 @@ export default class SelectionHeaderCell extends Component<SelectionHeaderCellPr
 
     return (
       <BootstrapContext.Consumer>
-        {({ bootstrap4 }) => {
+        {({ bootstrap4, bootstrap5 }) => {
           if (selectionHeaderRenderer) {
             content = selectionHeaderRenderer({
               mode,
@@ -113,7 +113,13 @@ export default class SelectionHeaderCell extends Component<SelectionHeaderCellPr
               <CheckBox
                 {...this.props}
                 checked={checked}
-                className={bootstrap4 ? "selection-input-4" : ""}
+                className={
+                  bootstrap5
+                    ? "selection-input-5"
+                    : bootstrap4
+                    ? "selection-input-4"
+                    : ""
+                }
                 indeterminate={indeterminate}
               />
             );

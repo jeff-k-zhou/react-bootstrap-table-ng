@@ -13,6 +13,7 @@ const sizePerPageDropDownDefaultProps = {
   className: "",
   optionRenderer: null,
   bootstrap4: false,
+  bootstrap5: false,
   tableId: null,
 };
 
@@ -26,6 +27,7 @@ interface SizePerPageDropDownProps {
   onBlur: (e: React.FocusEvent) => void;
   onSizePerPageChange: (sizePerPage: number) => void;
   bootstrap4?: boolean;
+  bootstrap5?: boolean;
   tableId?: string;
   open?: boolean;
   hidden?: boolean;
@@ -46,6 +48,7 @@ const SizePerPageDropDown = (props: SizePerPageDropDownProps) => {
     className,
     variation,
     bootstrap4,
+    bootstrap5,
     btnContextual,
     optionRenderer,
     currSizePerPage,
@@ -72,13 +75,14 @@ const SizePerPageDropDown = (props: SizePerPageDropDownProps) => {
         id={id}
         type="button"
         className={`btn ${btnContextual} dropdown-toggle`}
-        data-toggle="dropdown"
+        data-toggle={bootstrap5 ? undefined : "dropdown"}
+        data-bs-toggle={bootstrap5 ? "dropdown" : undefined}
         aria-expanded={open}
         onClick={onClick}
         onBlur={onBlur}
       >
         {currSizePerPage}{" "}
-        {bootstrap4 ? null : (
+        {bootstrap4 || bootstrap5 ? null : (
           <span>
             <span className="caret" />
           </span>
@@ -101,6 +105,7 @@ const SizePerPageDropDown = (props: SizePerPageDropDownProps) => {
               {...option}
               key={option.text}
               bootstrap4={bootstrap4}
+              bootstrap5={bootstrap5}
               onSizePerPageChange={onSizePerPageChange}
             />
           );

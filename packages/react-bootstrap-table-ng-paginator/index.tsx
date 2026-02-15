@@ -27,6 +27,7 @@ export interface PaginationProviderProps {
   children: any;
   tableId?: string | undefined;
   bootstrap4?: boolean | undefined;
+  bootstrap5?: boolean | undefined;
   remoteEmitter: any;
   data: any[];
   isRemotePagination: Function;

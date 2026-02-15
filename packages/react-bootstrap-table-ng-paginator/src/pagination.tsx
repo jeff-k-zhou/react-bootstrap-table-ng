@@ -31,6 +31,7 @@ class Pagination extends pageResolver(Component) {
       sizePerPageOptionRenderer = null,
       onSizePerPageChange,
       bootstrap4 = false,
+      bootstrap5 = false,
       disablePageTitle = false,
       paginationSize = Const.PAGINATION_SIZE,
       withFirstAndLast = Const.With_FIRST_AND_LAST,
@@ -52,7 +53,7 @@ class Pagination extends pageResolver(Component) {
     );
     const pageListClass = cs(
       "react-bootstrap-table-pagination-list",
-      "col-md-6 col-xs-6 col-sm-6 col-lg-6",
+      "col-md-6 col-xs-6 col-6 col-sm-6 col-lg-6",
       {
         "react-bootstrap-table-pagination-list-hidden":
           hidePageListOnlyOnePage && totalPages === 1,
@@ -60,9 +61,10 @@ class Pagination extends pageResolver(Component) {
     );
     return (
       <div className="row react-bootstrap-table-pagination">
-        <div className="col-md-6 col-xs-6 col-sm-6 col-lg-6">
+        <div className="col-md-6 col-xs-6 col-6 col-sm-6 col-lg-6">
           <SizePerPageDropdownWithAdapter
             bootstrap4={bootstrap4}
+            bootstrap5={bootstrap5}
             tableId={tableId}
             sizePerPageList={sizePerPageList}
             currSizePerPage={currSizePerPage}
@@ -114,6 +116,7 @@ class Pagination extends pageResolver(Component) {
   static defaultProps = {
     disablePageTitle: false,
     bootstrap4: false,
+    bootstrap5: false,
     pageStartIndex: Const.PAGE_START_INDEX,
     paginationSize: Const.PAGINATION_SIZE,
     withFirstAndLast: Const.With_FIRST_AND_LAST,

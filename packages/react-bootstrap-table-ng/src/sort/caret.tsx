@@ -14,15 +14,21 @@ const SortCaret: React.FC<SortCaretProps> = ({ order }) => {
 
   return (
     <BootstrapContext.Consumer>
-      {({ bootstrap4 }) =>
-        bootstrap4 ? (
-          <span className={`caret-4-${order}`} data-testid="sort-caret" />
-        ) : (
+      {({ bootstrap4, bootstrap5 }) => {
+        if (bootstrap4 || bootstrap5) {
+          return (
+            <span
+              className={`caret-${bootstrap5 ? "5" : "4"}-${order}`}
+              data-testid="sort-caret"
+            />
+          );
+        }
+        return (
           <span className={orderClass} data-testid="sort-caret">
             <span className="caret" />
           </span>
-        )
-      }
+        );
+      }}
     </BootstrapContext.Consumer>
   );
 };

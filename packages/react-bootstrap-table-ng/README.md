@@ -7,8 +7,8 @@ The goal of this fork is to provide stable version with react 18 and above, boot
 ## Changes on top of [`react-bootstrap-table-next`]
 
 - Support React 18 and React 19
-- Support Bootstrap 3.x up to 3.4.1 and Bootstrap 4.x up to 4.6.2
-- Upgraded Storybook to 10.2.7
+- Support Bootstrap 3.x up to 3.4.1, Bootstrap 4.x up to 4.6.2, and Bootstrap 5.x up to 5.3.8
+- Upgraded Storybook to 10.2.8
 - Upgraded Yarn to 4.12.0
 - Converted all test cases from Enzyme to React Testing Library (RTL), Removed Enzyme related dependencies
 - Converted PropTypes to typescript types, and removed prop-types from dependency.
@@ -26,7 +26,7 @@ See the below table on which version of react-bootstrap-table-ng you should be u
   <thead>
     <tr>
       <th rowspan="2">react-bootstrap-table-ng</th>
-      <th colspan="3">Compatible React/Bootstrap/React-Bootstrap versions</th>
+      <th colspan="3">Compatible react/bootstrap/react-bootstrap versions</th>
     </tr>
     <tr>
       <th>react</th>
@@ -36,24 +36,38 @@ See the below table on which version of react-bootstrap-table-ng you should be u
   </thead>
   <tbody>
     <tr>
-      <td rowspan="2">4.19.x</td>
+      <td rowspan="2">5.19.x</td>
       <td rowspan="2">18.x - 19.x</td>
-      <td>3.x</td>
-      <td>0.33.x</td>
+      <td>5.x</td>
+      <td>2.x</td>
     </tr>
     <tr>
       <td>4.x</td>
       <td>1.x</td>
+    </tr>
+    <tr>
+      <td>3.x</td>
+      <td>0.33.x</td>
+    </tr>
+    <tr>
+      <td rowspan="2">4.19.x</td>
+      <td rowspan="2">18.x - 19.x</td>
+      <td>4.x</td>
+      <td>1.x</td>
+    </tr>
+    <tr>
+      <td>3.x</td>
+      <td>0.33.x</td>
     </tr>
     <tr>
       <td rowspan="2">4.18.x</td>
       <td rowspan="2">18.x</td>
-      <td>3.x</td>
-      <td>0.33.x</td>
-    </tr>
-    <tr>
       <td>4.x</td>
       <td>1.x</td>
+    </tr>
+    <tr>
+      <td>3.x</td>
+      <td>0.33.x</td>
     </tr>
   </tbody>
 </table>

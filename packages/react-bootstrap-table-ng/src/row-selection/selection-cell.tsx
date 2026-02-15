@@ -95,7 +95,7 @@ export default class SelectionCell extends Component<SelectionCellProps> {
 
     return (
       <BootstrapContext.Consumer>
-        {({ bootstrap4 }) => (
+        {({ bootstrap4, bootstrap5 }) => (
           <td className="selection-cell" onClick={this.handleClick} data-testid="selection-cell" {...attrs as any}>
             {selectionRenderer ? (
               selectionRenderer({
@@ -110,7 +110,13 @@ export default class SelectionCell extends Component<SelectionCellProps> {
                 type={inputType}
                 checked={selected}
                 disabled={disabled ?? false}
-                className={bootstrap4 ? "selection-input-4" : ""}
+                className={
+                  bootstrap5
+                    ? "selection-input-5"
+                    : bootstrap4
+                    ? "selection-input-4"
+                    : ""
+                }
                 onChange={() => { }}
               />
             )}

@@ -3,10 +3,11 @@ import { BootstrapContext } from "../contexts/bootstrap";
 
 const SortSymbol: FC = () => (
   <BootstrapContext.Consumer>
-    {({ bootstrap4 }) =>
-      bootstrap4 ? (
-        <span className="order-4" />
-      ) : (
+    {({ bootstrap4, bootstrap5 }) => {
+      if (bootstrap4 || bootstrap5) {
+        return <span className={`order-${bootstrap5 ? "5" : "4"}`} />;
+      }
+      return (
         <span className="order">
           <span className="dropdown">
             <span className="caret" />
@@ -15,8 +16,8 @@ const SortSymbol: FC = () => (
             <span className="caret" />
           </span>
         </span>
-      )
-    }
+      );
+    }}
   </BootstrapContext.Consumer>
 );
 

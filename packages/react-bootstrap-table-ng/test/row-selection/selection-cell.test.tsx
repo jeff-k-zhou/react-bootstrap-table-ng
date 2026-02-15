@@ -221,5 +221,24 @@ describe("<SelectionCell />", () => {
       const cell = screen.getByRole("cell");
       expect(cell.querySelector(".selection-input-4")).toBeInTheDocument();
     });
+
+    it("should render component with bootstrap5 class when bootstrap5 context is true", () => {
+      render(
+        <BootstrapContext.Provider value={{ bootstrap5: true }}>
+          <table>
+            <tbody>
+              <SelectionCell
+                rowKey={1}
+                mode={mode}
+                rowIndex={rowIndex}
+                selected={selected}
+              />
+            </tbody>
+          </table>
+        </BootstrapContext.Provider>
+      );
+      const cell = screen.getByRole("cell");
+      expect(cell.querySelector(".selection-input-5")).toBeInTheDocument();
+    });
   });
 });

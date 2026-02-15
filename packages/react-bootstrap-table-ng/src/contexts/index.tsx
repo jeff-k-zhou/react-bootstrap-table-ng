@@ -290,6 +290,7 @@ const withContext = (Base: any) =>
           pagination={this.props.pagination}
           data={rootProps.getData(filterProps, searchProps, sortProps)}
           bootstrap4={this.props.bootstrap4}
+          bootstrap5={this.props.bootstrap5}
           isRemotePagination={this.isRemotePagination}
           remoteEmitter={this.remoteEmitter}
           onDataSizeChange={this.props.onDataSizeChange}
@@ -404,7 +405,7 @@ const withContext = (Base: any) =>
     }
 
     render() {
-      const { keyField, columns, bootstrap4 } = this.props;
+      const { keyField, columns, bootstrap4, bootstrap5 } = this.props;
       const baseProps = { keyField, columns };
 
       let base = this.renderBase();
@@ -442,7 +443,7 @@ const withContext = (Base: any) =>
       }
 
       return (
-        <BootstrapContext.Provider value={{ bootstrap4 }}>
+        <BootstrapContext.Provider value={{ bootstrap4, bootstrap5 }}>
           <this.DataContext.Provider {...baseProps} data={this.props.data}>
             <this.DataContext.Consumer>{base}</this.DataContext.Consumer>
           </this.DataContext.Provider>

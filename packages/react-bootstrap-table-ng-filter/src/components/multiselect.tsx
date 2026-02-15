@@ -166,7 +166,7 @@ class MultiSelectFilter extends Component<
 
     return (
       <label className="filter-label" htmlFor={elmId}>
-        <span className="sr-only">Filter by {column.text}</span>
+        <span className="sr-only visually-hidden">Filter by {column.text}</span>
         <select
           {...rest}
           ref={(n) => { this.selectInput = n; }}

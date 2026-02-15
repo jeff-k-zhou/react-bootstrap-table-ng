@@ -15,7 +15,7 @@ const ExportCSVButton = (
   return (
     <button
       type="button"
-      className={`react-bs-table-csv-btn btn btn-default ${className}`}
+      className={`react-bs-table-csv-btn btn btn-default btn-secondary ${className}`}
       onClick={() => onExport()}
       {...rest}
     >

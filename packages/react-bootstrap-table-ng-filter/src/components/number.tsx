@@ -240,7 +240,7 @@ class NumberFilter extends Component<NumberFilterProps, NumberFilterState> {
         data-testid="number-filter"
       >
         <label className="filter-label" htmlFor={comparatorElmId}>
-          <span className="sr-only">Filter comparator</span>
+          <span className="sr-only visually-hidden">Filter comparator</span>
           <select
             ref={(n) => { this.numberFilterComparator = n; }}
             style={comparatorStyle as any}
@@ -255,7 +255,7 @@ class NumberFilter extends Component<NumberFilterProps, NumberFilterState> {
         </label>
         {options ? (
           <label className="filter-label" htmlFor={inputElmId}>
-            <span className="sr-only">{`Select ${column.text}`}</span>
+            <span className="sr-only visually-hidden">{`Select ${column.text}`}</span>
             <select
               ref={(n) => { this.numberFilter = n; }}
               id={inputElmId}
@@ -270,7 +270,7 @@ class NumberFilter extends Component<NumberFilterProps, NumberFilterState> {
           </label>
         ) : (
           <label htmlFor={inputElmId}>
-            <span className="sr-only">{`Enter ${column.text}`}</span>
+            <span className="sr-only visually-hidden">{`Enter ${column.text}`}</span>
             <input
               ref={(n) => { this.numberFilter = n; }}
               id={inputElmId}

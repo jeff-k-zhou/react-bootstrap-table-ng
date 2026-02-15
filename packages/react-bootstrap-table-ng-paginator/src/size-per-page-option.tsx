@@ -6,6 +6,7 @@ interface SizePerPageOptionProps {
   page: number;
   onSizePerPageChange: (page: number) => void;
   bootstrap4?: boolean;
+  bootstrap5?: boolean;
 }
 
 const SizePerPageOption = ({
@@ -13,8 +14,9 @@ const SizePerPageOption = ({
   page,
   onSizePerPageChange,
   bootstrap4 = false,
+  bootstrap5 = false,
 }: SizePerPageOptionProps) =>
-  bootstrap4 ? (
+  bootstrap4 || bootstrap5 ? (
     <a
       href="#"
       tabIndex={-1}
@@ -47,6 +49,7 @@ const SizePerPageOption = ({
 
 SizePerPageOption.defaultProps = {
   bootstrap4: false,
+  bootstrap5: false,
 };
 
 export default SizePerPageOption;
