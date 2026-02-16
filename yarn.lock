@@ -25079,7 +25079,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "react-bootstrap-table-ng-editor@workspace:packages/react-bootstrap-table-ng-editor"
   dependencies:
-    react-bootstrap-table-ng: "npm:^5.19.0-beta2"
+    react-bootstrap-table-ng: "npm:^5.19.0"
   peerDependencies:
     "@types/react": ^18.0 || ^18.0.0 || ^19.0 || ^19.0.0
     "@types/react-dom": ^18.0 || ^18.0.0 || ^19.0 || ^19.0.0
@@ -25116,7 +25116,7 @@ __metadata:
     file-saver: "npm:^2.0.5"
     gh-pages: "npm:^6.3.0"
     react: "npm:^19.2.4"
-    react-bootstrap-table-ng: "npm:^5.19.0-beta2"
+    react-bootstrap-table-ng: "npm:^5.19.0"
     react-dom: "npm:^19.2.4"
     react-redux: "npm:^9.2.0"
     react-scripts: "npm:^5.0.1"
@@ -25139,7 +25139,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "react-bootstrap-table-ng-filter@workspace:packages/react-bootstrap-table-ng-filter"
   dependencies:
-    react-bootstrap-table-ng: "npm:^5.19.0-beta2"
+    react-bootstrap-table-ng: "npm:^5.19.0"
     ts-migrate: "npm:^0.1.35"
   peerDependencies:
     "@types/react": ^18.0 || ^18.0.0 || ^19.0 || ^19.0.0
@@ -25246,7 +25246,7 @@ __metadata:
   resolution: "react-bootstrap-table-ng-overlay@workspace:packages/react-bootstrap-table-ng-overlay"
   dependencies:
     "@emotion/css": "npm:^11.13.5"
-    react-bootstrap-table-ng: "npm:^5.19.0-beta2"
+    react-bootstrap-table-ng: "npm:^5.19.0"
     react-transition-group: "npm:^4.4.5"
   peerDependencies:
     "@types/react": ^18.0 || ^18.0.0 || ^19.0 || ^19.0.0
@@ -25260,7 +25260,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "react-bootstrap-table-ng-paginator@workspace:packages/react-bootstrap-table-ng-paginator"
   dependencies:
-    react-bootstrap-table-ng: "npm:^5.19.0-beta2"
+    react-bootstrap-table-ng: "npm:^5.19.0"
   peerDependencies:
     "@types/react": ^18.0 || ^18.0.0 || ^19.0 || ^19.0.0
     "@types/react-dom": ^18.0 || ^18.0.0 || ^19.0 || ^19.0.0
@@ -25275,7 +25275,7 @@ __metadata:
   dependencies:
     "@types/file-saver": "npm:^2.0.5"
     file-saver: "npm:^2.0.5"
-    react-bootstrap-table-ng: "npm:^5.19.0-beta2"
+    react-bootstrap-table-ng: "npm:^5.19.0"
   peerDependencies:
     "@types/react": ^18.0 || ^18.0.0 || ^19.0 || ^19.0.0
     "@types/react-dom": ^18.0 || ^18.0.0 || ^19.0 || ^19.0.0
@@ -25303,7 +25303,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"react-bootstrap-table-ng@npm:^5.19.0-beta2, react-bootstrap-table-ng@workspace:packages/react-bootstrap-table-ng":
+"react-bootstrap-table-ng@npm:^5.19.0, react-bootstrap-table-ng@workspace:packages/react-bootstrap-table-ng":
   version: 0.0.0-use.local
   resolution: "react-bootstrap-table-ng@workspace:packages/react-bootstrap-table-ng"
   dependencies:
