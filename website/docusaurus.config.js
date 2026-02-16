@@ -98,10 +98,10 @@ const config = {
         respectPrefersColorScheme: true,
       },
       navbar: {
-        title: '',
+        title: 'react-bootstrap-table-ng',
         logo: {
           alt: 'react-bootstrap-table-ng Logo',
-          src: 'img/logo/hybrid-white-large-ng.svg',
+          src: 'img/logo/pure-color-square.svg',
         },
         items: [
           {

@@ -55,6 +55,7 @@ export interface CSVProps {
 
 export interface TableToolkitProps<T extends object = any> {
   bootstrap4?: boolean | undefined;
+  bootstrap5?: boolean | undefined;
   search?: TableSearchProps<T> | boolean | undefined;
   keyField: keyof T | string;
   data: T[];
@@ -88,6 +89,7 @@ export interface ToolkitContextType {
     columns: ColumnDescription[];
     data: any[];
     bootstrap4?: boolean | undefined;
+    bootstrap5?: boolean | undefined;
   };
 }
 

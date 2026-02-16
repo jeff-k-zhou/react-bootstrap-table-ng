@@ -55,12 +55,49 @@
     content: "\2193";
   }
 
+  // bootstrap 5 sort
+  th .order-5:before {
+    margin-left: 3.5px;
+    content: "\2191";
+    opacity: 0.4;
+  }
+
+  th .order-5:after {
+    content: "\2193";
+    opacity: 0.4;
+  }
+
+  th .caret-5-asc:before {
+    margin-left: 3.5px;
+    content: "\2191";
+  }
+
+  th .caret-5-asc:after {
+    content: "\2193";
+    opacity: 0.4;
+  }
+
+  th .caret-5-desc:before {
+    margin-left: 3.5px;
+    content: "\2191";
+    opacity: 0.4;
+  }
+
+  th .caret-5-desc:after {
+    content: "\2193";
+  }
+
   th[data-row-selection] {
     width: 30px;
   }
 
   th > .selection-input-4,
   td > .selection-input-4 {
+    margin: -4px;
+  }
+
+  th > .selection-input-5,
+  td > .selection-input-5 {
     margin: -4px;
   }
 

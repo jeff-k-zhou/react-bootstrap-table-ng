@@ -74,7 +74,7 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
 
     return (
       <label htmlFor={`search-bar-${tableId}`} className="search-label">
-        <span id={`search-bar-${tableId}-label`} className="sr-only">
+        <span id={`search-bar-${tableId}-label`} className="sr-only visually-hidden">
           {searchText}
         </span>
         <input

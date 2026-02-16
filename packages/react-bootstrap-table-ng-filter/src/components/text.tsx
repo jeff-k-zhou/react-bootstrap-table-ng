@@ -126,7 +126,7 @@ class TextFilter extends Component<TextFilterProps, TextFilterState> {
 
     return (
       <label className="filter-label" htmlFor={elmId}>
-        <span className="sr-only">Filter by {text}</span>
+        <span className="sr-only visually-hidden">Filter by {text}</span>
         <input
           {...rest}
           ref={(n) => { this.input = n; }}

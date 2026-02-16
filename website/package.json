@@ -1,8 +1,14 @@
 {
   "name": "react-bootstrap-table-ng-website",
-  "version": "4.19.2",
+  "version": "5.19.0",
   "private": true,
-  "scripts": {
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jeff-k-zhou/react-bootstrap-table-ng.git"
+  },
+  "homepage": "https://jeff-k-zhou.github.io/react-bootstrap-table-ng/",
+ "scripts": {
     "docusaurus": "docusaurus",
     "start": "docusaurus start",
     "build": "docusaurus build",
@@ -20,12 +26,14 @@
     "@mdx-js/react": "^3.0.0",
     "clsx": "^2.0.0",
     "prism-react-renderer": "^2.3.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4"
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "3.9.2",
     "@docusaurus/types": "3.9.2",
+    "@types/react": "^18.0 || ^18.0.0 || ^19.0 || ^19.0.0",
+    "@types/react-dom": "^18.0 || ^18.0.0 || ^19.0 || ^19.0.0",
     "gh-pages": "^6.3.0"
   },
   "browserslist": {

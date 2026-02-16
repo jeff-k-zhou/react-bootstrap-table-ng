@@ -144,18 +144,38 @@ describe("<SelectionHeaderCell />", () => {
 
     it("should render component with bootstrap4 class when bootstrap4 prop is true", () => {
       render(
-        <table>
-          <thead>
-            <tr>
-              <SelectionHeaderCell mode="checkbox" checkedStatus={CHECKBOX_STATUS_CHECKED}
-              //bootstrap4 
+        <BootstrapContext.Provider value={{ bootstrap4: true }}>
+          <table>
+            <thead>
+              <tr>
+                <SelectionHeaderCell mode="checkbox" checkedStatus={CHECKBOX_STATUS_CHECKED}
+                //bootstrap4 
               />
             </tr>
           </thead>
         </table>
+        </BootstrapContext.Provider>
       );
       const th = screen.getByRole("columnheader");
-      // expect(th.querySelector(".selection-input-4")).toBeInTheDocument();
+      expect(th.querySelector(".selection-input-4")).toBeInTheDocument();
+    });
+
+    it("should render component with bootstrap5 class when bootstrap5 prop is true", () => {
+      render(
+        <BootstrapContext.Provider value={{ bootstrap5: true }}>
+          <table>
+            <thead>
+              <tr>
+                <SelectionHeaderCell mode="checkbox" checkedStatus={CHECKBOX_STATUS_CHECKED}
+                //bootstrap5 
+              />
+            </tr>
+          </thead>
+        </table>
+        </BootstrapContext.Provider>
+      );
+      const th = screen.getByRole("columnheader");
+      expect(th.querySelector(".selection-input-5")).toBeInTheDocument();
     });
   });
 });

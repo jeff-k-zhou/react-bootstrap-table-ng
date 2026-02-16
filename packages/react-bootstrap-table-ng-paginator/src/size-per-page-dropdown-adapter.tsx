@@ -35,6 +35,7 @@ const sizePerPageDropdownAdapter = (WrappedComponent: any) =>
       const {
         tableId,
         bootstrap4,
+        bootstrap5,
         sizePerPageList,
         currSizePerPage,
         hideSizePerPage,
@@ -63,6 +64,7 @@ const sizePerPageDropdownAdapter = (WrappedComponent: any) =>
             open={open}
             tableId={tableId}
             bootstrap4={bootstrap4}
+            bootstrap5={bootstrap5}
           />
         );
       }

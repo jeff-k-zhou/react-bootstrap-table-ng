@@ -594,6 +594,7 @@ export interface BootstrapTableProps<T extends object = any, K = number> {
     data: any[];
     columns: ColumnDescription[];
     bootstrap4?: boolean | undefined;
+    bootstrap5?: boolean | undefined;
     remote?:
     | boolean
     | Partial<{

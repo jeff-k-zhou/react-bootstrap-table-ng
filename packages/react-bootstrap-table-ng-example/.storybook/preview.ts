@@ -17,6 +17,7 @@ const preview: Preview = {
           "Welcome",
           "Basic Table",
           "Bootstrap 4",
+          "Bootstrap 5",
           "Work On Columns",
           "Work On Header Columns",
           "Column Filter",

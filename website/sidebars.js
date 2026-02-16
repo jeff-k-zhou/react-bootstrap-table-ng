@@ -10,6 +10,7 @@ const sidebars = {
                 'about',
                 'getting-started',
                 'bootstrap4',
+                'bootstrap5',
                 'migration'
             ]
         },

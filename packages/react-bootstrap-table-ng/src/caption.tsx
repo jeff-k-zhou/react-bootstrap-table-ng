@@ -1,20 +1,19 @@
 import React, { FC, ReactNode } from "react";
 
 interface CaptionProps {
-  children?: ReactNode;
   bootstrap4?: boolean;
+  bootstrap5?: boolean;
+  children?: React.ReactNode;
 }
 
-const Caption: FC<CaptionProps> = (props) => {
+const Caption: React.FC<CaptionProps> = (props) => {
   if (!props.children) return null;
 
-  const caption = props.bootstrap4 ? (
-    <caption style={ { captionSide: "top" } }>{props.children}</caption>
-  ) : (
-    <caption>{props.children}</caption>
-  );
+  if (props.bootstrap4 || props.bootstrap5) {
+    return <caption style={ { captionSide: "top" } }>{props.children}</caption>;
+  }
 
-  return caption;
+  return <caption>{props.children}</caption>;
 };
 
 export default Caption;

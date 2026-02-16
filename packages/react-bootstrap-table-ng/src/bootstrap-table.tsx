@@ -54,6 +54,7 @@ class BootstrapTable extends PropsBaseResolver(
       id,
       classes,
       bootstrap4 = false,
+      bootstrap5 = false,
       striped = false,
       hover = false,
       bordered = true,
@@ -89,7 +90,7 @@ class BootstrapTable extends PropsBaseResolver(
         "table-striped": striped,
         "table-hover": hover,
         "table-bordered": bordered,
-        [bootstrap4 ? "table-sm" : "table-condensed"]: condensed,
+        [bootstrap4 || bootstrap5 ? "table-sm" : "table-condensed"]: condensed,
       },
       classes
     );
@@ -102,7 +103,9 @@ class BootstrapTable extends PropsBaseResolver(
       _.filter(columns, (col) => _.has(col, "footer")).length > 0;
 
     const tableCaption = caption && (
-      <Caption bootstrap4={bootstrap4}>{caption}</Caption>
+      <Caption bootstrap4={bootstrap4} bootstrap5={bootstrap5}>
+        {caption}
+      </Caption>
     );
 
     return (

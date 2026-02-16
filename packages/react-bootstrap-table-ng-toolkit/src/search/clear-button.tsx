@@ -6,16 +6,10 @@ const ClearButton = ({
   text = "Clear",
   className = "",
 }: ClearSearchButtonProps): React.ReactElement | null => (
-  <button className={`btn btn-default ${className}`} onClick={onClear}>
+  <button className={`btn btn-default btn-secondary ${className}`} onClick={onClear}>
     {text}
   </button>
 );
 
-
-
-// ClearButton.defaultProps = {
-//   text: "Clear",
-//   className: "",
-// };
 
 export default ClearButton;

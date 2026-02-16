@@ -1,14 +1,15 @@
 {
   "name": "react-bootstrap-table-ng",
-  "version": "4.19.2",
+  "version": "5.19.0",
   "description": "Next generation of react-bootstrap-table",
   "main": "./lib/index.js",
   "types": "./index.d.ts",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jeff-k-zhou/react-bootstrap-table-ng.git"
   },
-  "license": "MIT",
+  "homepage": "https://jeff-k-zhou.github.io/react-bootstrap-table-ng/",
   "keywords": [
     "react",
     "bootstrap",
@@ -47,6 +48,8 @@
     "underscore": "^1.13.7"
   },
   "peerDependencies": {
+    "@types/react": "^18.0 || ^18.0.0 || ^19.0 || ^19.0.0",
+    "@types/react-dom": "^18.0 || ^18.0.0 || ^19.0 || ^19.0.0",
     "react": "^18.0 || ^18.0.0 || ^19.0 || ^19.0.0",
     "react-dom": "^18.0 || ^18.0.0 || ^19.0 || ^19.0.0"
   },

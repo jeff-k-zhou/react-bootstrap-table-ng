@@ -33,3 +33,4 @@ build
 *build.log
 *build_output*
 *build_error*
+website/static/storybook
