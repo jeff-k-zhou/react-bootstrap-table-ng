@@ -1,8 +1,8 @@
 {
   "name": "react-bootstrap-table-ng-example",
-  "version": "5.19.0-beta2",
+  "version": "5.19.0",
   "description": "Storybook for react-bootstrap-table-ng",
-  "homepage": "http://jeff-k-zhou.github.io/react-bootstrap-table-ng",
+  "private": true,
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -23,6 +23,7 @@
     "type": "git",
     "url": "git+https://github.com/jeff-k-zhou/react-bootstrap-table-ng.git"
   },
+  "homepage": "https://jeff-k-zhou.github.io/react-bootstrap-table-ng/",
   "author": "Jeff Zhou",
   "contributors": [
     {
@@ -80,7 +81,7 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "react": "^19.2.4",
-    "react-bootstrap-table-ng": "^5.19.0-beta2",
+    "react-bootstrap-table-ng": "^5.19.0",
     "react-dom": "^19.2.4",
     "react-scripts": "^5.0.1",
     "typescript": "^5.9.3",

@@ -2,7 +2,13 @@
   "name": "react-bootstrap-table-ng-website",
   "version": "5.19.0",
   "private": true,
-  "scripts": {
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jeff-k-zhou/react-bootstrap-table-ng.git"
+  },
+  "homepage": "https://jeff-k-zhou.github.io/react-bootstrap-table-ng/",
+ "scripts": {
     "docusaurus": "docusaurus",
     "start": "docusaurus start",
     "build": "docusaurus build",
