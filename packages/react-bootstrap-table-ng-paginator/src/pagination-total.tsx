@@ -20,8 +20,5 @@ const PaginationTotal = (props: PaginationTotalProps) => {
   );
 };
 
-PaginationTotal.defaultProps = {
-  paginationTotalRenderer: undefined,
-};
 
 export default PaginationTotal;

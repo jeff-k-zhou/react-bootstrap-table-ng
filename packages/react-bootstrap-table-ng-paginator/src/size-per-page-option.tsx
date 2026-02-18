@@ -47,9 +47,5 @@ const SizePerPageOption = ({
     </li>
   );
 
-SizePerPageOption.defaultProps = {
-  bootstrap4: false,
-  bootstrap5: false,
-};
 
 export default SizePerPageOption;

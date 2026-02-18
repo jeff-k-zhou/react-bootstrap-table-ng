@@ -38,10 +38,4 @@ const ToggleList = ({
 
 
 
-// ToggleList.defaultProps = {
-//   btnClassName: "",
-//   className: "",
-//   contextual: "primary",
-// };
-
 export default ToggleList;

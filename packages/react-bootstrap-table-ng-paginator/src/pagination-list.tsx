@@ -35,8 +35,5 @@ const PaginatonList = (props: PaginationListProps) => (
   </ul>
 );
 
-PaginatonList.defaultProps = {
-  pageButtonRenderer: null,
-};
 
 export default PaginatonList;
