@@ -24,6 +24,7 @@ export type FilterPosition =
     | typeof FILTERS_POSITION_TOP
     | typeof FILTERS_POSITION_BOTTOM;
 
+ export type Percentage = `${number}%`;
 /**
  * Table change event types
  */
@@ -141,6 +142,7 @@ export interface ColumnDescription<T extends object = any, E = any> {
     sortFunc?: ColumnSortFunc<T> | undefined;
     sortCaret?: ColumnSortCaret<T, E> | undefined;
     searchable?: boolean | undefined;
+    resizable?: boolean | undefined;
     align?:
     | CellAlignment
     | ((
@@ -174,7 +176,7 @@ export interface ColumnDescription<T extends object = any, E = any> {
         tooltipFormatter?: ((row: T) => React.ReactElement) | undefined;
     } & E)
     | undefined;
-    width?: number | undefined;
+    width?: number | Percentage | undefined;
     footer?:
     | boolean
     | number
@@ -616,9 +618,10 @@ export interface BootstrapTableProps<T extends object = any, K = number> {
     tabIndexCell?: boolean | undefined;
     id?: string | undefined;
     classes?: string | undefined;
+    wrapperClasses?: string | undefined;
+    columnResize?: boolean | undefined;
     headerClasses?: string | undefined;
     bodyClasses?: string | undefined;
-    wrapperClasses?: string | undefined;
     headerWrapperClasses?: string | undefined;
     condensed?: boolean | undefined;
     /**

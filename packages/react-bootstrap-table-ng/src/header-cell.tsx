@@ -7,6 +7,11 @@ import { CellEventDelegater as eventDelegater } from "./cell-event-delegater";
 import SortCaret from "./sort/caret";
 import SortSymbol from "./sort/symbol";
 import _ from "./utils";
+import createColumnContext from "./contexts/column-context";
+import ColumnResizer from "./column-resizer";
+import { Percentage } from "./types";
+
+const { Consumer: ColumnContextConsumer } = createColumnContext();
 
 interface HeaderCellProps {
   column: {
@@ -111,6 +116,8 @@ interface HeaderCellProps {
     ) => React.ReactNode;
     filterValue?: (cell: any, row: any) => string;
     searchable?: boolean;
+    resizable?: boolean;
+    width?: number | Percentage;
   };
   index: number;
   onSort?: (column: any) => void;
@@ -175,15 +182,25 @@ class HeaderCell extends eventDelegater(Component)<HeaderCellProps> {
     let sortSymbol: React.ReactNode;
     let filterElement: React.ReactNode;
     let cellStyle: React.CSSProperties = {};
+    if (column.width) {
+      cellStyle.width = typeof column.width === "number"
+        ? `${column.width}px`
+        : column.width;
+    }
     let cellClasses = _.isFunction(headerClasses)
       ? headerClasses(column, index)
       : headerClasses;
 
     if (headerStyle) {
-      cellStyle = _.isFunction(headerStyle)
+      const customStyle = _.isFunction(headerStyle)
         ? headerStyle(column, index)
         : headerStyle;
-      cellStyle = cellStyle ? { ...cellStyle } : cellStyle;
+      if (customStyle) {
+        cellStyle = {
+          ...cellStyle,
+          ...customStyle,
+        };
+      }
     }
 
     if (headerTitle) {
@@ -250,6 +267,9 @@ class HeaderCell extends eventDelegater(Component)<HeaderCellProps> {
     }
 
     if (cellClasses) cellAttrs.className = cs(cellAttrs.className, cellClasses);
+    if (column.resizable) {
+      cellStyle.position = "relative";
+    }
     if (!_.isEmptyObject(cellStyle)) cellAttrs.style = cellStyle;
 
     if (filterPosition === FILTERS_POSITION_INLINE) {
@@ -278,8 +298,21 @@ class HeaderCell extends eventDelegater(Component)<HeaderCellProps> {
       })
       : text;
 
+    const resizerElement = (
+      <ColumnContextConsumer>
+        {({ onColumnResize }) => {
+          if (!onColumnResize || !column.resizable) return null;
+          return (
+            <ColumnResizer
+              onColumnResize={(width) => onColumnResize(column.dataField, width)}
+            />
+          );
+        }}
+      </ColumnContextConsumer>
+    );
+
     if (headerFormatter) {
-      return React.createElement("th", cellAttrs, children);
+      return React.createElement("th", cellAttrs, children, resizerElement);
     }
 
     return React.createElement(
@@ -287,7 +320,8 @@ class HeaderCell extends eventDelegater(Component)<HeaderCellProps> {
       cellAttrs,
       children,
       sortSymbol,
-      filterElement
+      filterElement,
+      resizerElement
     );
   }
 }

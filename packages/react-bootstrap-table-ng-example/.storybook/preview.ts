@@ -20,6 +20,7 @@ const preview: Preview = {
           "Bootstrap 5",
           "Work On Columns",
           "Work On Header Columns",
+          "Column Resize",
           "Column Filter",
           "Work On Rows",
           "Footer",
