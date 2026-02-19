@@ -21,12 +21,12 @@ $ npm install react-bootstrap-table-ng-editor --save
 
 We have [two ways](./cell-edit-props#celleditmode-string) to trigger a editable cell as editing cell:
 
-- click
-- dbclick
+* click
+* dbclick
 
 That's look into how we enable the cell edit on tabe:
 
-````js
+```js
 import cellEditFactory from 'react-bootstrap-table-ng-editor';
 
 // omit
