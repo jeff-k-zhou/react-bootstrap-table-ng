@@ -1,15 +1,15 @@
 ---
-id: basic-celledit
+id: basic-cell-edit
 title: Cell Edit
 sidebar_label: Cell Edit
 ---
 
 `react-bootstrap-table-ng` separate the cell edit code base to [`react-bootstrap-table-ng-editor`](https://github.com/jeff-k-zhou/react-bootstrap-table-ng/tree/main/packages/react-bootstrap-table-ng-editor), so there's a little bit different when you use cell edit than `react-bootstrap-table`. In the following, we are going to show you how to enable the cell edit
 
-**[Live Demo For Cell Edit](pathname:///react-bootstrap-table-ng/storybook/index.html?selectedKind=Cell%20Editing)**   
+**[Live Demo For Cell Edit](pathname:///react-bootstrap-table-ng/storybook/index.html?selectedKind=Cell%20Editing)**  
 **[API & Props Definition](./cell-edit-props)**
 
------
+---
 
 ## Install
 
@@ -21,12 +21,12 @@ $ npm install react-bootstrap-table-ng-editor --save
 
 We have [two ways](./cell-edit-props#celleditmode-string) to trigger a editable cell as editing cell:
 
-* click
-* dbclick
+- click
+- dbclick
 
 That's look into how we enable the cell edit on tabe:
 
-```js
+````js
 import cellEditFactory from 'react-bootstrap-table-ng-editor';
 
 // omit
@@ -38,40 +38,41 @@ import cellEditFactory from 'react-bootstrap-table-ng-editor';
   columns={ columns }
   cellEdit={ cellEditFactory({ mode: 'click' }) }
 />
-```
+````
 
 How user save their new editings? We offer two ways:
 
-* Press ENTER(**default**)
-* Blur from current editing cell(Need to enable the [cellEdit.blurToSave](./cell-edit-props#celleditblurtosave-bool))
+- Press ENTER(**default**)
+- Blur from current editing cell(Need to enable the [cellEdit.blurToSave](./cell-edit-props#celleditblurtosave-bool))
 
 ## Editable Cell
+
 `react-bootstrap-table-ng` support you to configure the cell editable on three level:
 
-* Row Level ([cellEdit.nonEditableRows](./cell-edit-props#celleditnoneditablerows-function))
-* Column Level (Configure [column.editable](./column-props#columneditable-bool-function) as bool value)
-* Cell Level (Configure [column.editable](./column-props#columneditable-bool-function) as a callback function)
+- Row Level ([cellEdit.nonEditableRows](./cell-edit-props#celleditnoneditablerows-function))
+- Column Level (Configure [column.editable](./column-props#columneditable-bool-function) as bool value)
+- Cell Level (Configure [column.editable](./column-props#columneditable-bool-function) as a callback function)
 
 ## Validation
 
 [`column.validator`](./column-props#columnvalidator-function) will help you to work on it!
 
-
 ## Customize Style/Class
 
-* Customize the editing cell style via [column.editCellStyle](./column-props#columneditcellstyle-object-function)
-* Customize the editing cell classname via [column.editCellClasses](./column-props#columneditcellclasses-string-function)
-* Customize the editor style via [column.editorStyle](./column-props#columneditorstyle-object-function)
-* Customize the editor classname via [column.editorClasses](./column-props#columneditorclasses-string-function)
+- Customize the editing cell style via [column.editCellStyle](./column-props#columneditcellstyle-object-function)
+- Customize the editing cell classname via [column.editCellClasses](./column-props#columneditcellclasses-string-function)
+- Customize the editor style via [column.editorStyle](./column-props#columneditorstyle-object-function)
+- Customize the editor classname via [column.editorClasses](./column-props#columneditorclasses-string-function)
 
 ## Rich Editors
+
 `react-bootstrap-table-ng` have following predefined editor:
 
-* Text(Default)
-* Dropdown
-* Date
-* Textarea
-* Checkbox
+- Text(Default)
+- Dropdown
+- Date
+- Textarea
+- Checkbox
 
 In a nutshell, you just only give a [column.editor](./column-props#columneditor-object) and define the `type`:
 
@@ -92,10 +93,12 @@ const columns = [
 In the following, we go though all the predefined editors:
 
 ### Dropdown Editor
+
 Dropdown editor give a select menu to choose a data from a list. When use dropdown editor, either `editor.options` or `editor.getOptions` should be required prop.
 
 #### editor.options
-This is most simple case for assign the dropdown options data directly.   
+
+This is most simple case for assign the dropdown options data directly.
 
 ```js
 import { Type } from 'react-bootstrap-table-ng-editor';
@@ -126,13 +129,13 @@ const columns = [
 ```
 
 #### editor.getOptions
+
 It is much flexible which accept a function and you can assign the dropdown options dynamically.
 
 There are two case for `getOptions`:
 
-* *Synchronous*: Just return the options array in `getOptions` callback function
-* *Asynchronous*: Call `setOptions` function argument when you get the options from remote. 
-
+- _Synchronous_: Just return the options array in `getOptions` callback function
+- _Asynchronous_: Call `setOptions` function argument when you get the options from remote.
 
 ```js
 // Synchronous
@@ -160,14 +163,13 @@ There are two case for `getOptions`:
 }];
 ```
 
-
 `getOptions` have two arguments:
 
-* `setOptions`: call it when you are ready to set the options asynchronous.
-* `params`: An object which have `row` and `column` for current editing cell.
-
+- `setOptions`: call it when you are ready to set the options asynchronous.
+- `params`: An object which have `row` and `column` for current editing cell.
 
 ### Date Editor
+
 Date editor is use `<input id="date-editor" type="date" />`, the configuration is very simple:
 
 ```js
@@ -189,6 +191,7 @@ const columns = [
 ```
 
 ### Textarea Editor
+
 Textarea editor is use `<input id="textarea-editor" type="textarea" />`, user can press `ENTER` to change line and in the `react-bootstrap-table-ng`, user allow to save result via press `SHIFT` + `ENTER`.
 
 ```js
@@ -201,7 +204,9 @@ const columns = [
   }
 }];
 ```
+
 ### Checkbox Editor
+
 Checkbox editor allow you to have a pair value choice, the `editor.value` is required value to represent the actual value for check and uncheck.
 
 ```js
@@ -217,20 +222,21 @@ const columns = [
 ```
 
 ## Customize Editor
+
 If you feel above predefined editors are not satisfied to your requirement, you can certainly custom the editor via [column.editorRenderer](./column-props#columneditorrenderer-function). It accept a function and pass following arguments when function called:
 
-* `editorProps`: Some useful attributes you can use on DOM editor, like class, style etc.
-* `value`: Current cell value
-* `row`: Current row data 
-* `column`: Current column definition 
-* `rowIndex`: Current row index 
-* `columnIndex`: Current column index
+- `editorProps`: Some useful attributes you can use on DOM editor, like class, style etc.
+- `value`: Current cell value
+- `row`: Current row data
+- `column`: Current column definition
+- `rowIndex`: Current row index
+- `columnIndex`: Current column index
 
 > Note when implement a custom React editor component, this component should have a **getValue** function which return current value on editor.
 
 > Note when you want to save value, you can call **editorProps.onUpdate** function
 
-Following is a short example: 
+Following is a short example:
 
 ```js
 class QualityRanger extends React.Component {

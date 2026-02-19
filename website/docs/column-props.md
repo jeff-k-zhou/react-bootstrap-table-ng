@@ -916,7 +916,7 @@ const columns = [
 ];
 ```
 
-Please check [here](./basic-celledit#rich-editors) for more detail about rich editors.
+Please check [here](./basic-cell-edit#rich-editors) for more detail about rich editors.
 
 ## column.editorRenderer - [Function] {#columneditorrenderer-function}
 
@@ -971,7 +971,7 @@ const columns = [
 ];
 ```
 
-Please check [here](./basic-celledit#customize-editor) for more detail.
+Please check [here](./basic-cell-edit#customize-editor) for more detail.
 
 ## column.filter - [Object] {#columnfilter-object}
 

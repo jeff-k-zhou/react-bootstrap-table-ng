@@ -23,7 +23,7 @@ const sidebars = {
                 'basic-sort',
                 'basic-row-select',
                 'basic-filter',
-                'basic-celledit',
+                'basic-cell-edit',
                 'basic-pagination',
                 'basic-row-expand'
             ]
