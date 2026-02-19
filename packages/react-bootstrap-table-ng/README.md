@@ -10,6 +10,7 @@ The goal of this fork is to provide stable version with react 18 and above, boot
 - Support Bootstrap 3.x up to 3.4.1, Bootstrap 4.x up to 4.6.2, and Bootstrap 5.x up to 5.3.8
 - Converted all test cases from Enzyme to React Testing Library (RTL), Removed Enzyme related dependencies
 - Converted PropTypes to typescript types, and removed prop-types from dependency.
+- Added column resize functionality
 - Updated most dependencies to their latest stable versions to fix vulnerabilities
 - Upgraded Storybook to 10.2.8
 - Upgraded Yarn to 4.12.0

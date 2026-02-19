@@ -10,8 +10,5 @@ const EditorIndicator = ({ invalidMessage }: EditorIndicatorProps) => (
   </div>
 );
 
-EditorIndicator.defaultProps = {
-  invalidMessage: null,
-};
 
 export default EditorIndicator;

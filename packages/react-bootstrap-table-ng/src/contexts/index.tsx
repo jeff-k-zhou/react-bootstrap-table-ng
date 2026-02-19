@@ -15,6 +15,10 @@ const withContext = (Base: any) =>
     constructor(props: any) {
       super(props);
       this.DataContext = createDataContext();
+      this.state = {
+        columnWidths: {},
+      };
+      this.onColumnResize = this.onColumnResize.bind(this);
 
       if (props.registerExposedAPI) {
         const exposedAPIEmitter = new EventEmitter();
@@ -48,6 +52,7 @@ const withContext = (Base: any) =>
 
       if (
         props.columnToggle ||
+        props.columnResize ||
         props.columns.filter((col: any) => col.hidden).length > 0
       ) {
         this.ColumnContext = createColumnContext();
@@ -131,6 +136,15 @@ const withContext = (Base: any) =>
       }
     }
 
+    onColumnResize(dataField: string, width: number) {
+      this.setState((prevState: any) => ({
+        columnWidths: {
+          ...prevState.columnWidths,
+          [dataField]: width,
+        },
+      }));
+    }
+
     renderBase() {
       return (
         rootProps: {
@@ -155,6 +169,18 @@ const withContext = (Base: any) =>
           {...searchProps}
           {...paginationProps}
           {...columnToggleProps}
+          columns={
+            (columnToggleProps && columnToggleProps.columns) ? columnToggleProps.columns.map((column: any) => {
+              const columnWidths = (this.state as any).columnWidths || {};
+              if (columnWidths[column.dataField]) {
+                return {
+                  ...column,
+                  width: columnWidths[column.dataField],
+                };
+              }
+              return column;
+            }) : this.props.columns
+          }
           data={rootProps.getData(
             filterProps,
             searchProps,
@@ -178,6 +204,7 @@ const withContext = (Base: any) =>
           toggles={
             this.props.columnToggle ? this.props.columnToggle.toggles : null
           }
+          onColumnResize={this.onColumnResize}
         >
           <this.ColumnContext.Consumer>
             {(columnToggleProps: any) =>

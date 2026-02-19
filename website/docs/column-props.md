@@ -6,130 +6,144 @@ title: Columns Props
 Definition of columns props on BootstrapTable
 
 ## Required
-* [dataField (**required**)](#columndatafield-required-string)
-* [text (**required**)](#columntext-required-string)
+
+- [dataField (**required**)](#columndatafield-required-string)
+- [text (**required**)](#columntext-required-string)
 
 ## Optional
-* [isDummyField](#columnisdummyfield-bool)
-* [type](#columntype-string)
-* [hidden](#columnhidden-bool)
-* [formatter](#columnformatter-function)
-* [formatExtraData](#columnformatextradata-any)
-* [sort](#columnsort-bool)
-* [sortValue](#columnsortvalue-function)
-* [sortFunc](#columnsortfunc-function)
-* [sortCaret](#columnsortcaret-function)
-* [onSort](#columnonsort-function)
-* [classes](#columnclasses-string-function)
-* [style](#columnstyle-object-function)
-* [title](#columntitle-bool-function)
-* [events](#columnevents-object)
-* [align](#columnalign-string-function)
-* [attrs](#columnattrs-object-function)
-* [headerFormatter](#columnheaderformatter-function)
-* [headerClasses](#columnheaderclasses-string-function)
-* [headerStyle](#columnheaderstyle-object-function)
-* [headerTitle](#columnheadertitle-bool-function)
-* [headerEvents](#columnheaderevents-object)
-* [headerAlign](#columnheaderalign-string-function)
-* [headerAttrs](#columnheaderattrs-object-function)
-* [headerSortingClasses](#headersortingclasses-string-function)
-* [headerSortingStyle](#headersortingstyle-object-function)
-* [footer](#columnfooter-string-function)
-* [footerFormatter](#columnfooterformatter-function)
-* [footerClasses](#columnfooterclasses-string-function)
-* [footerStyle](#columnfooterstyle-object-function)
-* [footerTitle](#columnfootertitle-string-function)
-* [footerEvents](#columnfooterevents-object)
-* [footerAlign](#columnfooteralign-string-function)
-* [footerAttrs](#columnfooterattrs-object-function)
-* [editable](#columneditable-bool-function)
-* [validator](#columnvalidator-function)
-* [editCellStyle](#columneditcellstyle-object-function)
-* [editCellClasses](#columneditcellclasses-string-function)
-* [editorStyle](#columneditorstyle-object-function)
-* [editorClasses](#columneditorclasses-string-function)
-* [editor](#columneditor-object)
-* [editorRenderer](#columneditorrenderer-function)
-* [filter](#columnfilter-object)
-* [filterValue](#columnfiltervalue-function)
-* [searchable](#columnsearchable-bool)
-* [csvType](#columncsvType-object)
-* [csvFormatter](#columncsvFormatter-function)
-* [csvText](#columncsvText-string)
-* [csvExport](#columncsvExport-bool)
 
------
+- [isDummyField](#columnisdummyfield-bool)
+- [type](#columntype-string)
+- [hidden](#columnhidden-bool)
+- [formatter](#columnformatter-function)
+- [formatExtraData](#columnformatextradata-any)
+- [sort](#columnsort-bool)
+- [sortValue](#columnsortvalue-function)
+- [sortFunc](#columnsortfunc-function)
+- [sortCaret](#columnsortcaret-function)
+- [onSort](#columnonsort-function)
+- [classes](#columnclasses-string-function)
+- [style](#columnstyle-object-function)
+- [title](#columntitle-bool-function)
+- [events](#columnevents-object)
+- [align](#columnalign-string-function)
+- [attrs](#columnattrs-object-function)
+- [headerFormatter](#columnheaderformatter-function)
+- [headerClasses](#columnheaderclasses-string-function)
+- [headerStyle](#columnheaderstyle-object-function)
+- [headerTitle](#columnheadertitle-bool-function)
+- [headerEvents](#columnheaderevents-object)
+- [headerAlign](#columnheaderalign-string-function)
+- [headerAttrs](#columnheaderattrs-object-function)
+- [headerSortingClasses](#headersortingclasses-string-function)
+- [headerSortingStyle](#headersortingstyle-object-function)
+- [footer](#columnfooter-string-function)
+- [footerFormatter](#columnfooterformatter-function)
+- [footerClasses](#columnfooterclasses-string-function)
+- [footerStyle](#columnfooterstyle-object-function)
+- [footerTitle](#columnfootertitle-string-function)
+- [footerEvents](#columnfooterevents-object)
+- [footerAlign](#columnfooteralign-string-function)
+- [footerAttrs](#columnfooterattrs-object-function)
+- [editable](#columneditable-bool-function)
+- [validator](#columnvalidator-function)
+- [editCellStyle](#columneditcellstyle-object-function)
+- [editCellClasses](#columneditcellclasses-string-function)
+- [editorStyle](#columneditorstyle-object-function)
+- [editorClasses](#columneditorclasses-string-function)
+- [editor](#columneditor-object)
+- [editorRenderer](#columneditorrenderer-function)
+- [filter](#columnfilter-object)
+- [filterValue](#columnfiltervalue-function)
+- [searchable](#columnsearchable-bool)
+- [resizable](#columnresizable-bool)
+- [csvType](#columncsvType-object)
+- [csvFormatter](#columncsvFormatter-function)
+- [csvText](#columncsvText-string)
+- [csvExport](#columncsvExport-bool)
+
+---
 
 ## column.dataField (**required**) - [String] {#columndatafield-required-string}
+
 Use `dataField` to specify what field should be apply on this column. If your raw data is nested, for example:
 
 ```js
 const row = {
-  id: 'A001',
+  id: "A001",
   address: {
-    postal: '1234-12335',
-    city: 'Chicago'
-  }
-}
+    postal: "1234-12335",
+    city: "Chicago",
+  },
+};
 ```
+
 You can use `dataField` with dot(`.`) to describe nested object:
 
 ```js
-dataField: 'address.postal'
-dataField: 'address.city'
+dataField: "address.postal";
+dataField: "address.city";
 ```
 
 ## column.text (**required**) - [String] {#columntext-required-string}
+
 `text` will be the column text in header column by default, if your header is not only text or you want to customize the header column, please check [`column.headerFormatter`](#columnheaderformatter-function)
 
 ## column.type - [String] {#columntype-string}
-Specify the data type on column. Available value so far is `string`, `number`, `bool` and `date`. Default is `string`.   
+
+Specify the data type on column. Available value so far is `string`, `number`, `bool` and `date`. Default is `string`.  
 `column.type` can be used when you enable the cell editing and want to save your cell data with correct data type.
 
 ## column.isDummyField - [Bool] {#columnisdummyfield-bool}
+
 Sometime, you just want to have a column which is not perform any data but just some action components. In this situation, we suggest you to use `isDummyField`. If column is dummy, the [`column.dataField`](#columndatafield-required-string) can be any string value, cause of it's meaningless. However, please keep `dataField` as unique as possible.
 
 There's only one different for dummy column than normal column, which is dummy column will compare the whole row value instead of cell value when call `shouldComponentUpdate`.
 
-
 ## column.hidden - [Bool] {#columnhidden-bool}
+
 `hidden` allow you to hide column when `true` given.
 
 ## column.formatter - [Function] {#columnformatter-function}
+
 `formatter` allow you to customize the table column and only accept a callback function which take four arguments and a JSX/String are expected for return.
 
-* `cell`
-* `row`
-* `rowIndex`
-* [`formatExtraData`](#columnformatextradata-any)
+- `cell`
+- `row`
+- `rowIndex`
+- [`formatExtraData`](#columnformatextradata-any)
 
 > Attention:
 > Don't use any state data or any external data in formatter function, please pass them via [`formatExtraData`](#columnformatextradata-any).
 > In addition, please make formatter function as pure function as possible as you can.
 
 ## column.headerFormatter - [Function] {#columnheaderformatter-function}
+
 `headerFormatter` allow you to customize the header column and only accept a callback function which take three arguments and a JSX/String are expected for return.
 
-* `column`: current column object itself
-* `colIndex`: index of current column
-* `components`: an object which contain all of other react element, like sort caret or filter etc.
+- `column`: current column object itself
+- `colIndex`: index of current column
+- `components`: an object which contain all of other react element, like sort caret or filter etc.
 
 The third argument: `components` have following specified properties:
+
 ```js
 {
-  sortElement, // sort caret element, it will not be undefined when you enable sort on this column
-  filterElement // filter element, it will not be undefined when you enable column.filter on this column
+  (sortElement, // sort caret element, it will not be undefined when you enable sort on this column
+    filterElement); // filter element, it will not be undefined when you enable column.filter on this column
 }
 ```
 
 ## column.formatExtraData - [Any] {#columnformatextradata-any}
+
 It's only used for [`column.formatter`](#columnformatter-function), you can define any value for it and will be passed as fourth argument for [`column.formatter`](#columnformatter-function) callback function.
 
 ## column.sort - [Bool] {#columnsort-bool}
+
 Enable the column sort via a `true` value given.
 
 ## column.sortValue - [Function] {#columnsortvalue-function}
+
 `column.sortValue` only work when `column.sort` enabled. This prop allow you to replace the value when table sorting.
 
 For example, consider following data:
@@ -164,6 +178,7 @@ const columns = [{
 ```
 
 ## column.sortFunc - [Function] {#columnsortfunc-function}
+
 `column.sortFunc` only work when `column.sort` is enable. `sortFunc` allow you to define your sorting algorithm. This callback function accept six arguments:
 
 ```js
@@ -176,22 +191,27 @@ const columns = [{
   }
 }
 ```
+
 > The possible value of `order` argument is **`asc`** and **`desc`**.
 
 ## column.sortCaret - [Function] {#columnsortcaret-function}
+
 Use`column.sortCaret` to custom the sort caret. This callback function accept two arguments: `order` and `column`
- ```js
+
+```js
 {
-  // omit...
-  sort: true,
-  sortCaret: (order, column) => {
-    return //...
-  }
+ // omit...
+ sort: true,
+ sortCaret: (order, column) => {
+   return //...
+ }
 }
 ```
+
 > The possible value of `order` argument is **`asc`**, **`desc`** and **`undefined`**.
 
 ## column.onSort - [Function] {#columnonsort-function}
+
 `column.onSort` is an event listener for subscribing the event of sort:
 
 ```js
@@ -205,16 +225,17 @@ Use`column.sortCaret` to custom the sort caret. This callback function accept tw
 ```
 
 ## column.classes - [String | Function] {#columnclasses-string-function}
+
 It's available to have custom class on table column:
 
 ```js
 {
   // omit...
-  classes: 'id-custom-cell'
+  classes: "id-custom-cell";
 }
 ```
-In addition, `classes` also accept a callback function which have more power to custom the css class on each columns. This callback function take **4** arguments and a `String` is expected to return: 
 
+In addition, `classes` also accept a callback function which have more power to custom the css class on each columns. This callback function take **4** arguments and a `String` is expected to return:
 
 ```js
 {
@@ -223,24 +244,27 @@ In addition, `classes` also accept a callback function which have more power to 
 ```
 
 **Parameters**
-* `cell`: The value of current cell. 
-* `row`: The value of `row` being processed in the `BootstrapTable`.
-* `rowIndex`: The index of the current `row` being processed in the `BootstrapTable`.
-* `colIndex`: The index of the current `column` being processed in `BootstrapTable`.
+
+- `cell`: The value of current cell.
+- `row`: The value of `row` being processed in the `BootstrapTable`.
+- `rowIndex`: The index of the current `row` being processed in the `BootstrapTable`.
+- `colIndex`: The index of the current `column` being processed in `BootstrapTable`.
 
 **Return value**
 
 A new `String` will be the result as element class.
 
 ## column.headerClasses - [String | Function] {#columnheaderclasses-string-function}
+
 It's similar to [`column.classes`](#columnclasses-string-function), `headerClasses` is available to have customized class on table header column:
 
 ```js
 {
   // omit...
-  headerClasses: 'id-custom-cell'
+  headerClasses: "id-custom-cell";
 }
 ```
+
 Furthermore, it also accept a callback function which takes 2 arguments and a `String` is expect to return:
 
 ```js
@@ -250,25 +274,28 @@ Furthermore, it also accept a callback function which takes 2 arguments and a `S
 ```
 
 **Parameters**
-* `column`: The value of current column. 
-* `colIndex`: The index of the current `column` being processed in `BootstrapTable`.
+
+- `column`: The value of current column.
+- `colIndex`: The index of the current `column` being processed in `BootstrapTable`.
 
 **Return value**
 
 A new `String` will be the result of element headerClasses.
 
 ## column.style - [Object | Function] {#columnstyle-object-function}
+
 It's available to have custom style on table column:
 
 ```js
 {
   // omit...
-  style: { backgroundColor: 'green' }
+  style: {
+    backgroundColor: "green";
+  }
 }
 ```
 
-In addition, similar to [`column.classes`](#columnclasses-string-function), `style` also accept a callback function which have more power to customize the `inline style` on each columns. This callback function takes **4** arguments and an `Object` is expect to return: 
-
+In addition, similar to [`column.classes`](#columnclasses-string-function), `style` also accept a callback function which have more power to customize the `inline style` on each columns. This callback function takes **4** arguments and an `Object` is expect to return:
 
 ```js
 {
@@ -277,23 +304,26 @@ In addition, similar to [`column.classes`](#columnclasses-string-function), `sty
 ```
 
 **Parameters**
-* `cell`: The value of current cell. 
-* `row`: The value of `row` being processed in the `BootstrapTable`.
-* `rowIndex`: The index of the current `row` being processed in the `BootstrapTable`.
-* `colIndex`: The index of the current `column` being processed in `BootstrapTable`.
+
+- `cell`: The value of current cell.
+- `row`: The value of `row` being processed in the `BootstrapTable`.
+- `rowIndex`: The index of the current `row` being processed in the `BootstrapTable`.
+- `colIndex`: The index of the current `column` being processed in `BootstrapTable`.
 
 **Return value**
 
 A new `Object` will be the result of element style.
 
-
 ## column.headerStyle - [Object | Function] {#columnheaderstyle-object-function}
+
 It's available to have customized inline-style on table header column:
 
 ```js
 {
   // omit...
-  headerStyle: { backgroundColor: 'green' }
+  headerStyle: {
+    backgroundColor: "green";
+  }
 }
 ```
 
@@ -306,17 +336,17 @@ Moreover, it also accept a callback function which takes 2 arguments and an `Obj
 ```
 
 **Parameters**
-* `column`: The value of current column. 
-* `colIndex`: The index of the current `column` being processed in `BootstrapTable`.
+
+- `column`: The value of current column.
+- `colIndex`: The index of the current `column` being processed in `BootstrapTable`.
 
 **Return value**
 
 A new `Object` will be the result of element headerStyle.
 
-
 ## column.title - [Bool | Function] {#columntitle-bool-function}
-`react-bootstrap-table-ng` is disable [`HTML title`](https://www.w3schools.com/tags/tag_title.asp) as default. You can assign `title` as `true` to enable the HTML title on table column and take `cell content` as default value. Additionally, you could customize title via a callback. It takes **4** arguments and a `String` is expect to return: 
 
+`react-bootstrap-table-ng` is disable [`HTML title`](https://www.w3schools.com/tags/tag_title.asp) as default. You can assign `title` as `true` to enable the HTML title on table column and take `cell content` as default value. Additionally, you could customize title via a callback. It takes **4** arguments and a `String` is expect to return:
 
 ```js
 {
@@ -327,26 +357,29 @@ A new `Object` will be the result of element headerStyle.
 ```
 
 **Parameters**
-* `cell`: The value of current cell. 
-* `row`: The value of `row` being processed in the `BootstrapTable`.
-* `rowIndex`: The index of the current `row` being processed in the `BootstrapTable`.
-* `colIndex`: The index of the current `column` being processed in `BootstrapTable`.
+
+- `cell`: The value of current cell.
+- `row`: The value of `row` being processed in the `BootstrapTable`.
+- `rowIndex`: The index of the current `row` being processed in the `BootstrapTable`.
+- `colIndex`: The index of the current `column` being processed in `BootstrapTable`.
 
 **Return value**
 
 A new `String` will be the result of element title.
 
 ## column.headerTitle - [Bool | Function] {#columnheadertitle-bool-function}
-`headerTitle` is only for the title on header column, default is disable. The usage almost same as [`column.title`](#columntitle-bool-function), 
+
+`headerTitle` is only for the title on header column, default is disable. The usage almost same as [`column.title`](#columntitle-bool-function),
 
 ```js
 {
   // omit...
-  headerTitle: true
+  headerTitle: true;
 }
 ```
 
 It's also available to custom via a callback function:
+
 ```js
 {
   headerTitle: function callback(column, colIndex) { ... }
@@ -354,17 +387,19 @@ It's also available to custom via a callback function:
 ```
 
 **Parameters**
-* `column`: The value of current column. 
-* `colIndex`: The index of the current `column` being processed in `BootstrapTable`.
+
+- `column`: The value of current column.
+- `colIndex`: The index of the current `column` being processed in `BootstrapTable`.
 
 **Return value**
 
 A new `String` will be the result of element headerTitle.
 
 ## column.align - [String | Function] {#columnalign-string-function}
-You can configure the [CSS text-align](https://www.w3schools.com/cssref/pr_text_text-align.asp) for table column by `align` property. 
 
-Besides, `align` also accept a callback function for dynamically setting text align. It takes **4** arguments and a `String` is expect to return: 
+You can configure the [CSS text-align](https://www.w3schools.com/cssref/pr_text_text-align.asp) for table column by `align` property.
+
+Besides, `align` also accept a callback function for dynamically setting text align. It takes **4** arguments and a `String` is expect to return:
 
 ```js
 {
@@ -374,22 +409,24 @@ Besides, `align` also accept a callback function for dynamically setting text al
 ```
 
 **Parameters**
-* `cell`: The value of current cell. 
-* `row`: The value of `row` being processed in the `BootstrapTable`.
-* `rowIndex`: The index of the current `row` being processed in the `BootstrapTable`.
-* `colIndex`: The index of the current `column` being processed in `BootstrapTable`.
+
+- `cell`: The value of current cell.
+- `row`: The value of `row` being processed in the `BootstrapTable`.
+- `rowIndex`: The index of the current `row` being processed in the `BootstrapTable`.
+- `colIndex`: The index of the current `column` being processed in `BootstrapTable`.
 
 **Return value**
 
 A new `String` will be the result of element text alignment.
 
 ## column.headerAlign - [String | Function] {#columnheaderalign-string-function}
-It's almost same as [`column.align`](#columnalign-string-function), but it's for the [CSS text-align](https://www.w3schools.com/cssref/pr_text_text-align.asp) on header column. 
+
+It's almost same as [`column.align`](#columnalign-string-function), but it's for the [CSS text-align](https://www.w3schools.com/cssref/pr_text_text-align.asp) on header column.
 
 ```js
 {
   // omit...
-  headerAlign: 'center'
+  headerAlign: "center";
 }
 ```
 
@@ -401,28 +438,30 @@ Also, you can custom the align by a callback function:
   headerAlign: (column, colIndex) => {
     // column is an object and perform itself
     // return custom title here
-  }
+  };
 }
 ```
+
 **Parameters**
-* `column`: The value of current column. 
-* `colIndex`: The index of the current `column` being processed in `BootstrapTable`.
+
+- `column`: The value of current column.
+- `colIndex`: The index of the current `column` being processed in `BootstrapTable`.
 
 **Return value**
 
 A new `String` will be the result of element headerAlign.
 
-
 ## column.events - [Object] {#columnevents-object}
-You can assign any [HTML Event](https://www.w3schools.com/tags/ref_eventattributes.asp) on table column via `events` property.   
+
+You can assign any [HTML Event](https://www.w3schools.com/tags/ref_eventattributes.asp) on table column via `events` property.
 
 `react-bootstrap-table-ng` currently only support following events which will receive some specific information:
 
-* onClick
-* onDoubleClick
-* onMouseEnter
-* onMouseLeave
-* onContextMenu
+- onClick
+- onDoubleClick
+- onMouseEnter
+- onMouseLeave
+- onContextMenu
 
 ```js
 {
@@ -436,6 +475,7 @@ You can assign any [HTML Event](https://www.w3schools.com/tags/ref_eventattribut
 If the events is not listed above, the callback function will only receive the `event` object.
 
 ## column.headerEvents - [Object] {#columnheaderevents-object}
+
 `headerEvents` same as [`column.events`](#columnevents-object) but this is for header column.
 
 ```js
@@ -448,6 +488,7 @@ If the events is not listed above, the callback function will only receive the `
 ```
 
 ## column.attrs - [Object | Function] {#columnattrs-object-function}
+
 Via `attrs` property, You can customize table column [HTML attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes) which allow user to configure the elements or adjust their behavior.
 
 ```js
@@ -459,7 +500,8 @@ Via `attrs` property, You can customize table column [HTML attribute](https://de
   }
 }
 ```
-Not only `Object`, `callback function` is also acceptable. It takes **4** arguments and an `Object` is expect to return: 
+
+Not only `Object`, `callback function` is also acceptable. It takes **4** arguments and an `Object` is expect to return:
 
 ```js
 {
@@ -468,16 +510,17 @@ Not only `Object`, `callback function` is also acceptable. It takes **4** argume
 ```
 
 **Parameters**
-* `cell`: The value of current cell. 
-* `row`: The value of `row` being processed in the `BootstrapTable`.
-* `rowIndex`: The index of the current `row` being processed in the `BootstrapTable`.
-* `colIndex`: The index of the current `column` being processed in `BootstrapTable`.
+
+- `cell`: The value of current cell.
+- `row`: The value of `row` being processed in the `BootstrapTable`.
+- `rowIndex`: The index of the current `row` being processed in the `BootstrapTable`.
+- `colIndex`: The index of the current `column` being processed in `BootstrapTable`.
 
 **Return value**
 
 A new `Object` will be the result of element HTML attributes.
 
-> Caution:   
+> Caution:  
 > If `column.classes`, `column.style`, `column.title`, `column.hidden` or `column.align` was given at the same time, property `attrs` has lower priority and it will be overwritten:
 
 ```js
@@ -489,7 +532,9 @@ A new `Object` will be the result of element HTML attributes.
 ```
 
 ## column.headerAttrs - [Object | Function] {#columnheaderattrs-object-function}
-`headerAttrs` is similar to [`column.attrs`](#columnattrs-object-function) but it works for header column. 
+
+`headerAttrs` is similar to [`column.attrs`](#columnattrs-object-function) but it works for header column.
+
 ```js
 {
   // omit...
@@ -507,19 +552,20 @@ Additionally, customize the header attributes by a **2** arguments callback func
   // omit...
   headerAttrs: (column, colIndex) => ({
     // return customized HTML attribute here
-  })
+  });
 }
 ```
 
 **Parameters**
-* `column`: The value of current column. 
-* `colIndex`: The index of the current `column` being processed in `BootstrapTable`.
+
+- `column`: The value of current column.
+- `colIndex`: The index of the current `column` being processed in `BootstrapTable`.
 
 **Return value**
 
 A new `Object` will be the result of element headerAttrs.
 
-> Caution:   
+> Caution:  
 > Same as [column.attrs](#columnattrs-object-function), it has lower priority and will be
 > overwrited when other props related to HTML attributes were given.
 
@@ -528,7 +574,7 @@ A new `Object` will be the result of element headerAttrs.
 `headerSortingClasses` allows to customize `class` for header cell when this column is sorting.
 
 ```js
-const headerSortingClasses = 'demo-sorting';
+const headerSortingClasses = "demo-sorting";
 ```
 
 Furthermore, it also accepts a callback which takes **4** arguments and `String` is expected to return:
@@ -537,10 +583,10 @@ Furthermore, it also accepts a callback which takes **4** arguments and `String`
 const headerSortingClasses = (column, sortOrder, isLastSorting, colIndex) => { ... }
 ```
 
-* `column`: The value of current column.
-* `sortOrder`: The order of current sorting
-* `isLastSorting`: Is the last one of sorted columns.
-* `colIndex`: The index of the current column being processed in BootstrapTable.
+- `column`: The value of current column.
+- `sortOrder`: The order of current sorting
+- `isLastSorting`: Is the last one of sorted columns.
+- `colIndex`: The index of the current column being processed in BootstrapTable.
 
 ## headerSortingStyle - [Object | Function] {#headersortingstyle-object-function}
 
@@ -548,11 +594,12 @@ It's similiar to [headerSortingClasses](#headersortingclasses-string-function). 
 
 ```js
 const sortingHeaderStyle = {
-  backgroundColor: 'red'
+  backgroundColor: "red",
 };
 ```
 
 ## column.footer - [String | Function] {#columnfooter-string-function}
+
 Give a string to render the string value on the footer column.
 
 ```js
@@ -575,20 +622,23 @@ This prop also accept a function:
 ```
 
 ## column.footerFormatter - [Function] {#columnfooterformatter-function}
+
 `footerFormatter` allow you to customize the table footer column and only accept a callback function which take two arguments and a JSX/String are expected for return.
 
-* `column`
-* `columnIndex`
+- `column`
+- `columnIndex`
 
 ## column.footerClasses - [String | Function] {#columnfooterclasses-string-function}
+
 It's similar to [`column.classes`](#columnclasses-string-function), `footerClasses` is available to have customized class on table footer column:
 
 ```js
 {
   // omit...
-  footerClasses: 'id-custom-cell'
+  footerClasses: "id-custom-cell";
 }
 ```
+
 Furthermore, it also accept a callback function which takes 2 arguments and a `String` is expect to return:
 
 ```js
@@ -598,16 +648,20 @@ Furthermore, it also accept a callback function which takes 2 arguments and a `S
 ```
 
 **Parameters**
-* `column`: The value of current column. 
-* `colIndex`: The index of the current `column` being processed in `BootstrapTable`.
+
+- `column`: The value of current column.
+- `colIndex`: The index of the current `column` being processed in `BootstrapTable`.
 
 ## column.footerStyle - [Object | Function] {#columnfooterstyle-object-function}
+
 Customized the inline-style on table footer column:
 
 ```js
 {
   // omit...
-  footerStyle: { backgroundColor: 'green' }
+  footerStyle: {
+    backgroundColor: "green";
+  }
 }
 ```
 
@@ -620,20 +674,23 @@ Moreover, it also accept a callback function which takes **2** arguments and an 
 ```
 
 **Parameters**
-* `column`: The value of current column. 
-* `colIndex`: The index of the current `column` being processed in `BootstrapTable`.
+
+- `column`: The value of current column.
+- `colIndex`: The index of the current `column` being processed in `BootstrapTable`.
 
 ## column.footerTitle - [Bool | Function] {#columnfootertitle-string-function}
-Configure the title on footer column, default is disable. The usage is almost same as [`column.title`](#columntitle-bool-function), 
+
+Configure the title on footer column, default is disable. The usage is almost same as [`column.title`](#columntitle-bool-function),
 
 ```js
 {
   // omit...
-  footerTitle: true
+  footerTitle: true;
 }
 ```
 
 It's also available to custom via a callback function:
+
 ```js
 {
   footerTitle: function callback(column, colIndex) { ... }
@@ -641,10 +698,12 @@ It's also available to custom via a callback function:
 ```
 
 **Parameters**
-* `column`: The value of current column. 
-* `colIndex`: The index of the current `column` being processed in `BootstrapTable`.
+
+- `column`: The value of current column.
+- `colIndex`: The index of the current `column` being processed in `BootstrapTable`.
 
 ## column.footerEvents - [Object] {#columnfooterevents-object}
+
 `footerEvents` same as [`column.events`](#columnevents-object) but it is for footer column:
 
 ```js
@@ -657,12 +716,13 @@ It's also available to custom via a callback function:
 ```
 
 ## column.footerAlign - [String | Function] {#columnfooteralign-string-function}
-It's almost same as [`column.align`](#columnalign-string-function), but it's for the [CSS text-align](https://www.w3schools.com/cssref/pr_text_text-align.asp) on footer column. 
+
+It's almost same as [`column.align`](#columnalign-string-function), but it's for the [CSS text-align](https://www.w3schools.com/cssref/pr_text_text-align.asp) on footer column.
 
 ```js
 {
   // omit...
-  footerAlign: 'center'
+  footerAlign: "center";
 }
 ```
 
@@ -674,15 +734,19 @@ Also, you can custom the align by a callback function:
   footerAlign: (column, colIndex) => {
     // column is an object and perform itself
     // return custom title here
-  }
+  };
 }
 ```
+
 **Parameters**
-* `column`: The value of current column. 
-* `colIndex`: The index of the current `column` being processed in `BootstrapTable`.
+
+- `column`: The value of current column.
+- `colIndex`: The index of the current `column` being processed in `BootstrapTable`.
 
 ## column.footerAttrs - [Object | Function] {#columnfooterattrs-object-function}
-`footerAttrs` is similar to [`column.attrs`](#columnattrs-object-function) but it works for footer column. 
+
+`footerAttrs` is similar to [`column.attrs`](#columnattrs-object-function) but it works for footer column.
+
 ```js
 {
   // omit...
@@ -700,15 +764,17 @@ Additionally, customize the header attributes by a **2** arguments callback func
   // omit...
   footerAttrs: (column, colIndex) => ({
     // return customized HTML attribute here
-  })
+  });
 }
 ```
 
 **Parameters**
-* `column`: The value of current column. 
-* `colIndex`: The index of the current `column` being processed in `BootstrapTable`.
+
+- `column`: The value of current column.
+- `colIndex`: The index of the current `column` being processed in `BootstrapTable`.
 
 ## column.editable - [Bool | Function] {#columneditable-bool-function}
+
 `column.editable` default is true, means every column is editable if you configure [`cellEdit`](./cell-edit-props). But you can disable some columns editable via setting `false`.
 
 If a callback function given, you can control the editable level as cell level:
@@ -718,11 +784,12 @@ If a callback function given, you can control the editable level as cell level:
   // omit...
   editable: (cell, row, rowIndex, colIndex) => {
     // return true or false;
-  }
+  };
 }
 ```
 
 ## column.validator - [Function] {#columnvalidator-function}
+
 `column.validator` used for validate the data when cell on updating. it's should accept a callback function with following argument:
 `newValue`, `row` and `column`:
 
@@ -736,6 +803,7 @@ If a callback function given, you can control the editable level as cell level:
 ```
 
 The return value can be a bool or an object. If your validation is pass, return `true` explicitly. If your validation is invalid, return following object instead:
+
 ```js
 {
   valid: false,
@@ -744,6 +812,7 @@ The return value can be a bool or an object. If your validation is pass, return 
 ```
 
 If you want to perform a asycn validation, you can do it like this:
+
 ```js
 {
   // omit...
@@ -755,93 +824,102 @@ If you want to perform a asycn validation, you can do it like this:
       // async validation not ok
       return done({
         valid: false,
-        message: 'SOME_REASON_HERE'
+        message: "SOME_REASON_HERE",
       });
-
     }, 2000);
     return { async: true };
-  }
+  };
 }
 ```
 
 ## column.editCellStyle - [Object | Function] {#columneditcellstyle-object-function}
+
 You can use `column.editCellStyle` to custom the style of `<td>` when cell editing. It like most of customizable functionality, it also accept a callback function with following params:
 
 **Parameters**
-* `cell`: The value of current cell. 
-* `row`: The object of `row` being processed in the `BootstrapTable`.
-* `rowIndex`: The index of the current `row` being processed in the `BootstrapTable`.
-* `colIndex`: The index of the current `column` being processed in `BootstrapTable`.
+
+- `cell`: The value of current cell.
+- `row`: The object of `row` being processed in the `BootstrapTable`.
+- `rowIndex`: The index of the current `row` being processed in the `BootstrapTable`.
+- `colIndex`: The index of the current `column` being processed in `BootstrapTable`.
 
 ```js
 {
   editCellStyle: { ... }
 }
 ```
+
 Or take a callback function
 
 ```js
 {
   editCellStyle: (cell, row, rowIndex, colIndex) => {
     // it is suppose to return an object
-  }
+  };
 }
 ```
 
 ## column.editCellClasses - [String | Function] {#columneditcellclasses-string-function}
+
 You can use `column.editCellClasses` to add custom class on `<td>` when cell editing. It's same as [`column.editCellStyle`](#columneditcellstyle-object-function) which also accept a callback function to able to custom your class more flexible. Following is the arguments of this callback function: `cell`, `row`, `rowIndex`, `colIndex`.
 
 ```js
 {
-  editCellClasses: 'custom-class'
+  editCellClasses: "custom-class";
 }
 ```
+
 Or take a callback function
 
 ```js
 {
   editCellClasses: (cell, row, rowIndex, colIndex) => {
     // it is suppose to return a string
-  }
+  };
 }
 ```
 
 ## column.editorStyle - [Object | Function] {#columneditorstyle-object-function}
+
 This is almost same as [`column.editCellStyle`](#columneditcellstyle-object-function), but `column.editorStyle` is for custom the style on editor instead of cell(`td`).
 
 ## column.editorClasses - [String | Function] {#columneditorclasses-string-function}
+
 This is almost same as [`column.editCellClasses`](#columneditcellclasses-string-function), but `column.editorClasses` is for custom the class on editor instead of cell(`td`).
 
 ## column.editor - [Object] {#columneditor-object}
+
 `column.editor` allow you to custom the type of cell editor by following predefined type:
 
-* Text(Default)
-* Dropdown
-* Date
-* Textarea
-* Checkbox
+- Text(Default)
+- Dropdown
+- Date
+- Textarea
+- Checkbox
 
-Following is a quite example: 
+Following is a quite example:
 
 ```js
-import cellEditFactory, { Type } from 'react-bootstrap-table-ng-editor';
+import cellEditFactory, { Type } from "react-bootstrap-table-ng-editor";
 
 const columns = [
+  ,
   //...
-  , {
-    dataField: 'done',
-    text: 'Done',
+  {
+    dataField: "done",
+    text: "Done",
     editor: {
       type: Type.CHECKBOX,
-      value: 'Y:N'
-    }
-  }
+      value: "Y:N",
+    },
+  },
 ];
 ```
 
 Please check [here](./basic-celledit#rich-editors) for more detail about rich editors.
 
 ## column.editorRenderer - [Function] {#columneditorrenderer-function}
+
 If you feel above predefined editors are not satisfied to your requirement, you can totally custom the editor via `column.editorRenderer`:
 
 ```js
@@ -892,15 +970,17 @@ const columns = [
   }
 ];
 ```
+
 Please check [here](./basic-celledit#customize-editor) for more detail.
 
 ## column.filter - [Object] {#columnfilter-object}
+
 Configure `column.filter` will able to setup a column level filter on the header column. Currently, `react-bootstrap-table-ng` support following filters:
 
-* Text Filter
-* Select Filter
-* Number Filter
-* Date Filter
+- Text Filter
+- Select Filter
+- Number Filter
+- Date Filter
 
 We have a quick example to show you how to use `column.filter`:
 
@@ -918,11 +998,13 @@ import { textFilter } from 'react-bootstrap-table-ng-filter';
 For some reason of simple customization, `react-bootstrap-table-ng` allow you to pass some props to filter factory function. Please check [here](https://github.com/jeff-k-zhou/react-bootstrap-table-ng/tree/main/packages/react-bootstrap-table-ng-filter/README.md) for more detail tutorial.
 
 ## column.filterValue - [Function] {#columnfiltervalue-function}
+
 Sometimes, if the cell/column value that you don't want to filter on them, you can define `filterValue` to return a actual value you wanna be filtered:
 
 **Parameters**
-* `cell`: The value of current cell. 
-* `row`: The value of current row.
+
+- `cell`: The value of current cell.
+- `row`: The value of current row.
 
 **Return value**
 
@@ -939,10 +1021,15 @@ A final `String` value you want to be filtered.
 ```
 
 ## column.searchable - [Bool] {#columnsearchable-bool}
+
 Default the column is searchable. Give `false` to disable search functionality on specified column.
 
+## column.resizable - [Bool] {#columnresizable-bool}
+
+Default the column is not resizable. Give `true` to enable column resize functionality on specified column.
 
 ## column.csvType - [Object] {#columncsvType-object}
+
 Default is `String`. Currently, the available value is `String` and `Number`. If `Number` assigned, the cell value will not wrapped with double quote.
 
 ## column.csvFormatter - [Function] {#columncsvFormatter-function}
@@ -950,8 +1037,9 @@ Default is `String`. Currently, the available value is `String` and `Number`. If
 This is same as [`column.formatter`](#columnformatter-function). But `csvFormatter` only for CSV export and called when export CSV.
 
 ## column.csvText - [String] {#columncsvText-string}
+
 Custom the CSV header cell, Default is [`column.text`](#columntext-required-string).
 
 ## column.csvExport - [Bool] {#columncsvExport-bool}
-Default is `true`, `false` will hide this column when export CSV.
 
+Default is `true`, `false` will hide this column when export CSV.
