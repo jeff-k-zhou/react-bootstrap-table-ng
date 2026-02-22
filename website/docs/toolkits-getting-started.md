@@ -8,10 +8,9 @@ sidebar_label: Getting Started
 
 `react-bootstrap-table-ng` support following features in `react-bootstrap-table-ng-toolkit` package:
 
-* Export CSV
-* Table Search
-* Column Toggle
-
+- Export CSV
+- Table Search
+- Column Toggle
 
 ## Installation
 
@@ -22,11 +21,11 @@ $ npm install react-bootstrap-table-ng-toolkit --save
 ## Add CSS
 
 ```js
-// es5 
-require('react-bootstrap-table-ng-toolkit/dist/react-bootstrap-table-ng-toolkit.min.css');
+// es5
+require("react-bootstrap-table-ng-toolkit/dist/react-bootstrap-table-ng-toolkit.min.css");
 
 // es6
-import 'react-bootstrap-table-ng-toolkit/dist/react-bootstrap-table-ng-toolkit.min.css';
+import "react-bootstrap-table-ng-toolkit/dist/react-bootstrap-table-ng-toolkit.min.css";
 ```
 
 ## Usage
@@ -51,22 +50,24 @@ import ToolkitProvider from 'react-bootstrap-table-ng-toolkit';
 
 In addition, You have to move following required props from `BootstraTable` to `ToolkitProvider` and inject them to `BootstrapTable` from the `baseProps` provided by `ToolkitProvider`:
 
-* [keyField](./table-props#keyfield-required-string)
-* [data](./table-props#data-required-array)
-* [columns](./table-props#columns-required-object)
-* [bootstrap4](./table-props#bootstrap4-bool)
+- [keyField](./table-props#keyfield-required-string)
+- [data](./table-props#data-required-array)
+- [columns](./table-props#columns-required-object)
+- [bootstrap4](./table-props#bootstrap4-bool)
+- [bootstrap5](./table-props#bootstrap5-bool)
+- [columnResize](./table-props#columnresize-bool)
 
 ### Additional props on ToolkitProvider
 
-* [search](./search-props): For enabling search.
-* [exportCSV](./export-csv-props): For enabling export CSV.
-* **columnToggle**: For enabling column toggle.
+- [search](./search-props): For enabling search.
+- [exportCSV](./export-csv-props): For enabling export CSV.
+- **columnToggle**: For enabling column toggle.
 
 ## Available children props
 
 `ToolkitProvider` will pass following props to the childrens:
 
-* `baseProps`: It have the basic props from `ToolkitProvider` and also contain few internal data.
-* `searchProps`: props for search component.
-* `csvProps`: props for export csv component.
-* `columnToggleProps`: props for column toggle component.
+- `baseProps`: It have the basic props from `ToolkitProvider` and also contain few internal data.
+- `searchProps`: props for search component.
+- `csvProps`: props for export csv component.
+- `columnToggleProps`: props for column toggle component.

@@ -1296,6 +1296,8 @@ class RemoteAllExportComponent extends React.Component {
         columns={productColumns}
         search
         columnToggle
+        columnResize
+        bootstrap5
         exportCSV={{
           fileName: 'products-export.csv',
           noAutoBOM: false,
@@ -1528,6 +1530,8 @@ class RemoteAllCustomComponent extends React.Component {
         columns={productColumns}
         search
         columnToggle
+        columnResize
+        bootstrap5
         exportCSV={{
           fileName: 'products-export.csv',
           noAutoBOM: false,

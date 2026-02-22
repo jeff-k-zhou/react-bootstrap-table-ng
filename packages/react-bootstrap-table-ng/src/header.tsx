@@ -21,6 +21,7 @@ interface HeaderProps {
   wrapperClasses?: string;
   expandRow?: any;
   filterPosition?: string;
+  columnResize?: boolean;
 }
 
 const Header: React.FC<HeaderProps> = (props) => {
@@ -38,6 +39,7 @@ const Header: React.FC<HeaderProps> = (props) => {
     filterPosition,
     globalSortCaret,
     wrapperClasses,
+    columnResize,
   } = props;
 
   let SelectionHeaderCellComp: React.FC = () => null;
@@ -72,6 +74,7 @@ const Header: React.FC<HeaderProps> = (props) => {
         currFilters={currFilters}
         onExternalFilter={onExternalFilter}
         filterPosition={filterPosition}
+        columnResize={columnResize}
       />
     );
   });

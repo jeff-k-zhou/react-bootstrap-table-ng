@@ -25,6 +25,7 @@ const ToolkitContext = React.createContext<ToolkitContextType>({
     data: [],
     bootstrap4: undefined,
     bootstrap5: undefined,
+    columnResize: undefined,
   },
 });
 
@@ -34,6 +35,7 @@ class ToolkitProvider extends statelessDecorator(React.Component) {
     exportCSV: false,
     bootstrap4: false,
     bootstrap5: false,
+    columnResize: false
   };
 
   _: any;
@@ -131,6 +133,7 @@ class ToolkitProvider extends statelessDecorator(React.Component) {
       exportCSV: this.props.exportCSV ?? false,
       bootstrap4: this.props.bootstrap4 ?? false,
       bootstrap5: this.props.bootstrap5 ?? false,
+      columnResize: this.props.columnResize ?? false,
       children: this.props.children,
       setDependencyModules: this.setDependencyModules,
       registerExposedAPI: this.registerExposedAPI,

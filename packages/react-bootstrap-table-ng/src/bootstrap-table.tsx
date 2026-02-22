@@ -126,6 +126,7 @@ class BootstrapTable extends PropsBaseResolver(
             selectRow={selectRow}
             expandRow={expandRow}
             filterPosition={filterPosition}
+            columnResize={this.props.columnResize}
           />
           {hasFilters && filterPosition !== FILTERS_POSITION_INLINE && (
             <Filters

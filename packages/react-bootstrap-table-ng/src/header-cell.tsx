@@ -130,6 +130,7 @@ interface HeaderCellProps {
   currFilters?: Record<string, any>;
   onExternalFilter?: (column: any, filterType: string) => (value: any) => void;
   globalSortCaret?: (order: string, column: any) => React.ReactNode;
+  columnResize?: boolean;
 }
 
 class HeaderCell extends eventDelegater(Component)<HeaderCellProps> {
@@ -146,6 +147,7 @@ class HeaderCell extends eventDelegater(Component)<HeaderCellProps> {
       filterPosition,
       onExternalFilter,
       globalSortCaret,
+      columnResize,
     } = this.props;
 
     const {
@@ -267,7 +269,7 @@ class HeaderCell extends eventDelegater(Component)<HeaderCellProps> {
     }
 
     if (cellClasses) cellAttrs.className = cs(cellAttrs.className, cellClasses);
-    if (column.resizable) {
+    if (columnResize && column.resizable !== false) {
       cellStyle.position = "relative";
     }
     if (!_.isEmptyObject(cellStyle)) cellAttrs.style = cellStyle;
@@ -301,7 +303,8 @@ class HeaderCell extends eventDelegater(Component)<HeaderCellProps> {
     const resizerElement = (
       <ColumnContextConsumer>
         {({ onColumnResize }) => {
-          if (!onColumnResize || !column.resizable) return null;
+          if (!onColumnResize || (columnResize && column.resizable === false)) return null;
+          if (!columnResize && !column.resizable) return null;
           return (
             <ColumnResizer
               onColumnResize={(width) => onColumnResize(column.dataField, width)}
