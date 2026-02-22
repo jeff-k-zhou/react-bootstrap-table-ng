@@ -25,7 +25,7 @@ Not only does this reduce the bundle size of your apps but also helps us have a 
 
 ## Migration
 
-If you are coming from the legacy [`react-bootstrap-table`](https://github.com/AllenFang/react-bootstrap-table/), please check out the [migration guide](./website/docs/migration.md).
+If you are coming from the legacy [`react-bootstrap-table`](https://github.com/AllenFang/react-bootstrap-table/), please check out the [migration guide](https://github.com/jeff-k-zhou/react-bootstrap-table-ng/blob/main/website/docs/migration.md).
 
 ## Usage
 
@@ -37,7 +37,7 @@ See `react-bootstrap-table-ng` [storybook](https://jeff-k-zhou.github.io/react-b
 
 ## Development
 
-Please check the [development guide](./website/docs/development.md).
+Please check the [development guide](https://github.com/jeff-k-zhou/react-bootstrap-table-ng/blob/main/website/docs/development.md).
 
 ## Running storybook example on your local machine
 

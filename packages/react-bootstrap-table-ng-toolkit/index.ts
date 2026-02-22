@@ -64,6 +64,7 @@ export interface TableToolkitProps<T extends object = any> {
   children: (props: ToolkitContextType) => React.ReactElement;
   exportCSV?: boolean | CSVProps | undefined;
   columnToggle?: { [dataField: string]: boolean } | boolean | undefined;
+  columnResize?: boolean | undefined;
   setDependencyModules?: Function;
   registerExposedAPI?: Function;
 }
@@ -90,6 +91,7 @@ export interface ToolkitContextType {
     data: any[];
     bootstrap4?: boolean | undefined;
     bootstrap5?: boolean | undefined;
+    columnResize?: boolean | undefined;
   };
 }
 

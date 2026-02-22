@@ -1026,7 +1026,7 @@ Default the column is searchable. Give `false` to disable search functionality o
 
 ## column.resizable - [Bool] {#columnresizable-bool}
 
-Default the column is not resizable. Give `true` to enable column resize functionality on specified column.
+Default the column is resizable when columnResize is set to true. Give `false` to disable column resize functionality on specified column.
 
 ## column.csvType - [Object] {#columncsvType-object}
 

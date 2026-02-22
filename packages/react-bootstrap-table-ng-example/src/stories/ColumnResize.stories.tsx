@@ -38,16 +38,13 @@ export const DefaultColumnResize: Story = {
 
     const columns = [{
       dataField: 'id',
-      text: 'Product ID',
-      resizable: true
+      text: 'Product ID'
     }, {
       dataField: 'name',
-      text: 'Product Name',
-      resizable: true
+      text: 'Product Name'
     }, {
       dataField: 'price',
-      text: 'Product Price',
-      resizable: true
+      text: 'Product Price'
     }];
 
     <BootstrapTable keyField='id' data={ products } columns={ columns } columnResize />
@@ -70,8 +67,7 @@ export const MixedColumnResize: Story = {
       resizable: false
     }, {
       dataField: 'name',
-      text: 'Product Name',
-      resizable: true
+      text: 'Product Name'
     }, {
       dataField: 'price',
       text: 'Product Price',

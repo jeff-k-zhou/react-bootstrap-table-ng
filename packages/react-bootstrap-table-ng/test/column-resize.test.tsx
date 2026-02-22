@@ -119,4 +119,22 @@ describe("Core Column Resizing", () => {
     expect(headers[0]).toHaveStyle("width: 50%");
     expect(headers[1]).toHaveStyle("width: 50%");
   });
+
+  it("should make all columns resizable by default when columnResize is true", () => {
+    const columnsWithoutResizable = [
+      { dataField: "id", text: "ID" },
+      { dataField: "name", text: "Name" },
+    ];
+    render(
+      <BootstrapTableWithContext
+        keyField="id"
+        data={data}
+        columns={columnsWithoutResizable}
+        columnResize
+      />
+    );
+
+    const resizers = document.querySelectorAll(".react-bootstrap-table-column-resizer");
+    expect(resizers.length).toBe(2);
+  });
 });

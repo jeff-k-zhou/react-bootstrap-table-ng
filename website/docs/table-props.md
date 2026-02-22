@@ -193,7 +193,7 @@ Customize class on the outer element which wrap up the `table` element.
 
 ## columnResize - [Bool] {#columnresize-bool}
 
-Enable table columns resizable for all columns with resizable attribute set to true.
+Enable table columns resizable for all columns with resizable attribute not set to false.
 
 ## headerClasses - [String] {#headerclasses-string}
 
