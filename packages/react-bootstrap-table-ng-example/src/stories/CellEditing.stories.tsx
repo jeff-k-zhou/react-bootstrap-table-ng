@@ -1097,7 +1097,7 @@ export const TextareaEditor: Story = {
 };
 
 export const CheckboxEditor: Story = {
-  name: "Textarea editor",
+  name: "Checkbox editor",
   args: {
     columns: [{
       dataField: 'id',
@@ -1209,6 +1209,7 @@ export const DateEditor: Story = {
 interface QualityRangerProps {
   value?: number;
   onUpdate: (value: number) => void;
+  didMount?: () => void;
 }
 
 interface QualityRangerState { }
@@ -1232,12 +1233,14 @@ class QualityRanger extends React.Component<QualityRangerProps, QualityRangerSta
   }
 
   render() {
-    const { value, onUpdate, ...rest } = this.props;
+    const { value, onUpdate, didMount, ...rest } = this.props;
 
     return (
       <>
         <input
           {...rest}
+          name="quality"
+          id="quality-ranger"
           key="range"
           ref={(node) => (this.range = node)}
           type="range"
@@ -1280,6 +1283,7 @@ export const CustomEditor: Story = {
     interface QualityRangerProps {
       value?: number;
       onUpdate: (value: number) => void;
+      didMount?: () => void;
     }
 
     interface QualityRangerState { }

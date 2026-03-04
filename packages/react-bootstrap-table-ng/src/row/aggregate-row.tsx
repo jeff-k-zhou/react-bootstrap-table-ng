@@ -22,8 +22,8 @@ class RowAggregator extends shouldUpdater(RowEventDelegater(Component<RowProps>)
       this.props.expanded !== nextProps.expanded ||
       this.props.expandable !== nextProps.expandable ||
       this.props.selectable !== nextProps.selectable ||
-      this.props.selectRow.hideSelectColumn !==
-      nextProps.selectRow.hideSelectColumn ||
+      this.props.selectRow !== nextProps.selectRow ||
+      this.props.expandRow !== nextProps.expandRow ||
       this.shouldUpdatedBySelfProps(nextProps)
     ) {
       this.shouldUpdateRowContent = this.shouldRowContentUpdate(nextProps);

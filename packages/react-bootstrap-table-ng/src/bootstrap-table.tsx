@@ -1,87 +1,96 @@
 import cs from "classnames";
-import React from "react";
+import React, { useId, useEffect } from "react";
 
-import {
-  BootstrapTableProps,
-} from "./types";
+import { BootstrapTableProps, ColumnDescription } from "./types";
 
-import {
-  FILTERS_POSITION_INLINE,
-  ROW_SELECT_DISABLED,
-} from "./const";
+import { FILTERS_POSITION_INLINE, ROW_SELECT_DISABLED } from "./const";
 import Body from "./body";
 import Caption from "./caption";
 import Filters from "./filters";
 import Footer from "./footer";
 import Header from "./header";
-import PropsBaseResolver from "./props-resolver";
 import _ from "./utils";
+import { useTableLogic } from "./hooks/useTableLogic";
 
-class BootstrapTable extends PropsBaseResolver(
-  React.Component<BootstrapTableProps>
-) {
-  constructor(props: BootstrapTableProps) {
-    super(props);
+const DEFAULT_SELECT_ROW = {
+  mode: ROW_SELECT_DISABLED,
+  selected: [],
+  hideSelectColumn: true,
+};
 
-    this.validateProps();
-  }
+const DEFAULT_EXPAND_ROW = {
+  renderer: undefined,
+  expanded: [],
+  nonExpandable: [],
+};
 
-  componentDidUpdate(nextProps: BootstrapTableProps) {
-    if (nextProps.onDataSizeChange && !nextProps.pagination) {
-      if (nextProps.data.length !== this.props.data.length) {
-        nextProps.onDataSizeChange({ dataSize: this.props.data.length });
-      }
+const DEFAULT_CELL_EDIT = {
+  mode: null,
+  nonEditableRows: [],
+};
+
+const BootstrapTable = React.forwardRef<any, BootstrapTableProps>((props, ref) => {
+  const generatedId = useId();
+  const {
+    loading,
+    overlay,
+    columns,
+    keyField,
+    tabIndexCell,
+    id,
+    classes,
+    bootstrap4 = false,
+    bootstrap5 = false,
+    striped = false,
+    hover = false,
+    bordered = true,
+    condensed = false,
+    noDataIndication = null,
+    caption,
+    rowStyle,
+    rowClasses,
+    wrapperClasses,
+    rowEvents,
+    selectRow = DEFAULT_SELECT_ROW,
+    expandRow = DEFAULT_EXPAND_ROW,
+    cellEdit = DEFAULT_CELL_EDIT,
+    filterPosition = FILTERS_POSITION_INLINE,
+    onDataSizeChange,
+    pagination,
+    data,
+    headerClasses,
+    headerWrapperClasses,
+    sortField,
+    sortOrder,
+    onSort,
+    sort,
+    onFilter,
+    currFilters,
+    onExternalFilter,
+    columnResize,
+    bodyClasses,
+    footerClasses,
+  } = props;
+
+  const { validateProps, isEmpty, visibleRows, getVisibleColumnSize } =
+    useTableLogic(props);
+
+  React.useImperativeHandle(ref, () => ({
+    getData: () => data,
+    props: { data },
+  }));
+
+  useEffect(() => {
+    validateProps();
+  }, [validateProps]);
+
+  useEffect(() => {
+    if (onDataSizeChange && !pagination) {
+      onDataSizeChange({ dataSize: data.length });
     }
-  }
+  }, [data.length, onDataSizeChange, pagination]);
 
-  // Exposed APIs
-  getData = () => this.visibleRows();
-
-  render() {
-    const { loading, overlay } = this.props;
-    if (overlay) {
-      const LoadingOverlay = overlay(loading!);
-      return <LoadingOverlay>{this.renderTable()}</LoadingOverlay>;
-    }
-    return this.renderTable();
-  }
-
-  renderTable() {
-    const {
-      columns,
-      keyField,
-      tabIndexCell,
-      id,
-      classes,
-      bootstrap4 = false,
-      bootstrap5 = false,
-      striped = false,
-      hover = false,
-      bordered = true,
-      condensed = false,
-      noDataIndication = null,
-      caption,
-      rowStyle,
-      rowClasses,
-      wrapperClasses,
-      rowEvents,
-      selectRow = {
-        mode: ROW_SELECT_DISABLED,
-        selected: [],
-        hideSelectColumn: true,
-      },
-      expandRow = {
-        renderer: undefined,
-        expanded: [],
-        nonExpandable: [],
-      },
-      cellEdit = {
-        mode: null,
-        nonEditableRows: [],
-      },
-      filterPosition = FILTERS_POSITION_INLINE,
-    } = this.props;
-
+  const renderTable = () => {
     const tableWrapperClass = cs("react-bootstrap-table", wrapperClasses);
 
     const tableClass = cs(
@@ -96,11 +105,11 @@ class BootstrapTable extends PropsBaseResolver(
     );
 
     const hasFilters = columns.some(
-      (col: any) => col.filter || col.filterRenderer
+      (col: ColumnDescription) => col.filter || col.filterRenderer
     );
 
     const hasFooter =
-      _.filter(columns, (col) => _.has(col, "footer")).length > 0;
+      _.filter(columns, (col: ColumnDescription) => _.has(col, "footer")).length > 0;
 
     const tableCaption = caption && (
       <Caption bootstrap4={bootstrap4} bootstrap5={bootstrap5}>
@@ -108,48 +117,50 @@ class BootstrapTable extends PropsBaseResolver(
       </Caption>
     );
 
+    const tableId = id || (props.loading ? `table-${generatedId}` : undefined);
+
     return (
       <div className={tableWrapperClass}>
-        <table id={id} className={tableClass}>
+        <table id={tableId} className={tableClass}>
           {tableCaption}
           <Header
             columns={columns}
-            className={this.props.headerClasses}
-            wrapperClasses={this.props.headerWrapperClasses}
-            sortField={this.props.sortField}
-            sortOrder={this.props.sortOrder}
-            onSort={this.props.onSort}
-            globalSortCaret={this.props.sort && this.props.sort.sortCaret}
-            onFilter={this.props.onFilter}
-            currFilters={this.props.currFilters}
-            onExternalFilter={this.props.onExternalFilter}
+            className={headerClasses}
+            wrapperClasses={headerWrapperClasses}
+            sortField={sortField}
+            sortOrder={sortOrder}
+            onSort={onSort}
+            globalSortCaret={sort && sort.sortCaret}
+            onFilter={onFilter}
+            currFilters={currFilters}
+            onExternalFilter={onExternalFilter}
             selectRow={selectRow}
             expandRow={expandRow}
             filterPosition={filterPosition}
-            columnResize={this.props.columnResize}
+            columnResize={columnResize}
           />
           {hasFilters && filterPosition !== FILTERS_POSITION_INLINE && (
             <Filters
               columns={columns}
-              className={this.props.filtersClasses}
-              onSort={this.props.onSort}
-              onFilter={this.props.onFilter}
-              currFilters={this.props.currFilters}
-              filterPosition={this.props.filterPosition}
-              onExternalFilter={this.props.onExternalFilter}
+              className={props.filtersClasses}
+              onSort={onSort}
+              onFilter={onFilter}
+              currFilters={currFilters}
+              filterPosition={filterPosition}
+              onExternalFilter={onExternalFilter}
               selectRow={selectRow}
               expandRow={expandRow}
             />
           )}
           <Body
-            className={this.props.bodyClasses}
-            data={this.getData()}
+            className={bodyClasses}
+            data={visibleRows}
             keyField={keyField}
             tabIndexCell={tabIndexCell}
             columns={columns}
-            isEmpty={this.isEmpty()}
-            visibleColumnSize={this.visibleColumnSize()}
-            noDataIndication={noDataIndication}
+            isEmpty={isEmpty}
+            visibleColumnSize={getVisibleColumnSize()}
+            noDataIndication={noDataIndication ?? undefined}
             cellEdit={cellEdit}
             selectRow={selectRow}
             expandRow={expandRow}
@@ -159,17 +170,34 @@ class BootstrapTable extends PropsBaseResolver(
           />
           {hasFooter && (
             <Footer
-              data={this.getData()}
+              data={visibleRows}
               columns={columns}
               selectRow={selectRow}
               expandRow={expandRow}
-              className={this.props.footerClasses}
+              className={footerClasses}
             />
           )}
         </table>
       </div>
     );
+  };
+
+  // Memoize the overlay component class (stable identity across re-renders).
+  // overlay is a curried factory: overlay(loading) => ReactComponent.
+  // We call it with `false` just to get the component class, then control
+  // active state via the `active` prop so the component is never remounted.
+  const OverlayComponent = React.useMemo(() => {
+    if (overlay) {
+      return overlay(false);
+    }
+    return null;
+  }, [overlay]);
+
+  if (OverlayComponent) {
+    return <OverlayComponent active={loading}>{renderTable()}</OverlayComponent>;
   }
-}
+
+  return renderTable();
+});
 
 export default BootstrapTable;

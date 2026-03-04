@@ -10,62 +10,49 @@ interface TextEditorProps {
   onKeyDown: (event: any) => void;
 }
 
-class TextAreaEditor extends Component<TextEditorProps> {
-  text: any;
-  constructor(props: TextEditorProps) {
-    super(props);
-    this.handleKeyDown = this.handleKeyDown.bind(this);
-  }
+const TextAreaEditor = React.forwardRef<any, TextEditorProps>((props, ref) => {
+  const {
+    defaultValue = "",
+    didMount,
+    className = "",
+    autoSelectText = false,
+    onKeyDown,
+    ...rest
+  } = props;
 
-  componentDidMount() {
-    const {
-      defaultValue = null,
-      didMount,
-      autoSelectText = false,
-    } = this.props;
-    this.text.value = defaultValue;
-    this.text.focus();
-    if (autoSelectText) this.text.select();
-    if (didMount) didMount();
-  }
+  const inputRef = React.useRef<HTMLTextAreaElement>(null);
 
-  getValue() {
-    return this.text.value;
-  }
-
-  handleKeyDown(e: any) {
-    if (e.keyCode === 13 && !e.shiftKey) return;
-    if (this.props.onKeyDown) {
-      this.props.onKeyDown(e);
+  React.useImperativeHandle(ref, () => ({
+    getValue() {
+      return inputRef.current?.value;
     }
-  }
+  }));
 
-  render() {
-    const {
-      defaultValue = "",
-      didMount,
-      className = "",
-      autoSelectText = false,
-      ...rest
-    } = this.props;
-    const editorClass = cs(className, "form-control editor edit-textarea");
-    return (
-      <textarea
-        ref={(node) => { this.text = node; }}
-        // type="textarea"
-        className={editorClass}
-        {...rest}
-        onKeyDown={this.handleKeyDown}
-      />
-    );
-  }
-  static defaultProps = {
-    className: "",
-    defaultValue: "",
-    autoSelectText: false,
-    onKeyDown: undefined,
-    didMount: undefined,
+  React.useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.value = defaultValue as string;
+      inputRef.current.focus();
+      if (autoSelectText) inputRef.current.select();
+    }
+    if (didMount) didMount();
+  }, []); // Run only once on mount
+
+  const handleKeyDown = (e: any) => {
+    if (e.keyCode === 13 && !e.shiftKey) return;
+    if (onKeyDown) {
+      onKeyDown(e);
+    }
   };
-}
+
+  const editorClass = cs(className, "form-control editor edit-textarea");
+  return (
+    <textarea
+      ref={inputRef}
+      className={editorClass}
+      {...rest}
+      onKeyDown={handleKeyDown}
+    />
+  );
+});
 
 export default TextAreaEditor;

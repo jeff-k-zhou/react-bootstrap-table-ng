@@ -156,8 +156,7 @@ export default ({
                 {header}
                 <SearchBar
                   {...props.searchProps}
-                  className="custome-search-field"
-                  style={{ color: "white" }}
+                  className="custom-search-field"
                   delay={1000}
                   placeholder="Search Something!!!"
                 />

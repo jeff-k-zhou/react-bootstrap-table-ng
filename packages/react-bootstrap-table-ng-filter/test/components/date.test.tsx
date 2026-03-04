@@ -49,6 +49,15 @@ describe("Date Filter", () => {
   describe("when defaultValue.date props is defined", () => {
     const date = new Date(2018, 0, 1);
 
+    const dateParser = (d: any) => {
+      if (!d) return "";
+      const date = new Date(d);
+      if (isNaN(date.getTime())) return "";
+      return `${date.getUTCFullYear()}-${("0" + (date.getUTCMonth() + 1)).slice(-2)}-${(
+        "0" + date.getUTCDate()
+      ).slice(-2)}`;
+    };
+
     it("should render input successfully", () => {
       render(
         <DateFilter
@@ -60,7 +69,7 @@ describe("Date Filter", () => {
       const input = screen.getByTestId("date-filter-input");
       expect(input).toBeInTheDocument();
       // The defaultValue is formatted as yyyy-mm-dd
-      const expectedValue = new DateFilter({ onFilter, column, defaultValue: { date } }).getDefaultDate();
+      const expectedValue = dateParser(date);
       expect(input).toHaveValue(expectedValue);
     });
   });

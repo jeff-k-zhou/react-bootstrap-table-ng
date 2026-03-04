@@ -22,7 +22,7 @@ const Footer: React.FC<FooterProps> = (props) => {
         return false;
       }
 
-      const columnData = _.pluck(data, column.dataField);
+      const columnData = data.map(row => _.get(row, column.dataField));
 
       return (
         <FooterCell

@@ -51,14 +51,20 @@ describe("Editing Cell Consumer", () => {
       cellEdit = cellEditFactory({ mode: CLICK_TO_CELL_EDIT });
       columns[1].editCellClasses = "test-class-1";
       render(
-        <Provider data={data} keyField={keyField} cellEdit={cellEdit}>
-          <WithCellEditComponent
-            row={row}
-            column={columns[1]}
-            rowIndex={rowIndex}
-            columnIndex={columnIndex}
-          />
-        </Provider>
+        <table>
+          <tbody>
+            <tr>
+              <Provider data={data} keyField={keyField} cellEdit={cellEdit}>
+                <WithCellEditComponent
+                  row={row}
+                  column={columns[1]}
+                  rowIndex={rowIndex}
+                  columnIndex={columnIndex}
+                />
+              </Provider>
+            </tr>
+          </tbody>
+        </table>
       );
     });
 
@@ -72,14 +78,20 @@ describe("Editing Cell Consumer", () => {
       cellEdit = cellEditFactory({ mode: CLICK_TO_CELL_EDIT });
       columns[1].editCellStyle = { color: "pink" };
       render(
-        <Provider data={data} keyField={keyField} cellEdit={cellEdit}>
-          <WithCellEditComponent
-            row={row}
-            column={columns[1]}
-            rowIndex={rowIndex}
-            columnIndex={columnIndex}
-          />
-        </Provider>
+        <table>
+          <tbody>
+            <tr>
+              <Provider data={data} keyField={keyField} cellEdit={cellEdit}>
+                <WithCellEditComponent
+                  row={row}
+                  column={columns[1]}
+                  rowIndex={rowIndex}
+                  columnIndex={columnIndex}
+                />
+              </Provider>
+            </tr>
+          </tbody>
+        </table>
       );
     });
 
@@ -95,14 +107,20 @@ describe("Editing Cell Consumer", () => {
       cellEdit = cellEditFactory({ mode: CLICK_TO_CELL_EDIT });
       columns[1].editCellClasses = jest.fn().mockReturnValue(className);
       render(
-        <Provider data={data} keyField={keyField} cellEdit={cellEdit}>
-          <WithCellEditComponent
-            row={row}
-            column={columns[1]}
-            rowIndex={rowIndex}
-            columnIndex={columnIndex}
-          />
-        </Provider>
+        <table>
+          <tbody>
+            <tr>
+              <Provider data={data} keyField={keyField} cellEdit={cellEdit}>
+                <WithCellEditComponent
+                  row={row}
+                  column={columns[1]}
+                  rowIndex={rowIndex}
+                  columnIndex={columnIndex}
+                />
+              </Provider>
+            </tr>
+          </tbody>
+        </table>
       );
     });
 
@@ -127,14 +145,20 @@ describe("Editing Cell Consumer", () => {
       cellEdit = cellEditFactory({ mode: CLICK_TO_CELL_EDIT });
       columns[1].editCellStyle = jest.fn().mockReturnValue(style);
       render(
-        <Provider data={data} keyField={keyField} cellEdit={cellEdit}>
-          <WithCellEditComponent
-            row={row}
-            column={columns[1]}
-            rowIndex={rowIndex}
-            columnIndex={columnIndex}
-          />
-        </Provider>
+        <table>
+          <tbody>
+            <tr>
+              <Provider data={data} keyField={keyField} cellEdit={cellEdit}>
+                <WithCellEditComponent
+                  row={row}
+                  column={columns[1]}
+                  rowIndex={rowIndex}
+                  columnIndex={columnIndex}
+                />
+              </Provider>
+            </tr>
+          </tbody>
+        </table>
       );
     });
 

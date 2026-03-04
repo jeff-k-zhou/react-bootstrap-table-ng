@@ -49,7 +49,7 @@ class WithBootstrapStyle extends PureComponent<WithBootstrapStyleProps, WithBoot
         <link
           href={href}
           rel="stylesheet"
-          ref={(element) => (this.style = element)}
+          ref={(element) => { this.style = element; }}
         />
         {render(this.state.loading)}
       </Fragment>
@@ -60,10 +60,9 @@ class WithBootstrapStyle extends PureComponent<WithBootstrapStyleProps, WithBoot
 /**
  * Currently we adopt version 3 as default.
  */
-// eslint-disable-next-line import/no-anonymous-default-export
-export default (version: string = BOOTSTRAP_VERSION.THREE) => (story: () => React.ReactNode) => (
+export default (version: string = BOOTSTRAP_VERSION.THREE) => (Story: any) => (
   <WithBootstrapStyle
     version={version}
-    render={(loading) => !loading && story()}
+    render={(loading) => !loading && <Story />}
   />
 );

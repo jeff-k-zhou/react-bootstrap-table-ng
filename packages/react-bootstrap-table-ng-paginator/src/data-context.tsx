@@ -10,109 +10,128 @@ import { alignPage, getByCurrPage } from "./page";
 import Pagination from "./pagination";
 import createBaseContext from "./state-context";
 
-const { Provider } = createBaseContext();
+import { usePaginationState } from "./hooks/usePaginationState";
 
 const PaginationDataContext = React.createContext<any>(null);
 
-class PaginationDataProvider extends Provider {
+const PaginationDataProvider = React.forwardRef<any, PaginationDataProviderProps>((props, ref) => {
+  const {
+    data: propData,
+    pagination,
+    onDataSizeChange,
+    children,
+  } = props;
 
+  const {
+    currPage,
+    setCurrPage,
+    currSizePerPage,
+    getPaginationProps,
+    isRemotePagination,
+    remoteEmitterRef,
+  } = usePaginationState(props);
 
-  componentDidUpdate(nextProps: PaginationDataProviderProps) {
-    super.componentDidUpdate(nextProps);
-    const { currSizePerPage } = this;
-    const { custom, onPageChange } = nextProps.pagination.options;
+  React.useImperativeHandle(ref, () => ({
+    currPage,
+    currSizePerPage,
+  }));
 
+  const prevDataLengthRef = React.useRef(propData.length);
+
+  React.useEffect(() => {
+    const options = pagination!.options!;
+    const { custom, onPageChange } = options;
     const pageStartIndex =
-      typeof nextProps.pagination.options.pageStartIndex !== "undefined"
-        ? nextProps.pagination.options.pageStartIndex
+      typeof options.pageStartIndex !== "undefined"
+        ? options.pageStartIndex
         : Const.PAGE_START_INDEX;
 
-    // user should align the page when the page is not fit to the data size when remote enable
-    if (!this.isRemotePagination() && !custom) {
+    if (!isRemotePagination() && !custom) {
       const newPage = alignPage(
-        nextProps.data.length,
-        this.props.data.length,
-        this.currPage,
+        propData.length,
+        prevDataLengthRef.current,
+        currPage,
         currSizePerPage,
         pageStartIndex
       );
 
-      if (this.currPage !== newPage) {
+      if (currPage !== newPage) {
         if (onPageChange) {
           onPageChange(newPage, currSizePerPage);
         }
-        this.currPage = newPage;
+        setCurrPage(newPage);
       }
     }
-    if (
-      nextProps.onDataSizeChange &&
-      nextProps.data.length !== this.props.data.length
-    ) {
-      nextProps.onDataSizeChange({ dataSize: this.props.data.length });
+
+    if (onDataSizeChange && propData.length !== prevDataLengthRef.current) {
+      onDataSizeChange({ dataSize: prevDataLengthRef.current });
     }
+    prevDataLengthRef.current = propData.length;
+  }, [
+    propData.length,
+    pagination,
+    onDataSizeChange,
+    currPage,
+    currSizePerPage,
+    isRemotePagination,
+    setCurrPage,
+  ]);
+
+  const options = pagination!.options!;
+  const effectiveCurrSizePerPage = options.sizePerPage ?? currSizePerPage;
+  const pageStartIndex =
+    typeof options.pageStartIndex === "undefined"
+      ? Const.PAGE_START_INDEX
+      : options.pageStartIndex;
+
+  let data = propData;
+  let effectiveCurrPage = options.page ?? currPage;
+
+  if (!isRemotePagination() && data.length <= (effectiveCurrPage - 1) * effectiveCurrSizePerPage) {
+    const totalPages = Math.floor(data.length / effectiveCurrSizePerPage) + 1;
+    effectiveCurrPage = effectiveCurrPage > totalPages ? totalPages : currPage;
+    // Note: We don't use setCurrPage here to avoid render loops, similar to the class component's direct assignment
   }
 
-  isRemotePagination = () => this.props.isRemotePagination();
+  const slicedData = isRemotePagination()
+    ? data
+    : getByCurrPage(data, effectiveCurrPage, effectiveCurrSizePerPage, pageStartIndex);
 
-  renderDefaultPagination = () => {
-    if (!this.props.pagination!.options!.custom) {
+  const renderDefaultPagination = () => {
+    if (!options.custom) {
       const {
-        page: currPage,
-        sizePerPage: currSizePerPage,
+        page: paginationPage,
+        sizePerPage: paginationSizePerPage,
         dataSize,
         ...rest
-      } = this.getPaginationProps();
+      } = getPaginationProps();
       return (
         <Pagination
           {...rest}
           key="pagination"
-          dataSize={dataSize || this.props.data.length}
-          currPage={currPage}
-          currSizePerPage={currSizePerPage}
+          dataSize={dataSize || propData.length}
+          currPage={paginationPage}
+          currSizePerPage={paginationSizePerPage}
         />
       );
     }
     return null;
   };
 
-  render() {
-    const options = this.props.pagination!.options!;
-    const currSizePerPage = options.sizePerPage ?? this.currSizePerPage;
-    const pageStartIndex =
-      typeof options.pageStartIndex === "undefined"
-        ? Const.PAGE_START_INDEX
-        : options.pageStartIndex;
-
-    // workaround an issue with currPage is not 1, but data size is less than currSizePerPage
-    // when SearchBar input changed, componentDidUpdate in the SAME Toolkit updated (searching the data)
-    // secondly after componentDidUpdate (calculating currPage) in this package triggered at first
-    let { data } = this.props;
-    let currPage = options.page ?? this.currPage;
-
-    if (!this.isRemotePagination() && data.length <= (currPage - 1) * currSizePerPage) {
-      const totalPages = Math.floor(data.length / currSizePerPage) + 1;
-      currPage = currPage > totalPages ? totalPages : currPage;
-      this.currPage = currPage;
-    }
-
-    if (this.isRemotePagination()) {
-      this.currPage = currPage;
-    }
-
-    data = this.isRemotePagination()
-      ? data
-      : getByCurrPage(data, currPage, currSizePerPage, pageStartIndex);
-
-    return (
-      <PaginationDataContext.Provider
-        value={{ data, setRemoteEmitter: this.setPaginationRemoteEmitter }}
-      >
-        {this.props.children}
-        {this.renderDefaultPagination()}
-      </PaginationDataContext.Provider>
-    );
-  }
-}
+  return (
+    <PaginationDataContext.Provider
+      value={{
+        data: slicedData,
+        setRemoteEmitter: (emitter: any) => {
+          remoteEmitterRef.current = emitter;
+        },
+      }}
+    >
+      {children}
+      {renderDefaultPagination()}
+    </PaginationDataContext.Provider>
+  );
+});
 
 export default () => ({
   Provider: PaginationDataProvider,

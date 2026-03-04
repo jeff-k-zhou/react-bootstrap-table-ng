@@ -26,79 +26,59 @@ interface DropDownEditorState {
   options: Option[];
 }
 
-class DropDownEditor extends Component<
-  DropDownEditorProps,
-  DropDownEditorState
-> {
-  select: any;
-  constructor(props: any) {
-    super(props);
-    let options = props.options ?? [];
-    if (props.getOptions) {
-      options =
-        props.getOptions(this.setOptions.bind(this), {
-          row: props.row,
-          column: props.column,
-        }) || [];
+const DropDownEditor = React.forwardRef<any, DropDownEditorProps>((props, ref) => {
+  const {
+    defaultValue = "",
+    didMount,
+    getOptions,
+    className = "",
+    onUpdate,
+    options: initialOptions = [],
+    row,
+    column,
+    ...rest
+  } = props;
+
+  const [options, setOptions] = React.useState<Option[]>(initialOptions);
+  const selectRef = React.useRef<HTMLSelectElement>(null);
+
+  React.useImperativeHandle(ref, () => ({
+    getValue() {
+      return selectRef.current?.value;
     }
-    this.state = { options };
-  }
+  }));
 
-  componentDidMount() {
-    const { defaultValue = "", didMount } = this.props;
-    this.select.value = defaultValue;
-    this.select.focus();
-    if (didMount) {
-      didMount();
+  React.useEffect(() => {
+    if (getOptions) {
+      const result = getOptions(setOptions, { row, column });
+      if (result) setOptions(result);
     }
-  }
+  }, [getOptions, row, column]);
 
-  setOptions(options: any) {
-    this.setState({ options });
-  }
+  React.useEffect(() => {
+    if (selectRef.current) {
+      selectRef.current.value = defaultValue as string;
+      selectRef.current.focus();
+    }
+    if (didMount) didMount();
+  }, []); // Run only once on mount
 
-  getValue() {
-    return this.select.value;
-  }
+  const editorClass = cs(className, "form-control editor edit-select");
 
-  render() {
-    const {
-      defaultValue = "",
-      didMount,
-      getOptions,
-      className = "",
-      onUpdate,
-      ...rest
-    } = this.props;
-    const editorClass = cs(className, "form-control editor edit-select");
-
-    const attr = {
-      ...rest,
-      className: editorClass,
-    };
-
-    return (
-      <select
-        {...attr}
-        ref={(node) => { this.select = node; }}
-        defaultValue={defaultValue}
-      >
-        {this.state.options.map(({ label, value }: any) => (
-          <option key={value} value={value}>
-            {label}
-          </option>
-        ))}
-      </select>
-    );
-  }
-  static defaultProps = {
-    className: '',
-    defaultValue: '',
-    style: {},
-    options: [],
-    didMount: undefined,
-    getOptions: undefined
-  };
-}
+  return (
+    <select
+      {...rest}
+      ref={selectRef}
+      defaultValue={defaultValue}
+      className={editorClass}
+    >
+      {options.map(({ label, value: val }: any) => (
+        <option key={val} value={val}>
+          {label}
+        </option>
+      ))}
+    </select>
+  );
+});
 
 export default DropDownEditor;

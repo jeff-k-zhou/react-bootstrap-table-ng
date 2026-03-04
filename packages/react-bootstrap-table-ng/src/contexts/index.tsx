@@ -7,11 +7,31 @@ import { BootstrapContext } from "./bootstrap";
 import createColumnContext from "./column-context";
 import createDataContext from "./data-context";
 import createRowExpandContext from "./row-expand-context";
-import { createSelectionContext } from "./selection-context";
+import createSelectionContext from "./selection-context";
 import createSortContext from "./sort-context";
 
-const withContext = (Base: any) =>
-  class BootstrapTableContainer extends RemoteResolver(Base) {
+const withContext = (Base: any) => {
+  const RemoteResolverBase = RemoteResolver(Base) as any as new (props: any) => React.Component<any, any>;
+  class BootstrapTableContainer extends RemoteResolverBase {
+    DataContext: any;
+    SortContext: any;
+    ColumnContext: any;
+    SelectionContext: any;
+    RowExpandContext: any;
+    CellEditContext: any;
+    FilterContext: any;
+    PaginationContext: any;
+    SearchContext: any;
+    table: any;
+    selectionContext: any;
+    rowExpandContext: any;
+    paginationContext: any;
+    sortContext: any;
+    searchContext: any;
+    filterContext: any;
+    cellEditContext: any;
+    remoteEmitter: any;
+
     constructor(props: any) {
       super(props);
       this.DataContext = createDataContext();
@@ -19,18 +39,23 @@ const withContext = (Base: any) =>
         columnWidths: {},
       };
       this.onColumnResize = this.onColumnResize.bind(this);
+      this.remoteEmitter = new EventEmitter();
+
+      this.remoteEmitter.on("paginationChange", (page: number, sizePerPage: number) => {
+        (this as any).handleRemotePageChange(page, sizePerPage);
+      });
 
       if (props.registerExposedAPI) {
         const exposedAPIEmitter = new EventEmitter();
         exposedAPIEmitter.on(
           "get.table.data",
-          (payload) => (payload.result = this.table.getData())
+          (payload: any) => (payload.result = this.table.getData())
         );
         exposedAPIEmitter.on(
           "get.selected.rows",
-          (payload) => (payload.result = this.selectionContext.getSelected())
+          (payload: any) => (payload.result = this.selectionContext.getSelected())
         );
-        exposedAPIEmitter.on("get.filtered.rows", (payload) => {
+        exposedAPIEmitter.on("get.filtered.rows", (payload: any) => {
           if (this.searchContext) {
             payload.result = this.searchContext.getSearched();
           } else if (this.filterContext) {
@@ -44,9 +69,9 @@ const withContext = (Base: any) =>
 
       if (props.columns.filter((col: any) => col.sort).length > 0) {
         this.SortContext = createSortContext(
-          dataOperator,
-          this.isRemoteSort,
-          this.handleRemoteSortChange
+          dataOperator as any,
+          (this as any).isRemoteSort,
+          (this as any).handleRemoteSortChange
         );
       }
 
@@ -70,16 +95,16 @@ const withContext = (Base: any) =>
         this.CellEditContext = props.cellEdit.createContext(
           _,
           dataOperator,
-          this.isRemoteCellEdit,
-          this.handleRemoteCellChange
+          (this as any).isRemoteCellEdit,
+          (this as any).handleRemoteCellChange
         );
       }
 
       if (props.filter) {
         this.FilterContext = props.filter.createContext(
           _,
-          this.isRemoteFiltering,
-          this.handleRemoteFilterChange
+          (this as any).isRemoteFiltering,
+          (this as any).handleRemoteFilterChange
         );
       }
 
@@ -90,8 +115,8 @@ const withContext = (Base: any) =>
       if (props.search && props.search.searchContext) {
         this.SearchContext = props.search.searchContext(
           _,
-          this.isRemoteSearch,
-          this.handleRemoteSearchChange
+          (this as any).isRemoteSearch,
+          (this as any).handleRemoteSearchChange
         );
       }
 
@@ -109,9 +134,9 @@ const withContext = (Base: any) =>
         this.SortContext = null;
       } else if (!this.SortContext) {
         this.SortContext = createSortContext(
-          dataOperator,
-          this.isRemoteSort,
-          this.handleRemoteSortChange
+          dataOperator as any,
+          (this as any).isRemoteSort,
+          (this as any).handleRemoteSortChange
         );
       }
       if (!nextProps.pagination && this.props.pagination) {
@@ -119,8 +144,8 @@ const withContext = (Base: any) =>
       }
       if (nextProps.pagination && !this.props.pagination) {
         this.PaginationContext = nextProps.pagination.createContext(
-          this.isRemotePagination,
-          this.handleRemotePageChange
+          (this as any).isRemotePagination,
+          (this as any).handleRemotePageChange
         );
       }
       if (!nextProps.cellEdit && this.props.cellEdit) {
@@ -130,8 +155,8 @@ const withContext = (Base: any) =>
         this.CellEditContext = nextProps.cellEdit.createContext(
           _,
           dataOperator,
-          this.isRemoteCellEdit,
-          this.handleRemoteCellChange
+          (this as any).isRemoteCellEdit,
+          (this as any).handleRemoteCellChange
         );
       }
     }
@@ -318,7 +343,7 @@ const withContext = (Base: any) =>
           data={rootProps.getData(filterProps, searchProps, sortProps)}
           bootstrap4={this.props.bootstrap4}
           bootstrap5={this.props.bootstrap5}
-          isRemotePagination={this.isRemotePagination}
+          isRemotePagination={(this as any).isRemotePagination}
           remoteEmitter={this.remoteEmitter}
           onDataSizeChange={this.props.onDataSizeChange}
           tableId={this.props.id}
@@ -478,5 +503,7 @@ const withContext = (Base: any) =>
       );
     }
   };
+  return BootstrapTableContainer;
+};
 
 export default withContext;

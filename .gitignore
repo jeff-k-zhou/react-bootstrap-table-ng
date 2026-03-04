@@ -34,3 +34,7 @@ build
 *build_output*
 *build_error*
 website/static/storybook
+test_output.txt
+*.log
+summarize-errors.js
+crawl-storybook.js

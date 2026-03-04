@@ -2,7 +2,7 @@
 /* eslint jsx-a11y/no-static-element-interactions: 0 */
 /* eslint no-return-assign: 0 */
 /* eslint prefer-template: 0 */
-import React, { Component } from "react";
+import React, { forwardRef, useImperativeHandle } from "react";
 
 import { DateFilterProps, FILTER_TYPES } from "../..";
 
@@ -16,84 +16,45 @@ const LE = "<=";
 const legalComparators = [EQ, NE, GT, GE, LT, LE];
 
 function dateParser(d: any) {
-  return `${d.getUTCFullYear()}-${("0" + (d.getUTCMonth() + 1)).slice(-2)}-${(
-    "0" + d.getUTCDate()
+  if (!d) return "";
+  const date = new Date(d);
+  if (isNaN(date.getTime())) return "";
+  return `${date.getUTCFullYear()}-${("0" + (date.getUTCMonth() + 1)).slice(-2)}-${(
+    "0" + date.getUTCDate()
   ).slice(-2)}`;
 }
 
-class DateFilter extends Component<DateFilterProps> {
-  comparators: any;
-  dateFilterComparator: any;
-  inputDate: any;
-  timeout: any;
-  constructor(props: any) {
-    super(props);
-    this.timeout = null;
-    this.comparators = props.comparators || legalComparators;
-    this.applyFilter = this.applyFilter.bind(this);
-    this.onChangeDate = this.onChangeDate.bind(this);
-    this.onChangeComparator = this.onChangeComparator.bind(this);
-  }
+const DateFilter = forwardRef<any, DateFilterProps>((props, ref) => {
+  const {
+    id = null,
+    placeholder,
+    column,
+    style,
+    comparatorStyle,
+    dateStyle,
+    className = "",
+    comparatorClassName = "",
+    dateClassName = "",
+    onFilter,
+    getFilter,
+    defaultValue = { date: undefined, comparator: "" },
+    filterState = {},
+    delay = 0,
+    comparators: propComparators,
+    withoutEmptyComparatorOption = false,
+  } = props;
 
-  componentDidMount() {
-    const { getFilter } = this.props;
-    const comparator = this.dateFilterComparator.value;
-    const date = this.inputDate.value;
-    if (comparator && date) {
-      this.applyFilter(date, comparator, true);
-    }
+  const { dataField, text } = column;
+  const comparators = React.useMemo(
+    () => propComparators || legalComparators,
+    [propComparators]
+  );
 
-    // export onFilter function to allow users to access
-    if (getFilter) {
-      getFilter((filterVal: any) => {
-        const nullableFilterVal = filterVal || { date: null, comparator: null };
-        this.dateFilterComparator.value = nullableFilterVal.comparator;
-        this.inputDate.value = nullableFilterVal.date
-          ? dateParser(nullableFilterVal.date)
-          : null;
+  const dateFilterComparatorRef = React.useRef<HTMLSelectElement>(null);
+  const inputDateRef = React.useRef<HTMLInputElement>(null);
+  const timeoutRef = React.useRef<any>(null);
 
-        this.applyFilter(nullableFilterVal.date, nullableFilterVal.comparator);
-      });
-    }
-  }
-
-  componentWillUnmount() {
-    if (this.timeout) clearTimeout(this.timeout);
-  }
-
-  onChangeDate(e: any) {
-    const comparator = this.dateFilterComparator.value;
-    const filterValue = e.target.value;
-    this.applyFilter(filterValue, comparator);
-  }
-
-  onChangeComparator(e: any) {
-    const value = this.inputDate.value;
-    const comparator = e.target.value;
-    this.applyFilter(value, comparator);
-  }
-
-  getComparatorOptions() {
-    const optionTags = [];
-    const { withoutEmptyComparatorOption = false } = this.props;
-    if (!withoutEmptyComparatorOption) {
-      optionTags.push(<option key="-1" />);
-    }
-    for (let i = 0; i < this.comparators.length; i += 1) {
-      optionTags.push(
-        <option key={i} value={this.comparators[i]}>
-          {this.comparators[i]}
-        </option>
-      );
-    }
-    return optionTags;
-  }
-
-  getDefaultComparator() {
-    const {
-      defaultValue = { date: undefined, comparator: "" },
-      filterState = {},
-    } = this.props;
+  const getDefaultComparator = React.useCallback(() => {
     if (filterState && filterState.filterVal) {
       return filterState.filterVal.comparator;
     }
@@ -101,121 +62,157 @@ class DateFilter extends Component<DateFilterProps> {
       return defaultValue.comparator;
     }
     return "";
-  }
+  }, [filterState, defaultValue]);
 
-  getDefaultDate() {
-    // Set the appropriate format for the input type=date, i.e. "YYYY-MM-DD"
-    const {
-      defaultValue = { date: undefined, comparator: "" },
-      filterState = {},
-    } = this.props;
+  const getDefaultDate = React.useCallback(() => {
     if (filterState && filterState.filterVal && filterState.filterVal.date) {
       return dateParser(filterState.filterVal.date);
     }
     if (defaultValue && defaultValue.date) {
-      return dateParser(new Date(defaultValue.date));
+      return dateParser(defaultValue.date);
     }
     return "";
-  }
+  }, [filterState, defaultValue]);
 
-  applyFilter(value: any, comparator: any, isInitial?: any) {
-    // if (!comparator || !value) {
-    //  return;
-    // }
-    const { column, onFilter, delay = 0 } = this.props;
-    const execute = () => {
-      // Incoming value should always be a string, and the defaultDate
-      // above is implemented as an empty string, so we can just check for that.
-      // instead of parsing an invalid Date. The filter function will interpret
-      // null as an empty date field
-      const date = value === "" ? null : new Date(value);
-      // TODO
-      // @ts-ignore
-      onFilter(column, FILTER_TYPES.DATE, isInitial)({ date, comparator });
-    };
-    if (delay) {
-      this.timeout = setTimeout(() => {
+  const applyFilterInternal = React.useCallback(
+    (value: any, comparator: any, isInitial?: any) => {
+      const execute = () => {
+        const date = value === "" ? null : new Date(value);
+        // TODO
+        // @ts-ignore
+        onFilter(column, FILTER_TYPES.DATE, isInitial)({ date, comparator });
+      };
+
+      if (delay) {
+        if (timeoutRef.current) clearTimeout(timeoutRef.current);
+        timeoutRef.current = setTimeout(execute, delay);
+      } else {
         execute();
-      }, delay);
-    } else {
-      execute();
-    }
-  }
-
-  render() {
-    const {
-      id = null,
-      placeholder,
-      column: { dataField, text },
-      style,
-      comparatorStyle,
-      dateStyle,
-      className = "",
-      comparatorClassName = "",
-      dateClassName = "",
-    } = this.props;
-
-    const comparatorElmId = `date-filter-comparator-${dataField}${id ? `-${id}` : ""
-      }`;
-    const inputElmId = `date-filter-column-${dataField}${id ? `-${id}` : ""}`;
-
-    return (
-      <div
-        onClick={(e) => e.stopPropagation()}
-        className={`filter date-filter ${className}`}
-        style={style as any}
-        data-testid="date-filter"
-      >
-        <label className="filter-label" htmlFor={comparatorElmId}>
-          <span className="sr-only visually-hidden">Filter comparator</span>
-          <select
-            ref={(n) => { this.dateFilterComparator = n; }}
-            id={comparatorElmId}
-            style={comparatorStyle as any}
-            className={`date-filter-comparator form-control ${comparatorClassName}`}
-            onChange={this.onChangeComparator}
-            defaultValue={this.getDefaultComparator()}
-            data-testid="date-filter-comparator"
-          >
-            {this.getComparatorOptions()}
-          </select>
-        </label>
-        <label htmlFor={inputElmId}>
-          <span className="sr-only visually-hidden">Enter ${text}</span>
-          <input
-            ref={(n) => { this.inputDate = n; }}
-            id={inputElmId}
-            className={`filter date-filter-input form-control ${dateClassName}`}
-            style={dateStyle as any}
-            type="date"
-            onChange={this.onChangeDate}
-            placeholder={placeholder || `Enter ${text}...`}
-            defaultValue={this.getDefaultDate()}
-            data-testid="date-filter-input"
-          />
-        </label>
-      </div>
-    );
-  }
-
-  static defaultProps = {
-    delay: 0,
-    defaultValue: {
-      date: undefined,
-      comparator: ''
+      }
     },
-    filterState: {},
-    withoutEmptyComparatorOption: false,
-    comparators: legalComparators,
-    placeholder: undefined,
-    style: undefined,
-    className: '',
-    comparatorStyle: undefined,
-    comparatorClassName: '',
-    dateStyle: undefined,
-    dateClassName: '',
-    id: null
+    [column, onFilter, delay]
+  );
+
+  useImperativeHandle(ref, () => ({
+    applyFilter: (val: any) => {
+        if (dateFilterComparatorRef.current) {
+          dateFilterComparatorRef.current.value = val.comparator || "";
+        }
+        if (inputDateRef.current) {
+          inputDateRef.current.value = val.date ? dateParser(val.date) : "";
+        }
+        applyFilterInternal(val.date, val.comparator);
+    },
+    cleanFiltered: () => {
+        if (dateFilterComparatorRef.current) {
+          dateFilterComparatorRef.current.value = "";
+        }
+        if (inputDateRef.current) {
+          inputDateRef.current.value = "";
+        }
+        applyFilterInternal(null, "");
+    }
+  }));
+
+  React.useEffect(() => {
+    const comparator = dateFilterComparatorRef.current?.value;
+    const date = inputDateRef.current?.value;
+    if (comparator && date) {
+      applyFilterInternal(date, comparator, true);
+    }
+
+    if (getFilter) {
+      getFilter((filterVal: any) => {
+        const nullableFilterVal = filterVal || { date: null, comparator: null };
+        if (dateFilterComparatorRef.current) {
+          dateFilterComparatorRef.current.value = nullableFilterVal.comparator;
+        }
+        if (inputDateRef.current) {
+          inputDateRef.current.value = nullableFilterVal.date
+            ? dateParser(nullableFilterVal.date)
+            : "";
+        }
+
+        applyFilterInternal(nullableFilterVal.date, nullableFilterVal.comparator);
+      });
+    }
+
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, []);
+
+  const onChangeDate = (e: any) => {
+    const comparator = dateFilterComparatorRef.current?.value;
+    const filterValue = e.target.value;
+    applyFilterInternal(filterValue, comparator);
   };
-}
+
+  const onChangeComparator = (e: any) => {
+    const value = inputDateRef.current?.value;
+    const comparator = e.target.value;
+    applyFilterInternal(value, comparator);
+  };
+
+  const getComparatorOptions = () => {
+    const optionTags = [];
+    if (!withoutEmptyComparatorOption) {
+      optionTags.push(<option key="-1" />);
+    }
+    for (let i = 0; i < comparators.length; i += 1) {
+      optionTags.push(
+        <option key={i} value={comparators[i]}>
+          {comparators[i]}
+        </option>
+      );
+    }
+    return optionTags;
+  };
+
+  const comparatorElmId = `date-filter-comparator-${dataField}${
+    id ? `-${id}` : ""
+  }`;
+  const inputElmId = `date-filter-column-${dataField}${id ? `-${id}` : ""}`;
+
+  return (
+    <div
+      onClick={(e) => e.stopPropagation()}
+      className={`filter date-filter ${className}`}
+      style={style as any}
+      data-testid="date-filter"
+    >
+      <label className="filter-label" htmlFor={comparatorElmId}>
+        <span className="sr-only visually-hidden">Filter comparator</span>
+        <select
+          ref={dateFilterComparatorRef}
+          id={comparatorElmId}
+          style={comparatorStyle as any}
+          className={`date-filter-comparator form-control ${comparatorClassName}`}
+          onChange={onChangeComparator}
+          defaultValue={getDefaultComparator()}
+          data-testid="date-filter-comparator"
+        >
+          {getComparatorOptions()}
+        </select>
+      </label>
+      <label htmlFor={inputElmId}>
+        <span className="sr-only visually-hidden">Enter ${text}</span>
+        <input
+          ref={inputDateRef}
+          id={inputElmId}
+          className={`filter date-filter-input form-control ${dateClassName}`}
+          style={dateStyle as any}
+          type="date"
+          onChange={onChangeDate}
+          placeholder={placeholder || `Enter ${text}...`}
+          defaultValue={getDefaultDate()}
+          data-testid="date-filter-input"
+        />
+      </label>
+    </div>
+  );
+});
+
+DateFilter.displayName = "DateFilter";
 
 export default DateFilter;

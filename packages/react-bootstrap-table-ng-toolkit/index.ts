@@ -1,11 +1,8 @@
-import React from "react";
 import { ColumnDescription, SearchProps } from "react-bootstrap-table-ng";
-
-import Context from "./context";
-import ToolkitProvider from "./provider";
+import ToolkitProvider, { ToolkitContext } from "./context";
 
 export default ToolkitProvider;
-export const ToolkitContext = Context;
+export { ToolkitProvider, ToolkitContext };
 
 export { default as ColumnToggle } from "./src/column-toggle";
 export { default as CSVExport } from "./src/csv";
@@ -79,7 +76,7 @@ export interface ToolkitContextType {
     /**
      * array of toggled columns
      */
-    toggles: boolean[];
+    toggles: { [dataField: string]: boolean };
     onColumnToggle: (dataField: string) => void;
   };
   baseProps: {
@@ -100,7 +97,7 @@ export interface ToggleListProps {
   /**
    * array of toggled columns
    */
-  toggles: boolean[];
+  toggles: { [dataField: string]: boolean };
   onColumnToggle: (dataField: string) => void;
   btnClassName?: string | undefined;
   className?: string | undefined;

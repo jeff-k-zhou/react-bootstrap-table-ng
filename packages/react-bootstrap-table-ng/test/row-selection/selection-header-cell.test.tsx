@@ -5,26 +5,6 @@ import SelectionHeaderCell, { CheckBox } from "../../src/row-selection/selection
 import { BootstrapContext } from "../../src/contexts/bootstrap";
 
 describe("<SelectionHeaderCell />", () => {
-  describe("shouldComponentUpdate", () => {
-    it("should not update component when mode is radio", () => {
-      const instance = new SelectionHeaderCell({ mode: "radio" });
-      expect(instance.shouldComponentUpdate({})).toBe(false);
-    });
-
-    describe("when mode is checkbox", () => {
-      it("should not update component if checkedStatus prop has not been changed", () => {
-        const checkedStatus = CHECKBOX_STATUS_CHECKED;
-        const instance = new SelectionHeaderCell({ mode: "checkbox", checkedStatus });
-        expect(instance.shouldComponentUpdate({ checkedStatus })).toBe(false);
-      });
-
-      it("should update component if checkedStatus prop has been changed", () => {
-        const checkedStatus = CHECKBOX_STATUS_CHECKED;
-        const instance = new SelectionHeaderCell({ mode: "checkbox", checkedStatus: CHECKBOX_STATUS_INDETERMINATE });
-        expect(instance.shouldComponentUpdate({ checkedStatus })).toBe(true);
-      });
-    });
-  });
 
   describe("handleCheckBoxClick", () => {
     it("should do nothing when mode is radio", () => {

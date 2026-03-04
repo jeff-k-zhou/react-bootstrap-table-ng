@@ -7,50 +7,6 @@ describe("<SelectionCell />", () => {
   const mode = "checkbox";
   const rowIndex = 1;
 
-  describe("shouldComponentUpdate", () => {
-    let props: any;
-    let nextProps: any;
-
-    function getInstance(props: any) {
-      // Directly instantiate for logic testing
-      return new SelectionCell(props);
-    }
-
-    it("should return true when selected prop has been changed", () => {
-      props = { selected: false, mode, rowIndex, disabled: false, rowKey: 1 };
-      nextProps = { ...props, selected: true };
-      const instance = getInstance(props);
-      expect(instance.shouldComponentUpdate(nextProps)).toBe(true);
-    });
-
-    it("should return true when rowIndex prop has been changed", () => {
-      props = { selected: false, mode, rowIndex, disabled: false, rowKey: 1 };
-      nextProps = { ...props, rowIndex: 2 };
-      const instance = getInstance(props);
-      expect(instance.shouldComponentUpdate(nextProps)).toBe(true);
-    });
-
-    it("should return true when tabIndex prop has been changed", () => {
-      props = { selected: false, mode, rowIndex, disabled: false, tabIndex: 0, rowKey: 1 };
-      nextProps = { ...props, tabIndex: 2 };
-      const instance = getInstance(props);
-      expect(instance.shouldComponentUpdate(nextProps)).toBe(true);
-    });
-
-    it("should return true when disabled prop has been changed", () => {
-      props = { selected: false, mode, rowIndex, disabled: false, rowKey: 1 };
-      nextProps = { ...props, disabled: true };
-      const instance = getInstance(props);
-      expect(instance.shouldComponentUpdate(nextProps)).toBe(true);
-    });
-
-    it("should return true when rowKey prop has been changed", () => {
-      props = { selected: false, mode, rowIndex, disabled: false, rowKey: 1 };
-      nextProps = { ...props, rowKey: "1" };
-      const instance = getInstance(props);
-      expect(instance.shouldComponentUpdate(nextProps)).toBe(true);
-    });
-  });
 
   describe("handleClick", () => {
     const rowKey = 1;

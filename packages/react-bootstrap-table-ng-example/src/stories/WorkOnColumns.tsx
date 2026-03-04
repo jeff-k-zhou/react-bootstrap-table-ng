@@ -313,7 +313,6 @@ class DummyColumnWithRowExpand extends React.Component<
   };
 
   rowStyle = (row: any, rowIndex: number) => {
-    (row as any).index = rowIndex;
     const style: { backgroundColor?: any; borderTop?: any } = {};
     if (rowIndex % 2 === 0) {
       style.backgroundColor = "transparent";
@@ -324,6 +323,8 @@ class DummyColumnWithRowExpand extends React.Component<
 
     return style;
   };
+
+  products = productsGenerator();
 
   render() {
     const columns = [
@@ -340,6 +341,7 @@ class DummyColumnWithRowExpand extends React.Component<
         text: "Product Price",
       },
       {
+        dataField: "action",
         isDummyField: true,
         text: "",
         formatter: this.actionFormater,
@@ -416,6 +418,7 @@ class DummyColumnWithRowExpand extends React.Component<
           dataField: 'price',
           text: 'Product Price'
         }, {
+          dataField: 'action',
           text: '',
           isDummyField: true,
           formatter: this.actionFormater,
@@ -445,7 +448,7 @@ class DummyColumnWithRowExpand extends React.Component<
       <div>
         <BootstrapTable
           keyField="id"
-          data={productsGenerator()}
+          data={this.products}
           columns={columns}
           rowStyle={this.rowStyle}
           rowEvents={this.rowEvents}

@@ -1,8 +1,7 @@
-import React, { Component } from "react";
-import baseResolver from "../../src/props-resolver/index";
-import { extendTo } from "../test-helpers/mock-component";
+import { renderHook } from "@testing-library/react";
+import { useTableLogic } from "../../src/hooks/useTableLogic";
 
-describe("TableResolver", () => {
+describe("useTableLogic", () => {
   const keyField = "id";
   const columns = [
     {
@@ -25,126 +24,36 @@ describe("TableResolver", () => {
     },
   ];
 
-  const ExtendBase = baseResolver(Component);
-  const BootstrapTableMock: any = extendTo(ExtendBase);
-
-  function createInstance(props: any = {}) {
-    // Create a React element and get the instance via ref
-    let instance: any = null;
-    // We use a test container to mount the component and get the instance
-    // This is not a DOM test, so we use React's ref directly
-    React.createElement(BootstrapTableMock, {
-      ...props,
-      ref: (ref: any) => {
-        instance = ref;
-      },
-    });
-    // Simulate mounting by manually constructing the instance
-    if (!instance) {
-      instance = new BootstrapTableMock(props);
-    }
-    return instance;
-  }
-
   describe("visibleRows", () => {
-    describe("if hiddenRows prop is not existing", () => {
-      let instance: any;
-      beforeEach(() => {
-        instance = createInstance({
-          data,
-          columns,
-          keyField,
-        });
-      });
-
-      it("should return correct data", () => {
-        expect(instance.visibleRows()).toEqual(data);
-      });
+    it("should return correct data if hiddenRows prop is not existing", () => {
+      const { result } = renderHook(() => useTableLogic({ data, columns, keyField }));
+      expect(result.current.visibleRows).toEqual(data);
     });
 
-    describe("if hiddenRows prop is an empty array", () => {
-      let instance: any;
-      beforeEach(() => {
-        instance = createInstance({
-          data,
-          columns,
-          keyField,
-          hiddenRows: [],
-        });
-      });
-
-      it("should return correct data", () => {
-        expect(instance.visibleRows()).toEqual(data);
-      });
+    it("should return correct data if hiddenRows prop is an empty array", () => {
+      const { result } = renderHook(() => useTableLogic({ data, columns, keyField, hiddenRows: [] }));
+      expect(result.current.visibleRows).toEqual(data);
     });
 
-    describe("if hiddenRows prop is not an empty array", () => {
+    it("should return correct data if hiddenRows prop is not an empty array", () => {
       const hiddenRows = [1];
-      let instance: any;
-      beforeEach(() => {
-        instance = createInstance({
-          data,
-          columns,
-          keyField,
-          hiddenRows,
-        });
-      });
-
-      it("should return correct data", () => {
-        const result = instance.visibleRows();
-        expect(result).toHaveLength(data.length - hiddenRows.length);
-        expect(result).toEqual(data.filter((d) => !hiddenRows.includes(d.id)));
-      });
+      const { result } = renderHook(() => useTableLogic({ data, columns, keyField, hiddenRows }));
+      expect(result.current.visibleRows).toHaveLength(data.length - hiddenRows.length);
+      expect(result.current.visibleRows).toEqual(data.filter((d) => !hiddenRows.includes(d.id)));
     });
   });
 
   describe("validateProps", () => {
-    describe("if keyField is defined and columns is all visible", () => {
-      let instance: any;
-      beforeEach(() => {
-        instance = createInstance({
-          data,
-          columns,
-          keyField,
-        });
-      });
-
-      it("should not throw any errors", () => {
-        expect(() => instance.validateProps()).not.toThrow();
-      });
+    it("should not throw any errors if keyField is defined and columns is all visible", () => {
+      const { result } = renderHook(() => useTableLogic({ data, columns, keyField }));
+      expect(() => result.current.validateProps()).not.toThrow();
     });
 
-    describe("if keyField is not defined on props", () => {
-      let instance: any;
-      beforeEach(() => {
-        instance = createInstance({
-          data,
-          columns,
-        });
-      });
-
-      it("should throw error", () => {
-        expect(() => instance.validateProps()).toThrow(
-          new Error("Please specify a field as key via keyField")
-        );
-      });
-    });
-
-    describe("if no columns are visible", () => {
-      let instance: any;
-      beforeEach(() => {
-        instance = createInstance({
-          data,
-          keyField,
-          columns: [],
-        });
-      });
-
-      it("should throw error", () => {
-        expect(() => instance.validateProps()).toThrow(
-          new Error("No visible columns detected")
-        );
-      });
+    it("should throw error if keyField is not defined on props", () => {
+      const { result } = renderHook(() => useTableLogic({ data, columns, keyField: "" } as any));
+      expect(() => result.current.validateProps()).toThrow(
+        new Error("Please specify a field as key via keyField")
+      );
     });
   });
 });

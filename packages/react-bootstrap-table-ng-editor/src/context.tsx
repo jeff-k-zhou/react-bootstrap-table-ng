@@ -11,7 +11,7 @@ import {
   DBCLICK_TO_CELL_EDIT,
 } from "..";
 
-const CellEditContext = React.createContext<any>(null);
+export const CellEditContext = React.createContext<any>(null);
 
 export default (
   _: any,
@@ -19,79 +19,44 @@ export default (
   isRemoteCellEdit?: any,
   handleCellChange?: any
 ) => {
-  class CellEditProvider extends React.Component<
-    CellEditProviderProps,
-    CellEditProviderState
-  > {
+  const CellEditProvider: React.FC<CellEditProviderProps> = (props) => {
+    const [state, setState] = React.useState<CellEditProviderState>({
+      ridx: null,
+      cidx: null,
+      message: null,
+    });
 
-
-    constructor(props: any) {
-      super(props);
-      this.doUpdate = this.doUpdate.bind(this);
-      this.startEditing = this.startEditing.bind(this);
-      this.escapeEditing = this.escapeEditing.bind(this);
-      this.completeEditing = this.completeEditing.bind(this);
-      this.handleCellUpdate = this.handleCellUpdate.bind(this);
-      this.state = {
-        ridx: null,
-        cidx: null,
-        message: null,
-      };
-    }
-
-    static getDerivedStateFromProps(nextProps: any, prevState: any) {
+    // Handle remote error messages (equivalent to getDerivedStateFromProps)
+    React.useEffect(() => {
       if (
-        nextProps.cellEdit &&
+        props.cellEdit &&
         _.isFunction(isRemoteCellEdit) &&
         isRemoteCellEdit()
       ) {
-        if (nextProps.cellEdit.options.errorMessage) {
-          return {
-            message: nextProps.cellEdit.options.errorMessage,
-          };
+        if (props.cellEdit.options.errorMessage) {
+          setState((prev) => ({
+            ...prev,
+            message: props.cellEdit.options.errorMessage,
+          }));
         } else {
-          return {
-            ridx: prevState.ridx,
-            cidx: prevState.cidx,
+          setState((prev) => ({
+            ...prev,
             message: null,
-          };
-        }
-      } else {
-        return {
-          ...prevState,
-        };
-      }
-    }
-
-    handleCellUpdate(row: any, column: any, newValue: any) {
-      const newValueWithType = dataOperator.typeConvert(column.type, newValue);
-      const { cellEdit } = this.props;
-      const { beforeSaveCell } = cellEdit.options;
-      const oldValue = _.get(row, column.dataField);
-      const beforeSaveCellDone = (result = true) => {
-        if (result) {
-          this.doUpdate(row, column, newValueWithType);
-        } else {
-          this.escapeEditing();
-        }
-      };
-      if (_.isFunction(beforeSaveCell)) {
-        const result = beforeSaveCell(
-          oldValue,
-          newValueWithType,
-          row,
-          column,
-          beforeSaveCellDone
-        );
-        if (_.isObject(result) && result.async) {
-          return;
+          }));
         }
       }
-      this.doUpdate(row, column, newValueWithType);
-    }
+    }, [props.cellEdit, isRemoteCellEdit]);
 
-    doUpdate(row: any, column: any, newValue: any) {
-      const { keyField, cellEdit, data } = this.props;
+    const completeEditing = React.useCallback(() => {
+      setState({
+        ridx: null,
+        cidx: null,
+        message: null,
+      });
+    }, []);
+
+    const doUpdate = React.useCallback((row: any, column: any, newValue: any) => {
+      const { keyField, cellEdit, data } = props;
       const { afterSaveCell } = cellEdit.options;
       const rowId = _.get(row, keyField);
       const oldValue = _.get(row, column.dataField);
@@ -108,40 +73,61 @@ export default (
         if (_.isFunction(afterSaveCell)) {
           afterSaveCell(oldValue, newValue, row, column);
         }
-        this.completeEditing();
+        completeEditing();
       }
-    }
+    }, [props, completeEditing, dataOperator]);
 
-    completeEditing() {
-      this.setState(() => ({
+    const escapeEditing = React.useCallback(() => {
+      setState((prev) => ({
+        ...prev,
         ridx: null,
         cidx: null,
-        message: null,
       }));
-    }
+    }, []);
 
-    startEditing(ridx: any, cidx: any) {
+    const handleCellUpdate = React.useCallback((row: any, column: any, newValue: any) => {
+      const newValueWithType = dataOperator.typeConvert(column.type, newValue);
+      const { cellEdit } = props;
+      const { beforeSaveCell } = cellEdit.options;
+      const oldValue = _.get(row, column.dataField);
+      const beforeSaveCellDone = (result = true) => {
+        if (result) {
+          doUpdate(row, column, newValueWithType);
+        } else {
+          escapeEditing();
+        }
+      };
+      if (_.isFunction(beforeSaveCell)) {
+        const result = beforeSaveCell(
+          oldValue,
+          newValueWithType,
+          row,
+          column,
+          beforeSaveCellDone
+        );
+        if (_.isObject(result) && result.async) {
+          return;
+        }
+      }
+      doUpdate(row, column, newValueWithType);
+    }, [props, dataOperator, doUpdate, escapeEditing]);
+
+    const startEditing = React.useCallback((ridx: any, cidx: any) => {
       const editing = () => {
-        this.setState(() => ({
+        setState((prev) => ({
+          ...prev,
           ridx,
           cidx,
         }));
       };
 
-      const { selectRow } = this.props;
+      const { selectRow } = props;
       if (!selectRow || selectRow.clickToEdit || !selectRow.clickToSelect) {
         editing();
       }
-    }
+    }, [props]);
 
-    escapeEditing() {
-      this.setState(() => ({
-        ridx: null,
-        cidx: null,
-      }));
-    }
-
-    render() {
+    const contextValue = React.useMemo(() => {
       const {
         cellEdit: {
           options: { nonEditableRows, errorMessage, ...optionsRest },
@@ -151,27 +137,27 @@ export default (
           cidx: propCidx,
           ...cellEditRest
         },
-      } = this.props;
+      } = props;
 
-      const newCellEdit = {
+      return {
         ...optionsRest,
         ...cellEditRest,
-        ridx: this.state.ridx !== null ? this.state.ridx : (propRidx ?? null),
-        cidx: this.state.cidx !== null ? this.state.cidx : (propCidx ?? null),
-        message: this.state.message,
+        ridx: state.ridx !== null ? state.ridx : (propRidx ?? null),
+        cidx: state.cidx !== null ? state.cidx : (propCidx ?? null),
+        message: state.message,
         nonEditableRows: _.isDefined(nonEditableRows) ? nonEditableRows() : [],
-        atstart: this.startEditing,
-        onEscape: this.escapeEditing,
-        onUpdate: this.handleCellUpdate,
+        atstart: startEditing,
+        onEscape: escapeEditing,
+        onUpdate: handleCellUpdate,
       };
+    }, [props, state, startEditing, escapeEditing, handleCellUpdate]);
 
-      return (
-        <CellEditContext.Provider value={{ ...newCellEdit }}>
-          {this.props.children}
-        </CellEditContext.Provider>
-      );
-    }
-  }
+    return (
+      <CellEditContext.Provider value={contextValue}>
+        {props.children}
+      </CellEditContext.Provider>
+    );
+  };
   return {
     Provider: CellEditProvider,
   };

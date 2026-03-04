@@ -602,18 +602,19 @@ export const ExportTableFooter: Story = {
     import ToolkitProvider, { CSVExport } from 'react-bootstrap-table-ng-toolkit';
 
     const { ExportCSVButton } = CSVExport;
-    const columns = [{
+    columns: [{
       dataField: 'id',
       text: 'Product ID',
       footer: 'Footer 1'
     }, {
       dataField: 'name',
       text: 'Product Name',
-      footer: 'Footer 2'
+      footer: '',
+      footerFormatter: (column: any) => column.text
     }, {
       dataField: 'price',
       text: 'Product Price',
-      footer: 'Footer 3'
+      footer: (columnData: any) => columnData.reduce((acc: any, item: any) => acc + item, 0)
     }];
 
     <ToolkitProvider

@@ -123,7 +123,7 @@ export const DefaultSortTable: Story = {
 };
 
 export const DefaultSortDirectionTable: Story = {
-  name: "Default sort table",
+  name: "Default sort direction table",
   args: {
     columns: [{
       dataField: 'id',

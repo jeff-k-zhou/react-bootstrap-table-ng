@@ -3,11 +3,8 @@ import React from "react";
 
 import { INDICATOR_POSITION_RIGHT, SORT_ASC } from "..";
 import createExpansionContext from "../src/contexts/row-expand-context";
-import { createSelectionContext } from "../src/contexts/selection-context";
+import createSelectionContext from "../src/contexts/selection-context";
 import Header from "../src/header";
-import HeaderCell from "../src/header-cell";
-import ExpandHeaderCell from "../src/row-expand/expand-header-cell";
-import SelectionHeaderCell from "../src/row-selection/selection-header-cell";
 import mockHeaderResolvedProps from "./test-helpers/mock/header-resolved-props";
 
 describe("Header", () => {

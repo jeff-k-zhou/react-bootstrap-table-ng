@@ -43,6 +43,8 @@ export interface PaginationDataProviderProps {
       custom?: boolean;
       pageStartIndex?: number;
       onPageChange: (newPage: any, currSizePerPage: number) => void;
+      sizePerPage?: number;
+      page?: number;
     };
   };
   onDataSizeChange?: (dataSize: { dataSize: number }) => void;
@@ -53,15 +55,19 @@ export default (options = {}) => ({
   options,
 });
 
-const { Provider, Consumer } = createBaseContext();
+import { StateContext } from "./src/state-context";
 
-const CustomizableProvider = (props: PaginationProviderProps) => (
-  <Provider {...props}>
-    <Consumer>
-      {(paginationProps: any) => props.children(paginationProps)}
-    </Consumer>
-  </Provider>
-);
+const { Provider } = createBaseContext();
+
+const CustomizableProvider: React.FC<PaginationProviderProps> = (props) => {
+  return (
+    <Provider {...props}>
+      <StateContext.Consumer>
+        {(context: any) => props.children(context)}
+      </StateContext.Consumer>
+    </Provider>
+  );
+};
 
 
 

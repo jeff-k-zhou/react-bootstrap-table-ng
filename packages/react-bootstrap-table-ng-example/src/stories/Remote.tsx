@@ -124,24 +124,29 @@ class Container extends React.Component {
 interface RemoteSortProps {
   data: any[];
   onTableChange: (type: any, context: any) => void;
+  loading: boolean;
 }
 
-const RemoteSort = (props: RemoteSortProps) => (
+const remoteSortOverlay = overlayFactory({ spinner: true });
+
+const RemoteSort = (props: any) => (
   <div>
     <BootstrapTable
-      remote={{ sort: true }}
+      remote
       keyField="id"
       data={props.data}
       columns={remoteSortColumns}
       onTableChange={props.onTableChange}
+      overlay={remoteSortOverlay}
+      loading={props.loading}
     />
     <Code>{remoteSortSourceCode}</Code>
   </div>
 );
 
-
 interface RemoteSortState {
   data: any;
+  loading: boolean;
 }
 
 class RemoteSortComponent extends React.Component<{}, RemoteSortState> {
@@ -151,10 +156,12 @@ class RemoteSortComponent extends React.Component<{}, RemoteSortState> {
     super(props);
     this.state = {
       data: this.products,
+      loading: false,
     };
   }
 
   handleTableChange = (type: any, { sortField, sortOrder, data }: any) => {
+    this.setState({ loading: true });
     setTimeout(() => {
       let result: any;
       if (sortOrder === "asc") {
@@ -178,6 +185,7 @@ class RemoteSortComponent extends React.Component<{}, RemoteSortState> {
       }
       this.setState(() => ({
         data: result,
+        loading: false,
       }));
     }, 2000);
   };
@@ -187,6 +195,7 @@ class RemoteSortComponent extends React.Component<{}, RemoteSortState> {
       <RemoteSort
         data={this.state.data}
         onTableChange={this.handleTableChange}
+        loading={this.state.loading}
       />
     );
   }
@@ -286,7 +295,11 @@ class Container extends React.Component {
 interface RemoteFilterProps {
   data: any[];
   onTableChange: (type: any, context: any) => void;
+  loading: boolean;
 }
+
+const remoteFilterFilter = filterFactory();
+const remoteFilterOverlay = overlayFactory({ spinner: true });
 
 const RemoteFilter = (props: RemoteFilterProps) => (
   <div>
@@ -295,8 +308,10 @@ const RemoteFilter = (props: RemoteFilterProps) => (
       keyField="id"
       data={props.data}
       columns={remoteFilterColumns}
-      filter={filterFactory()}
+      filter={remoteFilterFilter}
       onTableChange={props.onTableChange}
+      loading={props.loading}
+      overlay={remoteFilterOverlay}
     />
     <Code>{remoteFilterSourceCode}</Code>
   </div>
@@ -305,6 +320,7 @@ const RemoteFilter = (props: RemoteFilterProps) => (
 
 interface RemoteFilterState {
   data: any;
+  loading: boolean;
 }
 
 class RemoteFilterComponent extends React.Component<{}, RemoteFilterState> {
@@ -314,10 +330,12 @@ class RemoteFilterComponent extends React.Component<{}, RemoteFilterState> {
     super(props);
     this.state = {
       data: this.products,
+      loading: false,
     };
   }
 
   handleTableChange = (type: any, { filters }: any) => {
+    this.setState({ loading: true });
     setTimeout(() => {
       const result = this.products.filter((row: any) => {
         let valid = true;
@@ -337,6 +355,7 @@ class RemoteFilterComponent extends React.Component<{}, RemoteFilterState> {
       });
       this.setState(() => ({
         data: result,
+        loading: false,
       }));
     }, 2000);
   };
@@ -346,6 +365,7 @@ class RemoteFilterComponent extends React.Component<{}, RemoteFilterState> {
       <RemoteFilter
         data={this.state.data}
         onTableChange={this.handleTableChange}
+        loading={this.state.loading}
       />
     );
   }
@@ -411,7 +431,10 @@ interface RemotePaginationProps {
   totalSize: number;
   sizePerPage: number;
   onTableChange: (type: any, context: any) => void;
+  loading: boolean;
 }
+
+const remotePaginationOverlay = overlayFactory({ spinner: true });
 
 const RemotePagination = ({
   data,
@@ -419,6 +442,7 @@ const RemotePagination = ({
   sizePerPage,
   onTableChange,
   totalSize,
+  loading,
 }: RemotePaginationProps) => (
   <div>
     <BootstrapTable
@@ -441,6 +465,8 @@ const RemotePagination = ({
       ]}
       pagination={paginationFactory({ page, sizePerPage, totalSize })}
       onTableChange={onTableChange}
+      loading={loading}
+      overlay={remotePaginationOverlay}
     />
     <Code>{remotePaginationSourceCode}</Code>
   </div>
@@ -451,6 +477,7 @@ interface RemotePaginationState {
   data: any;
   sizePerPage: number;
   page: any;
+  loading: boolean;
 }
 
 class RemotePaginationComponent extends React.Component<
@@ -465,22 +492,25 @@ class RemotePaginationComponent extends React.Component<
       page: 1,
       data: this.products.slice(0, 10),
       sizePerPage: 10,
+      loading: false,
     };
   }
 
   handleTableChange = (type: any, { page, sizePerPage }: any) => {
     const currentIndex = (page - 1) * sizePerPage;
+    this.setState({ loading: true });
     setTimeout(() => {
       this.setState(() => ({
         page,
         data: this.products.slice(currentIndex, currentIndex + sizePerPage),
         sizePerPage,
+        loading: false,
       }));
     }, 2000);
   };
 
   render() {
-    const { data, sizePerPage, page } = this.state;
+    const { data, sizePerPage, page, loading } = this.state;
     return (
       <RemotePagination
         data={data}
@@ -488,6 +518,7 @@ class RemotePaginationComponent extends React.Component<
         sizePerPage={sizePerPage}
         totalSize={this.products.length}
         onTableChange={this.handleTableChange}
+        loading={loading}
       />
     );
   }
@@ -595,7 +626,10 @@ class Container extends React.Component {
 interface RemoteSearchProps {
   data: any[];
   onTableChange: (type: any, context: any) => void;
+  loading: boolean;
 }
+
+const remoteSearchOverlay = overlayFactory({ spinner: true });
 
 const RemoteSearch = (props: RemoteSearchProps) => (
   <div>
@@ -612,6 +646,8 @@ const RemoteSearch = (props: RemoteSearchProps) => (
             {...toolkitprops.baseProps}
             remote={{ search: true }}
             onTableChange={props.onTableChange}
+            overlay={remoteSearchOverlay}
+            loading={props.loading}
           />
         </div>
       )}
@@ -623,6 +659,7 @@ const RemoteSearch = (props: RemoteSearchProps) => (
 
 interface RemoteSearchState {
   data: any;
+  loading: boolean;
 }
 
 class RemoteSearchComponent extends React.Component<{}, RemoteSearchState> {
@@ -632,10 +669,12 @@ class RemoteSearchComponent extends React.Component<{}, RemoteSearchState> {
     super(props);
     this.state = {
       data: this.products,
+      loading: false,
     };
   }
 
   handleTableChange = (type: any, { searchText }: any) => {
+    this.setState({ loading: true });
     setTimeout(() => {
       const result = this.products.filter((row: any) => {
         for (let cidx = 0; cidx < remoteSearchColumns.length; cidx += 1) {
@@ -652,6 +691,7 @@ class RemoteSearchComponent extends React.Component<{}, RemoteSearchState> {
       });
       this.setState(() => ({
         data: result,
+        loading: false,
       }));
     }, 2000);
   };
@@ -661,6 +701,7 @@ class RemoteSearchComponent extends React.Component<{}, RemoteSearchState> {
       <RemoteSearch
         data={this.state.data}
         onTableChange={this.handleTableChange}
+        loading={this.state.loading}
       />
     );
   }
@@ -741,7 +782,10 @@ interface RemoteCellEditProps {
   data: any[];
   onTableChange: (type: any, context: any) => void;
   errorMessage: string;
+  loading: boolean;
 }
+
+const remoteCellEditOverlay = overlayFactory({ spinner: true });
 
 const RemoteCellEdit = (props: RemoteCellEditProps) => {
   const cellEdit = {
@@ -771,6 +815,8 @@ const RemoteCellEdit = (props: RemoteCellEditProps) => {
         ]}
         cellEdit={cellEditFactory(cellEdit)}
         onTableChange={props.onTableChange}
+        overlay={remoteCellEditOverlay}
+        loading={props.loading}
       />
       <Code>{remoteCellEditSourceCode}</Code>
     </div>
@@ -781,6 +827,7 @@ const RemoteCellEdit = (props: RemoteCellEditProps) => {
 interface RemoteCellEditState {
   data: any;
   errorMessage: string;
+  loading: boolean;
 }
 
 class RemoteCellEditComponent extends React.Component<{}, RemoteCellEditState> {
@@ -789,6 +836,7 @@ class RemoteCellEditComponent extends React.Component<{}, RemoteCellEditState> {
     this.state = {
       data: productsGenerator(),
       errorMessage: "",
+      loading: false,
     };
   }
 
@@ -796,6 +844,7 @@ class RemoteCellEditComponent extends React.Component<{}, RemoteCellEditState> {
     type: any,
     { data, cellEdit: { rowId, dataField, newValue } }: any
   ) => {
+    this.setState({ loading: true });
     setTimeout(() => {
       if (newValue === "test" && dataField === "name") {
         this.setState(() => ({
@@ -814,6 +863,7 @@ class RemoteCellEditComponent extends React.Component<{}, RemoteCellEditState> {
         this.setState(() => ({
           data: result,
           errorMessage: "",
+          loading: false,
         }));
       }
     }, 2000);
@@ -825,6 +875,7 @@ class RemoteCellEditComponent extends React.Component<{}, RemoteCellEditState> {
         data={this.state.data}
         errorMessage={this.state.errorMessage}
         onTableChange={this.handleTableChange}
+        loading={this.state.loading}
       />
     );
   }
@@ -972,12 +1023,40 @@ class Container extends React.Component {
 }
 `;
 
+const remoteAllColumns = [
+  {
+    dataField: "id",
+    text: "Product ID",
+    sort: true,
+  },
+  {
+    dataField: "name",
+    text: "Product Name",
+    filter: textFilter({
+      defaultValue: "8",
+    }),
+    sort: true,
+  },
+  {
+    dataField: "price",
+    text: "Product Price",
+    filter: textFilter(),
+    sort: true,
+  },
+];
+
+const remoteAllDefaultSorted = [{ dataField: "name", order: "desc" }];
+const remoteAllFilter = filterFactory();
+const remoteAllOverlay = overlayFactory({ spinner: true });
+const remoteAllCellEdit = cellEditFactory({ mode: "click" });
+
 interface RemoteAllProps {
   data: any[];
   page: number;
   totalSize: number;
   sizePerPage: number;
   onTableChange: (type: any, context: any) => void;
+  loading: boolean;
 }
 
 const RemoteAll = ({
@@ -986,6 +1065,7 @@ const RemoteAll = ({
   sizePerPage,
   onTableChange,
   totalSize,
+  loading,
 }: RemoteAllProps) => (
   <div>
     <h3>
@@ -995,40 +1075,15 @@ const RemoteAll = ({
     <BootstrapTable
       remote
       keyField="id"
+      loading={loading}
+      overlay={remoteAllOverlay}
       data={data}
-      columns={[
-        {
-          dataField: "id",
-          text: "Product ID",
-          sort: true,
-        },
-        {
-          dataField: "name",
-          text: "Product Name",
-          filter: textFilter({
-            defaultValue: "8",
-          }),
-          sort: true,
-        },
-        {
-          dataField: "price",
-          text: "Product Price",
-          filter: textFilter(),
-          sort: true,
-        },
-      ]}
-      defaultSorted={[
-        {
-          dataField: "name",
-          order: "desc",
-        },
-      ]}
-      filter={filterFactory()}
+      columns={remoteAllColumns}
+      defaultSorted={remoteAllDefaultSorted}
+      filter={remoteAllFilter}
       pagination={paginationFactory({ page, sizePerPage, totalSize })}
       onTableChange={onTableChange}
-      cellEdit={cellEditFactory({
-        mode: "click",
-      })}
+      cellEdit={remoteAllCellEdit}
     />
     <Code>{remoteAllSourceCode}</Code>
   </div>
@@ -1041,6 +1096,7 @@ interface RemoteAllState {
   sizePerPage: number;
   page: number;
   totalSize: number;
+  loading: boolean;
 }
 
 class RemoteAllComponent extends React.Component<{}, RemoteAllState> {
@@ -1051,6 +1107,7 @@ class RemoteAllComponent extends React.Component<{}, RemoteAllState> {
       data: products.slice(0, 10),
       totalSize: products.length,
       sizePerPage: 10,
+      loading: false,
     };
     this.handleTableChange = this.handleTableChange.bind(this);
   }
@@ -1060,6 +1117,7 @@ class RemoteAllComponent extends React.Component<{}, RemoteAllState> {
     { page, sizePerPage, filters, sortField, sortOrder, cellEdit }: any
   ) => {
     const currentIndex = (page - 1) * sizePerPage;
+    this.setState({ loading: true });
     setTimeout(() => {
       // Handle cell editing
       if (type === "cellEdit") {
@@ -1116,12 +1174,13 @@ class RemoteAllComponent extends React.Component<{}, RemoteAllState> {
         data: result.slice(currentIndex, currentIndex + sizePerPage),
         totalSize: result.length,
         sizePerPage,
+        loading: false,
       }));
     }, 2000);
   };
 
   render() {
-    const { data, sizePerPage, page } = this.state;
+    const { data, sizePerPage, page, loading } = this.state;
     return (
       <RemoteAll
         data={data}
@@ -1129,6 +1188,7 @@ class RemoteAllComponent extends React.Component<{}, RemoteAllState> {
         sizePerPage={sizePerPage}
         totalSize={this.state.totalSize}
         onTableChange={this.handleTableChange}
+        loading={loading}
       />
     );
   }
@@ -1204,9 +1264,12 @@ const customPaginationTotal = (from: number, to: number, totalSize: number) => (
 );
 
 
-const allExportProducts = productsGenerator(487);
+const remoteAllExportFilter = filterFactory();
+const remoteAllExportOverlay = overlayFactory({ spinner: true });
+const remoteAllExportCellEdit = cellEditFactory({ mode: "click" });
+const remoteAllExportDefaultSorted = [{ dataField: "name", order: "desc" }];
 
-class RemoteAllExportComponent extends React.Component {
+class RemoteAllExportComponent extends React.Component<any, any> {
   constructor(props: any) {
     super(props);
     this.state = {
@@ -1215,6 +1278,7 @@ class RemoteAllExportComponent extends React.Component {
       totalSize: allExportProducts.length,
       sizePerPage: 10,
       allData: allExportProducts,
+      loading: false,
     };
     this.handleTableChange = this.handleTableChange.bind(this);
   }
@@ -1223,11 +1287,12 @@ class RemoteAllExportComponent extends React.Component {
     type: any,
     { page, sizePerPage, filters, sortField, sortOrder, cellEdit }: any
   ) => {
+    this.setState({ loading: true });
     setTimeout(() => {
       // Handle cell editing
       if (type === "cellEdit") {
         const { rowId, dataField, newValue } = cellEdit;
-        products = products.map((row: any) => {
+        allExportProducts = allExportProducts.map((row: any) => {
           if (row.id === rowId) {
             const newRow = { ...row };
             newRow[dataField] = newValue;
@@ -1280,6 +1345,7 @@ class RemoteAllExportComponent extends React.Component {
         totalSize: result.length,
         sizePerPage: sizePerPage,
         allData: result,
+        loading: false,
       }));
     }, 2000);
   };
@@ -1307,6 +1373,9 @@ class RemoteAllExportComponent extends React.Component {
       >
         {props => (
           <PaginationProvider
+            isRemotePagination={() => true}
+            data={this.state.data}
+            remoteEmitter={((this as any).remoteEmitter || {})}
             pagination={paginationFactory({
               custom: true,
               page: this.state.page,
@@ -1332,23 +1401,20 @@ class RemoteAllExportComponent extends React.Component {
                   <PaginationListStandalone {...paginationProps} />
                 </div>
                 <BootstrapTable
+                  {...props.baseProps}
                   remote
                   striped
                   hover
                   condensed
-                  defaultSorted={[
-                    {
-                      dataField: "name",
-                      order: "desc",
-                    },
-                  ]}
-                  {...props.baseProps}
-                  filter={filterFactory()}
-                  overlay={overlayFactory({ spinner: true })}
+                  keyField="id"
+                  data={this.state.data}
+                  columns={productColumns}
+                  defaultSorted={remoteAllExportDefaultSorted}
+                  filter={remoteAllExportFilter}
+                  overlay={remoteAllExportOverlay}
                   onTableChange={this.handleTableChange}
-                  cellEdit={cellEditFactory({
-                    mode: "click",
-                  })}
+                  cellEdit={remoteAllExportCellEdit}
+                  loading={this.state.loading}
                   {...paginationTableProps}
                 />
                 <div style={{ marginBottom: '20px' }}>
@@ -1438,9 +1504,41 @@ const customPaginationTotal = (from: number, to: number, totalSize: number) => (
 );
 
 
-const allExportProducts = productsGenerator(487);
+let allExportProducts = productsGenerator(487);
 
-class RemoteAllCustomComponent extends React.Component {
+const remoteAllCustomFilter = filterFactory();
+
+const remoteAllCustomOverlay = overlayFactory({ spinner: true });
+const remoteAllCustomCellEdit = cellEditFactory({ mode: "click" });
+const remoteAllCustomDefaultSorted = [{ dataField: "name", order: "desc" }];
+const remoteAllCustomPaginationOptions = {
+  custom: true,
+  sizePerPageList: [10, 25, 50, 100],
+  showSizePerPage: true,
+  showTotal: true,
+  paginationTotalRenderer: customPaginationTotal,
+};
+
+const remoteAllCustomExportCSVOptions = {
+  fileName: "products-export.csv",
+  noAutoBOM: false,
+  blobType: "text/csv;charset=ansi",
+};
+
+interface RemoteAllCustomState {
+  page: number;
+  data: any[];
+  totalSize: number;
+  sizePerPage: number;
+  allData: any[];
+  loading: boolean;
+  searchText?: string;
+  filters: any;
+  sortField: string;
+  sortOrder: string;
+}
+
+class RemoteAllCustomComponent extends React.Component<{}, RemoteAllCustomState> {
   constructor(props: any) {
     super(props);
     this.state = {
@@ -1449,19 +1547,60 @@ class RemoteAllCustomComponent extends React.Component {
       totalSize: allExportProducts.length,
       sizePerPage: 10,
       allData: allExportProducts,
+      loading: false,
+      searchText: '',
+      filters: {},
+      sortField: 'name',
+      sortOrder: 'desc',
     };
     this.handleTableChange = this.handleTableChange.bind(this);
   }
 
   handleTableChange = (
     type: any,
-    { page, sizePerPage, filters, sortField, sortOrder, cellEdit }: any
+    { page, sizePerPage, filters, sortField, sortOrder, cellEdit, searchText }: any
   ) => {
+    if (type === "search" && searchText === this.state.searchText) {
+      return;
+    }
+
+    console.log('RemoteAllCustom.handleTableChange START', { type, page, sizePerPage, filters, searchText, sortField, sortOrder });
+    
+    this.setState((prevState) => {
+      const newState: any = {
+        loading: true,
+        page: page || prevState.page,
+        sizePerPage: sizePerPage || prevState.sizePerPage,
+      };
+
+      if (typeof searchText !== 'undefined') newState.searchText = searchText;
+
+      if (type === 'filter') {
+        newState.filters = filters || {};
+      } else {
+        newState.filters = (filters && Object.keys(filters).length > 0) ? filters : prevState.filters;
+      }
+
+      if (sortField) newState.sortField = sortField;
+      if (sortOrder) newState.sortOrder = sortOrder;
+
+      return newState;
+    });
+
     setTimeout(() => {
+      const { 
+        filters: stateFilters, 
+        sortField: stateSortField, 
+        sortOrder: stateSortOrder, 
+        searchText: stateSearchText,
+        page: statePage,
+        sizePerPage: stateSizePerPage
+      } = this.state;
+
       // Handle cell editing
       if (type === "cellEdit") {
         const { rowId, dataField, newValue } = cellEdit;
-        products = products.map((row: any) => {
+        allExportProducts = allExportProducts.map((row: any) => {
           if (row.id === rowId) {
             const newRow = { ...row };
             newRow[dataField] = newValue;
@@ -1470,14 +1609,33 @@ class RemoteAllCustomComponent extends React.Component {
           return row;
         });
       }
+
       let result = allExportProducts;
+
+      // Handle search
+      if (stateSearchText) {
+        result = result.filter((row: any) => {
+          for (let cidx = 0; cidx < productColumns.length; cidx += 1) {
+            const column = productColumns[cidx];
+            let targetValue = row[column.dataField];
+            if (targetValue !== null && typeof targetValue !== "undefined") {
+              targetValue = targetValue.toString().toLowerCase();
+              if (targetValue.indexOf(stateSearchText.toLowerCase()) > -1) {
+                return true;
+              }
+            }
+          }
+          return false;
+        });
+      }
+
       // Handle column filters
       result = result.filter((row: any) => {
         let valid = true;
-        for (const dataField in filters) {
-          const { filterVal, filterType, comparator } = filters[dataField];
+        for (const dataField in stateFilters) {
+          const { filterVal, filterType, comparator } = stateFilters[dataField];
 
-          if (filterType === "TEXT") {
+          if (filterType === "TEXT" || !filterType) {
             if (comparator === LIKE) {
               valid = row[dataField].toString().indexOf(filterVal) > -1;
             } else {
@@ -1488,32 +1646,31 @@ class RemoteAllCustomComponent extends React.Component {
         }
         return valid;
       });
+
       // Handle column sort
-      if (sortOrder === "asc") {
+      const currentSortField = stateSortField;
+      const currentSortOrder = stateSortOrder;
+
+      if (currentSortField && currentSortOrder) {
         result = result.sort((a: any, b: any) => {
-          if (a[sortField] > b[sortField]) {
-            return 1;
-          } else if (b[sortField] > a[sortField]) {
-            return -1;
-          }
-          return 0;
-        });
-      } else {
-        result = result.sort((a: any, b: any) => {
-          if (a[sortField] > b[sortField]) {
-            return -1;
-          } else if (b[sortField] > a[sortField]) {
-            return 1;
+          if (a[currentSortField] > b[currentSortField]) {
+            return currentSortOrder === "asc" ? 1 : -1;
+          } else if (b[currentSortField] > a[currentSortField]) {
+            return currentSortOrder === "asc" ? -1 : 1;
           }
           return 0;
         });
       }
+
+      console.log('RemoteAllCustom.handleTableChange END', { resultSize: result.length });
+
       this.setState(() => ({
-        page: page * sizePerPage < result.length ? page : Math.ceil(result.length / sizePerPage),
-        data: result.slice((page - 1) * sizePerPage, page * sizePerPage),
+        page: statePage * stateSizePerPage < result.length ? statePage : Math.ceil(result.length / stateSizePerPage),
+        data: result.slice((statePage - 1) * stateSizePerPage, statePage * stateSizePerPage),
         totalSize: result.length,
-        sizePerPage: sizePerPage,
+        sizePerPage: stateSizePerPage,
         allData: result,
+        loading: false,
       }));
     }, 2000);
   };
@@ -1523,76 +1680,83 @@ class RemoteAllCustomComponent extends React.Component {
   };
 
   render() {
+    const { data, allData, page, sizePerPage, totalSize, loading } = this.state;
     return (
       <ToolkitProvider
         keyField="id"
-        data={this.state.data}
+        data={data}
         columns={productColumns}
         search
         columnToggle
         columnResize
         bootstrap5
         exportCSV={{
-          fileName: 'products-export.csv',
-          noAutoBOM: false,
-          blobType: 'text/csv;charset=ansi',
-          data: this.state.allData
+          ...remoteAllCustomExportCSVOptions,
+          data: allData,
         }}
       >
-        {props => (
+        {(props: any) => (
           <PaginationProvider
+            isRemotePagination={() => true}
+            data={this.state.data}
+            remoteEmitter={((this as any).remoteEmitter || {})}
             pagination={paginationFactory({
-              custom: true,
-              page: this.state.page,
-              sizePerPage: this.state.sizePerPage,
-              totalSize: this.state.totalSize,
-              sizePerPageList: [10, 25, 50, 100],
-              showSizePerPage: true,
-              showTotal: true,
-              paginationTotalRenderer: customPaginationTotal,
+              ...remoteAllCustomPaginationOptions,
+              page,
+              sizePerPage,
+              totalSize,
             })}
           >
-            {({ paginationProps, paginationTableProps }) => (
+            {({
+              paginationProps,
+              paginationTableProps,
+            }: {
+              paginationProps: any;
+              paginationTableProps: any;
+            }) => (
               <div>
                 <CustomToggleList {...props.columnToggleProps} />
                 <div>
                   <SizePerPageDropdownStandalone {...paginationProps} />
                   <PaginationTotalStandalone {...paginationProps} />
-                  <ExportCSVButton {...props.csvProps}
+                  <ExportCSVButton
+                    {...props.csvProps}
                     className="btn-warning"
-                    style={{ marginLeft: '20px' }}
+                    style={{ marginLeft: "20px" }}
                     onClick={this.handleExport(props.csvProps.onExport)}
-                  >Export CSV</ExportCSVButton>
+                  >
+                    Export CSV
+                  </ExportCSVButton>
                   <PaginationListStandalone {...paginationProps} />
                 </div>
                 <BootstrapTable
+                  {...props.baseProps}
                   remote
                   striped
                   hover
                   condensed
-                  defaultSorted={[
-                    {
-                      dataField: "name",
-                      order: "desc",
-                    },
-                  ]}
-                  {...props.baseProps}
-                  filter={filterFactory()}
-                  overlay={overlayFactory({ spinner: true })}
-                  onTableChange={this.handleTableChange}
-                  cellEdit={cellEditFactory({
-                    mode: "click",
-                  })}
+                  keyField="id"
+                  data={data}
+                  columns={productColumns}
+                  defaultSorted={remoteAllCustomDefaultSorted}
+                  filter={remoteAllCustomFilter}
                   {...paginationTableProps}
+                  onTableChange={this.handleTableChange}
+                  loading={loading}
+                  overlay={remoteAllCustomOverlay}
+                  cellEdit={remoteAllCustomCellEdit}
                 />
-                <div style={{ marginBottom: '20px' }}>
+                <div style={{ marginBottom: "20px" }}>
                   <SizePerPageDropdownStandalone {...paginationProps} />
                   <PaginationTotalStandalone {...paginationProps} />
-                  <ExportCSVButton {...props.csvProps}
+                  <ExportCSVButton
+                    {...props.csvProps}
                     className="btn-warning"
-                    style={{ marginLeft: '20px' }}
+                    style={{ marginLeft: "20px" }}
                     onClick={this.handleExport(props.csvProps.onExport)}
-                  >Export CSV</ExportCSVButton>
+                  >
+                    Export CSV
+                  </ExportCSVButton>
                   <PaginationListStandalone {...paginationProps} />
                 </div>
                 <Code>{remoteAllExportSourceCode}</Code>

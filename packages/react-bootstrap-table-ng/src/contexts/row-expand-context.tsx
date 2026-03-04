@@ -7,20 +7,20 @@ interface RowExpandProviderProps {
   data: any[];
   keyField: string;
   expandRow: {
-    expanded?: any[];
-    isClosing?: any[];
+    expanded?: (string | number)[];
+    isClosing?: (string | number)[];
     onExpand?: (row: any, expanded: boolean, rowIndex: number, e: any) => void;
     onExpandAll?: (expandAll: boolean, expandedRows: any[], e: any) => void;
     onlyOneExpanding?: boolean;
-    nonExpandable?: any[];
+    nonExpandable?: (string | number)[];
     renderer?: () => void;
   };
 }
 
 export interface RowExpandContextValue {
-  expanded: any[];
-  isClosing: any[];
-  nonExpandable?: any[];
+  expanded: (string | number)[];
+  isClosing: (string | number)[];
+  nonExpandable?: (string | number)[];
   onClosed: (closedRow: any) => void;
   isAnyExpands: boolean;
   onRowExpand: (
@@ -47,142 +47,137 @@ const RowExpandContext = React.createContext<RowExpandContextValue>(
   defaultRowExpandContext
 );
 
-class RowExpandProvider extends Component<RowExpandProviderProps> {
-  state = {
-    expanded: this.props.expandRow.expanded || [],
-    isClosing: this.props.expandRow.isClosing || [],
-  };
+const RowExpandProvider = React.forwardRef<any, RowExpandProviderProps>((props, ref) => {
+  const { children, data, keyField, expandRow } = props;
 
-  onClosed = (closedRow: any) => {
-    this.setState({
-      isClosing: this.state.isClosing.filter((value) => value !== closedRow),
-    });
-  };
+  const [expanded, setExpanded] = React.useState<(string | number)[]>(expandRow.expanded || []);
+  const [isClosing, setIsClosing] = React.useState<(string | number)[]>(expandRow.isClosing || []);
 
-  static getDerivedStateFromProps(
-    nextProps: RowExpandProviderProps,
-    prevState: { expanded: any[]; isClosing: any[] }
-  ) {
-    const { expandRow } = nextProps;
+  React.useImperativeHandle(ref, () => ({
+    state: {
+      expanded,
+    },
+  }));
 
+  // Sync with internal state when prop changes (getDerivedStateFromProps replacement)
+  React.useEffect(() => {
     if (expandRow) {
       const { nonExpandable = [] } = expandRow;
-
-      let nextExpanded = [...(expandRow.expanded || prevState.expanded)];
-      nextExpanded = nextExpanded.filter(
+      const nextExpandedBase = expandRow.expanded || expanded;
+      const nextExpanded = nextExpandedBase.filter(
         (rowId) => !_.contains(nonExpandable, rowId)
       );
 
-      const isClosing = prevState.expanded.reduce((acc: any, cur: any) => {
+      const nextClosing = expanded.reduce((acc: any, cur: any) => {
         if (!_.contains(nextExpanded, cur)) {
           acc.push(cur);
         }
         return acc;
       }, []);
 
-      return {
-        expanded: nextExpanded,
-        isClosing,
-      };
-    } else {
-      return prevState;
+      setExpanded(nextExpanded);
+      setIsClosing(nextClosing);
     }
-  }
+  }, [expandRow.expanded, expandRow.nonExpandable]);
 
-  handleRowExpand = (
-    rowKey: any,
-    isExpanded: boolean,
-    rowIndex: number,
-    e: any
-  ) => {
-    const {
+  const onClosed = React.useCallback((closedRow: any) => {
+    setIsClosing((prev) => prev.filter((value) => value !== closedRow));
+  }, []);
+
+  const handleRowExpand = React.useCallback(
+    (rowKey: any, isExpanded: boolean, rowIndex: number, e: any) => {
+      const { onExpand, onlyOneExpanding, nonExpandable } = expandRow;
+
+      if (nonExpandable && _.contains(nonExpandable, rowKey)) {
+        return;
+      }
+
+      setExpanded((prevExpanded) => {
+        let currExpanded = [...prevExpanded];
+
+        if (isExpanded) {
+          if (onlyOneExpanding) {
+            setIsClosing((prevClosing) => prevClosing.concat(prevExpanded));
+            currExpanded = [rowKey];
+          } else {
+            currExpanded.push(rowKey);
+          }
+        } else {
+          setIsClosing((prevClosing) => [...prevClosing, rowKey]);
+          currExpanded = currExpanded.filter((value) => value !== rowKey);
+        }
+
+        return currExpanded;
+      });
+
+      if (onExpand) {
+        const row = dataOperator.getRowByRowId(data, keyField, rowKey);
+        onExpand(row, isExpanded, rowIndex, e);
+      }
+    },
+    [data, keyField, expandRow.onExpand, expandRow.onlyOneExpanding, expandRow.nonExpandable]
+  );
+
+  const handleAllRowExpand = React.useCallback(
+    (e: any, expandAll: boolean) => {
+      const { onExpandAll, nonExpandable } = expandRow;
+
+      setExpanded((prevExpanded) => {
+        let currExpanded: any[];
+
+        if (expandAll) {
+          currExpanded = prevExpanded.concat(
+            dataOperator.expandableKeys(data, keyField, nonExpandable)
+          );
+        } else {
+          currExpanded = prevExpanded.filter(
+            (s) =>
+              typeof data.find((d) => _.get(d, keyField) === s) === "undefined"
+          );
+        }
+
+        if (onExpandAll) {
+          onExpandAll(
+            expandAll,
+            dataOperator.getExpandedRows(data, keyField, currExpanded),
+            e
+          );
+        }
+        return currExpanded;
+      });
+    },
+    [data, keyField, expandRow.onExpandAll, expandRow.nonExpandable]
+  );
+
+  const value = React.useMemo(
+    () => ({
+      ...expandRow,
+      nonExpandable: expandRow.nonExpandable,
+      expanded,
+      isClosing,
+      onClosed,
+      isAnyExpands: dataOperator.isAnyExpands(data, keyField, expanded),
+      onRowExpand: handleRowExpand,
+      onAllRowExpand: handleAllRowExpand,
+    }),
+    [
+      expandRow,
+      expanded,
+      isClosing,
+      onClosed,
       data,
       keyField,
-      expandRow: { onExpand, onlyOneExpanding, nonExpandable },
-    } = this.props;
+      handleRowExpand,
+      handleAllRowExpand,
+    ]
+  );
 
-    if (nonExpandable && _.contains(nonExpandable, rowKey)) {
-      return;
-    }
-
-    let currExpanded = [...this.state.expanded];
-    let currIsClosing = [...this.state.isClosing];
-
-    if (isExpanded) {
-      if (onlyOneExpanding) {
-        currIsClosing = currIsClosing.concat(currExpanded);
-        currExpanded = [rowKey];
-      } else currExpanded.push(rowKey);
-    } else {
-      currIsClosing.push(rowKey);
-      currExpanded = currExpanded.filter((value) => value !== rowKey);
-    }
-
-    if (onExpand) {
-      const row = dataOperator.getRowByRowId(data, keyField, rowKey);
-      onExpand(row, isExpanded, rowIndex, e);
-    }
-
-    this.setState(() => ({ expanded: currExpanded, isClosing: currIsClosing }));
-  };
-
-  handleAllRowExpand = (e: any, expandAll: boolean) => {
-    const {
-      data,
-      keyField,
-      expandRow: { onExpandAll, nonExpandable },
-    } = this.props;
-
-    const { expanded } = this.state;
-
-    let currExpanded: any[];
-
-    if (expandAll) {
-      currExpanded = expanded.concat(
-        dataOperator.expandableKeys(data, keyField, nonExpandable)
-      );
-    } else {
-      currExpanded = expanded.filter(
-        (s) => typeof data.find((d) => _.get(d, keyField) === s) === "undefined"
-      );
-    }
-
-    if (onExpandAll) {
-      onExpandAll(
-        expandAll,
-        dataOperator.getExpandedRows(data, keyField, currExpanded),
-        e
-      );
-    }
-
-    this.setState(() => ({ expanded: currExpanded }));
-  };
-
-  render() {
-    const { data, keyField } = this.props;
-
-    return (
-      <RowExpandContext.Provider
-        value={{
-          ...this.props.expandRow,
-          nonExpandable: this.props.expandRow.nonExpandable,
-          expanded: this.state.expanded,
-          isClosing: this.state.isClosing,
-          onClosed: this.onClosed,
-          isAnyExpands: dataOperator.isAnyExpands(
-            data,
-            keyField,
-            this.state.expanded
-          ),
-          onRowExpand: this.handleRowExpand,
-          onAllRowExpand: this.handleAllRowExpand,
-        }}
-      >
-        {this.props.children}
-      </RowExpandContext.Provider>
-    );
-  }
-}
+  return (
+    <RowExpandContext.Provider value={value}>
+      {children}
+    </RowExpandContext.Provider>
+  );
+});
 
 export default () => ({
   Provider: RowExpandProvider,

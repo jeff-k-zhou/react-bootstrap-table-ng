@@ -117,7 +117,7 @@ export type NumberFilterProps<T extends object = any> = TableColumnFilterProps<
   numberClassName?: string | undefined;
   comparatorStyle?: CSSProperties | undefined;
   numberStyle?: CSSProperties | undefined;
-  defaultValue?: { number: number; comparator: Comparator } | undefined;
+  defaultValue?: { number?: number | ""; comparator?: Comparator } | undefined;
   filterState?: any;
   column: any;
 };

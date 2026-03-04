@@ -23,17 +23,19 @@
 .react-bootstrap-table > table > thead > tr > th .number-filter,
 .react-bootstrap-table > table > thead > tr > th .date-filter {
   display: flex;
+  align-items: center;
+  width: 100%;
 }
 
 .react-bootstrap-table > table > thead > tr > th .number-filter-input,
 .react-bootstrap-table > table > thead > tr > th .date-filter-input {
   margin-left: 5px;
-  float: left;
-  width: calc(100% - 67px - 5px);
+  flex: 1;
+  min-width: 0;
 }
 
 .react-bootstrap-table > table > thead > tr > th .number-filter-comparator,
 .react-bootstrap-table > table > thead > tr > th .date-filter-comparator {
-  width: 67px;
-  float: left;
+  width: 45px;
+  flex-shrink: 0;
 }

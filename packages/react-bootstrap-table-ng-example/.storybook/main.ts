@@ -101,6 +101,13 @@ const config: StorybookConfig = {
                 test: /\.(png|jpg|jpeg|gif|svg)$/i,
                 type: "asset/resource",
             });
+
+            config.module.rules.push({
+                test: /\.m?js/,
+                resolve: {
+                    fullySpecified: false,
+                },
+            });
         }
 
         if (config.resolve) {

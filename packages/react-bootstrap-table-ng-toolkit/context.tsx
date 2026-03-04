@@ -1,180 +1,211 @@
-/* eslint no-param-reassign: 0 */
-import React from "react";
-
-import { TableToolkitProps, ToolkitContextType } from ".";
+import React, { useState, useCallback, useMemo, useRef } from "react";
 import createSearchContext from "./src/search/context";
-import statelessDecorator from "./statelessOp";
+import { getMetaInfo, save, transform } from "./src/csv/exporter";
 
-const ToolkitContext = React.createContext<ToolkitContextType>({
-  searchProps: {
-    searchText: "",
-    onSearch: (val: string) => {},
-    onClear: () => {},
-  },
-  csvProps: {
-    onExport: () => {},
-  },
-  columnToggleProps: {
-    columns: [],
-    toggles: [],
-    onColumnToggle: (dataField: string) => {},
-  },
-  baseProps: {
-    keyField: undefined,
-    columns: [],
-    data: [],
-    bootstrap4: undefined,
-    bootstrap5: undefined,
-    columnResize: undefined,
-  },
-});
+const ToolkitContext = React.createContext<any>(null);
 
-class ToolkitProvider extends statelessDecorator(React.Component) {
-  static defaultProps = {
-    search: false,
-    exportCSV: false,
-    bootstrap4: false,
-    bootstrap5: false,
-    columnResize: false
-  };
+const csvDefaultOptions = {
+  fileName: "spreadsheet.csv",
+  separator: ",",
+  ignoreHeader: false,
+  ignoreFooter: true,
+  noAutoBOM: true,
+  blobType: "text/plain;charset=utf-8",
+  exportAll: true,
+  onlyExportSelection: false,
+  onlyExportFiltered: false,
+};
 
-  _: any;
-  state: any;
+const ToolkitProvider = (props: any) => {
+  const {
+    search,
+    columnToggle: columnToggleEnabled,
+    columns,
+    data,
+    keyField,
+    exportCSV,
+    bootstrap4 = false,
+    bootstrap5 = false,
+    columnResize = false,
+    children,
+  } = props;
 
-  constructor(props: TableToolkitProps) {
-    super(props);
-    const initialState = {
-      columnToggle: {},
-      searchText:
-        typeof props.search === "object"
-          ? props.search.defaultSearch || ""
-          : "",
-    };
-    this._ = null;
-    this.onClear = this.onClear.bind(this);
-    this.onSearch = this.onSearch.bind(this);
-    this.onColumnToggle = this.onColumnToggle.bind(this);
-    this.setDependencyModules = this.setDependencyModules.bind(this);
+  const [searchText, setSearchText] = useState(() => {
+    return typeof search === "object" ? search.defaultSearch || "" : "";
+  });
 
-    if (props.columnToggle) {
-      initialState.columnToggle = props.columns.reduce(
-        (obj: any, column: any) => {
-          obj[column.dataField] = !column.hidden;
-          return obj;
-        },
-        {}
-      );
-    }
-    initialState.searchText =
-      typeof props.search === "object" ? props.search.defaultSearch || "" : "";
-    this.state = initialState;
-  }
-
-  static getDerivedStateFromProps(props: TableToolkitProps, state: any) {
-    const currColumnToggle = state.columnToggle;
-    let propsColumnToggle;
-    if (props.columnToggle) {
-      propsColumnToggle = props.columns.reduce((obj: any, column: any) => {
+  const [columnToggle, setColumnToggle] = useState(() => {
+    if (columnToggleEnabled) {
+      return columns.reduce((obj: any, column: any) => {
         obj[column.dataField] = !column.hidden;
         return obj;
       }, {});
-    } else {
-      propsColumnToggle = {};
     }
-    if (currColumnToggle) {
-      return {
-        ...state,
-        currColumnToggle,
-      };
-    } else {
-      return {
-        ...state,
-        propsColumnToggle,
-      };
+    return {};
+  });
+
+  const dependencyModules = useRef<any>(null);
+  const tableExposedAPIEmitter = useRef<any>(null);
+
+  const setDependencyModules = useCallback((_: any) => {
+    dependencyModules.current = _;
+  }, []);
+
+  const registerExposedAPI = useCallback((emitter: any) => {
+    tableExposedAPIEmitter.current = emitter;
+  }, []);
+
+  const onSearch = useCallback((text: string) => {
+    setSearchText(text);
+  }, []);
+
+  const onClear = useCallback(() => {
+    setSearchText("");
+  }, []);
+
+  const onColumnToggle = useCallback((dataField: string) => {
+    setColumnToggle((prev: any) => ({
+      ...prev,
+      [dataField]: !prev[dataField],
+    }));
+  }, []);
+
+  const handleExportCSV = useCallback(
+    (source: any) => {
+      const meta = getMetaInfo(columns);
+      const options =
+        exportCSV === true
+          ? csvDefaultOptions
+          : {
+              ...csvDefaultOptions,
+              ...(typeof exportCSV === "object" ? exportCSV : {}),
+            };
+
+      let exportData: any;
+      if (typeof source !== "undefined") {
+        exportData = source;
+      } else if (options.exportAll) {
+        exportData = data;
+      } else if (options.onlyExportFiltered) {
+        const payload: { result: any } = { result: undefined };
+        tableExposedAPIEmitter.current?.emit("get.filtered.rows", payload);
+        exportData = payload.result;
+      } else {
+        const payload = { result: undefined };
+        tableExposedAPIEmitter.current?.emit("get.table.data", payload);
+        exportData = payload.result;
+      }
+
+      if (options.onlyExportSelection) {
+        const payload = { result: undefined };
+        tableExposedAPIEmitter.current?.emit("get.selected.rows", payload);
+        const selections = (payload.result as unknown as any[]) ?? [];
+        exportData = exportData.filter((row: any) =>
+          selections.includes(row[keyField as string])
+        );
+      }
+
+      const content = transform(
+        exportData,
+        meta,
+        columns,
+        dependencyModules.current,
+        options
+      );
+      save(content, options);
+    },
+    [columns, exportCSV, data, keyField]
+  );
+
+  const searchContextValue = useMemo(() => {
+    if (search) {
+      return createSearchContext(search);
     }
-  }
+    return null;
+  }, [search]);
 
-  onSearch(searchText: any) {
-    if (searchText !== this.state.searchText) {
-      this.setState({ searchText });
-    }
-  }
-
-  onClear() {
-    this.setState({ searchText: "" });
-  }
-
-  onColumnToggle(dataField: any) {
-    const { columnToggle } = this.state;
-    columnToggle[dataField] = !columnToggle[dataField];
-    this.setState({
-      ...this.state,
-      columnToggle,
-    });
-  }
-  /**
-   *
-   * @param {*} _
-   * this function will be called only one time when table render
-   * react-bootstrap-table-ng/src/context/index.js will call this cb for passing the _ module
-   * Please consider to extract a common module to handle _ module.
-   * this is just a quick fix
-   */
-  setDependencyModules(_: any) {
-    this._ = _;
-  }
-
-  render() {
-    const baseProps: TableToolkitProps = {
-      keyField: this.props.keyField,
-      columns: this.props.columns,
-      data: this.props.data,
-      search: this.props.search ?? false,
-      exportCSV: this.props.exportCSV ?? false,
-      bootstrap4: this.props.bootstrap4 ?? false,
-      bootstrap5: this.props.bootstrap5 ?? false,
-      columnResize: this.props.columnResize ?? false,
-      children: this.props.children,
-      setDependencyModules: this.setDependencyModules,
-      registerExposedAPI: this.registerExposedAPI,
+  const baseProps = useMemo(() => {
+    const tableProps: any = {
+      keyField,
+      columns,
+      data,
+      search: search ?? false,
+      exportCSV: exportCSV ?? false,
+      bootstrap4,
+      bootstrap5,
+      columnResize,
+      children,
+      setDependencyModules,
+      registerExposedAPI,
     };
-    if (this.props.search) {
-      baseProps.search = {
-        searchContext: createSearchContext(this.props.search),
-        searchText: this.state.searchText,
-      };
-    }
-    if (this.props.columnToggle) {
-      baseProps.columnToggle = {
-        toggles: this.state.columnToggle,
-      };
-    }
-    return (
-      <ToolkitContext.Provider
-        value={{
-          searchProps: {
-            searchText: this.state.searchText,
-            onSearch: this.onSearch,
-            onClear: this.onClear,
-          },
-          csvProps: {
-            onExport: this.handleExportCSV,
-          },
-          columnToggleProps: {
-            columns: this.props.columns,
-            toggles: this.state.columnToggle,
-            onColumnToggle: this.onColumnToggle,
-          },
-          baseProps,
-        }}
-      >
-        {this.props.children}
-      </ToolkitContext.Provider>
-    );
-  }
-}
 
-export default {
-  Provider: ToolkitProvider,
-  Consumer: ToolkitContext.Consumer,
+    if (search && searchContextValue) {
+      tableProps.search = {
+        searchContext: searchContextValue as any,
+        searchText,
+      };
+    }
+
+    if (columnToggleEnabled) {
+      tableProps.columnToggle = {
+        toggles: columnToggle as any,
+      };
+    }
+
+    return tableProps;
+  }, [
+    keyField,
+    columns,
+    data,
+    search,
+    exportCSV,
+    bootstrap4,
+    bootstrap5,
+    columnResize,
+    children,
+    setDependencyModules,
+    registerExposedAPI,
+    searchContextValue,
+    searchText,
+    columnToggle,
+    columnToggleEnabled,
+  ]);
+
+  const contextValue = useMemo(
+    () => ({
+      searchProps: {
+        searchText,
+        onSearch,
+        onClear,
+      },
+      csvProps: {
+        onExport: handleExportCSV,
+      },
+      columnToggleProps: {
+        columns,
+        toggles: columnToggle as any,
+        onColumnToggle,
+      },
+      baseProps,
+    }),
+    [
+      searchText,
+      onSearch,
+      onClear,
+      handleExportCSV,
+      columns,
+      columnToggle,
+      onColumnToggle,
+      baseProps,
+    ]
+  );
+
+  return (
+    <ToolkitContext.Provider value={contextValue}>
+      {typeof children === 'function' ? children(contextValue) : children}
+    </ToolkitContext.Provider>
+  );
 };
+
+export { ToolkitContext, ToolkitProvider };
+export default ToolkitProvider;

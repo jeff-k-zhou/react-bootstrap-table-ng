@@ -96,6 +96,7 @@ class EmptyTableOverlay extends React.Component {
 interface TableProps {
   data: any[];
   page: number;
+  loading: boolean;
   totalSize: number;
   sizePerPage: number;
   onTableChange: (type: any, context: any) => void;
@@ -104,6 +105,7 @@ interface TableProps {
 const Table = ({
   data,
   page,
+  loading,
   sizePerPage,
   onTableChange,
   totalSize,
@@ -111,6 +113,7 @@ const Table = ({
   <div>
     <BootstrapTable
       remote
+      loading={loading}
       keyField="id"
       data={data}
       columns={[
@@ -129,6 +132,7 @@ const Table = ({
       ]}
       pagination={paginationFactory({ page, sizePerPage, totalSize })}
       onTableChange={onTableChange}
+      overlay={overlayFactory({ spinner: true })}
       noDataIndication={() => <NoDataIndication />}
     />
     <Code>{emptyTableOverlaySourceCode}</Code>
@@ -140,6 +144,7 @@ interface EmptyTableOverlayState {
   data: any;
   sizePerPage: number;
   page: any;
+  loading: boolean;
 }
 
 class EmptyTableOverlay extends React.Component<{}, EmptyTableOverlayState> {
@@ -149,6 +154,7 @@ class EmptyTableOverlay extends React.Component<{}, EmptyTableOverlayState> {
     super(props);
     this.state = {
       page: 1,
+      loading: false,
       data: this.products.slice(0, 10),
       sizePerPage: 10,
     };
@@ -156,22 +162,24 @@ class EmptyTableOverlay extends React.Component<{}, EmptyTableOverlayState> {
 
   handleTableChange = (type: any, { page, sizePerPage }: any) => {
     const currentIndex = (page - 1) * sizePerPage;
+    this.setState(() => ({ data: [], loading: true }));
     setTimeout(() => {
       this.setState(() => ({
         page,
+        loading: false,
         data: this.products.slice(currentIndex, currentIndex + sizePerPage),
         sizePerPage,
       }));
     }, 3000);
-    this.setState(() => ({ data: [] }));
   };
 
   render() {
-    const { data, sizePerPage, page } = this.state;
+    const { data, sizePerPage, page, loading } = this.state;
     return (
       <Table
         data={data}
         page={page}
+        loading={loading}
         sizePerPage={sizePerPage}
         totalSize={this.products.length}
         onTableChange={this.handleTableChange}

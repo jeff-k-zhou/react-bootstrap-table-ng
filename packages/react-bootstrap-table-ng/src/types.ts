@@ -141,6 +141,7 @@ export interface ColumnDescription<T extends object = any, E = any> {
     sortValue?: ColumnSortValue<T> | undefined;
     sortFunc?: ColumnSortFunc<T> | undefined;
     sortCaret?: ColumnSortCaret<T, E> | undefined;
+    onSort?: (dataField: any, order: SortOrder) => void | undefined;
     searchable?: boolean | undefined;
     resizable?: boolean | undefined;
     align?:
@@ -671,6 +672,16 @@ export interface BootstrapTableProps<T extends object = any, K = number> {
     sortField?: string;
     sortOrder?: string;
     currFilters?: object;
+    /**
+     * Array of row keys to be hidden.
+     */
+    hiddenRows?: any[];
+    /**
+     * Column toggle options, typically provided by ToolkitProvider.
+     */
+    columnToggle?: {
+        toggles: { [key: string]: boolean };
+    };
 }
 
 /**

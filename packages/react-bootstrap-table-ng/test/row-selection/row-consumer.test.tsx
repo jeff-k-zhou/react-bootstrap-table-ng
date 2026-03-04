@@ -1,6 +1,6 @@
 import React from "react";
 import { render } from "@testing-library/react";
-import { createSelectionContext } from "../../src/contexts/selection-context";
+import createSelectionContext from "../../src/contexts/selection-context";
 import withSelectionConsumer from "../../src/row-selection/row-consumer";
 
 describe("withSelectionConsumer", () => {

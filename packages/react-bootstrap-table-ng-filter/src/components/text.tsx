@@ -1,156 +1,151 @@
-
-import React, { Component } from "react";
-
+import React, { forwardRef, useImperativeHandle } from "react";
 import { FILTER_TYPES, TextFilterProps } from "../..";
 
-interface TextFilterState {
-  value: string;
-}
+const TextFilter = forwardRef<any, TextFilterProps>((props, ref) => {
+  const {
+    id = null,
+    placeholder,
+    column,
+    style,
+    className,
+    onFilter,
+    caseSensitive = false,
+    defaultValue = "",
+    getFilter,
+    filterState = {},
+    delay = 500,
+    onClick,
+    ...rest
+  } = props;
 
-class TextFilter extends Component<TextFilterProps, TextFilterState> {
-  input: { value: any } | any;
-  timeout: any;
-  constructor(props: TextFilterProps) {
-    super(props);
-    this.filter = this.filter.bind(this);
-    this.handleClick = this.handleClick.bind(this);
-    this.timeout = null;
-    this.input = {};
-    function getDefaultValue() {
-      if (
-        props.filterState &&
-        typeof props.filterState.filterVal !== "undefined"
-      ) {
-        return props.filterState.filterVal;
-      }
-      return props.defaultValue ?? "";
+  const { dataField, text } = column;
+
+  const [value, setValue] = React.useState(() => {
+    if (filterState && typeof filterState.filterVal !== "undefined") {
+      return filterState.filterVal;
     }
-    this.state = {
-      value: getDefaultValue(),
-    };
-  }
+    return defaultValue ?? "";
+  });
 
-  componentDidMount() {
-    const { onFilter, getFilter, column } = this.props;
-    const defaultValue = this.input.value;
+  const inputRef = React.useRef<HTMLInputElement>(null);
+  const timeoutRef = React.useRef<any>(null);
 
-    if (defaultValue) {
-      // TODO
-      // @ts-ignore
-      onFilter(this.props.column, FILTER_TYPES.TEXT, true)(defaultValue);
+  const cleanTimer = React.useCallback(() => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+  }, []);
+
+  useImperativeHandle(ref, () => ({
+    applyFilter: (val: any) => {
+      setValue(val);
+      if (onFilter) {
+        (onFilter as any)(column, FILTER_TYPES.TEXT)(val);
+      }
+    },
+    cleanFiltered: () => {
+      setValue("");
+      if (onFilter) {
+        (onFilter as any)(column, FILTER_TYPES.TEXT)("");
+      }
+    }
+  }));
+
+  React.useEffect(() => {
+    return () => cleanTimer();
+  }, [cleanTimer]);
+
+  React.useEffect(() => {
+    const initialValue = inputRef.current?.value;
+
+    if (onFilter && initialValue) {
+      (onFilter as any)(column, FILTER_TYPES.TEXT, true)(initialValue);
     }
 
     // export onFilter function to allow users to access
     if (getFilter) {
       getFilter((filterVal: any) => {
-        this.setState(() => ({ value: filterVal }));
-        // TODO
-        // @ts-ignore
-        onFilter(column, FILTER_TYPES.TEXT)(filterVal);
+        setValue(filterVal);
+        if (onFilter) {
+          (onFilter as any)(column, FILTER_TYPES.TEXT)(filterVal);
+        }
       });
     }
-  }
+  }, []);
 
-  componentWillUnmount() {
-    this.cleanTimer();
-  }
 
-  componentDidUpdate(prevProps: any) {
-    if (prevProps.defaultValue !== this.props.defaultValue) {
-      const nextValue = this.props.defaultValue ?? "";
-      this.setState({ value: nextValue }, () => {
-        // TODO
-        // @ts-ignore
-        this.props.onFilter(this.props.column, FILTER_TYPES.TEXT)(nextValue);
-      });
+  // Track the last filterVal we received from the parent so we can detect
+  // genuine external changes vs. stale re-renders with the old value.
+  const lastRemoteVal = React.useRef<string>(
+    filterState && typeof filterState.filterVal !== "undefined"
+      ? filterState.filterVal
+      : defaultValue ?? ""
+  );
+
+  React.useEffect(() => {
+    // Only sync when the parent explicitly provides a new filterVal.
+    // When the filter is cleared, FilterContext removes the key entirely
+    // (filterState becomes undefined), so we must NOT fall back to defaultValue
+    // here — that would revert the input back to "8" after the user clears it.
+    if (!filterState || typeof filterState.filterVal === "undefined") return;
+
+    const remoteVal = filterState.filterVal;
+    if (remoteVal !== lastRemoteVal.current) {
+      lastRemoteVal.current = remoteVal;
+      setValue(remoteVal);
     }
-  }
+  }, [filterState]);
 
-  filter(e: any) {
-    e.stopPropagation();
-    this.cleanTimer();
-    const filterValue = e.target.value;
-    this.setState(() => ({ value: filterValue }));
-    this.timeout = setTimeout(() => {
-      // TODO
-      // @ts-ignore
-      this.props.onFilter(this.props.column, FILTER_TYPES.TEXT)(filterValue);
-    }, this.props.delay);
-  }
+  const filterHandler = React.useCallback(
+    (e: any) => {
+      e.stopPropagation();
+      cleanTimer();
+      const filterValue = e.target.value;
+      // Track the user-typed value as the "last remote" so that if the parent
+      // re-renders with the old remote value, we don't clobber what the user typed.
+      lastRemoteVal.current = filterValue;
+      setValue(filterValue);
+      timeoutRef.current = setTimeout(() => {
+        if (onFilter) {
+          (onFilter as any)(column, FILTER_TYPES.TEXT)(filterValue);
+        }
+      }, delay);
+    },
+    [cleanTimer, column, onFilter, delay]
+  );
 
-  cleanTimer() {
-    if (this.timeout) {
-      clearTimeout(this.timeout);
-    }
-  }
+  const handleClick = React.useCallback(
+    (e: any) => {
+      e.stopPropagation();
+      if (onClick) {
+        onClick(e);
+      }
+    },
+    [onClick]
+  );
 
-  cleanFiltered() {
-    const value = this.props.defaultValue ?? "";
-    this.setState(() => ({ value }));
-    // TODO
-    // @ts-ignore
-    this.props.onFilter(this.props.column, FILTER_TYPES.TEXT)(value);
-  }
+  const elmId = `text-filter-column-${dataField}${id ? `-${id}` : ""}`;
 
-  applyFilter(filterText: any) {
-    const value = filterText ?? "";
-    this.setState(() => ({ value }));
-    // TODO
-    // @ts-ignore
-    this.props.onFilter(this.props.column, FILTER_TYPES.TEXT)(value);
-  }
+  return (
+    <label className="filter-label" htmlFor={elmId}>
+      <span className="sr-only visually-hidden">Filter by {text}</span>
+      <input
+        {...rest}
+        ref={inputRef}
+        type="text"
+        id={elmId}
+        className={`filter text-filter form-control ${className}`}
+        style={style}
+        onChange={filterHandler}
+        onClick={handleClick}
+        placeholder={placeholder || `Enter ${text}...`}
+        value={value}
+        data-testid="text-filter"
+      />
+    </label>
+  );
+});
 
-  handleClick(e: any) {
-    e.stopPropagation();
-    if (this.props.onClick) {
-      this.props.onClick(e);
-    }
-  }
-
-  render() {
-    const {
-      id = null,
-      placeholder,
-      column: { dataField, text },
-      style,
-      className,
-      onFilter,
-      caseSensitive = false,
-      defaultValue = "",
-      getFilter,
-      filterState = {},
-      ...rest
-    } = this.props;
-
-    const elmId = `text-filter-column-${dataField}${id ? `-${id}` : ""}`;
-
-    return (
-      <label className="filter-label" htmlFor={elmId}>
-        <span className="sr-only visually-hidden">Filter by {text}</span>
-        <input
-          {...rest}
-          ref={(n) => { this.input = n; }}
-          type="text"
-          id={elmId}
-          className={`filter text-filter form-control ${className}`}
-          style={style}
-          onChange={this.filter}
-          onClick={this.handleClick}
-          placeholder={placeholder || `Enter ${text}...`}
-          value={this.state.value}
-          data-testid="text-filter"
-        />
-      </label>
-    );
-  }
-
-  static defaultProps = {
-    delay: 500,
-    filterState: {},
-    defaultValue: "",
-    caseSensitive: false,
-    id: null,
-  };
-}
+TextFilter.displayName = "TextFilter";
 
 export default TextFilter;

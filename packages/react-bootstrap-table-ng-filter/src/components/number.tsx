@@ -1,7 +1,7 @@
 /* eslint jsx-a11y/no-static-element-interactions: 0 */
 /* eslint react/require-default-props: 0 */
 /* eslint no-return-assign: 0 */
-import React, { Component } from "react";
+import React, { forwardRef, useImperativeHandle } from "react";
 import { FILTER_DELAY, FILTER_TYPES, NumberFilterProps } from "../..";
 
 const EQ = "=";
@@ -13,112 +13,35 @@ const LE = "<=";
 
 const legalComparators = [EQ, NE, GT, GE, LT, LE];
 
-interface NumberFilterState {
-  isSelected: boolean;
-}
+const NumberFilter = forwardRef<any, NumberFilterProps>((props, ref) => {
+  const {
+    id = null,
+    column,
+    options,
+    style,
+    className = "",
+    numberStyle,
+    numberClassName = "",
+    comparatorStyle,
+    comparatorClassName = "",
+    placeholder,
+    onFilter,
+    getFilter,
+    defaultValue = { number: "" as any, comparator: "" },
+    filterState = {},
+    delay = FILTER_DELAY,
+    comparators: propComparators,
+    withoutEmptyComparatorOption = false,
+    withoutEmptyNumberOption = false,
+    ...rest
+  } = props;
 
-class NumberFilter extends Component<NumberFilterProps, NumberFilterState> {
-  comparators: any[];
-  numberFilter: any;
-  numberFilterComparator: any;
-  timeout: any;
+  const comparators = React.useMemo(
+    () => propComparators || legalComparators,
+    [propComparators]
+  );
 
-  constructor(props: NumberFilterProps) {
-    super(props);
-    this.comparators = props.comparators || legalComparators;
-    this.timeout = null;
-    let isSelected =
-      props.defaultValue !== undefined &&
-      props.defaultValue.number !== undefined;
-    if (props.options && isSelected) {
-      isSelected = props.options.indexOf(props.defaultValue.number) > -1;
-    }
-    this.state = { isSelected };
-    this.onChangeNumber = this.onChangeNumber.bind(this);
-    this.onChangeNumberSet = this.onChangeNumberSet.bind(this);
-    this.onChangeComparator = this.onChangeComparator.bind(this);
-  }
-
-  componentDidMount() {
-    const { column, onFilter, getFilter } = this.props;
-    const comparator =
-      this.numberFilterComparator.value === ""
-        ? EQ
-        : this.numberFilterComparator.value;
-    const number = this.numberFilter.value;
-    if (comparator && number) {
-      // TODO
-      // @ts-ignore
-      onFilter(column, FILTER_TYPES.NUMBER, true)({ number, comparator });
-    }
-
-    // export onFilter function to allow users to access
-    if (getFilter) {
-      getFilter((filterVal: any) => {
-        this.setState(() => ({ isSelected: filterVal !== "" }));
-        this.numberFilterComparator.value = filterVal.comparator;
-        this.numberFilter.value = filterVal.number;
-
-        const fn = filterVal.number;
-        const fc = filterVal.comparator;
-        // TODO
-        // @ts-ignore
-        onFilter(column, FILTER_TYPES.NUMBER)({ number: fn, comparator: fc });
-      });
-    }
-  }
-
-  componentWillUnmount() {
-    clearTimeout(this.timeout);
-  }
-
-  onChangeNumber(e: any) {
-    const { delay = FILTER_DELAY, column, onFilter } = this.props;
-    const comparator = this.numberFilterComparator.value;
-    if (comparator === "") {
-      return;
-    }
-    if (this.timeout) {
-      clearTimeout(this.timeout);
-    }
-    const v = e.target.value;
-    this.timeout = setTimeout(() => {
-      // TODO
-      // @ts-ignore
-      onFilter(column, FILTER_TYPES.NUMBER)({ number: v, comparator });
-    }, delay);
-  }
-
-  onChangeNumberSet(e: any) {
-    const { column, onFilter } = this.props;
-    const comparator = this.numberFilterComparator.value;
-    const { value } = e.target;
-    this.setState(() => ({ isSelected: value !== "" }));
-    // if (comparator === '') {
-    //   return;
-    // }
-    // TODO
-    // @ts-ignore
-    onFilter(column, FILTER_TYPES.NUMBER)({ number: value, comparator });
-  }
-
-  onChangeComparator(e: any) {
-    const { column, onFilter } = this.props;
-    const value = this.numberFilter.value;
-    const comparator = e.target.value;
-    // if (value === '') {
-    //   return;
-    // }
-    // TODO
-    // @ts-ignore
-    onFilter(column, FILTER_TYPES.NUMBER)({ number: value, comparator });
-  }
-
-  getDefaultComparator() {
-    const {
-      defaultValue = { number: undefined, comparator: "" },
-      filterState = {},
-    } = this.props;
+  const getDefaultComparator = React.useCallback(() => {
     if (filterState && filterState.filterVal) {
       return filterState.filterVal.comparator;
     }
@@ -126,13 +49,9 @@ class NumberFilter extends Component<NumberFilterProps, NumberFilterState> {
       return defaultValue.comparator;
     }
     return "";
-  }
+  }, [filterState, defaultValue]);
 
-  getDefaultValue() {
-    const {
-      defaultValue = { number: undefined, comparator: "" },
-      filterState = {},
-    } = this.props;
+  const getDefaultValue = React.useCallback(() => {
     if (filterState && filterState.filterVal) {
       return filterState.filterVal.number;
     }
@@ -140,174 +59,219 @@ class NumberFilter extends Component<NumberFilterProps, NumberFilterState> {
       return defaultValue.number;
     }
     return "";
-  }
+  }, [filterState, defaultValue]);
 
-  getComparatorOptions() {
+  const [isSelected, setIsSelected] = React.useState(() => {
+    let selected =
+      defaultValue !== undefined && defaultValue.number !== undefined && defaultValue.number !== "";
+    if (options && selected) {
+      selected = (options as number[]).indexOf(defaultValue.number as number) > -1;
+    }
+    return selected;
+  });
+
+  const numberFilterRef = React.useRef<any>(null);
+  const comparatorFilterRef = React.useRef<any>(null);
+  const timeoutRef = React.useRef<any>(null);
+
+  useImperativeHandle(ref, () => ({
+    applyFilter: (val: any) => {
+        if (comparatorFilterRef.current) {
+          comparatorFilterRef.current.value = val.comparator || "";
+        }
+        if (numberFilterRef.current) {
+          numberFilterRef.current.value = val.number || "";
+        }
+        if (onFilter) {
+          (onFilter as any)(column, FILTER_TYPES.NUMBER)(val);
+        }
+    }
+  }));
+
+  React.useEffect(() => {
+    const comparator =
+      comparatorFilterRef.current?.value === ""
+        ? EQ
+        : comparatorFilterRef.current?.value;
+    const number = numberFilterRef.current?.value;
+    if (onFilter && comparator && number) {
+      (onFilter as any)(column, FILTER_TYPES.NUMBER, true)({ number, comparator });
+    }
+
+    // export onFilter function to allow users to access
+    if (getFilter) {
+      getFilter((filterVal: any) => {
+        setIsSelected(filterVal !== "");
+        if (comparatorFilterRef.current) {
+          comparatorFilterRef.current.value = filterVal.comparator;
+        }
+        if (numberFilterRef.current) {
+          numberFilterRef.current.value = filterVal.number;
+        }
+
+        const fn = filterVal.number;
+        const fc = filterVal.comparator;
+        if (onFilter) {
+          (onFilter as any)(column, FILTER_TYPES.NUMBER)({ number: fn, comparator: fc });
+        }
+      });
+    }
+
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
+
+  const onChangeNumber = React.useCallback(
+    (e: any) => {
+      const comparator = comparatorFilterRef.current?.value;
+      if (comparator === "") {
+        return;
+      }
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      const v = e.target.value;
+      timeoutRef.current = setTimeout(() => {
+        if (onFilter) {
+          (onFilter as any)(column, FILTER_TYPES.NUMBER)({ number: v, comparator });
+        }
+      }, delay);
+    },
+    [column, onFilter, delay]
+  );
+
+  const onChangeNumberSet = React.useCallback(
+    (e: any) => {
+      const comparator = comparatorFilterRef.current?.value;
+      const { value } = e.target;
+      setIsSelected(value !== "");
+      if (onFilter) {
+        (onFilter as any)(column, FILTER_TYPES.NUMBER)({ number: value, comparator });
+      }
+    },
+    [column, onFilter]
+  );
+
+  const onChangeComparator = React.useCallback(
+    (e: any) => {
+      const value = numberFilterRef.current?.value;
+      const comparator = e.target.value;
+      if (onFilter) {
+        (onFilter as any)(column, FILTER_TYPES.NUMBER)({ number: value, comparator });
+      }
+    },
+    [column, onFilter]
+  );
+
+  const getComparatorOptions = () => {
     const optionTags = [];
-    const { withoutEmptyComparatorOption = false } = this.props;
     if (!withoutEmptyComparatorOption) {
       optionTags.push(<option key="-1" />);
     }
-    for (let i = 0; i < this.comparators.length; i += 1) {
+    for (let i = 0; i < comparators.length; i += 1) {
       optionTags.push(
-        <option key={i} value={this.comparators[i]}>
-          {this.comparators[i]}
+        <option key={i} value={comparators[i]}>
+          {comparators[i]}
         </option>
       );
     }
     return optionTags;
-  }
+  };
 
-  getNumberOptions() {
+  const getNumberOptions = () => {
     const optionTags = [];
-    const { options, column, withoutEmptyNumberOption = false } = this.props;
     if (!withoutEmptyNumberOption) {
       optionTags.push(
         <option key="-1" value="">
-          {this.props.placeholder || `Select ${column.text}...`}
+          {placeholder || `Select ${column.text}...`}
         </option>
       );
     }
-    for (let i = 0; i < (options as number[]).length; i += 1) {
+    const numberOptions = options as number[];
+    for (let i = 0; i < numberOptions.length; i += 1) {
       optionTags.push(
-        <option key={i} value={(options as number[])[i]}>
-          {(options as number[])[i]}
+        <option key={i} value={numberOptions[i]}>
+          {numberOptions[i]}
         </option>
       );
     }
     return optionTags;
-  }
+  };
 
-  applyFilter(filterObj: any) {
-    const { column, onFilter } = this.props;
-    const { number, comparator } = filterObj;
-    this.setState(() => ({ isSelected: number !== "" }));
-    this.numberFilterComparator.value = comparator;
-    this.numberFilter.value = number;
-    // TODO
-    // @ts-ignore
-    onFilter(column, FILTER_TYPES.NUMBER)({ number, comparator });
-  }
+  const selectClass = `
+    select-filter
+    number-filter-input
+    form-control
+    ${numberClassName}
+    ${!isSelected ? "placeholder-selected" : ""}
+  `;
 
-  cleanFiltered() {
-    const {
-      column,
-      onFilter,
-      defaultValue = { number: undefined, comparator: "" },
-    } = this.props;
-    const value = defaultValue ? defaultValue.number : "";
-    const comparator = defaultValue ? defaultValue.comparator : "";
-    this.setState(() => ({ isSelected: value !== "" }));
-    this.numberFilterComparator.value = comparator;
-    this.numberFilter.value = value;
-    // TODO
-    // @ts-ignore
-    onFilter(column, FILTER_TYPES.NUMBER)({ number: value, comparator });
-  }
+  const comparatorElmId = `number-filter-comparator-${column.dataField}${
+    id ? `-${id}` : ""
+  }`;
+  const inputElmId = `number-filter-column-${column.dataField}${
+    id ? `-${id}` : ""
+  }`;
 
-  render() {
-    const { isSelected } = this.state;
-    const {
-      id = null,
-      column,
-      options,
-      style,
-      className = "",
-      numberStyle,
-      numberClassName = "",
-      comparatorStyle,
-      comparatorClassName = "",
-      placeholder,
-    } = this.props;
-    const selectClass = `
-      select-filter
-      number-filter-input
-      form-control
-      ${numberClassName}
-      ${!isSelected ? "placeholder-selected" : ""}
-    `;
-
-    const comparatorElmId = `number-filter-comparator-${column.dataField}${id ? `-${id}` : ""
-      }`;
-    const inputElmId = `number-filter-column-${column.dataField}${id ? `-${id}` : ""
-      }`;
-
-    return (
-      <div
-        onClick={(e) => e.stopPropagation()}
-        className={`filter number-filter ${className}`}
-        style={style as any}
-        data-testid="number-filter"
-      >
-        <label className="filter-label" htmlFor={comparatorElmId}>
-          <span className="sr-only visually-hidden">Filter comparator</span>
+  return (
+    <div
+      onClick={(e) => e.stopPropagation()}
+      className={`filter number-filter ${className}`}
+      style={style as any}
+      data-testid="number-filter"
+    >
+      <label className="filter-label" htmlFor={comparatorElmId}>
+        <span className="sr-only visually-hidden">Filter comparator</span>
+        <select
+          ref={comparatorFilterRef}
+          style={comparatorStyle as any}
+          id={comparatorElmId}
+          className={`number-filter-comparator form-control ${comparatorClassName}`}
+          onChange={onChangeComparator}
+          defaultValue={getDefaultComparator()}
+          data-testid="number-filter-comparator"
+        >
+          {getComparatorOptions()}
+        </select>
+      </label>
+      {options ? (
+        <label className="filter-label" htmlFor={inputElmId}>
+          <span className="sr-only visually-hidden">{`Select ${column.text}`}</span>
           <select
-            ref={(n) => { this.numberFilterComparator = n; }}
-            style={comparatorStyle as any}
-            id={comparatorElmId}
-            className={`number-filter-comparator form-control ${comparatorClassName}`}
-            onChange={this.onChangeComparator}
-            defaultValue={this.getDefaultComparator()}
-            data-testid="number-filter-comparator"
+            ref={numberFilterRef}
+            id={inputElmId}
+            style={numberStyle as any}
+            className={selectClass}
+            onChange={onChangeNumberSet}
+            defaultValue={getDefaultValue()}
+            data-testid="number-filter-select"
           >
-            {this.getComparatorOptions()}
+            {getNumberOptions()}
           </select>
         </label>
-        {options ? (
-          <label className="filter-label" htmlFor={inputElmId}>
-            <span className="sr-only visually-hidden">{`Select ${column.text}`}</span>
-            <select
-              ref={(n) => { this.numberFilter = n; }}
-              id={inputElmId}
-              style={numberStyle as any}
-              className={selectClass}
-              onChange={this.onChangeNumberSet}
-              defaultValue={this.getDefaultValue()}
-              data-testid="number-filter-select"
-            >
-              {this.getNumberOptions()}
-            </select>
-          </label>
-        ) : (
-          <label htmlFor={inputElmId}>
-            <span className="sr-only visually-hidden">{`Enter ${column.text}`}</span>
-            <input
-              ref={(n) => { this.numberFilter = n; }}
-              id={inputElmId}
-              type="number"
-              style={numberStyle as any}
-              className={`number-filter-input form-control ${numberClassName}`}
-              placeholder={placeholder || `Enter ${column.text}...`}
-              onChange={this.onChangeNumber}
-              defaultValue={this.getDefaultValue()}
-              data-testid="number-filter-input"
-            />
-          </label>
-        )}
-      </div>
-    );
-  }
+      ) : (
+        <label htmlFor={inputElmId}>
+          <span className="sr-only visually-hidden">{`Enter ${column.text}`}</span>
+          <input
+            ref={numberFilterRef}
+            id={inputElmId}
+            type="number"
+            style={numberStyle as any}
+            className={`number-filter-input form-control ${numberClassName}`}
+            placeholder={placeholder || `Enter ${column.text}...`}
+            onChange={onChangeNumber}
+            defaultValue={getDefaultValue()}
+            data-testid="number-filter-input"
+          />
+        </label>
+      )}
+    </div>
+  );
+});
 
-  static defaultProps = {
-    delay: FILTER_DELAY,
-    options: undefined,
-    defaultValue: {
-      number: undefined,
-      comparator: "",
-    },
-    filterState: {},
-    withoutEmptyComparatorOption: false,
-    withoutEmptyNumberOption: false,
-    comparators: legalComparators,
-    placeholder: undefined,
-    style: undefined,
-    className: "",
-    comparatorStyle: undefined,
-    comparatorClassName: "",
-    numberStyle: undefined,
-    numberClassName: "",
-    id: null,
-  };
-}
+NumberFilter.displayName = "NumberFilter";
 
 export default NumberFilter;

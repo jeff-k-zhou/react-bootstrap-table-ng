@@ -10,42 +10,35 @@ interface ExpandRowProps {
   colSpan: number;
 }
 
-class ExpandRow extends React.Component<ExpandRowProps> {
-  nodeRef: any;
+const ExpandRow: React.FC<ExpandRowProps> = (props) => {
+  const {
+    children,
+    expanded = false,
+    onClosed,
+    className = "",
+    colSpan,
+    ...rest
+  } = props;
+  const nodeRef = React.useRef(null);
 
-  constructor(props: ExpandRowProps) {
-    super(props);
-    this.nodeRef = React.createRef();
-  }
-
-  render() {
-    const {
-      children,
-      expanded = false,
-      onClosed,
-      className = "",
-      ...rest
-    } = this.props;
-
-    return (
-      <tr>
-        <td className={cs("reset-expansion-style", className)} {...rest}>
-          <CSSTransition
-            appear
-            in={expanded}
-            timeout={400}
-            classNames="row-expand-slide"
-            onExited={onClosed}
-            nodeRef={this.nodeRef}
-          >
-            <div ref={this.nodeRef}>
-              <div className="row-expansion-style">{children}</div>
-            </div>
-          </CSSTransition>
-        </td>
-      </tr>
-    );
-  }
-}
+  return (
+    <tr>
+      <td className={cs("reset-expansion-style", className)} colSpan={colSpan} {...rest}>
+        <CSSTransition
+          appear
+          in={expanded}
+          timeout={400}
+          classNames="row-expand-slide"
+          onExited={onClosed}
+          nodeRef={nodeRef}
+        >
+          <div ref={nodeRef}>
+            <div className="row-expansion-style">{children}</div>
+          </div>
+        </CSSTransition>
+      </td>
+    </tr>
+  );
+};
 
 export default ExpandRow;
