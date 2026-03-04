@@ -1,3 +1,4 @@
+import React from "react";
 import { spyOn } from "storybook/test";
 import type { Preview } from "@storybook/react-webpack5";
 
@@ -39,6 +40,11 @@ const preview: Preview = {
       },
     },
   },
+  decorators: [
+    (Story) => (
+      React.createElement(React.StrictMode, null, React.createElement(Story))
+    ),
+  ],
 };
 
 export default preview;

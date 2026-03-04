@@ -117,7 +117,7 @@ const BootstrapTable = React.forwardRef<any, BootstrapTableProps>((props, ref) =
       </Caption>
     );
 
-    const tableId = id || (props.loading ? `table-${generatedId}` : undefined);
+    const tableId = id || generatedId;
 
     return (
       <div className={tableWrapperClass}>

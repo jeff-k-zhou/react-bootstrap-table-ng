@@ -48,10 +48,10 @@ describe("BootstrapTable", () => {
       expect(table.className).toBe("table table-bordered");
     });
 
-    it("should not have customized id as default", () => {
+    it("should have customized id as default", () => {
       render(<BootstrapTable keyField="id" columns={columns} data={data} />);
       const table = screen.getByRole("table");
-      expect(table.getAttribute("id")).toBeNull();
+      expect(table.getAttribute("id")).not.toBeNull();
     });
   });
 
