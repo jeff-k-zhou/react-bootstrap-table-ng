@@ -275,8 +275,8 @@ export const OnetimeSortConfiguration: Story = {
       text: 'Product Price'
     }];
 
-    class OnetimeSortConfiguration extends React.Component {
-      sortFunc = (a: any, b: any, order: string, dataField: any) => {
+    const OnetimeSortConfiguration = () => {
+      const sortFunc = React.useCallback((a: any, b: any, order: string, dataField: any) => {
         if (order === 'desc') {
           if (typeof b === 'string' && typeof a === 'string') {
             return b.localeCompare(a);
@@ -290,29 +290,31 @@ export const OnetimeSortConfiguration: Story = {
             return a - b;
           }
         }
-      }
+      }, []);
 
-      render() {
-        const sortOption = {
-          // No need to configure sortFunc per column
-          sortFunc: this.sortFunc,
-          // No need to configure sortCaret per column
-          sortCaret: (order, column) => {
-            if (!order) return (<span>&nbsp;&nbsp;Desc/Asc</span>);
-            else if (order === 'asc') return (<span>&nbsp;&nbsp;Desc/<p style={{color: "red"}}>Asc</p></span>);
-            else if (order === 'desc') return (<span>&nbsp;&nbsp;<p style={{color: "red"}}>Desc</p>/Asc</span>);
-            return null;
-          }
-        };
+      const sortOption = React.useMemo(() => ({
+        // No need to configure sortFunc per column
+        sortFunc: sortFunc,
+        // No need to configure sortCaret per column
+        sortCaret: (order: string | undefined, column: any) => {
+          if (!order) return (<span>&nbsp;&nbsp;Desc/Asc</span>);
+          else if (order === 'asc') return (<span>&nbsp;&nbsp;Desc/<span style={{color: "red"}}>Asc</span></span>);
+          else if (order === 'desc') return (<span>&nbsp;&nbsp;<span style={{color: "red"}}>Desc</span>/Asc</span>);
+          return null;
+        }
+      }), [sortFunc]);
 
-        return (
-          <div>
-            <button className="btn btn-default" onClick={ this.handleClick }>Change Data</button>
-            <BootstrapTable keyField="id" data={ products } columns={ columns } sort={ sortOption } />
-            <Code>{ sourceCode }</Code>
-          </div>
-        );
-      }
+      const handleClick = () => {
+        // Implementation for changing data (assuming standard example logic)
+      };
+
+      return (
+        <div>
+          <button className="btn btn-default" onClick={ handleClick }>Change Data</button>
+          <BootstrapTable keyField="id" data={ products } columns={ columns } sort={ sortOption } />
+          <Code>{ sourceCode }</Code>
+        </div>
+      );
     }
     `,
     sort: {

@@ -3,7 +3,7 @@
 /* eslint react/no-unused-prop-types: 0 */
 /* eslint class-methods-use-this: 0 */
 import React, { forwardRef, useId, useImperativeHandle } from "react";
-import { EQ, FILTER_TYPES, SelectFilterProps } from "../..";
+import { EQ, FILTER_TYPES, SelectFilterProps } from "../const";
 
 function optionsEquals(currOpts: any, prevOpts: any) {
   if (Array.isArray(currOpts)) {

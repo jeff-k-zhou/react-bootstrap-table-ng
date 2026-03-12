@@ -1,125 +1,145 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { SORT_DESC } from '../const';
 
-export default (Base: any) => {
-  const isClassComponent = Base && Base.prototype && Base.prototype.isReactComponent;
-  const ExtendBase: any = isClassComponent
-    ? Base
-    : class extends React.Component<any, any> {
-        render() {
-          // @ts-ignore
-          return <Base {...this.props} />;
-        }
-      };
+export const useRemoteResolver = (props: any) => {
+  const { remote, onTableChange, pagination, filter, sort, search, data } = props;
 
-  class RemoteResolver extends ExtendBase {
-    getNewestState(state = {}) {
-      let page: any;
-      let sizePerPage: any;
-      let filters = {};
-      let sortField: any;
-      let sortOrder: any;
-      let searchText: any;
+  const propsRef = React.useRef(props);
+  React.useLayoutEffect(() => {
+    propsRef.current = props;
+  });
 
-      const props = (this as any).props;
-      if (props.pagination && props.pagination.options) {
-        page = props.pagination.options.page || 1;
-        sizePerPage = props.pagination.options.sizePerPage || 10;
-      }
-      if (props.filter && props.filter.props) {
-        filters = props.filter.props.currFilters || {};
-      }
-      if (props.sort && props.sort.props) {
-        sortField = props.sort.props.sortField;
-        sortOrder = props.sort.props.sortOrder || SORT_DESC;
-      }
-      if (props.search && props.search.props) {
-        searchText = props.search.props.searchText;
-      }
+  const isRemotePagination = useCallback(() => {
+    const { remote } = propsRef.current;
+    return (
+      remote === true ||
+      (typeof remote === 'object' && remote.pagination)
+    );
+  }, []);
 
-      return {
-        page,
-        sizePerPage,
-        filters,
-        sortField,
-        sortOrder,
-        searchText,
-        data: props.data,
-        ...state
-      };
+  const isRemoteFiltering = useCallback(() => {
+    const { remote } = propsRef.current;
+    return (
+      remote === true ||
+      (typeof remote === 'object' && remote.filter) ||
+      isRemotePagination()
+    );
+  }, [isRemotePagination]);
+
+  const isRemoteSort = useCallback(() => {
+    const { remote } = propsRef.current;
+    return (
+      remote === true ||
+      (typeof remote === 'object' && remote.sort) ||
+      isRemotePagination()
+    );
+  }, [isRemotePagination]);
+
+  const isRemoteCellEdit = useCallback(() => {
+    const { remote } = propsRef.current;
+    return (
+      remote === true ||
+      (typeof remote === 'object' && remote.cellEdit)
+    );
+  }, []);
+
+  const isRemoteSearch = useCallback(() => {
+    const { remote } = propsRef.current;
+    return (
+      remote === true ||
+      (typeof remote === 'object' && remote.search) ||
+      isRemotePagination()
+    );
+  }, [isRemotePagination]);
+
+  const getNewestState = useCallback((state = {}) => {
+    const { pagination, filter, sort, search, data } = propsRef.current;
+    let page: any;
+    let sizePerPage: any;
+    let filters = {};
+    let sortField: any;
+    let sortOrder: any;
+    let searchText: any;
+
+    if (pagination && pagination.options) {
+      page = pagination.options.page || 1;
+      sizePerPage = pagination.options.sizePerPage || 10;
+    }
+    if (filter && filter.props) {
+      filters = filter.props.currFilters || {};
+    }
+    if (sort && sort.props) {
+      sortField = sort.props.sortField;
+      sortOrder = sort.props.sortOrder || SORT_DESC;
+    }
+    if (search && search.props) {
+      searchText = search.props.searchText;
     }
 
-    isRemotePagination = () => {
-      const { remote } = (this as any).props;
-      return (
-        remote === true ||
-        (typeof remote === 'object' && remote.pagination)
-      );
-    }
+    return {
+      page,
+      sizePerPage,
+      filters,
+      sortField,
+      sortOrder,
+      searchText,
+      data,
+      ...state
+    };
+  }, []);
 
-    isRemoteFiltering = () => {
-      const { remote } = (this as any).props;
-      return (
-        remote === true ||
-        (typeof remote === 'object' && remote.filter) ||
-        this.isRemotePagination()
-      );
-    }
+  const handleRemotePageChange = useCallback((page: number, sizePerPage: number) => {
+    const { onTableChange } = propsRef.current;
+    onTableChange('pagination', getNewestState({ page, sizePerPage }));
+  }, [getNewestState]);
 
-    isRemoteSort = () => {
-      const { remote } = (this as any).props;
-      return (
-        remote === true ||
-        (typeof remote === 'object' && remote.sort) ||
-        this.isRemotePagination()
-      );
+  const handleRemoteFilterChange = useCallback((filters: any) => {
+    const { onTableChange, pagination } = propsRef.current;
+    const newState: any = { filters };
+    if (isRemotePagination()) {
+      const options = pagination.options || {};
+      newState.page = typeof options.pageStartIndex !== 'undefined'
+        ? options.pageStartIndex
+        : 1;
     }
+    onTableChange('filter', getNewestState(newState));
+  }, [getNewestState, isRemotePagination]);
 
-    isRemoteCellEdit = () => {
-      const { remote } = (this as any).props;
-      return (
-        remote === true ||
-        (typeof remote === 'object' && remote.cellEdit)
-      );
-    }
+  const handleRemoteSortChange = useCallback((sortField: string, sortOrder: string | undefined) => {
+    const { onTableChange } = propsRef.current;
+    onTableChange('sort', getNewestState({ sortField, sortOrder }));
+  }, [getNewestState]);
 
-    isRemoteSearch = () => {
-      const { remote } = (this as any).props;
-      return (
-        remote === true ||
-        (typeof remote === 'object' && remote.search) ||
-        this.isRemotePagination()
-      );
-    }
+  const handleRemoteCellChange = useCallback((rowId: any, dataField: string, newValue: any) => {
+    const { onTableChange } = propsRef.current;
+    const cellEdit = { rowId, dataField, newValue };
+    onTableChange('cellEdit', getNewestState({ cellEdit }));
+  }, [getNewestState]);
 
-    handleRemotePageChange = (page: number, sizePerPage: number) => {
-      (this as any).props.onTableChange('pagination', this.getNewestState({ page, sizePerPage }));
-    }
+  const handleRemoteSearchChange = useCallback((searchText: string) => {
+    const { onTableChange } = propsRef.current;
+    onTableChange('search', getNewestState({ searchText }));
+  }, [getNewestState]);
 
-    handleRemoteFilterChange = (filters: any) => {
-      const newState: any = { filters };
-      if (this.isRemotePagination()) {
-        const options = (this as any).props.pagination.options || {};
-        newState.page = typeof options.pageStartIndex !== 'undefined'
-          ? options.pageStartIndex
-          : 1;
-      }
-      (this as any).props.onTableChange('filter', this.getNewestState(newState));
-    }
-
-    handleRemoteSortChange = (sortField: string, sortOrder: string | undefined) => {
-      (this as any).props.onTableChange('sort', this.getNewestState({ sortField, sortOrder }));
-    }
-
-    handleRemoteCellChange = (rowId: any, dataField: string, newValue: any) => {
-      const cellEdit = { rowId, dataField, newValue };
-      (this as any).props.onTableChange('cellEdit', this.getNewestState({ cellEdit }));
-    }
-
-    handleRemoteSearchChange = (searchText: string) => {
-      (this as any).props.onTableChange('search', this.getNewestState({ searchText }));
-    }
-  }
-
-  return RemoteResolver as any as new (props: any) => React.Component<any, any>;
+  return {
+    isRemotePagination,
+    isRemoteFiltering,
+    isRemoteSort,
+    isRemoteCellEdit,
+    isRemoteSearch,
+    handleRemotePageChange,
+    handleRemoteFilterChange,
+    handleRemoteSortChange,
+    handleRemoteCellChange,
+    handleRemoteSearchChange,
+    getNewestState
+  };
 };
+
+export default (Base: any) => {
+  return React.forwardRef((props: any, ref: any) => {
+    const remoteResolver = useRemoteResolver(props);
+    return <Base {...props} {...remoteResolver} ref={ref} />;
+  }) as any;
+};
+

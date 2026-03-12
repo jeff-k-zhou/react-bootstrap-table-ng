@@ -6,15 +6,14 @@ sidebar_label: Export to CSV
 
 `react-bootstrap-table-ng` support export table data to CSV.
 
-**[Live Demo For CSV Export](pathname:///react-bootstrap-table-ng/storybook/index.html?selectedKind=Export%20CSV)**   
-**[API & Props Definition](./export-csv-props)**   
+**[Live Demo For CSV Export](pathname:///react-bootstrap-table-ng/storybook/index.html?selectedKind=Export%20CSV)**  
+**[API & Props Definition](./export-csv-props)**
 
------
+---
 
 ## Prepare
 
 Please check [How to start with table toolkit](./toolkits-getting-started)
-
 
 ## Enable Export CSV
 
@@ -41,14 +40,13 @@ const { ExportCSVButton } = CSVExport;
 </ToolkitProvider>
 ```
 
-* Give [`exportCSV`](./export-csv-props) prop as `true` on `ToolkitProvider`.
-* Render `ExportCSVButton` with `csvProps`. The position of `ExportCSVButton` is depends on you.
-
+- Give [`exportCSV`](./export-csv-props) prop as `true` on `ToolkitProvider`.
+- Render `ExportCSVButton` with `csvProps`. The position of `ExportCSVButton` is depends on you.
 
 ## Customize Export CSV Component
 
-`ExportCSVButton` is a independent component, it's free to place this component in anywhere, just make sure it is inside of the `ToolkitProvider`.   
-You can add any `style` and `className` prop on `ExportCSVButton` for styling it.   
+`ExportCSVButton` is a independent component, it's free to place this component in anywhere, just make sure it is inside of the `ToolkitProvider`.  
+You can add any `style` and `className` prop on `ExportCSVButton` for styling it.
 
 However, if you feel `ExportCSVButton` can not fit your requirement or you want more customization, you can create your own button like following:
 
@@ -83,28 +81,23 @@ export const MyTable = () => (
     }
   </ToolkitProvider>
 );
-
 ```
 
-Following, we just explain how it work:   
+Following, we just explain how it work:
 
-`ToolkitProvider` will pass a props which have a property called `csvProps`. `csvProps` have following properties: 
+`ToolkitProvider` will pass a props which have a property called `csvProps`. `csvProps` have following properties:
 
-* `onExport`: Call this method will trigger export CSV.
-
+- `onExport`: Call this method will trigger export CSV.
 
 In the customization case, you just need to pass `csvProps` to your component and call `csvProps.onExport` when export action trigger.
 
 ## Customize CSV Content
 
-* Configure [column.csvExport](./column-props#columncsvExport-bool) to decide if hiden a column when exporting CSV.
-* Configure [column.csvType](./column-props#columncsvType-object) to decide the data type.
-* Configure [column.csvFormatter](./column-props#columncsvFormatter-function) to customize the column when exporting CSV.
-* Configure [column.csvText](./column-props#columncsvText-string) to customize the column header.
-
+- Configure [column.csvExport](./column-props#columncsvExport-bool) to decide if hiden a column when exporting CSV.
+- Configure [column.csvType](./column-props#columncsvType-object) to decide the data type.
+- Configure [column.csvFormatter](./column-props#columncsvFormatter-function) to customize the column when exporting CSV.
+- Configure [column.csvText](./column-props#columncsvText-string) to customize the column header.
 
 ## CSV Configuration
 
 Please see available [`exportCSV`](./export-csv-props) props.
-
-

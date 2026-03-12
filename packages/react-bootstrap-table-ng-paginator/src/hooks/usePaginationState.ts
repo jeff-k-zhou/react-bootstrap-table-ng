@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef, useEffect, useMemo } from "react";
+import React, { useState, useCallback, useRef, useEffect, useMemo, useLayoutEffect } from "react";
 import EventEmitter from "events";
 import Const from "../const";
 import { alignPage } from "../page";
@@ -25,18 +25,25 @@ export const usePaginationState = (props: any) => {
   const dataChangeListenerRef = useRef(new EventEmitter());
   const remoteEmitterRef = useRef<any>(null);
 
+  // Store the latest isRemotePagination prop in a ref to avoid unstable function references
+  // (e.g. when the caller passes an inline arrow function like `() => false`).
+  const isRemotePaginationPropRef = useRef(props.isRemotePagination);
+  const propRemoteEmitterRef = useRef(propRemoteEmitter);
+  useLayoutEffect(() => {
+    isRemotePaginationPropRef.current = props.isRemotePagination;
+    propRemoteEmitterRef.current = propRemoteEmitter;
+  });
+
+  // Stable callback – never changes identity, reads latest prop values via refs.
   const isRemotePagination = useCallback(() => {
-    // console.log('props.isRemotePagination type:', typeof props.isRemotePagination);
-    if (typeof props.isRemotePagination === "function") {
-      const res = props.isRemotePagination();
-      // console.log('props.isRemotePagination() result:', res);
-      return res;
+    if (typeof isRemotePaginationPropRef.current === "function") {
+      return isRemotePaginationPropRef.current();
     }
     const e = { result: undefined };
-    const emitter = remoteEmitterRef.current || propRemoteEmitter;
+    const emitter = remoteEmitterRef.current || propRemoteEmitterRef.current;
     emitter?.emit("isRemotePagination", e);
     return e.result;
-  }, [props.isRemotePagination, propRemoteEmitter]);
+  }, []); // [] – intentionally stable
 
   const handleDataSizeChange = useCallback(
     (newDataSize: any) => {

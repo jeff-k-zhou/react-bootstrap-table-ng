@@ -1,3 +1,4 @@
+import React from "react";
 import _ from "../utils";
 
 export interface RowProps {
@@ -26,63 +27,76 @@ export interface RowProps {
   value?: any;
 }
 
-export default function RowShouldUpdater<T extends new(...args: any[]) => any>(
-  ExtendBase: T
+export default function RowShouldUpdater<P extends RowProps>(
+  BaseComponent: React.ComponentType<P>
 ) {
-  return class extends ExtendBase {
-    shouldUpdateByCellEditing(nextProps: RowProps) {
-      if (!(this.props.clickToEdit || this.props.dbclickToEdit)) return false;
-      return (
-        nextProps.editingRowIdx === nextProps.rowIndex ||
-        (this.props.editingRowIdx === nextProps.rowIndex &&
-          nextProps.editingRowIdx === null) ||
-        this.props.editingRowIdx === nextProps.rowIndex
-      );
-    }
+  const WrappedComponent = React.forwardRef<any, P>((props, ref) => {
+    return React.createElement(BaseComponent as any, {
+      ...props,
+      ref,
+    });
+  });
 
-    shouldUpdatedBySelfProps(nextProps: RowProps) {
-      return (
-        this.props.className !== nextProps.className ||
-        !_.isEqual(this.props.style, nextProps.style) ||
-        !_.isEqual(this.props.attrs, nextProps.attrs)
-      );
-    }
+  WrappedComponent.displayName = `RowShouldUpdater(${
+    BaseComponent.displayName || BaseComponent.name || "Component"
+  })`;
 
-    // Only use for simple-row
-    shouldUpdateByColumnsForSimpleCheck(nextProps: RowProps) {
-      if (this.props.columns.length !== nextProps.columns!.length) {
-        return true;
-      }
-      for (let i = 0; i < this.props.columns.length; i += 1) {
-        if (!_.isEqual(this.props.columns[i], nextProps.columns![i])) {
-          return true;
-        }
-      }
-      return false;
-    }
-
-    shouldUpdatedByNormalProps(nextProps: RowProps) {
-      const shouldUpdate =
-        this.props.rowIndex !== nextProps.rowIndex ||
-        this.props.editable !== nextProps.editable ||
-        !_.isEqual(this.props.row, nextProps.row) ||
-        this.props.columns.length !== nextProps.columns!.length;
-
-      return shouldUpdate;
-    }
-
-    shouldUpdateChild(nextProps: RowProps) {
-      return (
-        this.shouldUpdateByCellEditing(nextProps) ||
-        this.shouldUpdatedByNormalProps(nextProps)
-      );
-    }
-
-    shouldRowContentUpdate(nextProps: RowProps) {
-      return (
-        this.shouldUpdateChild(nextProps) ||
-        this.shouldUpdateByColumnsForSimpleCheck(nextProps)
-      );
-    }
-  };
+  return WrappedComponent;
 }
+
+export const shouldUpdateByCellEditing = (prevProps: RowProps, nextProps: RowProps) => {
+  if (!(prevProps.clickToEdit || prevProps.dbclickToEdit)) return false;
+  return (
+    nextProps.editingRowIdx === nextProps.rowIndex ||
+    (prevProps.editingRowIdx === nextProps.rowIndex &&
+      nextProps.editingRowIdx === null) ||
+    prevProps.editingRowIdx === nextProps.rowIndex
+  );
+};
+
+export const shouldUpdatedBySelfProps = (prevProps: RowProps, nextProps: RowProps) => {
+  return (
+    prevProps.className !== nextProps.className ||
+    !_.isEqual(prevProps.style, nextProps.style) ||
+    !_.isEqual(prevProps.attrs, nextProps.attrs)
+  );
+};
+
+export const shouldUpdateByColumnsForSimpleCheck = (prevProps: RowProps, nextProps: RowProps) => {
+  if (prevProps.columns!.length !== nextProps.columns!.length) {
+    return true;
+  }
+  for (let i = 0; i < prevProps.columns!.length; i += 1) {
+    if (!_.isEqual(prevProps.columns![i], nextProps.columns![i])) {
+      return true;
+    }
+  }
+  return false;
+};
+
+export const shouldUpdatedByNormalProps = (prevProps: RowProps, nextProps: RowProps) => {
+  return (
+    prevProps.rowIndex !== nextProps.rowIndex ||
+    prevProps.editable !== nextProps.editable ||
+    prevProps.expanded !== nextProps.expanded ||
+    prevProps.expandable !== nextProps.expandable ||
+    !_.isEqual(prevProps.row, nextProps.row) ||
+    (prevProps.columns?.length !== nextProps.columns?.length)
+  );
+};
+
+export const shouldUpdateChild = (prevProps: RowProps, nextProps: RowProps) => {
+  return (
+    shouldUpdateByCellEditing(prevProps, nextProps) ||
+    shouldUpdatedByNormalProps(prevProps, nextProps) ||
+    !_.isEqual(prevProps.expandRow, nextProps.expandRow) ||
+    !_.isEqual(prevProps.selectRow, nextProps.selectRow)
+  );
+};
+
+export const shouldRowContentUpdate = (prevProps: RowProps, nextProps: RowProps) => {
+  return (
+    shouldUpdateChild(prevProps, nextProps) ||
+    shouldUpdateByColumnsForSimpleCheck(prevProps, nextProps)
+  );
+};

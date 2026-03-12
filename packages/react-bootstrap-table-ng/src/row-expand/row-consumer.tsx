@@ -42,7 +42,7 @@ export default (
         key={key}
         expanded={expanded}
         expandable={expandable}
-        expandRow={{ ...expandRow }}
+        expandRow={expandRow}
         className={cs(props.className, parentClassName)}
       />,
       expanded || isClosing ? (

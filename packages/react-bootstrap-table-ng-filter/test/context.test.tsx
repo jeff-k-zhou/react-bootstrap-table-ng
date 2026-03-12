@@ -47,6 +47,9 @@ describe("FilterContext", () => {
         data={data}
         filter={filterOptions}
         dataChangeListener={dataChangeListener}
+        isRemoteFiltering={FilterContext.isRemoteFiltering}
+        handleFilterChange={FilterContext.handleFilterChange}
+        _={FilterContext._}
       >
         <FilterContext.Consumer>
           {(filterProps: any) => mockBase(filterProps)}

@@ -51,9 +51,14 @@ const Body: React.FC<BodyProps> = (props) => {
     className,
   } = props;
 
+    const selectRowEnabled =
+      selectRow?.mode !== undefined && selectRow.mode !== ROW_SELECT_DISABLED;
+    const expandRowEnabled = !!expandRow?.renderer;
+    const cellEditEnabled = !!cellEdit?.createContext;
+
   const { EditingCell, RowComponent } = useMemo(() => {
     let currentEditingCell: any = null;
-    if (cellEdit?.createContext) {
+    if (cellEditEnabled) {
       currentEditingCell = cellEdit.createEditingCell(
         _,
         cellEdit.options.onStartEdit
@@ -61,8 +66,6 @@ const Body: React.FC<BodyProps> = (props) => {
     }
 
     let currentRowComponent: any = SimpleRow;
-    const selectRowEnabled = selectRow?.mode !== ROW_SELECT_DISABLED;
-    const expandRowEnabled = !!expandRow?.renderer;
 
     if (expandRowEnabled) {
       currentRowComponent = withRowExpansion(RowAggregator);
@@ -74,7 +77,7 @@ const Body: React.FC<BodyProps> = (props) => {
       );
     }
 
-    if (cellEdit?.createContext) {
+    if (cellEditEnabled) {
       currentRowComponent = cellEdit.withRowLevelCellEdit(
         currentRowComponent,
         selectRowEnabled,
@@ -87,7 +90,7 @@ const Body: React.FC<BodyProps> = (props) => {
       EditingCell: currentEditingCell,
       RowComponent: currentRowComponent,
     };
-  }, [cellEdit, selectRow, expandRow, keyField]);
+  }, [cellEditEnabled, selectRowEnabled, expandRowEnabled, keyField]);
 
   let content: ReactNode;
 

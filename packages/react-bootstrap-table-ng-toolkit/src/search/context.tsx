@@ -35,7 +35,6 @@ const SearchProvider = React.forwardRef<any, SearchProviderProps>((props, ref) =
     options = {
       searchFormatted: false,
       afterSearch: undefined,
-      onColumnMatch: () => false,
     },
     isRemoteSearch,
     handleRemoteSearchChange,
@@ -72,7 +71,7 @@ const SearchProvider = React.forwardRef<any, SearchProviderProps>((props, ref) =
         } else if (column.filterValue) {
           targetValue = column.filterValue(targetValue, row);
         }
-        if (options.onColumnMatch) {
+        if (typeof options.onColumnMatch === 'function') {
           if (
             options.onColumnMatch({
               searchText: lowerSearchText,
@@ -99,7 +98,11 @@ const SearchProvider = React.forwardRef<any, SearchProviderProps>((props, ref) =
   useEffect(() => {
     if (isRemoteSearch()) {
       handleRemoteSearchChange(searchText);
-    } else {
+    }
+  }, [searchText, isRemoteSearch, handleRemoteSearchChange]);
+
+  useEffect(() => {
+    if (!isRemoteSearch()) {
       if (options.afterSearch && !isInitialMount.current) {
         options.afterSearch(searchResult);
       }
@@ -109,7 +112,7 @@ const SearchProvider = React.forwardRef<any, SearchProviderProps>((props, ref) =
       setStateData(searchResult);
     }
     isInitialMount.current = false;
-  }, [searchResult, searchText, dataChangeListener, isRemoteSearch, handleRemoteSearchChange, options]);
+  }, [searchResult, dataChangeListener, isRemoteSearch, options]);
 
   // Handle remote search data updates
   useEffect(() => {
@@ -132,14 +135,7 @@ export default (options: TableSearchProps) => (
   isRemoteSearch: () => boolean,
   handleRemoteSearchChange: (searchText: string) => void
 ) => ({
-  Provider: React.forwardRef((props: any, ref) => (
-    <SearchProvider
-      {...props}
-      ref={ref}
-      options={options}
-      isRemoteSearch={isRemoteSearch}
-      handleRemoteSearchChange={handleRemoteSearchChange}
-    />
-  )),
+  Provider: SearchProvider,
   Consumer: SearchContext.Consumer,
+  options,
 });

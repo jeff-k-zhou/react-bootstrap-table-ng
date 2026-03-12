@@ -260,78 +260,75 @@ export const ExposedAPITable: Story = {
       filter: textFilter()
     }];
 
-    class ExposedFunctionTable extends React.Component {
-      handleGetCurrentData = () => {
-        console.log(this.node.table.props.data);
+    const ExposedFunctionTable = () => {
+      const node = React.useRef(null);
+
+      const handleGetCurrentData = () => {
+        console.log(node.current.table.props.data);
       }
 
-      handleGetCurrentData = () => {
-        console.log(this.node.table.props.data);
+      const handleGetSelectedData = () => {
+        console.log(node.current.selectionContext.selected);
       }
 
-      handleGetSelectedData = () => {
-        console.log(this.node.selectionContext.selected);
+      const handleGetExpandedData = () => {
+        console.log(node.current.rowExpandContext.state.expanded);
       }
 
-      handleGetExpandedData = () => {
-        console.log(this.node.rowExpandContext.state.expanded);
+      const handleGetCurrentPage = () => {
+        console.log(node.current.paginationContext.currPage);
       }
 
-      handleGetCurrentPage = () => {
-        console.log(this.node.paginationContext.currPage);
+      const handleGetCurrentSizePerPage = () => {
+        console.log(node.current.paginationContext.currSizePerPage);
       }
 
-      handleGetCurrentSizePerPage = () => {
-        console.log(this.node.paginationContext.currSizePerPage);
+      const handleGetCurrentSortColumn = () => {
+        console.log(node.current.sortContext.state.sortColumn);
       }
 
-      handleGetCurrentSortColumn = () => {
-        console.log(this.node.sortContext.state.sortColumn);
+      const handleGetCurrentSortOrder = () => {
+        console.log(node.current.sortContext.state.sortOrder);
       }
 
-      handleGetCurrentSortOrder = () => {
-        console.log(this.node.sortContext.state.sortOrder);
+      const handleGetCurrentFilter = () => {
+        console.log(node.current.filterContext.currFilters);
       }
 
-      handleGetCurrentFilter = () => {
-        console.log(this.node.filterContext.currFilters);
-      }
-
-      render() {
-        const expandRow = {
-          renderer: row => (
-            <div>
-              <p>.....</p>
-              <p>You can render anything here, also you can add additional data on every row object</p>
-              <p>expandRow.renderer callback will pass the origin row object to you</p>
-            </div>
-          ),
-          showExpandColumn: true
-        };
-        return (
+      const expandRow = {
+        renderer: row => (
           <div>
-            <button className="btn btn-default" onClick={ this.handleGetCurrentData }>Get Current Display Rows</button>
-            <button className="btn btn-default" onClick={ this.handleGetSelectedData }>Get Current Selected Rows</button>
-            <button className="btn btn-default" onClick={ this.handleGetExpandedData }>Get Current Expanded Rows</button>
-            <button className="btn btn-default" onClick={ this.handleGetCurrentPage }>Get Current Page</button>
-            <button className="btn btn-default" onClick={ this.handleGetCurrentSizePerPage }>Get Current Size Per Page</button>
-            <button className="btn btn-default" onClick={ this.handleGetCurrentSortColumn }>Get Current Sort Column</button>
-            <button className="btn btn-default" onClick={ this.handleGetCurrentSortOrder }>Get Current Sort Order</button>
-            <button className="btn btn-default" onClick={ this.handleGetCurrentFilter }>Get Current Filter Information</button>
-            <BootstrapTable
-              ref={ n => this.node = n }
-              keyField="id"
-              data={ products }
-              columns={ columns }
-              filter={ filterFactory() }
-              pagination={ paginationFactory() }
-              selectRow={ { mode: 'checkbox', clickToSelect: true } }
-              expandRow={ expandRow }
-            />
-            <Code>{ sourceCode }</Code>
+            <p>.....</p>
+            <p>You can render anything here, also you can add additional data on every row object</p>
+            <p>expandRow.renderer callback will pass the origin row object to you</p>
           </div>
-        );
-      }
+        ),
+        showExpandColumn: true
+      };
+
+      return (
+        <div>
+          <button className="btn btn-default" onClick={ handleGetCurrentData }>Get Current Display Rows</button>
+          <button className="btn btn-default" onClick={ handleGetSelectedData }>Get Current Selected Rows</button>
+          <button className="btn btn-default" onClick={ handleGetExpandedData }>Get Current Expanded Rows</button>
+          <button className="btn btn-default" onClick={ handleGetCurrentPage }>Get Current Page</button>
+          <button className="btn btn-default" onClick={ handleGetCurrentSizePerPage }>Get Current Size Per Page</button>
+          <button className="btn btn-default" onClick={ handleGetCurrentSortColumn }>Get Current Sort Column</button>
+          <button className="btn btn-default" onClick={ handleGetCurrentSortOrder }>Get Current Sort Order</button>
+          <button className="btn btn-default" onClick={ handleGetCurrentFilter }>Get Current Filter Information</button>
+          <BootstrapTable
+            ref={ node }
+            keyField="id"
+            data={ products }
+            columns={ columns }
+            filter={ filterFactory() }
+            pagination={ paginationFactory() }
+            selectRow={ { mode: 'checkbox', clickToSelect: true } }
+            expandRow={ expandRow }
+          />
+          <Code>{ sourceCode }</Code>
+        </div>
+      );
     }
     `,
   }

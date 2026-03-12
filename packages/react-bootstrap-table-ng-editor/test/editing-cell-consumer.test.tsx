@@ -10,7 +10,6 @@ import _ from "../../react-bootstrap-table-ng/src/utils";
 import cellEditFactory, { CLICK_TO_CELL_EDIT } from "..";
 import createCellEditContext from "../src/context";
 import bindEditingCell from "../src/editing-cell-consumer";
-import { any } from "underscore";
 
 describe("Editing Cell Consumer", () => {
   let cellEdit: any;

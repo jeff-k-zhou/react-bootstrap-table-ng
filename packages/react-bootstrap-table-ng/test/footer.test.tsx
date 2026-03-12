@@ -47,14 +47,12 @@ describe("Footer", () => {
     it("should render successfully", () => {
       render(
         <table>
-          <tfoot>
-            <Footer
-              data={data}
-              columns={columns}
-              selectRow={selectRow}
-              expandRow={expandRow}
-            />
-          </tfoot>
+          <Footer
+            data={data}
+            columns={columns}
+            selectRow={selectRow}
+            expandRow={expandRow}
+          />
         </table>
       );
       const row = screen.getByRole("row");
@@ -72,15 +70,13 @@ describe("Footer", () => {
     it("should render successfully", () => {
       render(
         <table>
-          <tfoot>
-            <Footer
-              data={data}
-              columns={columns}
-              className={className}
-              selectRow={selectRow}
-              expandRow={expandRow}
-            />
-          </tfoot>
+          <Footer
+            data={data}
+            columns={columns}
+            className={className}
+            selectRow={selectRow}
+            expandRow={expandRow}
+          />
         </table>
       );
       expect(screen.getByRole("row")).toHaveClass(className);
@@ -91,14 +87,12 @@ describe("Footer", () => {
     it("should render successfully", () => {
       render(
         <table>
-          <tfoot>
-            <Footer
-              data={data}
-              columns={columns}
-              selectRow={{ ...selectRow, mode: "radio", hideSelectColumn: false }}
-              expandRow={expandRow}
-            />
-          </tfoot>
+          <Footer
+            data={data}
+            columns={columns}
+            selectRow={{ ...selectRow, mode: "radio", hideSelectColumn: false }}
+            expandRow={expandRow}
+          />
         </table>
       );
       const headers = screen.getAllByRole("columnheader");
@@ -110,14 +104,12 @@ describe("Footer", () => {
     it("should render successfully", () => {
       render(
         <table>
-          <tfoot>
-            <Footer
-              data={data}
-              columns={columns}
-              selectRow={selectRow}
-              expandRow={{ ...expandRow, showExpandColumn: true }}
-            />
-          </tfoot>
+          <Footer
+            data={data}
+            columns={columns}
+            selectRow={selectRow}
+            expandRow={{ ...expandRow, showExpandColumn: true }}
+          />
         </table>
       );
       const headers = screen.getAllByRole("columnheader");

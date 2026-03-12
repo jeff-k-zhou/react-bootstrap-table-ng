@@ -137,17 +137,16 @@ When `loading` is `true`, `react-bootstrap-table-ng` will attend to render a ove
 $ npm install react-bootstrap-table-ng-overlay
 ```
 
-````js
-import overlayFactory from 'react-bootstrap-table-ng-overlay';
-
 ```js
+import overlayFactory from "react-bootstrap-table-ng-overlay";
+
 <BootstrapTable
-  data={ data }
-  columns={ columns }
-  loading={ true }  //only loading is true, react-bootstrap-table will render overlay
-  overlay={ overlayFactory() }
-/>
-````
+  data={data}
+  columns={columns}
+  loading={true} //only loading is true, react-bootstrap-table will render overlay
+  overlay={overlayFactory()}
+/>;
+```
 
 Actually, `react-bootstrap-table-ng-overlay` is depends on [`react-loading-overlay`](https://github.com/derrickpelletier/react-loading-overlay) and `overlayFactory` just a factory function and you can pass any props which available for `react-loading-overlay`:
 
@@ -239,45 +238,43 @@ const rowStyle = (row, rowIndex) => {
 
 Custom the style of table rows:
 
-````js
 ```js
-<BootstrapTable data={ data } columns={ columns } rowClasses="custom-row-class" />
-````
+<BootstrapTable data={data} columns={columns} rowClasses="custom-row-class" />
+```
 
 This prop also accept a callback function for flexible to custom row style:
 
-````js
+```js
 const rowClasses = (row, rowIndex) => {
-  return 'custom-row-class';
+  return "custom-row-class";
 };
 
-```js
-<BootstrapTable data={ data } columns={ columns } rowClasses={ rowClasses } />
-````
+<BootstrapTable data={data} columns={columns} rowClasses={rowClasses} />;
+```
 
 ## rowEvents - [Object] {#rowevents-object}
 
 Custom the events on row:
 
-````js
+```js
 const rowEvents = {
   onClick: (e, row, rowIndex) => {
     ....
   }
 };
-```js
+
 <BootstrapTable data={ data } columns={ columns } rowEvents={ rowEvents } />
-````
+```
 
 ## hiddenRows - [Array] {#hiddenrows-array}
 
 Hide rows, this props accept an array of row keys:
 
-````js
-const hiddenRows = [1, 4];
 ```js
-<BootstrapTable data={ data } columns={ columns } hiddenRows={ hiddenRows } />
-````
+const hiddenRows = [1, 4];
+
+<BootstrapTable data={data} columns={columns} hiddenRows={hiddenRows} />;
+```
 
 ## sort - [Object] {#sort-object}
 
@@ -287,23 +284,21 @@ Two cases you probably need to configure `sort` prop:
 
 You can give `dataField` and `order` to specify the sorting state in table, For example
 
-````js
 ```js
 <BootstrapTable sort={ { dataField: 'price', order: 'asc' } }>
-````
+```
 
 ### One-time sorting configuration
 
 In earily version, we only can configure [`sortCaret`](./column-props#columnsortcaret-function) and [`sortFunc` ](./column-props#columnsortfunc-function) per column. But they are same in most of cases.  
 So here we give you a chance to just setup these props in one time.
 
-````js
 ```js
 <BootstrapTable sort={ {
   sortCaret: ...
   sortFunc: ...
 } }>
-````
+```
 
 ## defaultSorted - [Array] {#defaultsorted-array}
 
@@ -332,14 +327,17 @@ $ npm install react-bootstrap-table-ng-paginator --save
 
 After installation of `react-bootstrap-table-ng-paginator`, you can enable pagination on `react-bootstrap-table-ng` easily:
 
-````js
-import paginationFactory from 'react-bootstrap-table-ng-paginator';
+```js
+import paginationFactory from "react-bootstrap-table-ng-paginator";
 
 // omit...
 
-```js
-<BootstrapTable data={ data } columns={ columns } pagination={ paginationFactory() } />
-````
+<BootstrapTable
+  data={data}
+  columns={columns}
+  pagination={paginationFactory()}
+/>;
+```
 
 `paginationFactory` is a function actually and allow to pass some pagination options, following we list all the available options:
 
@@ -390,25 +388,33 @@ After installing `react-bootstrap-table-ng-filter`, you could easily enable the 
 
 **Example**
 
-````js
-import BootstrapTable from 'react-bootstrap-table-next';
-import filterFactory, { textFilter } from 'react-bootstrap-table-ng-filter';
-
-const columns = [{
-  dataField: 'id',
-  text: 'Product ID'
-}, {
-  dataField: 'name',
-  text: 'Product Name'
-}, {
-  dataField: 'price',
-  text: 'Product Price',
-  filter: textFilter() // apply text filter
-}];
-
 ```js
-<BootstrapTable keyField='id' data={ products } columns={ columns } filter={ filterFactory() } />
-````
+import BootstrapTable from "react-bootstrap-table-next";
+import filterFactory, { textFilter } from "react-bootstrap-table-ng-filter";
+
+const columns = [
+  {
+    dataField: "id",
+    text: "Product ID",
+  },
+  {
+    dataField: "name",
+    text: "Product Name",
+  },
+  {
+    dataField: "price",
+    text: "Product Price",
+    filter: textFilter(), // apply text filter
+  },
+];
+
+<BootstrapTable
+  keyField="id"
+  data={products}
+  columns={columns}
+  filter={filterFactory()}
+/>;
+```
 
 ## filterPosition - [String] {#filterposition-string}
 
@@ -418,13 +424,12 @@ Available value is `inline`, `top` and `bottom`, default is `inline`. This prop 
 
 This callback function will be called when [`remote`](#remote-bool-object) enabled only.
 
-````js
+```js
 const onTableChange = (type, newState) => {
   // handle any data change here
-}
-```js
-<BootstrapTable data={ data } columns={ columns } onTableChange={ onTableChange } />
-````
+};
+<BootstrapTable data={data} columns={columns} onTableChange={onTableChange} />;
+```
 
 There's only two arguments will be passed to `onTableChange`: `type` and `newState`:
 
@@ -459,14 +464,13 @@ This callback function will be called only when data size change by search/filte
 
 - `dataSize`: The new data size
 
-````js
+```js
 handleDataChange = ({ dataSize }) => {
   this.setState({ rowCount: dataSize });
 }
 
-```js
 <BootstrapTable
   onDataSizeChange={ handleDataChange }
   ....
 />
-````
+```

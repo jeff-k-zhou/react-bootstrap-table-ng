@@ -1,3 +1,4 @@
+import React from "react";
 import { ROW_SELECT_DISABLED } from "../const";
 import _ from "../utils";
 
@@ -10,36 +11,28 @@ const events: string[] = [
   "onAuxClick",
 ];
 
-interface RowEventDelegaterProps {
+export interface RowEventDelegaterProps {
   row: any;
-  selected: boolean;
-  keyField: string;
-  selectable: boolean;
-  expandable: boolean;
+  selected?: boolean;
+  keyField?: string;
+  selectable?: boolean;
+  expandable?: boolean;
   rowIndex: number;
-  expanded: boolean;
-  expandRow: any;
-  selectRow: any;
-  DELAY_FOR_DBCLICK: number;
+  expanded?: boolean;
+  expandRow?: any;
+  selectRow?: any;
+  DELAY_FOR_DBCLICK?: number;
 }
 
-export const RowEventDelegater = <
-  T extends new (...args: any[]) => any
->(ExtendBase: T) => {
-  return class extends ExtendBase {
-    clickNum: number = 0;
+export const useRowEventDelegater = (props: RowEventDelegaterProps) => {
+  const propsRef = React.useRef(props);
+  propsRef.current = props;
 
-    constructor(...props: any[]) {
-      super(...props);
-      this.createDefaultEventHandler =
-        this.createDefaultEventHandler.bind(this);
-      this.createClickEventHandler = this.createClickEventHandler.bind(this);
-    }
+  const clickNum = React.useRef(0);
 
-    createClickEventHandler(
-      cb: (e: Event, row: any, rowIndex: number) => void
-    ) {
-      return (e: Event) => {
+  const createClickEventHandler = React.useCallback(
+    (cb: (e: any, row: any, rowIndex: number) => void) => {
+      return (e: any) => {
         const {
           row,
           selected,
@@ -51,61 +44,87 @@ export const RowEventDelegater = <
           expandRow,
           selectRow,
           DELAY_FOR_DBCLICK,
-        }: RowEventDelegaterProps = this.props;
+        } = propsRef.current;
 
         const clickFn = () => {
           if (cb) {
             cb(e, row, rowIndex);
           }
 
-          const key = _.get(row, keyField);
+          const key = _.get(row, keyField!);
 
           if (expandRow && expandable && !expandRow.expandByColumnOnly) {
             if (
-              (selectRow.mode !== ROW_SELECT_DISABLED &&
-                selectRow.clickToExpand) ||
-              selectRow.mode === ROW_SELECT_DISABLED
+              (selectRow?.mode !== ROW_SELECT_DISABLED && selectRow?.clickToExpand) ||
+              selectRow?.mode === ROW_SELECT_DISABLED
             ) {
               expandRow.onRowExpand(key, !expanded, rowIndex, e);
             }
           }
 
-          if (selectRow.clickToSelect && selectable) {
+          if (selectRow?.clickToSelect && selectable) {
             selectRow.onRowSelect(key, !selected, rowIndex, e);
           }
         };
 
         if (DELAY_FOR_DBCLICK) {
-          this.clickNum += 1;
+          clickNum.current += 1;
           _.debounce(() => {
-            if (this.clickNum === 1) {
+            if (clickNum.current === 1) {
               clickFn();
             }
-            this.clickNum = 0;
+            clickNum.current = 0;
           }, DELAY_FOR_DBCLICK)();
         } else {
           clickFn();
         }
       };
-    }
+    },
+    []
+  );
 
-    createDefaultEventHandler(
-      cb: (e: Event, row: any, rowIndex: number) => void
-    ) {
-      return (e: Event) => {
-        const { row, rowIndex }: RowEventDelegaterProps = this.props;
+  const createDefaultEventHandler = React.useCallback(
+    (cb: (e: any, row: any, rowIndex: number) => void) => {
+      return (e: any) => {
+        const { row, rowIndex } = propsRef.current;
         cb(e, row, rowIndex);
       };
-    }
+    },
+    []
+  );
 
-    delegate(attrs: Record<string, any> = {}): Record<string, any> {
+  const delegate = React.useCallback(
+    (attrs: Record<string, any> = {}) => {
       const newAttrs: Record<string, any> = { ...attrs };
       Object.keys(attrs).forEach((attr) => {
         if (_.includes(events, attr)) {
-          newAttrs[attr] = this.createDefaultEventHandler(attrs[attr]);
+          newAttrs[attr] = createDefaultEventHandler(attrs[attr]);
         }
       });
       return newAttrs;
-    }
-  };
-}
+    },
+    [createDefaultEventHandler]
+  );
+
+  return { delegate, createClickEventHandler };
+};
+
+// Legacy HOC modernized as a functional wrapper
+export const RowEventDelegater = <P extends object>(
+  BaseComponent: React.ComponentType<P & ReturnType<typeof useRowEventDelegater>>
+) => {
+  const WrappedComponent = React.forwardRef<any, P>((props, ref) => {
+    const delegater = useRowEventDelegater(props as any);
+    return React.createElement(BaseComponent as any, {
+      ...(props as any),
+      ref,
+      ...delegater,
+    });
+  });
+
+  WrappedComponent.displayName = `RowEventDelegater(${
+    BaseComponent.displayName || BaseComponent.name || "Component"
+  })`;
+
+  return WrappedComponent;
+};

@@ -1,9 +1,9 @@
 import cs from "classnames";
-import React, { Component } from "react";
+import React from "react";
 
 import { Property } from "csstype";
 import { FILTERS_POSITION_INLINE, SORT_DESC } from "./const";
-import { CellEventDelegater as eventDelegater } from "./cell-event-delegater";
+import { useCellEventDelegater } from "./cell-event-delegater";
 import SortCaret from "./sort/caret";
 import SortSymbol from "./sort/symbol";
 import _ from "./utils";
@@ -13,7 +13,7 @@ import { Percentage } from "./types";
 
 const { Consumer: ColumnContextConsumer } = createColumnContext();
 
-interface HeaderCellProps {
+export interface HeaderCellProps {
   column: {
     dataField: string;
     text: string;
@@ -35,53 +35,53 @@ interface HeaderCellProps {
     headerClasses?: string | ((column: any, index: number) => string);
     classes?: string | ((cell: any, row: any, rowIndex: number) => string);
     headerStyle?:
-    | React.CSSProperties
-    | ((column: any, index: number) => React.CSSProperties);
+      | React.CSSProperties
+      | ((column: any, index: number) => React.CSSProperties);
     headerSortingClasses?:
-    | string
-    | ((
-      column: any,
-      sortOrder: string,
-      isLastSorting: boolean,
-      index: number
-    ) => string);
+      | string
+      | ((
+          column: any,
+          sortOrder: string,
+          isLastSorting: boolean,
+          index: number
+        ) => string);
     headerSortingStyle?:
-    | React.CSSProperties
-    | ((
-      column: any,
-      sortOrder: string,
-      isLastSorting: boolean,
-      index: number
-    ) => React.CSSProperties);
+      | React.CSSProperties
+      | ((
+          column: any,
+          sortOrder: string,
+          isLastSorting: boolean,
+          index: number
+        ) => React.CSSProperties);
     style?:
-    | React.CSSProperties
-    | ((cell: any, row: any, rowIndex: number) => React.CSSProperties);
+      | React.CSSProperties
+      | ((cell: any, row: any, rowIndex: number) => React.CSSProperties);
     headerTitle?: boolean | ((column: any, index: number) => boolean | string);
     title?:
-    | boolean
-    | ((cell: any, row: any, rowIndex: number) => boolean | string);
+      | boolean
+      | ((cell: any, row: any, rowIndex: number) => boolean | string);
     headerEvents?: Record<string, (e: React.MouseEvent) => void>;
     events?: Record<
       string,
       (cell: any, row: any, rowIndex: number, e: React.MouseEvent) => void
     >;
     headerAlign?:
-    | Property.TextAlign
-    | ((column: any, index: number) => Property.TextAlign);
+      | Property.TextAlign
+      | ((column: any, index: number) => Property.TextAlign);
     align?: string | ((cell: any, row: any, rowIndex: number) => string);
     headerAttrs?:
-    | React.HTMLAttributes<HTMLTableHeaderCellElement>
-    | ((
-      column: any,
-      index: number
-    ) => React.HTMLAttributes<HTMLTableHeaderCellElement>);
+      | React.HTMLAttributes<HTMLTableHeaderCellElement>
+      | ((
+          column: any,
+          index: number
+        ) => React.HTMLAttributes<HTMLTableHeaderCellElement>);
     attrs?:
-    | React.HTMLAttributes<HTMLTableCellElement>
-    | ((
-      cell: any,
-      row: any,
-      rowIndex: number
-    ) => React.HTMLAttributes<HTMLTableCellElement>);
+      | React.HTMLAttributes<HTMLTableCellElement>
+      | ((
+          cell: any,
+          row: any,
+          rowIndex: number
+        ) => React.HTMLAttributes<HTMLTableCellElement>);
     sort?: boolean;
     sortFunc?: (a: any, b: any, order: string, column: any) => number;
     onSort?: (column: any, sortOrder: string) => void;
@@ -89,17 +89,17 @@ interface HeaderCellProps {
     editor?: object;
     editable?: boolean | ((cell: any, row: any, rowIndex: number) => boolean);
     editCellStyle?:
-    | React.CSSProperties
-    | ((cell: any, row: any, rowIndex: number) => React.CSSProperties);
+      | React.CSSProperties
+      | ((cell: any, row: any, rowIndex: number) => React.CSSProperties);
     editCellClasses?:
-    | string
-    | ((cell: any, row: any, rowIndex: number) => string);
+      | string
+      | ((cell: any, row: any, rowIndex: number) => string);
     editorStyle?:
-    | React.CSSProperties
-    | ((cell: any, row: any, rowIndex: number) => React.CSSProperties);
+      | React.CSSProperties
+      | ((cell: any, row: any, rowIndex: number) => React.CSSProperties);
     editorClasses?:
-    | string
-    | ((cell: any, row: any, rowIndex: number) => string);
+      | string
+      | ((cell: any, row: any, rowIndex: number) => string);
     editorRenderer?: (
       editorProps: any,
       value: any,
@@ -133,200 +133,201 @@ interface HeaderCellProps {
   columnResize?: boolean;
 }
 
-class HeaderCell extends eventDelegater(Component)<HeaderCellProps> {
-  render() {
-    const {
-      column,
-      index,
-      onSort,
-      sorting,
-      sortOrder,
-      isLastSorting,
-      onFilter,
-      currFilters,
-      filterPosition,
-      onExternalFilter,
-      globalSortCaret,
-      columnResize,
-    } = this.props;
+const HeaderCell = React.memo((props: HeaderCellProps) => {
+  const {
+    column,
+    index,
+    onSort,
+    sorting,
+    sortOrder,
+    isLastSorting,
+    onFilter,
+    currFilters,
+    filterPosition,
+    onExternalFilter,
+    globalSortCaret,
+    columnResize,
+  } = props;
 
-    const {
-      text,
-      sort,
-      sortCaret,
-      filter,
-      filterRenderer,
-      headerTitle,
-      headerAlign,
-      headerFormatter,
-      headerEvents,
-      headerClasses,
-      headerStyle,
-      headerAttrs,
-      headerSortingClasses,
-      headerSortingStyle,
-    } = column;
+  const {
+    text,
+    sort,
+    sortCaret,
+    filter,
+    filterRenderer,
+    headerTitle,
+    headerAlign,
+    headerFormatter,
+    headerEvents,
+    headerClasses,
+    headerStyle,
+    headerAttrs,
+    headerSortingClasses,
+    headerSortingStyle,
+  } = column;
 
-    const sortCaretfunc = sortCaret || globalSortCaret;
+  const delegate = useCellEventDelegater({
+    column,
+    columnIndex: index,
+    index,
+  });
 
-    const delegateEvents = this.delegate(headerEvents);
+  const sortCaretfunc = sortCaret || globalSortCaret;
+  const delegateEvents = delegate(headerEvents);
 
-    const customAttrs = _.isFunction(headerAttrs)
-      ? headerAttrs(column, index)
-      : headerAttrs || {};
+  const customAttrs = _.isFunction(headerAttrs)
+    ? headerAttrs(column, index)
+    : headerAttrs || {};
 
-    const cellAttrs: React.HTMLAttributes<HTMLTableHeaderCellElement> = {
-      ...customAttrs,
-      ...delegateEvents,
-      tabIndex: _.isDefined(customAttrs.tabIndex) ? customAttrs.tabIndex : 0,
-    };
+  const cellAttrs: React.HTMLAttributes<HTMLTableHeaderCellElement> = {
+    ...customAttrs,
+    ...delegateEvents,
+    tabIndex: _.isDefined(customAttrs.tabIndex) ? customAttrs.tabIndex : 0,
+  };
 
-    let sortSymbol: React.ReactNode;
-    let filterElement: React.ReactNode;
-    let cellStyle: React.CSSProperties = {};
-    if (column.width) {
-      cellStyle.width = typeof column.width === "number"
-        ? `${column.width}px`
-        : column.width;
-    }
-    let cellClasses = _.isFunction(headerClasses)
-      ? headerClasses(column, index)
-      : headerClasses;
+  let sortSymbol: React.ReactNode;
+  let filterElement: React.ReactNode;
+  let cellStyle: React.CSSProperties = {};
 
-    if (headerStyle) {
-      const customStyle = _.isFunction(headerStyle)
-        ? headerStyle(column, index)
-        : headerStyle;
-      if (customStyle) {
-        cellStyle = {
-          ...cellStyle,
-          ...customStyle,
-        };
-      }
-    }
+  if (column.width) {
+    cellStyle.width =
+      typeof column.width === "number" ? `${column.width}px` : column.width;
+  }
 
-    if (headerTitle) {
-      cellAttrs.title = _.isFunction(headerTitle)
-        ? (headerTitle(column, index) as string)
-        : text;
-    }
+  let cellClasses = _.isFunction(headerClasses)
+    ? headerClasses(column, index)
+    : headerClasses;
 
-    if (headerAlign) {
-      cellStyle.textAlign = _.isFunction(headerAlign)
-        ? headerAlign(column, index)
-        : headerAlign;
-    }
-
-    if (sort) {
-      const customClick = cellAttrs.onClick;
-      const customKeyDown = cellAttrs.onKeyDown;
-      cellAttrs["aria-label"] = sorting
-        ? `${text} sort ${sortOrder}`
-        : `${text} sortable`;
-      cellAttrs.onKeyUp = (e) => {
-        if (e.key === "Enter") {
-          onSort?.(column);
-          // TODO
-          // Error: Argument of type 'KeyboardEvent<HTMLTableHeaderCellElement>' is not assignable to
-          // parameter of type 'MouseEvent<HTMLTableHeaderCellElement, MouseEvent>'.
-          // if (_.isFunction(customClick)) customClick(e);
-          if (_.isFunction(customKeyDown)) customKeyDown(e);
-        }
+  if (headerStyle) {
+    const customStyle = _.isFunction(headerStyle)
+      ? headerStyle(column, index)
+      : headerStyle;
+    if (customStyle) {
+      cellStyle = {
+        ...cellStyle,
+        ...customStyle,
       };
-      cellAttrs.onClick = (e) => {
+    }
+  }
+
+  if (headerTitle) {
+    cellAttrs.title = _.isFunction(headerTitle)
+      ? (headerTitle(column, index) as string)
+      : text;
+  }
+
+  if (headerAlign) {
+    cellStyle.textAlign = _.isFunction(headerAlign)
+      ? headerAlign(column, index)
+      : headerAlign;
+  }
+
+  if (sort) {
+    const customClick = cellAttrs.onClick;
+    const customKeyDown = cellAttrs.onKeyDown;
+    cellAttrs["aria-label"] = sorting
+      ? `${text} sort ${sortOrder}`
+      : `${text} sortable`;
+    cellAttrs.onKeyUp = (e: React.KeyboardEvent<HTMLTableHeaderCellElement>) => {
+      if (e.key === "Enter") {
         onSort?.(column);
-        if (_.isFunction(customClick)) customClick(e);
+        if (_.isFunction(customKeyDown)) customKeyDown(e);
+      }
+    };
+    cellAttrs.onClick = (e: React.MouseEvent<HTMLTableHeaderCellElement>) => {
+      onSort?.(column);
+      if (_.isFunction(customClick)) customClick(e);
+    };
+    cellAttrs.className = cs(cellAttrs.className, "sortable");
+
+    if (sorting) {
+      sortSymbol = sortCaretfunc ? (
+        sortCaretfunc(sortOrder || SORT_DESC, column)
+      ) : (
+        <SortCaret order={sortOrder!} />
+      );
+
+      cellClasses = cs(
+        cellClasses,
+        _.isFunction(headerSortingClasses)
+          ? headerSortingClasses(column, sortOrder!, isLastSorting!, index)
+          : headerSortingClasses
+      );
+
+      cellStyle = {
+        ...cellStyle,
+        ...(_.isFunction(headerSortingStyle)
+          ? headerSortingStyle(column, sortOrder!, isLastSorting!, index)
+          : headerSortingStyle),
       };
-      cellAttrs.className = cs(cellAttrs.className, "sortable");
-
-      if (sorting) {
-        sortSymbol = sortCaretfunc ? (
-          sortCaretfunc(sortOrder || SORT_DESC, column)
-        ) : (
-          <SortCaret order={sortOrder!} />
-        );
-
-        cellClasses = cs(
-          cellClasses,
-          _.isFunction(headerSortingClasses)
-            ? headerSortingClasses(column, sortOrder!, isLastSorting!, index)
-            : headerSortingClasses
-        );
-
-        cellStyle = {
-          ...cellStyle,
-          ...(_.isFunction(headerSortingStyle)
-            ? headerSortingStyle(column, sortOrder!, isLastSorting!, index)
-            : headerSortingStyle),
-        };
-      } else {
-        sortSymbol = sortCaretfunc ? (
-          sortCaretfunc(undefined, column)
-        ) : (
-          <SortSymbol />
-        );
-      }
+    } else {
+      sortSymbol = sortCaretfunc ? (
+        sortCaretfunc(undefined, column)
+      ) : (
+        <SortSymbol />
+      );
     }
+  }
 
-    if (cellClasses) cellAttrs.className = cs(cellAttrs.className, cellClasses);
-    if (columnResize && column.resizable !== false) {
-      cellStyle.position = "relative";
+  if (cellClasses) cellAttrs.className = cs(cellAttrs.className, cellClasses);
+  if (columnResize && column.resizable !== false) {
+    cellStyle.position = "relative";
+  }
+  if (!_.isEmptyObject(cellStyle)) cellAttrs.style = cellStyle;
+
+  if (filterPosition === FILTERS_POSITION_INLINE) {
+    if (filterRenderer) {
+      const onCustomFilter = onExternalFilter?.(
+        column,
+        filter?.props.type || ""
+      );
+      filterElement = filterRenderer(onCustomFilter!, column);
+    } else if (filter) {
+      filterElement = (
+        <filter.Filter
+          {...filter.props}
+          filterState={currFilters?.[column.dataField]}
+          onFilter={onFilter}
+          column={column}
+        />
+      );
     }
-    if (!_.isEmptyObject(cellStyle)) cellAttrs.style = cellStyle;
+  }
 
-    if (filterPosition === FILTERS_POSITION_INLINE) {
-      if (filterRenderer) {
-        const onCustomFilter = onExternalFilter?.(
-          column,
-          filter?.props.type || ""
-        );
-        filterElement = filterRenderer(onCustomFilter!, column);
-      } else if (filter) {
-        filterElement = (
-          <filter.Filter
-            {...filter.props}
-            filterState={currFilters?.[column.dataField]}
-            onFilter={onFilter}
-            column={column}
-          />
-        );
-      }
-    }
-
-    const children: React.ReactNode = headerFormatter
-      ? headerFormatter(column, index, {
+  const children: React.ReactNode = headerFormatter
+    ? headerFormatter(column, index, {
         sortElement: sortSymbol,
         filterElement,
       })
-      : text;
+    : text;
 
-    const resizerElement = (
-      <ColumnContextConsumer>
-        {({ onColumnResize }) => {
-          if (!onColumnResize || (columnResize && column.resizable === false)) return null;
-          if (!columnResize && !column.resizable) return null;
-          return (
-            <ColumnResizer
-              onColumnResize={(width) => onColumnResize(column.dataField, width)}
-            />
-          );
-        }}
-      </ColumnContextConsumer>
-    );
+  const resizerElement = (
+    <ColumnContextConsumer>
+      {({ onColumnResize }) => {
+        if (!onColumnResize || (columnResize && column.resizable === false))
+          return null;
+        if (!columnResize && !column.resizable) return null;
+        return (
+          <ColumnResizer
+            onColumnResize={(width) => onColumnResize(column.dataField, width)}
+          />
+        );
+      }}
+    </ColumnContextConsumer>
+  );
 
-    if (headerFormatter) {
-      return React.createElement("th", cellAttrs, children, resizerElement);
-    }
-
-    return React.createElement(
-      "th",
-      cellAttrs,
-      children,
-      sortSymbol,
-      filterElement,
-      resizerElement
-    );
+  if (headerFormatter) {
+    return React.createElement("th", cellAttrs, children, resizerElement);
   }
-}
+
+  return React.createElement(
+    "th",
+    cellAttrs,
+    children,
+    sortSymbol,
+    filterElement,
+    resizerElement
+  );
+});
 
 export default HeaderCell;

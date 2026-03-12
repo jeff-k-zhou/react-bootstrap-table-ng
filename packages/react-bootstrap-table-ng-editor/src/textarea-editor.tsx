@@ -8,6 +8,7 @@ interface TextEditorProps {
   autoSelectText?: boolean;
   didMount?: () => void;
   onKeyDown: (event: any) => void;
+  onUpdate?: any;
 }
 
 const TextAreaEditor = React.forwardRef<any, TextEditorProps>((props, ref) => {
@@ -17,6 +18,7 @@ const TextAreaEditor = React.forwardRef<any, TextEditorProps>((props, ref) => {
     className = "",
     autoSelectText = false,
     onKeyDown,
+    onUpdate,
     ...rest
   } = props;
 

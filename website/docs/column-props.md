@@ -926,38 +926,48 @@ If you feel above predefined editors are not satisfied to your requirement, you 
 import cellEditFactory, { Type } from 'react-bootstrap-table-ng-editor';
 
 // Custom Editor
-class QualityRanger extends React.Component {
-  static propTypes = {
-    value: PropTypes.number,
-    onUpdate: PropTypes.func.isRequired
-  }
-  static defaultProps = {
-    value: 0
-  }
-  getValue() {
-    return parseInt(this.range.value, 10);
-  }
-  render() {
-    const { value, onUpdate, ...rest } = this.props;
-    return [
+interface QualityRangerProps {
+  value?: number;
+  onUpdate: (value: number) => void;
+  didMount?: () => void;
+}
+
+const QualityRanger = ({ value = 0, onUpdate, didMount, ...rest }: QualityRangerProps) => {
+  const rangeRef = React.useRef<HTMLInputElement>(null);
+  const id = React.useId();
+
+  React.useEffect(() => {
+    if (rangeRef.current) {
+      rangeRef.current.focus();
+    }
+  }, []);
+
+  const getValue = () => {
+    return parseInt(rangeRef.current?.value || '0', 10);
+  };
+
+  return (
+    <>
       <input
-        { ...rest }
+        {...rest}
+        name="quality"
+        id={id}
         key="range"
-        ref={ node => this.range = node }
+        ref={rangeRef}
         type="range"
         min="0"
         max="100"
-      />`,
+      />
       <button
         key="submit"
         className="btn btn-default"
-        onClick={ () => onUpdate(this.getValue()) }
+        onClick={() => onUpdate(getValue())}
       >
         done
       </button>
-    ];
-  }
-}
+    </>
+  );
+};
 
 
 const columns = [
@@ -966,7 +976,7 @@ const columns = [
     dataField: 'done',
     text: 'Done',
     editorRenderer: (editorProps, value, row, column, rowIndex, columnIndex) =>
-      <QualityRanger { ...editorProps } value={ value } />`;
+      <QualityRanger { ...editorProps } value={ value } />;
   }
 ];
 ```

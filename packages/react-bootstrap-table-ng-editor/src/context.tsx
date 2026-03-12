@@ -160,6 +160,7 @@ export default (
   };
   return {
     Provider: CellEditProvider,
+    Consumer: CellEditContext.Consumer,
   };
 };
 

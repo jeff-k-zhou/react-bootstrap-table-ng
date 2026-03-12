@@ -1,5 +1,5 @@
 /* eslint-disable import/no-anonymous-default-export */
-import React from "react";
+import React, { useRef } from "react";
 
 import BootstrapTable from "../../../react-bootstrap-table-ng";
 import filterFactory from "../../../react-bootstrap-table-ng-filter";
@@ -12,40 +12,6 @@ import "../../../react-bootstrap-table-ng-toolkit/style/react-bootstrap-table-ng
 import "../../../react-bootstrap-table-ng/style/react-bootstrap-table-ng.scss";
 import "./stylesheet/storybook.scss";
 import "./stylesheet/tomorrow.min.css";
-
-let node: any;
-
-const handleGetCurrentData = () => {
-  console.log(node.table.props.data);
-};
-
-const handleGetSelectedData = () => {
-  console.log(node.selectionContext.selected);
-};
-
-const handleGetExpandedData = () => {
-  console.log(node.rowExpandContext.state.expanded);
-};
-
-const handleGetCurrentPage = () => {
-  console.log(node.paginationContext.currPage);
-};
-
-const handleGetCurrentSizePerPage = () => {
-  console.log(node.paginationContext.currSizePerPage);
-};
-
-const handleGetCurrentSortColumn = () => {
-  console.log(node.sortContext.state.sortColumn);
-};
-
-const handleGetCurrentSortOrder = () => {
-  console.log(node.sortContext.state.sortOrder);
-};
-
-const handleGetCurrentFilter = () => {
-  console.log(node.filterContext.currFilters);
-};
 
 interface BasicTableProps {
   mode?: any;
@@ -68,7 +34,7 @@ interface BasicTableProps {
   tabIndexCell?: any;
 }
 
-export default ({
+const BasicTable: React.FC<BasicTableProps> = ({
   mode,
   id,
   classes,
@@ -87,7 +53,41 @@ export default ({
   bordered,
   noDataIndication,
   tabIndexCell,
-}: BasicTableProps) => {
+}) => {
+  const node = useRef<any>(null);
+
+  const handleGetCurrentData = () => {
+    if (node.current) console.log(node.current.table.props.data);
+  };
+
+  const handleGetSelectedData = () => {
+    if (node.current) console.log(node.current.selectionContext.selected);
+  };
+
+  const handleGetExpandedData = () => {
+    if (node.current) console.log(node.current.rowExpandContext.state.expanded);
+  };
+
+  const handleGetCurrentPage = () => {
+    if (node.current) console.log(node.current.paginationContext.currPage);
+  };
+
+  const handleGetCurrentSizePerPage = () => {
+    if (node.current) console.log(node.current.paginationContext.currSizePerPage);
+  };
+
+  const handleGetCurrentSortColumn = () => {
+    if (node.current) console.log(node.current.sortContext.state.sortColumn);
+  };
+
+  const handleGetCurrentSortOrder = () => {
+    if (node.current) console.log(node.current.sortContext.state.sortOrder);
+  };
+
+  const handleGetCurrentFilter = () => {
+    if (node.current) console.log(node.current.filterContext.currFilters);
+  };
+
   switch (mode) {
     case "idAndClass":
       return (
@@ -197,7 +197,7 @@ export default ({
             Get Current Filter Information
           </button>
           <BootstrapTable
-            ref={(n) => (node = n)}
+            ref={node}
             keyField="id"
             data={data}
             columns={columns}
@@ -236,3 +236,5 @@ export default ({
       );
   }
 };
+
+export default BasicTable;

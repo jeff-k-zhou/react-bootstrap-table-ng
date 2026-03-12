@@ -1,5 +1,5 @@
 import React, { forwardRef, useImperativeHandle } from "react";
-import { FILTER_TYPES, TextFilterProps } from "../..";
+import { FILTER_TYPES, TextFilterProps } from "../const";
 
 const TextFilter = forwardRef<any, TextFilterProps>((props, ref) => {
   const {
@@ -95,6 +95,17 @@ const TextFilter = forwardRef<any, TextFilterProps>((props, ref) => {
       setValue(remoteVal);
     }
   }, [filterState]);
+
+  const lastDefaultValue = React.useRef(defaultValue);
+  React.useEffect(() => {
+    if (defaultValue !== lastDefaultValue.current) {
+      lastDefaultValue.current = defaultValue;
+      setValue(defaultValue ?? "");
+      if (onFilter) {
+        (onFilter as any)(column, FILTER_TYPES.TEXT)(defaultValue);
+      }
+    }
+  }, [defaultValue, column, onFilter]);
 
   const filterHandler = React.useCallback(
     (e: any) => {

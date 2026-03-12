@@ -1,6 +1,6 @@
 /* eslint-disable import/no-anonymous-default-export */
 
-import React from "react";
+import React, { useState } from "react";
 
 import BootstrapTable from "../../../react-bootstrap-table-ng";
 import overlayFactory from "../../../react-bootstrap-table-ng-overlay";
@@ -56,41 +56,31 @@ const Table = ({ data, page, sizePerPage, onTableChange, totalSize }) => (
   </div>
 );
 
-class EmptyTableOverlay extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      page: 1,
-      data: products.slice(0, 10),
-      sizePerPage: 10
-    };
-  }
+const EmptyTableOverlay = () => {
+  const [page, setPage] = React.useState(1);
+  const [data, setData] = React.useState(products.slice(0, 10));
+  const [sizePerPage, setSizePerPage] = React.useState(10);
 
-  handleTableChange = (type, { page, sizePerPage }) => {
-    const currentIndex = (page - 1) * sizePerPage;
+  const handleTableChange = (type, { page: newPage, sizePerPage: newSizePerPage }) => {
+    const currentIndex = (newPage - 1) * newSizePerPage;
+    setData([]);
     setTimeout(() => {
-      this.setState(() => ({
-        page,
-        data: products.slice(currentIndex, currentIndex + sizePerPage),
-        sizePerPage
-      }));
+      setPage(newPage);
+      setData(products.slice(currentIndex, currentIndex + newSizePerPage));
+      setSizePerPage(newSizePerPage);
     }, 3000);
-    this.setState(() => ({ data: [] }));
-  }
+  };
 
-  render() {
-    const { data, sizePerPage, page } = this.state;
-    return (
-      <Table
-        data={ data }
-        page={ page }
-        sizePerPage={ sizePerPage }
-        totalSize={ products.length }
-        onTableChange={ this.handleTableChange }
-      />
-    );
-  }
-}
+  return (
+    <Table
+      data={ data }
+      page={ page }
+      sizePerPage={ sizePerPage }
+      totalSize={ products.length }
+      onTableChange={ handleTableChange }
+    />
+  );
+};
 `;
 
 interface TableProps {
@@ -140,53 +130,36 @@ const Table = ({
 );
 
 
-interface EmptyTableOverlayState {
-  data: any;
-  sizePerPage: number;
-  page: any;
-  loading: boolean;
-}
+const EmptyTableOverlay: React.FC = () => {
+  const [products] = useState(() => productsGenerator(87));
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState<any[]>(products.slice(0, 10));
+  const [sizePerPage, setSizePerPage] = useState(10);
 
-class EmptyTableOverlay extends React.Component<{}, EmptyTableOverlayState> {
-  products = productsGenerator(87);
-
-  constructor(props: any) {
-    super(props);
-    this.state = {
-      page: 1,
-      loading: false,
-      data: this.products.slice(0, 10),
-      sizePerPage: 10,
-    };
-  }
-
-  handleTableChange = (type: any, { page, sizePerPage }: any) => {
-    const currentIndex = (page - 1) * sizePerPage;
-    this.setState(() => ({ data: [], loading: true }));
+  const handleTableChange = (type: any, { page: newPage, sizePerPage: newSizePerPage }: any) => {
+    const currentIndex = (newPage - 1) * newSizePerPage;
+    setData([]);
+    setLoading(true);
     setTimeout(() => {
-      this.setState(() => ({
-        page,
-        loading: false,
-        data: this.products.slice(currentIndex, currentIndex + sizePerPage),
-        sizePerPage,
-      }));
+      setPage(newPage);
+      setLoading(false);
+      setData(products.slice(currentIndex, currentIndex + newSizePerPage));
+      setSizePerPage(newSizePerPage);
     }, 3000);
   };
 
-  render() {
-    const { data, sizePerPage, page, loading } = this.state;
-    return (
-      <Table
-        data={data}
-        page={page}
-        loading={loading}
-        sizePerPage={sizePerPage}
-        totalSize={this.products.length}
-        onTableChange={this.handleTableChange}
-      />
-    );
-  }
-}
+  return (
+    <Table
+      data={data}
+      page={page}
+      loading={loading}
+      sizePerPage={sizePerPage}
+      totalSize={products.length}
+      onTableChange={handleTableChange}
+    />
+  );
+};
 
 const tableOverlaySourceCode = `\
 import BootstrapTable from 'react-bootstrap-table-ng';
@@ -219,44 +192,34 @@ interface RemotePaginationProps {
   onTableChange: (type: any, context: any) => void;
 }
 
-class Container extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      page: 1,
-      loading: false,
-      data: products.slice(0, 10),
-      sizePerPage: 10
-    };
-  }
+const Container = () => {
+  const [page, setPage] = React.useState(1);
+  const [loading, setLoading] = React.useState(false);
+  const [data, setData] = React.useState(products.slice(0, 10));
+  const [sizePerPage, setSizePerPage] = React.useState(10);
 
-  handleTableChange = ({ page, sizePerPage }) => {
-    const currentIndex = (page - 1) * sizePerPage;
+  const handleTableChange = (type, { page: newPage, sizePerPage: newSizePerPage }) => {
+    const currentIndex = (newPage - 1) * newSizePerPage;
+    setLoading(true);
     setTimeout(() => {
-      this.setState(() => ({
-        page,
-        loading: false,
-        data: products.slice(currentIndex, currentIndex + sizePerPage),
-        sizePerPage
-      }));
+      setPage(newPage);
+      setLoading(false);
+      setData(products.slice(currentIndex, currentIndex + newSizePerPage));
+      setSizePerPage(newSizePerPage);
     }, 3000);
-    this.setState(() => ({ loading: true }));
-  }
+  };
 
-  render() {
-    const { data, sizePerPage, page, loading } = this.state;
-    return (
-      <RemotePagination
-        data={ data }
-        page={ page }
-        loading={ loading }
-        sizePerPage={ sizePerPage }
-        totalSize={ products.length }
-        onTableChange={ this.handleTableChange }
-      />
-    );
-  }
-}
+  return (
+    <RemotePagination
+      data={ data }
+      page={ page }
+      loading={ loading }
+      sizePerPage={ sizePerPage }
+      totalSize={ products.length }
+      onTableChange={ handleTableChange }
+    />
+  );
+};
 `;
 
 interface RemotePaginationProps {
@@ -313,53 +276,35 @@ const RemotePagination = ({
 );
 
 
-interface TableOverlayState {
-  data: any;
-  sizePerPage: number;
-  page: any;
-  loading: boolean;
-}
+const TableOverlay: React.FC = () => {
+  const [products] = useState(() => productsGenerator(87));
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState<any[]>(products.slice(0, 10));
+  const [sizePerPage, setSizePerPage] = useState(10);
 
-class TableOverlay extends React.Component<{}, TableOverlayState> {
-  products = productsGenerator(87);
-
-  constructor(props: any) {
-    super(props);
-    this.state = {
-      page: 1,
-      loading: false,
-      data: this.products.slice(0, 10),
-      sizePerPage: 10,
-    };
-  }
-
-  handleTableChange = (type: any, { page, sizePerPage }: any) => {
-    const currentIndex = (page - 1) * sizePerPage;
+  const handleTableChange = (type: any, { page: newPage, sizePerPage: newSizePerPage }: any) => {
+    const currentIndex = (newPage - 1) * newSizePerPage;
+    setLoading(true);
     setTimeout(() => {
-      this.setState(() => ({
-        page,
-        loading: false,
-        data: this.products.slice(currentIndex, currentIndex + sizePerPage),
-        sizePerPage,
-      }));
+      setPage(newPage);
+      setLoading(false);
+      setData(products.slice(currentIndex, currentIndex + newSizePerPage));
+      setSizePerPage(newSizePerPage);
     }, 3000);
-    this.setState(() => ({ loading: true }));
   };
 
-  render() {
-    const { data, sizePerPage, page, loading } = this.state;
-    return (
-      <RemotePagination
-        data={data}
-        page={page}
-        loading={loading}
-        sizePerPage={sizePerPage}
-        totalSize={this.products.length}
-        onTableChange={this.handleTableChange}
-      />
-    );
-  }
-}
+  return (
+    <RemotePagination
+      data={data}
+      page={page}
+      loading={loading}
+      sizePerPage={sizePerPage}
+      totalSize={products.length}
+      onTableChange={handleTableChange}
+    />
+  );
+};
 
 interface TableOverlayMainProps {
   mode?: any;

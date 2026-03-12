@@ -1,45 +1,58 @@
-import React, { Component } from "react";
-
-import { RowEventDelegater } from "./event-delegater";
+import React, { useRef, useEffect } from "react";
+import { useRowEventDelegater } from "./event-delegater";
 import RowPureContent from "./row-pure-content";
-import shouldUpdater, { RowProps } from "./should-updater";
+import { RowProps, shouldRowContentUpdate, shouldUpdatedBySelfProps } from "./should-updater";
 
-class SimpleRow extends shouldUpdater(
-  RowEventDelegater(Component<RowProps>)
-) {
-  shouldUpdateRowContent = false;
+const SimpleRow = React.memo((props: RowProps) => {
+  const {
+    editable = true,
+    className = undefined,
+    style = {},
+    attrs = {},
+    visibleColumnSize,
+    tabIndexCell,
+    ...rest
+  } = props;
 
-  shouldComponentUpdate(nextProps: RowProps) {
-    this.shouldUpdateRowContent = false;
-    this.shouldUpdateRowContent = this.shouldRowContentUpdate(nextProps);
-    if (this.shouldUpdateRowContent) return true;
+  const { delegate } = useRowEventDelegater({
+    row: props.row,
+    selected: props.selected,
+    keyField: props.keyField,
+    selectable: props.selectable,
+    expandable: props.expandable,
+    rowIndex: props.rowIndex!,
+    expanded: props.expanded,
+    expandRow: props.expandRow,
+    selectRow: props.selectRow,
+    DELAY_FOR_DBCLICK: (props as any).DELAY_FOR_DBCLICK,
+  });
 
-    return this.shouldUpdatedBySelfProps(nextProps);
-  }
+  const trAttrs = delegate(attrs);
+  const tabIndexStart = props.rowIndex! * visibleColumnSize! + 1;
 
-  render() {
-    const {
-      editable = true,
-      className = undefined,
-      style = {},
-      attrs = {},
-      visibleColumnSize,
-      tabIndexCell,
-      ...rest
-    } = this.props;
-    const trAttrs = this.delegate(attrs);
-    const tabIndexStart = this.props.rowIndex! * visibleColumnSize! + 1;
+  const prevProps = useRef<RowProps>(props);
+  // Compare previous props to current props to see if children need rendering
+  const shouldUpdateContent = shouldRowContentUpdate(prevProps.current, props);
 
-    return (
-      <tr style={style} className={className} {...trAttrs}>
-        <RowPureContent
-          shouldUpdate={this.shouldUpdateRowContent}
-          tabIndexStart={tabIndexCell ? tabIndexStart : -1}
-          {...rest}
-        />
-      </tr>
-    );
-  }
-}
+  useEffect(() => {
+    prevProps.current = props;
+  });
+
+  return (
+    <tr style={style} className={className} {...trAttrs}>
+      <RowPureContent
+        shouldUpdate={shouldUpdateContent}
+        tabIndexStart={tabIndexCell ? tabIndexStart : -1}
+        {...rest}
+      />
+    </tr>
+  );
+}, (prevProps, nextProps) => {
+  const shouldUpdateRowContent = shouldRowContentUpdate(prevProps, nextProps);
+  const shouldUpdateSelfProps = shouldUpdatedBySelfProps(prevProps, nextProps);
+  
+  // Return true to skip rendering (i.e. props are equal/no update needed)
+  return !(shouldUpdateRowContent || shouldUpdateSelfProps);
+});
 
 export default SimpleRow;

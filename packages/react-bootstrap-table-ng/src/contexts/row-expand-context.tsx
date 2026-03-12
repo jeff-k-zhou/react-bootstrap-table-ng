@@ -61,22 +61,24 @@ const RowExpandProvider = React.forwardRef<any, RowExpandProviderProps>((props, 
 
   // Sync with internal state when prop changes (getDerivedStateFromProps replacement)
   React.useEffect(() => {
-    if (expandRow) {
+    if (expandRow && expandRow.expanded) {
       const { nonExpandable = [] } = expandRow;
-      const nextExpandedBase = expandRow.expanded || expanded;
-      const nextExpanded = nextExpandedBase.filter(
+      const nextExpanded = expandRow.expanded.filter(
         (rowId) => !_.contains(nonExpandable, rowId)
       );
 
-      const nextClosing = expanded.reduce((acc: any, cur: any) => {
-        if (!_.contains(nextExpanded, cur)) {
-          acc.push(cur);
-        }
-        return acc;
-      }, []);
+      // Only update if the content has actually changed to avoid unnecessary re-renders
+      if (!_.isEqual(expanded, nextExpanded)) {
+        const nextClosing = expanded.reduce((acc: any, cur: any) => {
+          if (!_.contains(nextExpanded, cur)) {
+            acc.push(cur);
+          }
+          return acc;
+        }, []);
 
-      setExpanded(nextExpanded);
-      setIsClosing(nextClosing);
+        setExpanded(nextExpanded);
+        setIsClosing(nextClosing);
+      }
     }
   }, [expandRow.expanded, expandRow.nonExpandable]);
 

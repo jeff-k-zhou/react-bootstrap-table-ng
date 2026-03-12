@@ -1,4 +1,4 @@
-import { render } from "@testing-library/react";
+import { render, act } from "@testing-library/react";
 import React from "react";
 
 import BootstrapTable from "../../src/bootstrap-table";
@@ -89,12 +89,16 @@ describe("SelectionContext", () => {
       renderContext(selectRow);
       const props = mockBase.mock.calls[0][0];
       // Simulate selecting first row
-      let selected = [];
+      let selected: any[] = [];
       if (props.onRowSelect) {
-        selected = props.onRowSelect(firstSelectedRow, true, rowIndex) || [firstSelectedRow];
+        act(() => {
+          selected = props.onRowSelect(firstSelectedRow, true, rowIndex) || [firstSelectedRow];
+        });
         expect(selected).toEqual([firstSelectedRow]);
         // Simulate selecting second row
-        selected = props.onRowSelect(secondSelectedRow, true, rowIndex) || [secondSelectedRow];
+        act(() => {
+          selected = props.onRowSelect(secondSelectedRow, true, rowIndex) || [secondSelectedRow];
+        });
         expect(selected).toEqual([secondSelectedRow]);
       }
     });
@@ -104,16 +108,24 @@ describe("SelectionContext", () => {
       const props = mockBase.mock.calls[0][0];
       let selected: any[] = [];
       if (props.onRowSelect) {
-        selected = props.onRowSelect(firstSelectedRow, true, rowIndex) || [firstSelectedRow];
+        act(() => {
+          selected = props.onRowSelect(firstSelectedRow, true, rowIndex) || [firstSelectedRow];
+        });
         expect(selected).toContain(firstSelectedRow);
 
-        selected = props.onRowSelect(secondSelectedRow, true, rowIndex) || [firstSelectedRow, secondSelectedRow];
+        act(() => {
+          selected = props.onRowSelect(secondSelectedRow, true, rowIndex) || [firstSelectedRow, secondSelectedRow];
+        });
         expect(selected).toEqual(expect.arrayContaining([firstSelectedRow, secondSelectedRow]));
 
-        selected = props.onRowSelect(firstSelectedRow, false, rowIndex) || [secondSelectedRow];
+        act(() => {
+          selected = props.onRowSelect(firstSelectedRow, false, rowIndex) || [secondSelectedRow];
+        });
         expect(selected).toEqual(expect.arrayContaining([secondSelectedRow]));
 
-        selected = props.onRowSelect(secondSelectedRow, false, rowIndex) || [];
+        act(() => {
+          selected = props.onRowSelect(secondSelectedRow, false, rowIndex) || [];
+        });
         expect(selected).toEqual([]);
       }
     });
@@ -126,7 +138,9 @@ describe("SelectionContext", () => {
       const e = { target: {} };
       const row = dataOperator.getRowByRowId(data, keyField, firstSelectedRow);
       if (props.onRowSelect) {
-        props.onRowSelect(firstSelectedRow, true, rowIndex, e);
+        act(() => {
+          props.onRowSelect(firstSelectedRow, true, rowIndex, e);
+        });
         expect(onSelect).toHaveBeenCalledWith(row, true, rowIndex, e);
       }
     });
@@ -140,7 +154,9 @@ describe("SelectionContext", () => {
       const props = mockBase.mock.calls[0][0];
       let selected: any[] = [];
       if (props.onAllRowsSelect) {
-        selected = props.onAllRowsSelect(e, false) || data.map((d) => d[keyField]);
+        act(() => {
+          selected = props.onAllRowsSelect(e, false) || data.map((d) => d[keyField]);
+        });
         expect(selected).toEqual(data.map((d) => d[keyField]));
       }
     });
@@ -151,7 +167,9 @@ describe("SelectionContext", () => {
       renderContext(selectRow);
       const props = mockBase.mock.calls[0][0];
       if (props.onAllRowsSelect) {
-        props.onAllRowsSelect(e, false);
+        act(() => {
+          props.onAllRowsSelect(e, false);
+        });
         expect(onSelectAll).toHaveBeenCalledWith(
           true,
           dataOperator.getSelectedRows(data, keyField, data.map((d) => d[keyField])),
@@ -166,7 +184,9 @@ describe("SelectionContext", () => {
       const props = mockBase.mock.calls[0][0];
       let selected: any[] = [];
       if (props.onAllRowsSelect) {
-        selected = props.onAllRowsSelect(e, true) || [];
+        act(() => {
+          selected = props.onAllRowsSelect(e, true) || [];
+        });
         expect(selected).toEqual([]);
       }
     });
@@ -181,7 +201,9 @@ describe("SelectionContext", () => {
       renderContext(selectRow);
       const props = mockBase.mock.calls[0][0];
       if (props.onAllRowsSelect) {
-        props.onAllRowsSelect(e, true);
+        act(() => {
+          props.onAllRowsSelect(e, true);
+        });
         expect(onSelectAll).toHaveBeenCalledWith(
           false,
           dataOperator.getSelectedRows(data, keyField, data.map((d) => d[keyField])),

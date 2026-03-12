@@ -1162,7 +1162,7 @@ export const DateEditor: Story = {
         if (typeof cell !== 'object') {
           dateObj = new Date(cell);
         }
-        return `${('0' + dateObj.getUTCDate()).slice(-2)}/${('0' + (dateObj.getUTCMonth() + 1)).slice(-2)}/${dateObj.getUTCFullYear()}`;
+        return `${('0' + (dateObj.getUTCMonth() + 1)).slice(-2)}/${('0' + dateObj.getUTCDate()).slice(-2)}/${dateObj.getUTCFullYear()}`;
       },
       editor: {
         type: Type.DATE
@@ -1212,52 +1212,42 @@ interface QualityRangerProps {
   didMount?: () => void;
 }
 
-interface QualityRangerState { }
+const QualityRanger = ({ value = 0, onUpdate, didMount, ...rest }: QualityRangerProps) => {
+  const rangeRef = React.useRef<HTMLInputElement>(null);
+  const id = React.useId();
 
-class QualityRanger extends React.Component<QualityRangerProps, QualityRangerState> {
-  range: HTMLInputElement | null = null;
+  React.useEffect(() => {
+    if (rangeRef.current) {
+      rangeRef.current.focus();
+    }
+  }, []);
 
-
-  static defaultProps = {
-    value: 0,
+  const getValue = () => {
+    return parseInt(rangeRef.current?.value || '0', 10);
   };
 
-  componentDidMount() {
-    if (this.range) {
-      this.range.focus();
-    }
-  }
-
-  getValue() {
-    return parseInt(this.range?.value || '0', 10);
-  }
-
-  render() {
-    const { value, onUpdate, didMount, ...rest } = this.props;
-
-    return (
-      <>
-        <input
-          {...rest}
-          name="quality"
-          id="quality-ranger"
-          key="range"
-          ref={(node) => (this.range = node)}
-          type="range"
-          min="0"
-          max="100"
-        />
-        <button
-          key="submit"
-          className="btn btn-default"
-          onClick={() => onUpdate(this.getValue())}
-        >
-          done
-        </button>
-      </>
-    );
-  }
-}
+  return (
+    <>
+      <input
+        {...rest}
+        name="quality"
+        id={id}
+        key="range"
+        ref={rangeRef}
+        type="range"
+        min="0"
+        max="100"
+      />
+      <button
+        key="submit"
+        className="btn btn-default"
+        onClick={() => onUpdate(getValue())}
+      >
+        done
+      </button>
+    </>
+  );
+};
 
 export const CustomEditor: Story = {
   name: "Custom editor",
@@ -1286,37 +1276,31 @@ export const CustomEditor: Story = {
       didMount?: () => void;
     }
 
-    interface QualityRangerState { }
+    const QualityRanger = ({ value = 0, onUpdate, ...rest }: QualityRangerProps) => {
+      const rangeRef = React.useRef<HTMLInputElement>(null);
 
-    class QualityRanger extends React.Component<QualityRangerProps, QualityRangerState> {
+      const getValue = () => {
+        return parseInt(rangeRef.current?.value || '0', 10);
+      };
 
-      static defaultProps = {
-        value: 0
-      }
-      getValue() {
-        return parseInt(this.range.value, 10);
-      }
-      render() {
-        const { value, onUpdate, ...rest } = this.props;
-        return [
-          <input
-            { ...rest }
-            key="range"
-            ref={ node => this.range = node }
-            type="range"
-            min="0"
-            max="100"
-          />,
-          <button
-            key="submit"
-            className="btn btn-default"
-            onClick={ () => onUpdate(this.getValue()) }
-          >
-            done
-          </button>
-        ];
-      }
-    }
+      return [
+        <input
+          { ...rest }
+          key="range"
+          ref={ rangeRef }
+          type="range"
+          min="0"
+          max="100"
+        />,
+        <button
+          key="submit"
+          className="btn btn-default"
+          onClick={ () => onUpdate(getValue()) }
+        >
+          done
+        </button>
+      ];
+    };
 
     const columns = [{
       dataField: 'id',
@@ -1380,7 +1364,7 @@ export const CellEditorWithDataType: Story = {
         if (typeof cell !== 'object') {
           dateObj = new Date(cell);
         }
-        return `${('0' + dateObj.getUTCDate()).slice(-2)}/${('0' + (dateObj.getUTCMonth() + 1)).slice(-2)}/${dateObj.getUTCFullYear()}`;
+        return `${('0' + (dateObj.getUTCMonth() + 1)).slice(-2)}/${('0' + dateObj.getUTCDate()).slice(-2)}/${dateObj.getUTCFullYear()}`;
       },
       editor: {
         type: Type.DATE

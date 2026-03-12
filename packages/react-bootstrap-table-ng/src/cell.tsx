@@ -1,9 +1,8 @@
-import React, { Component, MouseEvent } from "react";
-
-import { CellEventDelegater as eventDelegater } from "./cell-event-delegater";
+import React, { MouseEvent } from "react";
+import { useCellEventDelegater } from "./cell-event-delegater";
 import _ from "./utils";
 
-interface CellProps {
+export interface CellProps {
   row: any;
   rowindex: number;
   column: any;
@@ -18,104 +17,94 @@ interface CellProps {
   tabIndex?: number;
 }
 
-class Cell extends eventDelegater(Component)<CellProps> {
-  constructor(props: CellProps) {
-    super(props);
-    this.createHandleEditingCell = this.createHandleEditingCell.bind(this);
+const Cell = React.memo((props: CellProps) => {
+  const {
+    row,
+    column,
+    atstart,
+    rowindex,
+    columnindex,
+    editable,
+    clicktoedit,
+    dbclicktoedit,
+    ...rest
+  } = props;
+
+  const { dataField, formatter, formatExtraData } = column;
+
+  const delegate = useCellEventDelegater({
+    column,
+    columnIndex: columnindex,
+    index: rowindex,
+  });
+
+  const attrs = delegate({ ...rest });
+  let content = column.isDummyField ? null : _.get(row, dataField);
+
+  if (formatter) {
+    content = column.formatter(content, row, rowindex, formatExtraData);
   }
 
-  shouldComponentUpdate(nextProps: CellProps) {
-    let shouldUpdate = false;
-    if (nextProps.column.isDummyField) {
-      shouldUpdate = !_.isEqual(this.props.row, nextProps.row);
-    } else {
-      shouldUpdate =
-        _.get(this.props.row, this.props.column.dataField) !==
-        _.get(nextProps.row, nextProps.column.dataField);
-    }
-
-    if (shouldUpdate) return true;
-
-    // if (nextProps.formatter)
-
-    shouldUpdate =
-      (nextProps.column.formatter
-        ? !_.isEqual(this.props.row, nextProps.row)
-        : false) ||
-      this.props.column.hidden !== nextProps.column.hidden ||
-      this.props.column.isDummyField !== nextProps.column.isDummyField ||
-      this.props.rowindex !== nextProps.rowindex ||
-      this.props.columnindex !== nextProps.columnindex ||
-      this.props.className !== nextProps.className ||
-      this.props.title !== nextProps.title ||
-      this.props.editable !== nextProps.editable ||
-      this.props.clicktoedit !== nextProps.clicktoedit ||
-      this.props.dbclicktoedit !== nextProps.dbclicktoedit ||
-      !_.isEqual(this.props.style, nextProps.style) ||
-      !_.isEqual(
-        this.props.column.formatExtraData,
-        nextProps.column.formatExtraData
-      ) ||
-      !_.isEqual(this.props.column.events, nextProps.column.events) ||
-      !_.isEqual(this.props.column.attrs, nextProps.column.attrs) ||
-      this.props.tabIndex !== nextProps.tabIndex;
-
-    return shouldUpdate;
-  }
-
-  createHandleEditingCell(originFunc: (e: MouseEvent) => void) {
-    return (e: MouseEvent) => {
-      const { atstart, rowindex, columnindex, clicktoedit, dbclicktoedit } =
-        this.props;
+  const createHandleEditingCell = React.useCallback(
+    (originFunc: (e: MouseEvent) => void) => (e: MouseEvent) => {
       if ((clicktoedit || dbclicktoedit) && _.isFunction(originFunc)) {
         originFunc(e);
       }
       if (atstart) {
         atstart(rowindex, columnindex);
       }
-    };
+    },
+    [atstart, rowindex, columnindex, clicktoedit, dbclicktoedit]
+  );
+
+  if (clicktoedit === "true" && editable === "true") {
+    attrs.onClick = createHandleEditingCell(attrs.onClick);
+  } else if (dbclicktoedit === "true" && editable === "true") {
+    attrs.onDoubleClick = createHandleEditingCell(attrs.onDoubleClick);
   }
 
-  render() {
-    const {
-      row,
-      column,
-      atstart,
-      rowindex,
-      columnindex,
-      editable,
-      clicktoedit,
-      dbclicktoedit,
-      ...rest
-    } = this.props;
-    const { dataField, formatter, formatExtraData } = column;
-    const attrs = this.delegate({ ...rest });
-    let content = column.isDummyField ? null : _.get(row, dataField);
-
-    if (formatter) {
-      content = column.formatter(
-        content,
-        row,
-        rowindex,
-        formatExtraData
-      );
-    }
-
-    if (clicktoedit === "true" && editable === "true") {
-      attrs.onClick = this.createHandleEditingCell(attrs.onClick);
-    } else if (
-      dbclicktoedit === "true" &&
-      editable === "true"
-    ) {
-      attrs.onDoubleClick = this.createHandleEditingCell(attrs.onDoubleClick);
-    }
-
-    return (
-      <td {...attrs}>
-        {typeof content === "boolean" ? `${content}` : content}
-      </td>
-    );
+  return (
+    <td {...attrs}>
+      {typeof content === "boolean" ? `${content}` : content}
+    </td>
+  );
+}, (prevProps, nextProps) => {
+  // Return true if passing nextProps to render would return the same result as passing prevProps to render
+  let shouldUpdate = false;
+  
+  if (nextProps.column.isDummyField) {
+    shouldUpdate = !_.isEqual(prevProps.row, nextProps.row);
+  } else {
+    shouldUpdate =
+      _.get(prevProps.row, prevProps.column.dataField) !==
+      _.get(nextProps.row, nextProps.column.dataField);
   }
-}
+
+  if (shouldUpdate) return false;
+
+  shouldUpdate =
+    (nextProps.column.formatter
+      ? !_.isEqual(prevProps.row, nextProps.row)
+      : false) ||
+    prevProps.column.hidden !== nextProps.column.hidden ||
+    prevProps.column.isDummyField !== nextProps.column.isDummyField ||
+    prevProps.rowindex !== nextProps.rowindex ||
+    prevProps.columnindex !== nextProps.columnindex ||
+    prevProps.className !== nextProps.className ||
+    prevProps.title !== nextProps.title ||
+    prevProps.editable !== nextProps.editable ||
+    prevProps.clicktoedit !== nextProps.clicktoedit ||
+    prevProps.dbclicktoedit !== nextProps.dbclicktoedit ||
+    !_.isEqual(prevProps.style, nextProps.style) ||
+    !_.isEqual(
+      prevProps.column.formatExtraData,
+      nextProps.column.formatExtraData
+    ) ||
+    !_.isEqual(prevProps.column.events, nextProps.column.events) ||
+    !_.isEqual(prevProps.column.attrs, nextProps.column.attrs) ||
+    prevProps.tabIndex !== nextProps.tabIndex;
+
+  return !shouldUpdate;
+});
 
 export default Cell;

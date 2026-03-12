@@ -1,7 +1,7 @@
 /* eslint react/prefer-stateless-function: 0 */
 import React from "react";
 import { render } from "@testing-library/react";
-import { act } from "react-dom/test-utils";
+import { act } from "react";
 import { stub } from "sinon";
 import BootstrapTable from "../../src/bootstrap-table";
 import withContext from "../../src/contexts";

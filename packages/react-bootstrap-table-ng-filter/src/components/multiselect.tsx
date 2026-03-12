@@ -8,7 +8,7 @@ import {
   FILTER_TYPES,
   MultiSelectFilterOptions,
   MultiSelectFilterProps,
-} from "../..";
+} from "../const";
 
 function optionsEquals(currOpts: any, prevOpts: any) {
   const keys = Object.keys(currOpts);

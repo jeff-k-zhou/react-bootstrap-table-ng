@@ -1567,45 +1567,35 @@ interface PriceFilterProps {
   onFilter: (value: string) => void;
 }
 
-class PriceFilter extends React.Component<PriceFilterProps> {
-  
-  private input: HTMLInputElement | null;
+const PriceFilter = ({ column, onFilter }: PriceFilterProps) => {
+  const inputRef = React.useRef<HTMLInputElement>(null);
 
-  constructor(props: PriceFilterProps) {
-    super(props);
-    this.filter = this.filter.bind(this);
-    this.getValue = this.getValue.bind(this);
-    this.input = null;
-  }
-
-  getValue() {
-    if (this.input) {
-      return this.input.value;
+  const getValue = () => {
+    if (inputRef.current) {
+      return inputRef.current.value;
     }
     return '';
-  }
+  };
 
-  filter() {
-    if (this.input) {
-      this.props.onFilter(this.getValue());
+  const filter = () => {
+    if (inputRef.current) {
+      onFilter(getValue());
     }
-  }
+  };
 
-  render() {
-    return (
-      <>
-        <input
-          ref={(node) => (this.input = node)}
-          type="text"
-          placeholder="Input price"
-        />
-        <button className="btn btn-warning" onClick={this.filter}>
-          {`Find ${this.props.column.text}`}
-        </button>
-      </>
-    );
-  }
-}
+  return (
+    <>
+      <input
+        ref={inputRef}
+        type="text"
+        placeholder="Input price"
+      />
+      <button className="btn btn-warning" onClick={filter}>
+        {`Find ${column.text}`}
+      </button>
+    </>
+  );
+};
 
 export const CustomFilter: Story = {
   name: "Custom filter",
@@ -1634,36 +1624,32 @@ export const CustomFilter: Story = {
       onFilter: (value: string) => void;
     }
 
-    class PriceFilter extends React.Component<PriceFilterProps> {
-      
-      constructor(props: PriceFilterProps) {
-        super(props);
-        this.filter = this.filter.bind(this);
-        this.getValue = this.getValue.bind(this);
-      }
-      getValue() {
-        return this.input.value;
-      }
-      filter() {
-        this.props.onFilter(this.getValue());
-      }
-      render() {
-        return [
-          <input
-            key="input"
-            ref={ node => this.input = node }
-            type="text"
-            placeholder="Input price"
-          />,
-          <button
-            key="submit"
-            className="btn btn-warning"
-            onClick={ this.filter }
-          >
-            { \`Filter $\{this.props.column.text}\` }
-          </button>
-        ];
-      }
+    const PriceFilter = ({ column, onFilter }: PriceFilterProps) => {
+      const inputRef = React.useRef<HTMLInputElement>(null);
+
+      const getValue = () => {
+        return inputRef.current?.value || '';
+      };
+
+      const filter = () => {
+        onFilter(getValue());
+      };
+
+      return [
+        <input
+          key="input"
+          ref={ inputRef }
+          type="text"
+          placeholder="Input price"
+        />,
+        <button
+          key="submit"
+          className="btn btn-warning"
+          onClick={ filter }
+        >
+          { \`Filter $\{column.text}\` }
+        </button>
+      ];
     }
 
     const columns = [{
@@ -1692,81 +1678,59 @@ interface AdvancePriceFilterProps {
   onFilter: (value: { number: number; comparator: string }) => void;
 }
 
-class AdvancePriceFilter extends React.Component<AdvancePriceFilterProps, { value: number }> {
+const AdvancePriceFilter = ({ column, onFilter }: AdvancePriceFilterProps) => {
+  const [value, setValue] = React.useState(2100);
+  const rangeRef = React.useRef<HTMLInputElement>(null);
+  const selectRef = React.useRef<HTMLSelectElement>(null);
 
-  private range: HTMLInputElement | null;
-  private showValue: HTMLParagraphElement | null;
-  private select: HTMLSelectElement | null;
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(parseInt(e.target.value, 10));
+  };
 
-  constructor(props: AdvancePriceFilterProps) {
-    super(props);
-    this.filter = this.filter.bind(this);
-    this.getValue = this.getValue.bind(this);
-    this.onChange = this.onChange.bind(this);
-    this.state = { value: 2100 };
-    this.range = null;
-    this.showValue = null;
-    this.select = null;
-  }
-
-  onChange(e: React.ChangeEvent<HTMLInputElement>) {
-    this.setState({ value: parseInt(e.target.value, 10) });
-  }
-
-  getValue() {
-    if (this.range) {
-      return parseInt(this.range.value, 10);
-    }
-    return 0;
-  }
-
-  filter() {
-    if (this.select) {
-      this.props.onFilter({
-        number: this.getValue(),
-        comparator: this.select.value,
+  const filter = () => {
+    if (selectRef.current && rangeRef.current) {
+      onFilter({
+        number: parseInt(rangeRef.current.value, 10),
+        comparator: selectRef.current.value,
       });
     }
-  }
+  };
 
-  render() {
-    return (
-      <>
-        <input
-          key="range"
-          ref={(node) => (this.range = node)}
-          type="range"
-          min="2100"
-          max="2110"
-          onChange={this.onChange}
-        />
-        <p
-          key="show"
-          ref={(node) => (this.showValue = node)}
-          style={{ textAlign: 'center' }}
-        >
-          {this.state.value}
-        </p>
-        <select
-          key="select"
-          ref={(node) => (this.select = node)}
-          className="form-control"
-        >
-          <option value={GT}>&gt;</option>
-          <option value={EQ}>=</option>
-          <option value={LT}>&lt;</option>
-        </select>
-        <button
-          key="submit"
-          className="btn btn-warning"
-          onClick={this.filter}
-        >
-          {`Filter ${this.props.column.text}`}
-        </button>
-      </>
-    );
-  }
-}
+  return (
+    <>
+      <input
+        key="range"
+        ref={rangeRef}
+        type="range"
+        min="2100"
+        max="2110"
+        onChange={onChange}
+      />
+      <p
+        key="show"
+        style={{ textAlign: 'center' }}
+      >
+        {value}
+      </p>
+      <select
+        key="select"
+        ref={selectRef}
+        className="form-control"
+      >
+        <option value={GT}>&gt;</option>
+        <option value={EQ}>=</option>
+        <option value={LT}>&lt;</option>
+      </select>
+      <button
+        key="submit"
+        className="btn btn-warning"
+        onClick={filter}
+      >
+        {`Filter ${column.text}`}
+      </button>
+    </>
+  );
+};
 
 export const AdvanceCustomFilter: Story = {
   name: "Advance custom filter",
@@ -1797,62 +1761,56 @@ export const AdvanceCustomFilter: Story = {
       onFilter: (value: string) => void;
     }
 
-    class PriceFilter extends React.Component<PriceFilterProps> {
-    
-      constructor(props: PriceFilterProps) {
-        super(props);
-        this.filter = this.filter.bind(this);
-        this.getValue = this.getValue.bind(this);
-        this.onChange = this.onChange.bind(this);
-        this.state = { value: 2100 };
-      }
-      onChange(e) {
-        this.setState({ value: e.target.value });
-      }
-      getValue() {
-        return parseInt(this.range.value, 10);
-      }
-      filter() {
-        this.props.onFilter({
-          number: this.getValue(),
-          comparator: this.select.value
-        });
-      }
-      render() {
-        return [
-          <input
-            key="range"
-            ref={ node => this.range = node }
-            type="range"
-            min="2100"
-            max="2110"
-            onChange={ this.onChange }
-          />,
-          <p
-            key="show"
-            ref={ node => this.showValue = node }
-            style={ { textAlign: 'center' } }
-          >
-            { this.state.value }
-          </p>,
-          <select
-            key="select"
-            ref={ node => this.select = node }
-            className="form-control"
-          >
-            <option value={ Comparator.GT }>&gt;</option>
-            <option value={ Comparator.EQ }>=</option>
-            <option value={ Comparator.LT }>&lt;</option>
-          </select>,
-          <button
-            key="submit"
-            className="btn btn-warning"
-            onClick={ this.filter }
-          >
-            { \`Filter $\{this.props.column.text}\` }
-          </button>
-        ];
-      }
+    const PriceFilter = ({ column, onFilter }: PriceFilterProps) => {
+      const [value, setValue] = React.useState<number | string>(2100);
+      const rangeRef = React.useRef<HTMLInputElement>(null);
+      const selectRef = React.useRef<HTMLSelectElement>(null);
+
+      const onChange = (e: any) => {
+        setValue(e.target.value);
+      };
+
+      const filter = () => {
+        if (rangeRef.current && selectRef.current) {
+          onFilter({
+            number: parseInt(rangeRef.current.value, 10),
+            comparator: selectRef.current.value
+          });
+        }
+      };
+
+      return [
+        <input
+          key="range"
+          ref={ rangeRef }
+          type="range"
+          min="2100"
+          max="2110"
+          onChange={ onChange }
+        />,
+        <p
+          key="show"
+          style={ { textAlign: 'center' } }
+        >
+          { value }
+        </p>,
+        <select
+          key="select"
+          ref={ selectRef }
+          className="form-control"
+        >
+          <option value={ Comparator.GT }>&gt;</option>
+          <option value={ Comparator.EQ }>=</option>
+          <option value={ Comparator.LT }>&lt;</option>
+        </select>,
+        <button
+          key="submit"
+          className="btn btn-warning"
+          onClick={ filter }
+        >
+          { \`Filter $\{column.text}\` }
+        </button>
+      ];
     }
 
     const columns = [{
@@ -2139,42 +2097,40 @@ export const ImplementCustomFilterLogic: Story = {
     import BootstrapTable from 'react-bootstrap-table-ng';
     import filterFactory, { textFilter } from 'react-bootstrap-table-ng-filter';
 
-    class Table extends React.Component {
-      filterByPrice = (filterVal, data) => {
+    const Table = () => {
+      const filterByPrice = (filterVal: string, data: any[]) => {
         if (filterVal) {
           return data.filter(product => product.price == filterVal);
         }
         return data;
-      }
+      };
 
-      render() {
-        const columns = [{
-          dataField: 'id',
-          text: 'Product ID'
-        }, {
-          dataField: 'name',
-          text: 'Product Name',
-          filter: textFilter()
-        }, {
-          dataField: 'price',
-          text: 'Product Price',
-          filter: textFilter({
-            onFilter: this.filterByPrice
-          })
-        }];
+      const columns = [{
+        dataField: 'id',
+        text: 'Product ID'
+      }, {
+        dataField: 'name',
+        text: 'Product Name',
+        filter: textFilter()
+      }, {
+        dataField: 'price',
+        text: 'Product Price',
+        filter: textFilter({
+          onFilter: filterByPrice
+        })
+      }];
 
-        return (
-          <div>
-            <BootstrapTable
-              keyField="id"
-              data={ products }
-              columns={ columns }
-              filter={ filterFactory() }
-            />
-          </div>
-        );
-      }
-    }
+      return (
+        <div>
+          <BootstrapTable
+            keyField="id"
+            data={ products }
+            columns={ columns }
+            filter={ filterFactory() }
+          />
+        </div>
+      );
+    };
     `,
     filter: filterFactory({ afterFilter }),
     header: <h2>Implement a eq price filter</h2>,

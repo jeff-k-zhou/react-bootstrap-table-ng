@@ -6,10 +6,10 @@ sidebar_label: Column Filter
 
 `react-bootstrap-table-ng` separate the filter core code base to [`react-bootstrap-table-ng-filter`](https://github.com/jeff-k-zhou/react-bootstrap-table-ng/tree/main/packages/react-bootstrap-table-ng-filter), so there's a little bit different when you use column filter than `react-bootstrap-table`. In the following, we are going to show you how to enable the column filter:
 
-**[Live Demo For Column Filter](pathname:///react-bootstrap-table-ng/storybook/index.html?selectedKind=Column%20Filter)**   
+**[Live Demo For Column Filter](pathname:///react-bootstrap-table-ng/storybook/index.html?selectedKind=Column%20Filter)**  
 **[API & Props Definition](./filter-props)**
 
------
+---
 
 ## Install
 
@@ -20,24 +20,25 @@ $ npm install react-bootstrap-table-ng-filter --save
 ## Add CSS
 
 ```js
-// es5 
-require('react-bootstrap-table-ng-filter/dist/react-bootstrap-table-ng-filter.min.css');
+// es5
+require("react-bootstrap-table-ng-filter/dist/react-bootstrap-table-ng-filter.min.css");
 
 // es6
-import 'react-bootstrap-table-ng-filter/dist/react-bootstrap-table-ng-filter.min.css';
+import "react-bootstrap-table-ng-filter/dist/react-bootstrap-table-ng-filter.min.css";
 ```
 
 You can get all types of filters via import and these filters are a factory function to create a individual filter instance. Currently, we support following filters:
 
-* TextFilter
-* SelectFilter
-* MultiSelectFilter
-* NumberFilter
-* DateFilter
-* CustomFilter
-* **Coming soon!**
+- TextFilter
+- SelectFilter
+- MultiSelectFilter
+- NumberFilter
+- DateFilter
+- CustomFilter
+- **Coming soon!**
 
 ## Text Filter
+
 Following is a quick demo for enable the column filter on **Product Price** column!!
 
 ```js
@@ -50,10 +51,15 @@ const columns = [
   text: 'Product Price',
   filter: textFilter()
 }];
+```
 
 ```js
-<BootstrapTable keyField='id' data={ products } columns={ columns } filter={ filterFactory() } />
-```
+<BootstrapTable
+  keyField="id"
+  data={products}
+  columns={columns}
+  filter={filterFactory()}
+/>
 ```
 
 In addition, we preserve all of the filter features and functionality in legacy `react-bootstrap-table`, but in different way to do it:
@@ -78,7 +84,8 @@ const priceFilter = textFilter({
 ```
 
 ## Select Filter
-A quick example: 
+
+A quick example:
 
 ```js
 import filterFactory, { selectFilter } from 'react-bootstrap-table-ng-filter';
@@ -99,10 +106,15 @@ const columns = [
     options: selectOptions
   })
 }];
+```
 
 ```js
-<BootstrapTable keyField='id' data={ products } columns={ columns } filter={ filterFactory() } />
-```
+<BootstrapTable
+  keyField="id"
+  data={products}
+  columns={columns}
+  filter={filterFactory()}
+/>
 ```
 
 Following is an example for custom select filter:
@@ -127,7 +139,7 @@ const qualityFilter = selectFilter({
 // omit...
 ```
 
-> Note, the `selectOptions` can be an array or a function as well: 
+> Note, the `selectOptions` can be an array or a function as well:
 
 ### Array as options
 
@@ -169,10 +181,9 @@ const columns = [
 
 The benifit is `react-bootstrap-table-ng` will render the select options by the order of array.
 
-
 ## MultiSelect Filter
 
-Multi-select filter is almost same as regular select filterfilter : 
+Multi-select filter is almost same as regular select filterfilter :
 
 ```js
 import filterFactory, { multiSelectFilter } from 'react-bootstrap-table-ng-filter';
@@ -193,10 +204,15 @@ const columns = [
     options: selectOptions
   })
 }];
+```
 
 ```js
-<BootstrapTable keyField='id' data={ products } columns={ columns } filter={ filterFactory() } />
-```
+<BootstrapTable
+  keyField="id"
+  data={products}
+  columns={columns}
+  filter={filterFactory()}
+/>
 ```
 
 Following is an example for custom multi-select filter:
@@ -229,10 +245,15 @@ const columns = [..., {
   text: 'Product Price',
   filter: numberFilter()
 }];
+```
 
 ```js
-<BootstrapTable keyField='id' data={ products } columns={ columns } filter={ filterFactory() } />
-```
+<BootstrapTable
+  keyField="id"
+  data={products}
+  columns={columns}
+  filter={filterFactory()}
+/>
 ```
 
 Numner filter is same as other filter, you can custom the number filter via `numberFilter` factory function:
@@ -272,10 +293,15 @@ const columns = [..., {
   text: 'Product date',
   filter: dateFilter()
 }];
+```
 
 ```js
-<BootstrapTable keyField='id' data={ products } columns={ columns } filter={ filterFactory() } />
-```
+<BootstrapTable
+  keyField="id"
+  data={products}
+  columns={columns}
+  filter={filterFactory()}
+/>
 ```
 
 > **Notes:** date filter accept a Javascript Date object in your raw data and you have to use `column.formatter` to make it as your prefer string result.
@@ -283,22 +309,25 @@ const columns = [..., {
 Date filter is same as other filter, you can custom the date filter via `dateFilter` factory function:
 
 ```js
-import filterFactory, { selectFilter, Comparator } from 'react-bootstrap-table-ng-filter';
+import filterFactory, {
+  selectFilter,
+  Comparator,
+} from "react-bootstrap-table-ng-filter";
 // omit...
 
 const dateFilter = dateFilter({
-  delay: 600,  // how long will trigger filtering after user typing, default is 500 ms
-  placeholder: 'custom placeholder',  // placeholder for date input
-  withoutEmptyComparatorOption: true,  // dont render empty option for comparator
-  comparators: [Comparator.EQ, Comparator.GT, Comparator.LT],  // Custom the comparators
-  style: { display: 'inline-grid' },  // custom the style on date filter
-  className: 'custom-dateFilter-class',  // custom the class on date filter
-  comparatorStyle: { backgroundColor: 'antiquewhite' }, // custom the style on comparator select
-  comparatorClassName: 'custom-comparator-class',  // custom the class on comparator select
-  dateStyle: { backgroundColor: 'cadetblue', margin: '0px' },  // custom the style on date input
-  dateClassName: 'custom-date-class',  // custom the class on date input
-  defaultValue: { date: new Date(2018, 0, 1), comparator: Comparator.GT },  // default value
-  id: 'id', // assign a unique value for htmlFor attribute, it's useful when you have same dataField across multiple table in one page
+  delay: 600, // how long will trigger filtering after user typing, default is 500 ms
+  placeholder: "custom placeholder", // placeholder for date input
+  withoutEmptyComparatorOption: true, // dont render empty option for comparator
+  comparators: [Comparator.EQ, Comparator.GT, Comparator.LT], // Custom the comparators
+  style: { display: "inline-grid" }, // custom the style on date filter
+  className: "custom-dateFilter-class", // custom the class on date filter
+  comparatorStyle: { backgroundColor: "antiquewhite" }, // custom the style on comparator select
+  comparatorClassName: "custom-comparator-class", // custom the class on comparator select
+  dateStyle: { backgroundColor: "cadetblue", margin: "0px" }, // custom the style on date input
+  dateClassName: "custom-date-class", // custom the class on date input
+  defaultValue: { date: new Date(2018, 0, 1), comparator: Comparator.GT }, // default value
+  id: "id", // assign a unique value for htmlFor attribute, it's useful when you have same dataField across multiple table in one page
 });
 
 // omit...
@@ -315,19 +344,26 @@ const columns = [..., {
   filter: customFilter(),
   filterRenderer: (onFilter, column) => .....
 }];
+```
 
 ```js
-<BootstrapTable keyField='id' data={ products } columns={ columns } filter={ filterFactory() } />
-```
+<BootstrapTable
+  keyField="id"
+  data={products}
+  columns={columns}
+  filter={filterFactory()}
+/>
 ```
 
 In custom filter case, you are suppose to finish following two steps:
+
 1. Call `customFilter` and pass to `column.filter`
 2. Give `column.filterRenderer` as a callback function and return your custom filter element.
 
 ### column.filterRenderer
 
 This function will pass two argument to you:
+
 1. `onFilter`: call it to trigger filter when you need.
 2. `column`: Just the column object!
 
@@ -337,15 +373,17 @@ In the end, please remember to return your custom filter element!
 
 `customFilter` function just same as `textFilter`, `selectFilter` etc, it is for customization reason. However, in the custom filter case, there're only few props are valid:
 
-
 ```js
-import filterFactory, { FILTER_TYPES, Comparator } from 'react-bootstrap-table-ng-filter';
+import filterFactory, {
+  FILTER_TYPES,
+  Comparator,
+} from "react-bootstrap-table-ng-filter";
 
 const customFilter = customFilter({
-  type: FILTER_TYPES.NUMBER,  // default is FILTER_TYPES.TEXT
+  type: FILTER_TYPES.NUMBER, // default is FILTER_TYPES.TEXT
   comparator: Comparator.EQ, // only work if type is FILTER_TYPES.SELECT
   caseSensitive: false, // default is true
-})
+});
 ```
 
 <hr />
@@ -355,44 +393,52 @@ const customFilter = customFilter({
 `react-bootstrap-table-ng` allow you to control filter externally, which means user no need to type something on filter!!
 
 ### How
+
 All the filters have a `getFilter` prop which accept a callback function and pass a filter object to you.
 
-```js
-class Table extends Components {
-  constructor(props) {
-    super(props);
-    this.filterPrice = this.filterPrice.bind(this);
-    const columns = [
-      ..., {
-      dataField: 'price',
-      text: 'Product Price',
-      filter: textFilter({
-        // preserve filter instance
-        getFilter: (filter) => this.priceFilter = filter;
-      })
-    }];
-  }
-
-  filterPrice() {
-    // call it anywhere when you want!!
-    this.priceFilter(100);
-  }
-
-  render() {
-    return (
-      <div>
-        <button onClick={ this.filterPrice }>Click to filter</button>
-        <BootstrapTable keyField='id' data={ products } columns={ columns } filter={ filterFactory() } />
-      </div>
-    );
-  }
-}
-
+```jsx
+import React, { useRef, useMemo } from "react";
+import BootstrapTable from "react-bootstrap-table-ng";
+import filterFactory, { textFilter } from "react-bootstrap-table-ng-filter";
+const Table = ({ products }) => {
+  const priceFilterRef = useRef(null);
+  const columns = useMemo(
+    () => [
+      // ... other columns
+      {
+        dataField: "price",
+        text: "Product Price",
+        filter: textFilter({
+          getFilter: (filter) => {
+            priceFilterRef.current = filter;
+          },
+        }),
+      },
+    ],
+    [],
+  ); // memoized so the filter instance is stable
+  const filterPrice = () => {
+    priceFilterRef.current?.(100);
+  };
+  return (
+    <div>
+      <button onClick={filterPrice}>Click to filter</button>
+      <BootstrapTable
+        keyField="id"
+        data={products}
+        columns={columns}
+        filter={filterFactory()}
+      />
+    </div>
+  );
+};
+export default Table;
 ```
 
 ### Examples
-* [Example For Programmtically Text Filter](pathname:///react-bootstrap-table-ng/storybook/index.html?selectedKind=Column%20Filter&selectedStory=Programmatically%20Text%20Filter%20)
-* [Example For Programmtically Select Filter](pathname:///react-bootstrap-table-ng/storybook/index.html?selectedKind=Column%20Filter&selectedStory=Programmatically%20Select%20Filter%20)  
-* [Example For Programmtically MultiSelect Filter](pathname:///react-bootstrap-table-ng/storybook/index.html?selectedKind=Column%20Filter&selectedStory=Programmatically%20Multi%20Select%20Filter)  
-* [Example For Programmtically Number Filter](pathname:///react-bootstrap-table-ng/storybook/index.html?selectedKind=Column%20Filter&selectedStory=Programmatically%20Number%20Filter%20)
-* [Example For Programmtically Date Filter](pathname:///react-bootstrap-table-ng/storybook/index.html?selectedKind=Column%20Filter&selectedStory=Programmatically%Date%20Filter%20)
+
+- [Example For Programmtically Text Filter](pathname:///react-bootstrap-table-ng/storybook/index.html?selectedKind=Column%20Filter&selectedStory=Programmatically%20Text%20Filter%20)
+- [Example For Programmtically Select Filter](pathname:///react-bootstrap-table-ng/storybook/index.html?selectedKind=Column%20Filter&selectedStory=Programmatically%20Select%20Filter%20)
+- [Example For Programmtically MultiSelect Filter](pathname:///react-bootstrap-table-ng/storybook/index.html?selectedKind=Column%20Filter&selectedStory=Programmatically%20Multi%20Select%20Filter)
+- [Example For Programmtically Number Filter](pathname:///react-bootstrap-table-ng/storybook/index.html?selectedKind=Column%20Filter&selectedStory=Programmatically%20Number%20Filter%20)
+- [Example For Programmtically Date Filter](pathname:///react-bootstrap-table-ng/storybook/index.html?selectedKind=Column%20Filter&selectedStory=Programmatically%Date%20Filter%20)
