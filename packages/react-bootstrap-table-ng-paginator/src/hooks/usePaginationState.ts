@@ -134,7 +134,7 @@ export const usePaginationState = (props: any) => {
       ...options,
       bootstrap4,
       tableId,
-      page: currPage,
+      page: options.page ?? currPage,
       sizePerPage: currSizePerPage,
       pageStartIndex,
       hidePageListOnlyOnePage,

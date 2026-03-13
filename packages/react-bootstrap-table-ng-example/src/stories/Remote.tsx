@@ -1433,12 +1433,17 @@ const RemoteAllCustomComponent: React.FC = () => {
     if (newSizePerPage) stateRef.current.sizePerPage = newSizePerPage;
     if (typeof newSearchText !== 'undefined') stateRef.current.searchText = newSearchText;
     
-    if (type === 'filter') {
+    if (type === 'search') {
+      stateRef.current.page = 1; // reset to page 1 on search change
+    } else if (type === 'filter') {
       stateRef.current.filters = newFilters || {};
+      stateRef.current.page = 1; // reset to page 1 on filter change
     } else {
       stateRef.current.filters = (newFilters && Object.keys(newFilters).length > 0) ? newFilters : stateRef.current.filters;
     }
+
     
+  
     if (newSortField) stateRef.current.sortField = newSortField;
     if (newSortOrder) stateRef.current.sortOrder = newSortOrder;
 
@@ -1511,10 +1516,8 @@ const RemoteAllCustomComponent: React.FC = () => {
       const statePage = stateRef.current.page;
       const stateSizePerPage = stateRef.current.sizePerPage;
       
-      const setNextPage = statePage * stateSizePerPage < result.length ? statePage : Math.ceil(result.length / stateSizePerPage);
-      console.log('setNextPage ', setNextPage);
+      const setNextPage = statePage * stateSizePerPage <= result.length ? statePage : Math.max(1, Math.ceil(result.length / stateSizePerPage));
       stateRef.current.page = setNextPage;
-      console.log('StateRef page ', stateRef.current.page);
       
       setPage(setNextPage);
       setData(result.slice((setNextPage - 1) * stateSizePerPage, setNextPage * stateSizePerPage));
