@@ -36,6 +36,7 @@ export const FilterProvider = React.forwardRef<any, FilterProviderProps & {
   const [currFilters, setCurrFilters] = React.useState<{ [key: string]: any }>({});
   const [clearFilters, setClearFilters] = React.useState<{ [key: string]: any }>({});
   const [data, setData] = React.useState<any[]>(propData);
+  const rendered = React.useRef(false);
 
   // Keep a ref to the latest columns so the filter effect doesn't need to
   // re-run every time columns gets a new reference (e.g. when filter factories
@@ -49,6 +50,16 @@ export const FilterProvider = React.forwardRef<any, FilterProviderProps & {
     currFilters,
     getFiltered: () => data,
   }));
+
+  React.useEffect(() => {
+    rendered.current = true;
+    if (isRemoteFiltering()) {
+      const initialFilters = currFiltersRef.current;
+      if (Object.keys(initialFilters).length > 0) {
+        handleFilterChange(initialFilters);
+      }
+    }
+  }, []);
 
   React.useEffect(() => {
     if (!isRemoteFiltering()) {
@@ -100,7 +111,7 @@ export const FilterProvider = React.forwardRef<any, FilterProviderProps & {
         setCurrFilters(nextCurrFilters);
 
         if (isRemoteFiltering()) {
-          if (!initialize) {
+          if (!initialize || rendered.current) {
             handleFilterChange(nextCurrFilters);
           }
         }
