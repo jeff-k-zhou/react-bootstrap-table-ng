@@ -23,7 +23,7 @@ export const useTableLogic = (props: BootstrapTableProps) => {
   }, [keyField]);
 
   // Data logic (from PropsBaseResolver)
-  const isEmpty = data.length === 0;
+  const isEmpty = useMemo(() => data.length === 0, [data.length]);
 
   const visibleRows = useMemo(() => {
     if (!hiddenRows || hiddenRows.length === 0) return data;
@@ -57,10 +57,10 @@ export const useTableLogic = (props: BootstrapTableProps) => {
     [columnToggle, columns, selectRow, expandRow]
   );
 
-  return {
+  return useMemo(() => ({
     validateProps,
     isEmpty,
     visibleRows,
     getVisibleColumnSize,
-  };
+  }), [validateProps, isEmpty, visibleRows, getVisibleColumnSize]);
 };

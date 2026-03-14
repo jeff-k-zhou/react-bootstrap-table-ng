@@ -185,8 +185,8 @@
       "node"
     ],
     "transformIgnorePatterns": [
-      "node_modules/(?!(sinon|@some-other-esm-package|cheerio))"
+      "node_modules/(?!(sinon|lodash-es|@some-other-esm-package|cheerio))"
     ]
   },
-  "packageManager": "yarn@4.12.0"
+  "packageManager": "yarn@4.13.0"
 }

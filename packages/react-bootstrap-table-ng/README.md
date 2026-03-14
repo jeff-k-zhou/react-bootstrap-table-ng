@@ -14,7 +14,7 @@ The goal of this fork is to provide stable version with react 18 and above, boot
 - Added column resize functionality
 - Updated most dependencies to their latest stable versions to fix vulnerabilities
 - Upgraded Storybook to 10.2.8
-- Upgraded Yarn to 4.12.0
+- Upgraded Yarn to 4.13.0
 
 ## Release Notes
 

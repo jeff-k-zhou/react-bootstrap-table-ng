@@ -219,7 +219,9 @@ const withContext = (Base: any) => {
     ]);
 
     const { keyField, columns, bootstrap4, bootstrap5, data } = props;
-    const baseProps = { keyField, columns };
+    const baseProps = useMemo(() => ({ keyField, columns }), [keyField, columns]);
+
+    const bootstrapContextValue = useMemo(() => ({ bootstrap4, bootstrap5 }), [bootstrap4, bootstrap5]);
 
     const renderTable = (
       rootProps: any,
@@ -419,7 +421,7 @@ const withContext = (Base: any) => {
     };
 
     return (
-      <BootstrapContext.Provider value={{ bootstrap4, bootstrap5 }}>
+      <BootstrapContext.Provider value={bootstrapContextValue}>
         <DataContextObj.Provider {...baseProps} data={data}>
           {renderProviderTree()}
         </DataContextObj.Provider>
