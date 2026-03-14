@@ -1,17 +1,13 @@
-/* eslint no-nested-ternary: 0 */
-/* eslint no-lonely-if: 0 */
-/* eslint no-underscore-dangle: 0 */
 import { SORT_ASC, SORT_DESC } from "../const";
 import _ from "../utils";
 
 function comparator(a: any, b: any) {
-  let result;
   if (typeof b === "string") {
-    result = b.localeCompare(a);
-  } else {
-    result = a > b ? -1 : a < b ? 1 : 0;
+    return b.localeCompare(a);
   }
-  return result;
+  if (a > b) return -1;
+  if (a < b) return 1;
+  return 0;
 }
 
 export const sort = (
@@ -19,8 +15,8 @@ export const sort = (
   sortOrder: any,
   { dataField, sortFunc, sortValue }: any
 ) => {
-  const _data = [...data];
-  _data.sort((a, b) => {
+  const sortedData = [...data];
+  sortedData.sort((a, b) => {
     let result;
     let valueA = _.get(a, dataField);
     let valueB = _.get(b, dataField);
@@ -43,7 +39,7 @@ export const sort = (
     }
     return result;
   });
-  return _data;
+  return sortedData;
 };
 
 export const nextOrder = (

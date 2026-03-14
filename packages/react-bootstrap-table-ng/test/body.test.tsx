@@ -1,7 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import React from "react";
-import { stub } from "sinon";
 
 import { ROW_SELECT_DISABLED } from "..";
 import Body from "../src/body";
@@ -80,7 +79,7 @@ describe("Body", () => {
 
       it("should render noDataIndication function result", () => {
         const content = "Table is empty";
-        const emptyIndicationCallBack = stub().returns(content);
+        const emptyIndicationCallBack = jest.fn().mockReturnValue(content);
         render(
           <table>
             <Body
@@ -95,7 +94,7 @@ describe("Body", () => {
           </table>
         );
         expect(screen.getByText(content)).toBeInTheDocument();
-        expect(emptyIndicationCallBack.callCount).toBe(1);
+        expect(emptyIndicationCallBack).toHaveBeenCalledTimes(1);
       });
     });
   });
@@ -122,7 +121,7 @@ describe("Body", () => {
     });
 
     it("should call rowStyle callback correctly", () => {
-      const rowStyleCallBack = stub().returns(rowStyle);
+      const rowStyleCallBack = jest.fn().mockReturnValue(rowStyle);
       render(
         <table>
           <Body
@@ -134,9 +133,9 @@ describe("Body", () => {
           />
         </table>
       );
-      expect(rowStyleCallBack.callCount).toBe(data.length);
-      expect(rowStyleCallBack.firstCall.calledWith(data[0], 0)).toBeTruthy();
-      expect(rowStyleCallBack.secondCall.calledWith(data[1], 1)).toBeTruthy();
+      expect(rowStyleCallBack).toHaveBeenCalledTimes(data.length);
+      expect(rowStyleCallBack).toHaveBeenNthCalledWith(1, data[0], 0);
+      expect(rowStyleCallBack).toHaveBeenNthCalledWith(2, data[1], 1);
     });
   });
 
@@ -162,7 +161,7 @@ describe("Body", () => {
     });
 
     it("should call rowClasses callback correctly", () => {
-      const rowClassesCallBack = stub().returns(rowClasses);
+      const rowClassesCallBack = jest.fn().mockReturnValue(rowClasses);
       render(
         <table>
           <Body
@@ -174,15 +173,15 @@ describe("Body", () => {
           />
         </table>
       );
-      expect(rowClassesCallBack.callCount).toBe(data.length);
-      expect(rowClassesCallBack.firstCall.calledWith(data[0], 0)).toBeTruthy();
-      expect(rowClassesCallBack.secondCall.calledWith(data[1], 1)).toBeTruthy();
+      expect(rowClassesCallBack).toHaveBeenCalledTimes(data.length);
+      expect(rowClassesCallBack).toHaveBeenNthCalledWith(1, data[0], 0);
+      expect(rowClassesCallBack).toHaveBeenNthCalledWith(2, data[1], 1);
     });
   });
 
   describe("when rowEvents prop is defined", () => {
     it("should call rowEvents on click", async () => {
-      const rowEvents = { onClick: stub() };
+      const rowEvents = { onClick: jest.fn() };
       render(
         <table>
           <Body
@@ -196,7 +195,7 @@ describe("Body", () => {
       );
       const rows = screen.getAllByRole("row");
       await userEvent.click(rows[0]);
-      expect(rowEvents.onClick.called).toBeTruthy();
+      expect(rowEvents.onClick).toHaveBeenCalled();
     });
   });
 

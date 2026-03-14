@@ -1,4 +1,3 @@
-import {stub} from "sinon";
 
 import { SORT_ASC, SORT_DESC } from "../..";
 import { nextOrder, sort } from "../../src/store/sort";
@@ -42,10 +41,10 @@ describe("Sort Function", () => {
     });
 
     it("should call custom sort function when sortFunc given", () => {
-      const sortFunc = stub().returns(1);
+      const sortFunc = jest.fn().mockReturnValue(1);
       sortOrder = SORT_DESC;
       sort(data, sortOrder, { ...sortColumn, sortFunc });
-      expect(sortFunc.callCount).toBe(3);
+      expect(sortFunc).toHaveBeenCalledTimes(3);
     });
   });
 

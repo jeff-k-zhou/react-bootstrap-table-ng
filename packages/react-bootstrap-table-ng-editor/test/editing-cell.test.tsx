@@ -2,7 +2,6 @@
  * @jest-environment jsdom
  */
 
-/* eslint react/prop-types: 0 */
 import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import React from "react";

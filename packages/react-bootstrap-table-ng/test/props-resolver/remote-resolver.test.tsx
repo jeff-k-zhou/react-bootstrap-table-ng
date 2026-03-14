@@ -1,53 +1,79 @@
-/* eslint react/prefer-stateless-function: 0 */
+import { render, screen, fireEvent } from "@testing-library/react";
 import React from "react";
-import { render } from "@testing-library/react";
 import { act } from "react";
 import { stub } from "sinon";
 import BootstrapTable from "../../src/bootstrap-table";
 import withContext from "../../src/contexts";
 
-// import remoteResolver from '../../src/props-resolver/remote-resolver';
-
 const Container = withContext(BootstrapTable);
 
 describe("remoteResolver", () => {
   const keyField = "id";
-
   const columns = [
-    {
-      dataField: keyField,
-      text: "ID",
-    },
-    {
-      dataField: "name",
-      text: "Name",
-    },
+    { dataField: "id", text: "ID", sort: true },
+    { dataField: "name", text: "Name", sort: true },
+  ];
+  const data = [
+    { id: 1, name: "A" },
+    { id: 2, name: "B" },
   ];
 
-  const data = [
-    {
-      id: 1,
-      name: "A",
-    },
-    {
-      id: 2,
-      name: "B",
-    },
-  ];
+  const onTableChangeCB = jest.fn();
+
+  beforeEach(() => {
+    onTableChangeCB.mockReset();
+  });
 
   function renderContainer(props?: any) {
     let instance: any = null;
     render(
-      <Container
-        keyField={keyField}
-        data={data}
-        columns={columns}
+        <Container
+          keyField={keyField}
+          data={data}
+          columns={columns}
         ref={ref => { instance = ref; }}
-        {...props}
-      />
-    );
+        {...props}  
+        />
+      );
     return instance;
   }
+          
+
+  describe("sorting", () => {
+    it("should call onTableChange when remote is true", () => {
+      render(
+        <Container
+          keyField={keyField}
+          data={data}
+          columns={columns}
+          remote={true}
+          onTableChange={onTableChangeCB}
+        />
+      );
+      fireEvent.click(screen.getByText("Name"));
+      expect(onTableChangeCB).toHaveBeenCalledWith(
+        "sort",
+        expect.objectContaining({
+          sortField: "name",
+          sortOrder: "desc",
+        })
+      );
+    });
+
+    it("should NOT call onTableChange when remote is false", () => {
+      render(
+        <Container
+          keyField={keyField}
+          data={data}
+          columns={columns}
+          remote={false}
+          onTableChange={onTableChangeCB}
+        />
+      );
+      fireEvent.click(screen.getByText("Name"));
+      expect(onTableChangeCB).not.toHaveBeenCalled();
+    });
+  });
 
   describe("isRemotePagination", () => {
     it("should return false when remote is false", () => {
@@ -311,6 +337,40 @@ describe("remoteResolver", () => {
         newState.page = 1;
         expect(onTableChangeCB.calledWith("filter", newState)).toBeTruthy();
       });
+    });
+  });
+
+  describe("cell edit", () => {
+    it("should call onTableChange when remote cell edit is enabled", () => {
+      const cellEdit = { 
+        mode: "click",
+        blurToSave: true
+      };
+      render(
+        <Container
+          keyField={keyField}
+          data={data}
+          columns={columns}
+          remote={{ sort: true }}
+          onTableChange={onTableChangeCB}
+        />
+      );
+      fireEvent.click(screen.getByText("ID"));
+      expect(onTableChangeCB).toHaveBeenCalled();
+    });
+
+    it("should NOT call onTableChange for sorting when remote.sort is false but remote.filter is true", () => {
+      render(
+        <Container
+          keyField={keyField}
+          data={data}
+          columns={columns}
+          remote={{ filter: true }}
+          onTableChange={onTableChangeCB}
+        />
+      );
+      fireEvent.click(screen.getByText("ID"));
+      expect(onTableChangeCB).not.toHaveBeenCalled();
     });
   });
 });

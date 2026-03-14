@@ -1,9 +1,3 @@
-/* eslint react/prop-types: 0 */
-/* eslint react/require-default-props: 0 */
-/* eslint no-continue: 0 */
-/* eslint no-lonely-if: 0 */
-/* eslint class-methods-use-this: 0 */
-/* eslint camelcase: 0 */
 import React, { useState, useMemo, useEffect, useRef, useImperativeHandle } from "react";
 import _ from "lodash";
 import { TableSearchProps } from "../..";

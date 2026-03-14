@@ -1,4 +1,3 @@
-/* eslint-disable import/no-anonymous-default-export */
 
 import React, { useState, useRef } from "react";
 
@@ -1109,7 +1108,6 @@ const productColumns = [
 
 const { ExportCSVButton } = CSVExport;
 
-//leslint-disable-next-line react/proprtypes
 const CustomToggleList = ({ columns, onColumnToggle, toggles }) => (
   <div className="btn-group btn-group-toggle" data-toggle="buttons" style={{ marginBottom: '10px' }}>
     {columns
@@ -1325,7 +1323,6 @@ const productColumns = [
 
 const { ExportCSVButton } = CSVExport;
 
-//leslint-disable-next-line react/proprtypes
 interface CustomToggleListProps {
   columns: any[];
   onColumnToggle: (dataField: string) => void;

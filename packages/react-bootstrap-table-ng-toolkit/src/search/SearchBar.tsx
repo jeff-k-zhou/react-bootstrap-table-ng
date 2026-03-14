@@ -1,5 +1,3 @@
-/* eslint camelcase: 0 */
-/* eslint no-return-assign: 0 */
 import React, { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import { SearchBarProps } from "../..";
 

@@ -1,8 +1,3 @@
-/* eslint react/prop-types: 0 */
-/* eslint no-return-assign: 0 */
-/* eslint class-methods-use-this: 0 */
-/* eslint jsx-a11y/no-noninteractive-element-interactions: 0 */
-/* eslint camelcase: 0 */
 import cs from "classnames";
 
 import React, { Component } from "react";

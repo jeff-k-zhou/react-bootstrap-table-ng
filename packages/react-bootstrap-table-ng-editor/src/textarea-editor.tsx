@@ -1,4 +1,3 @@
-/* eslint no-return-assign: 0 */
 import cs from "classnames";
 import React, { Component } from "react";
 

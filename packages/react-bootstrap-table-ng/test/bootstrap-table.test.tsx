@@ -55,20 +55,18 @@ describe("BootstrapTable", () => {
     });
   });
 
-  describe("getData", () => {
-    it("should return props.data", () => {
-      // getData is a class method, so we need to access the instance
-      // We'll use a ref to access the instance
-      let instance: any = null;
-      render(
-        <BootstrapTable
-          keyField="id"
-          columns={columns}
-          data={data}
-          ref={(ref) => { instance = ref; }}
-        />
-      );
-      expect(instance.getData()).toEqual(data);
+  describe("rendered data", () => {
+    it("should render the correct number of rows", () => {
+      render(<BootstrapTable keyField="id" columns={columns} data={data} />);
+      const rows = screen.getAllByRole("row");
+      // 1 header row + 2 data rows
+      expect(rows).toHaveLength(3);
+    });
+
+    it("should render data content correctly", () => {
+      render(<BootstrapTable keyField="id" columns={columns} data={data} />);
+      expect(screen.getByText("A")).toBeInTheDocument();
+      expect(screen.getByText("B")).toBeInTheDocument();
     });
   });
 
