@@ -134,13 +134,19 @@ describe("FilterContext", () => {
       );
     });
 
-    it("should not call handleFilterChange when remote filter is enabled but initialize argument is true", () => {
+    it("should not call handleFilterChange when remote filter is enabled without default value and initialize argument is true", () => {
+      renderContext(true);
+      const filterProps = mockBase.mock.calls[0][0];
+      expect(handleFilterChange).not.toHaveBeenCalled();
+    });
+
+    it("should call handleFilterChange when remote filter is enabled with default value and initialize argument is true", () => {
       renderContext(true);
       const filterProps = mockBase.mock.calls[0][0];
       act(() => {
         filterProps.onFilter(columns[1], FILTER_TYPES.TEXT, true)("3");
       });
-      expect(handleFilterChange).not.toHaveBeenCalled();
+      expect(handleFilterChange).toHaveBeenCalled();
     });
 
     it("should call filter.props.onFilter and set data correctly", () => {
