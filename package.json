@@ -19,12 +19,13 @@
     "test:watch": "jest --coverage --watch",
     "storybook:clean": "cd ./packages/react-bootstrap-table-ng-example && yarn gh-pages:clean",
     "storybook:build": "cd ./packages/react-bootstrap-table-ng-example && yarn gh-pages:build",
-    "storybook:deploy": "cd ./packages/react-bootstrap-table-ng-example && yarn gh-pages:deploy",
     "storybook": "cd ./packages/react-bootstrap-table-ng-example && yarn storybook",
+    "storybook:test": "cd ./packages/react-bootstrap-table-ng-example && yarn test-storybook",
+    "storybook:deploy": "cd ./packages/react-bootstrap-table-ng-example && yarn gh-pages:deploy",
     "website:clean": "cd website && yarn clear",
     "website:build": "cd website && yarn clear && cd .. && yarn workspace react-bootstrap-table-ng-example gh-pages:clean && yarn workspace react-bootstrap-table-ng-example gh-pages:build && cp -R packages/react-bootstrap-table-ng-example/storybook-static/storybook website/static && cd website && yarn build",
-    "website:deploy": "cd  website && yarn gh-pages:deploy",
     "website": "cd website && npm run serve",
+    "website:deploy": "cd  website && yarn gh-pages:deploy",
     "release": "yarn install && yarn build && lerna publish"
   },
   "repository": {

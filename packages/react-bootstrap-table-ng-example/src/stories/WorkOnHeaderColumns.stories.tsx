@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-webpack5';
-import React from 'react';
+import { expect, userEvent, waitFor, within } from '@storybook/test';
 
 // import bootstrap style by given version
 import filterFactory, { textFilter } from '../../../react-bootstrap-table-ng-filter';
@@ -80,6 +80,12 @@ export const ColumnFormatter: Story = {
       columns={ columns }
     />
     `,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await canvas.findByRole('table');
+    const headers = await canvas.findAllByRole('columnheader');
+    expect(headers[2]).toHaveTextContent('$$ Product Price $$');
   }
 };
 
@@ -149,6 +155,17 @@ export const ColumnFormatterWithFilterAndSort: Story = {
       dataField: 'name',
       order: 'desc'
     }],
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await canvas.findByRole('table');
+    const headers = await canvas.findAllByRole('columnheader');
+    
+    // Check that 'Product Price' header contains filter input and sort indicator
+    const priceHeader = headers[2];
+    expect(priceHeader).toHaveTextContent('Product Price');
+    expect(within(priceHeader).getByRole('textbox')).toBeInTheDocument(); // textFilter
+    expect(priceHeader.querySelector('.caret')).toBeInTheDocument(); // default sort element (caret)
   }
 };
 
@@ -186,6 +203,14 @@ export const ColumnAlign: Story = {
 
     <BootstrapTable keyField='id' data={ products } columns={ columns } />
     `,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await canvas.findByRole('table');
+    const headers = await canvas.findAllByRole('columnheader');
+    
+    expect(headers[0]).toHaveStyle('text-align: center');
+    expect(headers[1]).toHaveStyle('text-align: right');
   }
 };
 
@@ -223,6 +248,14 @@ export const ColumnTitle: Story = {
 
     <BootstrapTable keyField='id' data={ products } columns={ columns } />
     `,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await canvas.findByRole('table');
+    const headers = await canvas.findAllByRole('columnheader');
+    
+    expect(headers[0]).toHaveAttribute('title', 'Product ID');
+    expect(headers[1]).toHaveAttribute('title', 'this is custom title for Product Name');
   }
 };
 
@@ -263,6 +296,14 @@ export const ColumnEvent: Story = {
     <BootstrapTable keyField='id' data={ products } columns={ columns } />
     `,
     header: <h3>Try to Click on Product ID header column</h3>,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await canvas.findByRole('table');
+    const headers = await canvas.findAllByRole('columnheader');
+    
+    // Alert is mocked in storybook usually, but to test userEvent we just verify it exists and is clickable
+    await userEvent.click(headers[0]);
   }
 };
 
@@ -306,6 +347,14 @@ export const CustomizeColumnClass: Story = {
 
     <BootstrapTable keyField='id' data={ products } columns={ columns } />
     `,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await canvas.findByRole('table');
+    const headers = await canvas.findAllByRole('columnheader');
+    
+    expect(headers[1]).toHaveClass('demo-row-odd');
+    expect(headers[2]).toHaveClass('demo-row-even'); // colIndex for price is 2
   }
 };
 
@@ -365,6 +414,14 @@ export const CustomizeColumnStyle: Story = {
 
     <BootstrapTable keyField='id' data={ products } columns={ columns } />
     `,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await canvas.findByRole('table');
+    const headers = await canvas.findAllByRole('columnheader');
+    
+    expect(headers[1]).toHaveStyle('background-color: rgb(200, 230, 201)'); // #c8e6c9
+    expect(headers[2]).toHaveStyle('background-color: rgb(129, 199, 132)'); // colIndex 2 % 2 === 0 -> #81c784
   }
 };
 
@@ -402,6 +459,14 @@ export const CustomizeColumnHTMLAttribute: Story = {
 
     <BootstrapTable keyField='id' data={ products } columns={ columns } />
     `,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await canvas.findByRole('table');
+    const headers = await canvas.findAllByRole('columnheader');
+    
+    expect(headers[0]).toHaveAttribute('title', 'ID header column');
+    expect(headers[1]).toHaveAttribute('data-test', 'customized data 1'); // colIndex for name is 1
   }
 };
 
@@ -441,5 +506,12 @@ export const HeaderClass: Story = {
     />
     `,
     headerClasses: "header-class",
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    
+    // headerClasses is passed to the thead row in react-bootstrap-table-ng.
+    expect(table.querySelector('thead tr')).toHaveClass('header-class');
   }
 };

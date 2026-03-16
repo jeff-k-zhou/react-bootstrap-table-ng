@@ -1,4 +1,4 @@
-import React from 'react';
+import { expect, userEvent, within } from '@storybook/test';
 import type { Meta, StoryObj } from '@storybook/react-webpack5';
 
 // import bootstrap style by given version
@@ -75,6 +75,21 @@ export const SingleSelection: Story = {
       mode: 'radio',
       clickToSelect: true
     }
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    const rows = await within(table).findAllByRole('row');
+    
+    // initially nothing selected
+    const radioInputs = canvas.getAllByRole('radio') as HTMLInputElement[];
+    radioInputs.forEach(input => expect(input.checked).toBe(false));
+
+    // click second row
+    await userEvent.click(rows[2]); // rows[0] is header, rows[1] is id 0, rows[2] is id 1
+    
+    expect(radioInputs[1].checked).toBe(true);
+    expect(radioInputs[0].checked).toBe(false);
   }
 };
 
@@ -113,6 +128,20 @@ export const MultipleSelection: Story = {
       mode: 'checkbox',
       clickToSelect: true
     }
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    const rows = await within(table).findAllByRole('row');
+    
+    const checkboxes = canvas.getAllByRole('checkbox') as HTMLInputElement[];
+    
+    // click first and second data rows
+    await userEvent.click(rows[1]);
+    await userEvent.click(rows[2]);
+    
+    expect(checkboxes[1].checked).toBe(true); // checkboxes[0] is select all
+    expect(checkboxes[2].checked).toBe(true);
   }
 };
 
@@ -151,6 +180,18 @@ export const ClickToSelect: Story = {
       mode: 'checkbox',
       clickToSelect: true
     }
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    const rows = await within(table).findAllByRole('row');
+    const checkboxes = await canvas.findAllByRole('checkbox') as HTMLInputElement[];
+    
+    // click on the name cell of the first row
+    const nameCell = within(rows[1]).getByText('Item name 0');
+    await userEvent.click(nameCell);
+    
+    expect(checkboxes[1].checked).toBe(true);
   }
 };
 
@@ -191,6 +232,17 @@ export const DefaultSelect: Story = {
       clickToSelect: true,
       selected: [1, 3]
     }
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await canvas.findByRole('table');
+    const checkboxes = await canvas.findAllByRole('checkbox') as HTMLInputElement[];
+    
+    // IDs are 0, 1, 2, 3, 4
+    // selected are 1 and 3
+    expect(checkboxes[2].checked).toBe(true); // id 1
+    expect(checkboxes[4].checked).toBe(true); // id 3
+    expect(checkboxes[1].checked).toBe(false); // id 0
   }
 };
 
@@ -198,6 +250,19 @@ export const SelectManagement: Story = {
   name: "Select management",
   args: {
     mode: "management",
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const button = await canvas.findByText('Select/UnSelect 3rd row');
+    
+    const checkboxes = canvas.getAllByRole('checkbox') as HTMLInputElement[];
+    // initially id 0 and 1 are selected (see RowSelection.tsx)
+    expect(checkboxes[1].checked).toBe(true);
+    expect(checkboxes[2].checked).toBe(true);
+    expect(checkboxes[3].checked).toBe(false);
+    
+    await userEvent.click(button);
+    expect(checkboxes[3].checked).toBe(true);
   }
 };
 
@@ -260,6 +325,22 @@ export const AdvanceSelectionManagement: Story = {
       onSelect: handleOnSelect,
       onSelectAll: handleOnSelectAll
     }
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    const rows = await within(table).findAllByRole('row');
+    const checkboxes = canvas.getAllByRole('checkbox') as HTMLInputElement[];
+    
+    // click first row (id 0) -> should be denied
+    // Mocking alert might be needed if it blocks, but usually test-runner handles it or we can just check state
+    // In Storybook environment, alert might be a no-op or captured.
+    await userEvent.click(rows[1]);
+    expect(checkboxes[1].checked).toBe(false);
+    
+    // click row with id 3
+    await userEvent.click(rows[4]);
+    expect(checkboxes[4].checked).toBe(true);
   }
 };
 
@@ -369,6 +450,18 @@ export const RowSelectAndExpand: Story = {
         </div>
       )
     }
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    const rows = await within(table).findAllByRole('row');
+    const checkboxes = await canvas.findAllByRole('checkbox') as HTMLInputElement[];
+    
+    // clicking row should select AND expand
+    await userEvent.click(rows[1]);
+    
+    expect(checkboxes[1].checked).toBe(true);
+    expect(await canvas.findByText('This Expand row is belong to rowKey 0')).toBeInTheDocument();
   }
 };
 
@@ -687,6 +780,15 @@ export const HideSelectAll: Story = {
       clickToSelect: true,
       hideSelectAll: true
     },
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    const rows = await within(table).findAllByRole('row');
+    const headerRow = rows[0];
+    
+    // Should not have a checkbox in the header
+    expect(within(headerRow).queryByRole('checkbox')).not.toBeInTheDocument();
   }
 };
 
@@ -882,6 +984,26 @@ export const NotSelectableRows: Story = {
       clickToSelect: true,
       nonSelectable: [0, 2, 4]
     },
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    const rows = await within(table).findAllByRole('row');
+    
+    // row 0 (id 0) is non-selectable
+    await userEvent.click(rows[1]);
+    const checkboxes = canvas.getAllByRole('checkbox', { hidden: true }) as HTMLInputElement[];
+    // ID 0, 1, 2, 3, 4 map to rows 1, 2, 3, 4, 5
+    // Non-selectable rows might not even render a checkbox or it might be disabled
+    
+    // Checkbox for row 1 should be disabled or not present
+    // Let's check selection state via row class or just check the input
+    expect(checkboxes[1].disabled).toBe(true);
+    expect(checkboxes[1].checked).toBe(false);
+    
+    // row 1 (id 1) IS selectable
+    await userEvent.click(rows[2]);
+    expect(checkboxes[2].checked).toBe(true);
   }
 };
 
@@ -1068,6 +1190,18 @@ export const HideSelectionColumn: Story = {
       hideSelectColumn: true,
       bgColor: '#00BFFF'
     },
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    const rows = await within(table).findAllByRole('row');
+    
+    // No checkbox column
+    expect(canvas.queryByRole('checkbox')).not.toBeInTheDocument();
+    
+    // But can still select via click
+    await userEvent.click(rows[1]);
+    expect(rows[1]).toHaveStyle('background-color: rgb(0, 191, 255)'); // #00BFFF
   }
 };
 
@@ -1195,5 +1329,14 @@ export const SelectionColumnPosition: Story = {
       clickToSelect: true,
       selectColumnPosition: 'right'
     },
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    const headerRow = (await within(table).findAllByRole('row'))[0];
+    const headerCells = within(headerRow).getAllByRole('columnheader');
+    
+    // Selection column should be on the right
+    expect(headerCells[headerCells.length - 1]).toHaveAttribute('data-row-selection', 'true');
   }
 };

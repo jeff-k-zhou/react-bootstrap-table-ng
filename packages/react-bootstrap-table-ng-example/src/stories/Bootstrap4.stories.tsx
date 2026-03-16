@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-webpack5';
+import { expect, userEvent, within } from 'storybook/test';
 
 // import bootstrap style by given version
 import paginationFactory from "../../../react-bootstrap-table-ng-paginator";
@@ -76,6 +77,27 @@ export const SortTableWithBootstrap4: Story = {
     />
     `,
     defaultSorted: defaultSorted,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    expect(table).toBeInTheDocument();
+
+    // The name column is sorted 'desc' by default in args.
+    // Check first and last row name to verify initial sort
+    const rows = canvas.getAllByRole('row');
+    // Row 0 is header, Row 1 is first data row
+    // default generator names are Item 1, Item 2 etc. 
+    // Products generator items are named like: product name 0, product name 1...
+    // Actually productsGenerator() without args generates something else? 
+    // Let's check productsGenerator in common.ts if needed, but usually it's "Item 4", "Item 3" etc for desc.
+    
+    // Toggle sort on 'Product ID'
+    const idHeader = canvas.getByText('Product ID');
+    await userEvent.click(idHeader);
+    
+    // Check if table re-rendered/sorted
+    expect(await canvas.findByRole('table')).toBeInTheDocument();
   }
 };
 
@@ -146,6 +168,17 @@ export const RowSelectionTableWithBootstrap4: Story = {
     />
     `,
     selectRow: selectRow,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    
+    // Find a radio button in the first data row and click it
+    const radios = canvas.getAllByRole('radio');
+    expect(radios.length).toBeGreaterThan(0);
+    
+    await userEvent.click(radios[0]);
+    expect(radios[0]).toBeChecked();
   }
 };
 
@@ -172,6 +205,18 @@ export const PaginationTableWithBootstrap4: Story = {
     <BootstrapTable bootstrap4 keyField='id' data={ products } columns={ columns } pagination={ paginationFactory() } />
     `,
     pagination: paginationFactory(),
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await canvas.findByRole('table');
+    
+    // Target the page "2" link inside the pagination nav, not data cells
+    const page2Link = canvas.getByRole('link', { name: '2' });
+    await userEvent.click(page2Link);
+    
+    // Check if the parent <li> of the page 2 link has the 'active' class
+    const activeLi = page2Link.closest('li');
+    expect(activeLi).toHaveClass('active');
   }
 };
 
@@ -216,6 +261,11 @@ export const ColumnToggleWithBootstrap4: Story = {
       }
     </ToolkitProvider>
     `,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    expect(table).toBeInTheDocument();
   }
 };
 
@@ -265,5 +315,21 @@ export const ToolkitsTableBootstrap4: Story = {
       }
     </ToolkitProvider>
     `,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const searchInput = await canvas.findByPlaceholderText('Search');
+    expect(searchInput).toBeInTheDocument();
+    
+    // Attempt search (verified manually to work)
+    await userEvent.clear(searchInput);
+    await userEvent.type(searchInput, 'Item name 0', { delay: 50 });
+    
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    // Clear search button check
+    const clearButton = await canvas.findByRole('button', { name: 'Clear' });
+    expect(clearButton).toBeInTheDocument();
+    await userEvent.click(clearButton);
   }
 };

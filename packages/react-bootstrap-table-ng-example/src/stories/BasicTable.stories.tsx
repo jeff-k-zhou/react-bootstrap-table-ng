@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-webpack5';
-import React from 'react';
+import { expect, userEvent, within } from 'storybook/test';
 
 // import bootstrap style by given version
 import { columns, productsGenerator, sortFilterColumns } from '../utils/common';
@@ -67,6 +67,21 @@ export const BasicTable: Story = {
 
     <BootstrapTable keyField='id' data={ products } columns={ columns } />
     `,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    expect(table).toBeInTheDocument();
+    
+    // Verify headers
+    expect(canvas.getByText('Product ID')).toBeInTheDocument();
+    expect(canvas.getByText('Product Name')).toBeInTheDocument();
+    expect(canvas.getByText('Product Price')).toBeInTheDocument();
+
+    // Verify row count (default generator is 5)
+    // 1 header row + 5 data rows = 6
+    const rows = canvas.getAllByRole('row');
+    expect(rows).toHaveLength(6);
   }
 };
 
@@ -111,6 +126,11 @@ export const BorderlessTable: Story = {
     />
     `,
     bordered: false,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    expect(table).not.toHaveClass('react-bootstrap-table-bordered');
   }
 };
 
@@ -217,6 +237,12 @@ export const LargeTable: Story = {
     data: productsGenerator(20),
     selectRow: { mode: 'checkbox', clickToSelect: true },
     expandRow: expandRow,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const rows = await canvas.findAllByRole('row');
+    // 1 header row + 20 data rows = 21
+    expect(rows).toHaveLength(21);
   }
 };
 
@@ -331,6 +357,31 @@ export const ExposedAPITable: Story = {
       );
     }
     `,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const buttons = [
+      'Get Current Display Rows',
+      'Get Current Selected Rows',
+      'Get Current Expanded Rows',
+      'Get Current Page',
+      'Get Current Size Per Page',
+      'Get Current Sort Column',
+      'Get Current Sort Order',
+      'Get Current Filter Information'
+    ];
+    
+    // Wait for buttons to appear
+    await canvas.findByText(buttons[0]);
+    
+    for (const label of buttons) {
+      const button = canvas.getByText(label);
+      expect(button).toBeInTheDocument();
+      await userEvent.click(button);
+    }
+    
+    // Check if table rendered
+    expect(await canvas.findByRole('table')).toBeInTheDocument();
   }
 };
 

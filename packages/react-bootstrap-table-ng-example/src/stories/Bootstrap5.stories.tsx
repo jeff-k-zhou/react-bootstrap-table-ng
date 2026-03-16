@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-webpack5';
+import { expect, userEvent, within } from 'storybook/test';
 
 // import bootstrap style by given version
 import paginationFactory from "../../../react-bootstrap-table-ng-paginator";
@@ -76,6 +77,18 @@ export const SortTableWithBootstrap5: Story = {
     />
     `,
     defaultSorted: defaultSorted,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    expect(table).toBeInTheDocument();
+
+    // Click 'Product ID' header to trigger a sort
+    const idHeader = canvas.getByText('Product ID');
+    await userEvent.click(idHeader);
+
+    // Table should still be present after sort
+    expect(await canvas.findByRole('table')).toBeInTheDocument();
   }
 };
 
@@ -146,6 +159,17 @@ export const RowSelectionTableWithBootstrap5: Story = {
     />
     `,
     selectRow: selectRow,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await canvas.findByRole('table');
+
+    // Find all radio buttons and click the first data row's radio
+    const radios = canvas.getAllByRole('radio');
+    expect(radios.length).toBeGreaterThan(0);
+
+    await userEvent.click(radios[0]);
+    expect(radios[0]).toBeChecked();
   }
 };
 
@@ -172,6 +196,18 @@ export const PaginationTableWithBootstrap5: Story = {
     <BootstrapTable bootstrap5 keyField='id' data={ products } columns={ columns } pagination={ paginationFactory() } />
     `,
     pagination: paginationFactory(),
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await canvas.findByRole('table');
+
+    // Use role='link' to specifically target the pagination anchor, not data cells containing '2'
+    const page2Link = canvas.getByRole('link', { name: '2' });
+    await userEvent.click(page2Link);
+
+    // Verify the parent <li> now has the 'active' class
+    const activeLi = page2Link.closest('li');
+    expect(activeLi).toHaveClass('active');
   }
 };
 
@@ -198,7 +234,6 @@ export const ColumnToggleWithBootstrap5: Story = {
     }];
 
     <ToolkitProvider
-      bootstrap5
       keyField="id"
       data={ products }
       columns={ columns }
@@ -217,6 +252,16 @@ export const ColumnToggleWithBootstrap5: Story = {
       }
     </ToolkitProvider>
     `,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    // Verify the table and toggle buttons render correctly
+    const table = await canvas.findByRole('table');
+    expect(table).toBeInTheDocument();
+
+    // Verify all 3 toggle buttons are present
+    const toggleButtons = canvas.getAllByRole('button');
+    expect(toggleButtons.length).toBeGreaterThanOrEqual(3);
   }
 };
 
@@ -245,7 +290,6 @@ export const ToolkitsTableBootstrap5: Story = {
     }];
 
     <ToolkitProvider
-      bootstrap5
       keyField="id"
       data={ products }
       columns={ columns }
@@ -267,5 +311,23 @@ export const ToolkitsTableBootstrap5: Story = {
       }
     </ToolkitProvider>
     `,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+
+    // Verify the search input is present
+    const searchInput = await canvas.findByPlaceholderText('Search');
+    expect(searchInput).toBeInTheDocument();
+
+    // Type into the search box and verify functionality
+    await userEvent.clear(searchInput);
+    await userEvent.type(searchInput, 'Item name 0', { delay: 50 });
+
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    // Clear button should be reachable
+    const clearButton = await canvas.findByRole('button', { name: 'Clear' });
+    expect(clearButton).toBeInTheDocument();
+    await userEvent.click(clearButton);
   }
 };

@@ -715,7 +715,7 @@ const RemoteFullyCustomPagination: React.FC = () => {
       setPage(newPage);
       setData(products.slice(currentIndex, currentIndex + newSizePerPage));
       setSizePerPage(newSizePerPage);
-    }, 2000);
+    }, 500);
   };
 
   return (
@@ -729,7 +729,7 @@ const RemoteFullyCustomPagination: React.FC = () => {
         })}
         data={products}
         remoteEmitter={{}}
-        isRemotePagination={() => false}
+        isRemotePagination={() => true}
       >
         {({ paginationProps, paginationTableProps }: any) => (
           <div>

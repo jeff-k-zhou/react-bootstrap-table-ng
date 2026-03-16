@@ -1,5 +1,5 @@
+import { expect, userEvent, within, waitFor } from '@storybook/test';
 import type { Meta, StoryObj } from '@storybook/react-webpack5';
-import React from 'react';
 
 // import bootstrap style by given version
 import { columns, productsExpandRowsGenerator } from '../utils/common';
@@ -82,6 +82,21 @@ export const BasicRowExpand: Story = {
         </div>
       )
     }
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    const rows = await within(table).findAllByRole('row');
+    
+    // initially just data rows
+    expect(rows.length).toBe(6); // 1 header + 5 items
+    
+    // click row to expand
+    const firstDataRow = rows[1];
+    await userEvent.click(firstDataRow);
+    
+    // wait for expansion row text
+    expect(await canvas.findByText('This Expand row is belong to rowKey 0 and index: 0')).toBeInTheDocument();
   }
 };
 
@@ -91,6 +106,17 @@ export const ExpandManagement: Story = {
     columns: columns,
     mode: "management",
     data: productsExpandRowsGenerator(),
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    
+    // In ExpandManagement mode, we have buttons
+    const expandButton = await canvas.findByText('Expand/Collapse 3rd row');
+    await userEvent.click(expandButton);
+    
+    const rows = await within(table).findAllByRole('row');
+    expect(rows.length).toBeGreaterThan(6); // expanded at least one row
   }
 };
 
@@ -143,6 +169,25 @@ export const NoExpandableRows: Story = {
       showExpandColumn: true,
       nonExpandable: [1, 3]
     }
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    const rows = await within(table).findAllByRole('row');
+    
+    const firstDataRow = rows[1];
+    const secondDataRow = rows[2];
+    
+    // Try to click expand indicator on row 1 (which is id 0, expandable)
+    const expandCell1 = within(firstDataRow).getByText('(+)');
+    await userEvent.click(expandCell1);
+    
+    expect(await canvas.findByText('This Expand row is belong to rowKey 0')).toBeInTheDocument();
+    
+    // Try to click expand indicator on row 2 (which is id 1, non-expandable)
+    // Actually when it's non-expandable, it doesn't render an indicator.
+    // Let's verify no indicator is rendered for row 2
+    expect(within(secondDataRow).queryByText('(+)')).not.toBeInTheDocument();
   }
 };
 
@@ -193,6 +238,17 @@ export const ExpandIndicator: Story = {
       ),
       showExpandColumn: true
     }
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    const rows = await within(table).findAllByRole('row');
+    
+    const firstDataRow = rows[1];
+    const expandIndicator = within(firstDataRow).getByText('(+)');
+    await userEvent.click(expandIndicator);
+    
+    expect(await canvas.findByText('This Expand row is belong to rowKey 0')).toBeInTheDocument();
   }
 };
 
@@ -246,6 +302,23 @@ export const OnlyExpandByIndicator: Story = {
       expandByColumnOnly: true
     },
     header: <h3>Only able to expand row via clicking expand column (indicator)</h3>,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    const rows = await within(table).findAllByRole('row');
+    
+    const firstDataRow = rows[1];
+    
+    // clicking on other cells should not expand
+    const dataCell = within(firstDataRow).getAllByRole('cell')[1]; // name col
+    await userEvent.click(dataCell);
+    expect(canvas.queryByText('This Expand row is belong to rowKey 0')).not.toBeInTheDocument();
+    
+    // clicking on indicator column should expand
+    const expandIndicator = within(firstDataRow).getByText('(+)');
+    await userEvent.click(expandIndicator);
+    expect(await canvas.findByText('This Expand row is belong to rowKey 0')).toBeInTheDocument();
   }
 };
 
@@ -296,6 +369,27 @@ export const ExpandOnlyOneRowAtTheSameTime: Story = {
         </div>
       )
     },
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    const rows = await within(table).findAllByRole('row');
+    
+    const firstDataRow = rows[1];
+    const secondDataRow = rows[2];
+    
+    // click first row
+    await userEvent.click(firstDataRow);
+    expect(await canvas.findByText('This Expand row is belong to rowKey 0')).toBeInTheDocument();
+    
+    // click second row
+    await userEvent.click(secondDataRow);
+    expect(await canvas.findByText('This Expand row is belong to rowKey 1')).toBeInTheDocument();
+    
+    // first row should be collapsed now
+    await waitFor(() => {
+      expect(canvas.queryByText('This Expand row is belong to rowKey 0')).not.toBeInTheDocument();
+    });
   }
 };
 
@@ -378,6 +472,29 @@ export const CustomExpandIndicator: Story = {
         );
       }
     },
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    const rows = await within(table).findAllByRole('row');
+    
+    const firstDataRow = rows[1];
+    
+    // check expandHeader indicator
+    const headerRow = rows[0];
+    const headerIndicator = within(headerRow).getByText('+');
+    expect(headerIndicator).toBeInTheDocument();
+    
+    // check row indicator
+    const rowIndicator = within(firstDataRow).getByText('...');
+    expect(rowIndicator).toBeInTheDocument();
+    
+    // click to expand
+    await userEvent.click(rowIndicator);
+    
+    // check expanded row indicator
+    expect(within(firstDataRow).getByText('-')).toBeInTheDocument();
+    expect(within(headerRow).getByText('-')).toBeInTheDocument(); // header changes when any row is expanded
   }
 };
 
@@ -430,6 +547,17 @@ export const ExpandColumnPosition: Story = {
       showExpandColumn: true,
       expandColumnPosition: 'right'
     },
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    const rows = await within(table).findAllByRole('row');
+    
+    const firstDataRow = rows[1];
+    const cells = within(firstDataRow).getAllByRole('cell');
+    
+    // expand column should be the last one (index 3 out of 4 total columns)
+    expect(cells[3]).toHaveTextContent('(+)');
   }
 };
 
@@ -498,10 +626,20 @@ export const ExpandHooks: Story = {
       },
       onExpandAll: (isExpandAll: boolean, rows: any, e: any) => {
         console.log(isExpandAll);
-        console.log(rows);
-        console.log(e);
       }
     },
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    const rows = await within(table).findAllByRole('row');
+    
+    const firstDataRow = rows[1];
+    const expandIndicator = within(firstDataRow).getByText('(+)');
+    
+    // test doesn't check console output natively easily but we ensure no crashes occur.
+    await userEvent.click(expandIndicator);
+    expect(await canvas.findByText('This Expand row is belong to rowKey 0')).toBeInTheDocument();
   }
 };
 
@@ -575,6 +713,25 @@ export const CustomParentRowClassname: Story = {
         </div>
       )
     }
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const tables = await canvas.findAllByRole('table');
+    
+    expect(tables.length).toBe(2);
+    
+    // first table
+    const rows1 = await within(tables[0]).findAllByRole('row');
+    const firstDataRow1 = rows1[1];
+    await userEvent.click(firstDataRow1);
+    // Add wait to avoid flakiness with parent class toggling immediately
+    expect(firstDataRow1).toHaveClass('parent-expand-foo');
+    
+    // second table
+    const rows2 = await within(tables[1]).findAllByRole('row');
+    const firstDataRow2 = rows2[1];
+    await userEvent.click(firstDataRow2);
+    expect(firstDataRow2).toHaveClass('parent-expand-bar'); // rowIndex <= 2 gets bar
   }
 };
 
@@ -648,5 +805,25 @@ export const CustomExpandingRowClassname: Story = {
         </div>
       )
     }
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const tables = await canvas.findAllByRole('table');
+    
+    // first table
+    const rows1 = await within(tables[0]).findAllByRole('row');
+    await userEvent.click(rows1[1]);
+    
+    // Find the newly appeared expanded row. It's inserted right after rows[1].
+    // Since rows was queried statically before expansion, query again.
+    const newRows1 = await within(tables[0]).findAllByRole('row');
+    expect(within(newRows1[2]).getByRole('cell')).toHaveClass('expanding-foo');
+    
+    // second table
+    const rows2 = await within(tables[1]).findAllByRole('row');
+    await userEvent.click(rows2[1]);
+    
+    const newRows2 = await within(tables[1]).findAllByRole('row');
+    expect(within(newRows2[2]).getByRole('cell')).toHaveClass('expanding-bar');
   }
 };

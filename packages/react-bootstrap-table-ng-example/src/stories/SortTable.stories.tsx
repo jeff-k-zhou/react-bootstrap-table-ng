@@ -1,5 +1,5 @@
+import { expect, userEvent, within } from '@storybook/test';
 import type { Meta, StoryObj } from '@storybook/react-webpack5';
-import React from 'react';
 
 // import bootstrap style by given version
 import { productsGenerator } from '../utils/common';
@@ -66,6 +66,24 @@ export const EnableSort: Story = {
 
     <BootstrapTable keyField='id' data={ products } columns={ columns } />
     `,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    const headerRow = (await within(table).findAllByRole('row'))[0];
+    const idHeader = within(headerRow).getByText('Product ID');
+    
+    // click to sort desc (default behavior on first click)
+    await userEvent.click(idHeader);
+    let rows = await within(table).findAllByRole('row');
+    // rows[1] should be ID 20 (productsGenerator(21))
+    expect(within(rows[1]).getAllByRole('cell')[0]).toHaveTextContent('20');
+    
+    // click to sort asc
+    await userEvent.click(idHeader);
+    rows = await within(table).findAllByRole('row');
+    // rows[1] should be ID 0
+    expect(within(rows[1]).getAllByRole('cell')[0]).toHaveTextContent('0');
   }
 };
 
@@ -113,12 +131,22 @@ export const DefaultSortTable: Story = {
       data={ products }
       columns={ columns }
       defaultSorted={ defaultSorted }
-    />
+          />
     `,
     defaultSorted: [{
       dataField: 'name',
       order: 'desc'
     }],
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    const rows = await within(table).findAllByRole('row');
+    
+    // productsGenerator() default size is 5 (0, 1, 2, 3, 4)
+    // names are "Item name 0", "Item name 1" ...
+    // desc order should be 4, 3, 2, 1, 0
+    expect(within(rows[1]).getAllByRole('cell')[1]).toHaveTextContent('Item name 4');
   }
 };
 
@@ -223,6 +251,17 @@ export const SortManagement: Story = {
   name: "Sort management",
   args: {
     mode: "management",
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    const button = await canvas.findByText('Sort By ID');
+    
+    await userEvent.click(button);
+    
+    const rows = await within(table).findAllByRole('row');
+    // Sorted by ID desc (size 5) -> 4, 3, 2, 1, 0
+    expect(within(rows[1]).getAllByRole('cell')[0]).toHaveTextContent('4');
   }
 };
 
@@ -326,6 +365,15 @@ export const OnetimeSortConfiguration: Story = {
         return null;
       }
     },
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    const headerRow = (await within(table).findAllByRole('row'))[0];
+    const idHeader = within(headerRow).getByText(/Product ID/);
+    
+    // Should have custom caret initially
+    expect(within(idHeader).getByText('Desc/Asc')).toBeInTheDocument();
   }
 };
 
@@ -403,6 +451,18 @@ export const CustomSortFunction: Story = {
     <BootstrapTable keyField='id' data={ products } columns={ columns } />
     `,
     header: <h3>Product ID sorting is reverted</h3>,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    const headerRow = (await within(table).findAllByRole('row'))[0];
+    const idHeader = within(headerRow).getByText('Product ID');
+    
+    // initial click -> desc (default)
+    await userEvent.click(idHeader);
+    const rows = await within(table).findAllByRole('row');
+    // For DESC: 4
+    expect(within(rows[1]).getAllByRole('cell')[0]).toHaveTextContent('4');
   }
 };
 

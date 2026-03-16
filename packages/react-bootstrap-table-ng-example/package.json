@@ -7,6 +7,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "storybook": "storybook dev -p 6006",
+    "test-storybook": "test-storybook",
     "gh-pages:clean": "rimraf ./storybook-static",
     "gh-pages:build": "storybook build -o ./storybook-static/storybook",
     "gh-pages:deploy": "gh-pages -d storybook-static"
@@ -55,6 +56,8 @@
     "@storybook/addon-onboarding": "^10.2.19",
     "@storybook/preset-create-react-app": "^10.2.19",
     "@storybook/react-webpack5": "^10.2.19",
+    "@storybook/test": "^8.6.15",
+    "@storybook/test-runner": "^0.24.2",
     "@testing-library/dom": "^10.4.1",
     "@types/file-saver": "^2.0.7",
     "babel-plugin-named-exports-order": "^0.0.2",

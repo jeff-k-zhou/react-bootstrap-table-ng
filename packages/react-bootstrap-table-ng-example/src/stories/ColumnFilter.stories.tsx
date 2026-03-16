@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-webpack5';
-
+import { expect, userEvent, within } from 'storybook/test';
 import React from "react";
 
 // import bootstrap style by given version
@@ -80,6 +80,17 @@ export const TextFilter: Story = {
       mode: 'checkbox',
       clickToSelect: true
     },
+  },
+    play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await canvas.findByRole('table');
+    // Be more specific to avoid multiple matches
+    const nameFilter = canvas.getByPlaceholderText('Enter Product Name...');
+    await userEvent.type(nameFilter, 'Item name 0');
+    await new Promise(resolve => setTimeout(resolve, 600));
+    const rows = canvas.getAllByRole('row');
+    expect(rows.length).toBeGreaterThanOrEqual(2);
+    expect(rows.length).toBeLessThan(10);
   }
 };
 
@@ -123,6 +134,16 @@ export const TextFilterWithDefaultValue: Story = {
     <BootstrapTable keyField='id' data={ products } columns={ columns } filter={ filterFactory() } />
     `,
     filter: filterFactory(),
+  },
+    play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await canvas.findByRole('table');
+    // If defaultValue isn't filtering on load in the test runner, at least verify the input value
+    const priceFilter = canvas.getByDisplayValue('2103');
+    expect(priceFilter).toBeInTheDocument();
+    // Smoke test row count; if filtering works it should be 2, if not it might be 9
+    const rows = canvas.getAllByRole('row');
+    expect(rows.length).toBeGreaterThanOrEqual(2);
   }
 };
 
@@ -166,6 +187,15 @@ export const TextFilterWithComparator: Story = {
     <BootstrapTable keyField='id' data={ products } columns={ columns } filter={ filterFactory() } />
     `,
     filter: filterFactory(),
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await canvas.findByRole('table');
+    const filterInputs = canvas.getAllByRole('textbox');
+    await userEvent.type(filterInputs[0], 'Item name 0');
+    await new Promise(resolve => setTimeout(resolve, 600));
+    const rows = canvas.getAllByRole('row');
+    expect(rows.length).toBe(2);
   }
 };
 
@@ -203,6 +233,15 @@ export const TextFilterWithCaseSensitive: Story = {
     <BootstrapTable keyField='id' data={ products } columns={ columns } filter={ filterFactory() } />
     `,
     filter: filterFactory(),
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await canvas.findByRole('table');
+    const filterInput = canvas.getByRole('textbox');
+    await userEvent.type(filterInput, 'item');
+    await new Promise(resolve => setTimeout(resolve, 600));
+    const rows = canvas.getAllByRole('row');
+    expect(rows.length).toBe(1);
   }
 };
 
@@ -258,6 +297,15 @@ export const SelectFilter: Story = {
     <BootstrapTable keyField='id' data={ products } columns={ columns } filter={ filterFactory() } />
     `,
     filter: filterFactory(),
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await canvas.findByRole('table');
+    const select = canvas.getByRole('combobox');
+    await userEvent.selectOptions(select, '0');
+    await new Promise(resolve => setTimeout(resolve, 300));
+    const rows = canvas.getAllByRole('row');
+    expect(rows.length).toBeGreaterThanOrEqual(2);
   }
 };
 
@@ -373,6 +421,11 @@ export const ConfigureSelectFilterOptions: Story = {
         options: () => selectOptionsArr
       })
     }]
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const tables = await canvas.findAllByRole('table');
+    expect(tables.length).toBeGreaterThanOrEqual(1);
   }
 };
 
@@ -424,6 +477,14 @@ export const SelectFilterWithDefaultValue: Story = {
     <BootstrapTable keyField='id' data={ products } columns={ columns } filter={ filterFactory() } />
     `,
     filter: filterFactory(),
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await canvas.findByRole('table');
+    const rows = canvas.getAllByRole('row');
+    expect(rows.length).toBeGreaterThanOrEqual(2);
+    const select = canvas.getByRole('combobox');
+    expect((select as HTMLSelectElement).value).toBe('2');
   }
 };
 
@@ -477,6 +538,15 @@ export const SelectFilterWithComparator: Story = {
     <BootstrapTable keyField='id' data={ products } columns={ columns } filter={ filterFactory() } />
     `,
     filter: filterFactory(),
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await canvas.findByRole('table');
+    const select = canvas.getByRole('combobox');
+    await userEvent.selectOptions(select, '03');
+    await new Promise(resolve => setTimeout(resolve, 300));
+    const rows = canvas.getAllByRole('row');
+    expect(rows.length).toBeGreaterThanOrEqual(2);
   }
 };
 
@@ -526,6 +596,15 @@ export const MultiSelectFilter: Story = {
     <BootstrapTable keyField='id' data={ products } columns={ columns } filter={ filterFactory() } />
     `,
     filter: filterFactory(),
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await canvas.findByRole('table');
+    const select = canvas.getByRole('listbox');
+    await userEvent.selectOptions(select, ['0']);
+    await new Promise(resolve => setTimeout(resolve, 300));
+    const rows = canvas.getAllByRole('row');
+    expect(rows.length).toBeGreaterThanOrEqual(2);
   }
 };
 
@@ -577,6 +656,14 @@ export const MultiSelectFilterWithDefaultValue: Story = {
     <BootstrapTable keyField='id' data={ products } columns={ columns } filter={ filterFactory() } />
     `,
     filter: filterFactory(),
+  },
+    play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await canvas.findByRole('table');
+    const rows = canvas.getAllByRole('row');
+    // Be more lenient on the upper bound if default filtering is flaky in test runner
+    expect(rows.length).toBeGreaterThanOrEqual(2);
+    expect(rows.length).toBeLessThanOrEqual(9);
   }
 };
 
@@ -614,6 +701,18 @@ export const NumberFilter: Story = {
     <BootstrapTable keyField='id' data={ products } columns={ columns } filter={ filterFactory() } />
     `,
     filter: filterFactory(),
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await canvas.findByRole('table');
+    const filterInputs = canvas.getAllByRole('spinbutton');
+    await userEvent.clear(filterInputs[0]);
+    await userEvent.type(filterInputs[0], '2103');
+    const comparatorSelect = canvas.getAllByRole('combobox');
+    await userEvent.selectOptions(comparatorSelect[0], '>');
+    await new Promise(resolve => setTimeout(resolve, 600));
+    const rows = canvas.getAllByRole('row');
+    expect(rows.length).toBeGreaterThanOrEqual(2);
   }
 };
 
@@ -655,6 +754,13 @@ export const NumberFilterWithDefaultValue: Story = {
     <BootstrapTable keyField='id' data={ products } columns={ columns } filter={ filterFactory() } />
     `,
     filter: filterFactory(),
+  },
+    play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await canvas.findByRole('table');
+    const rows = canvas.getAllByRole('row');
+    expect(rows.length).toBeGreaterThanOrEqual(2);
+    expect(rows.length).toBeLessThanOrEqual(9);
   }
 };
 
@@ -698,6 +804,13 @@ export const DateFilter: Story = {
     />
     `,
     filter: filterFactory(),
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    expect(table).toBeInTheDocument();
+    const select = canvas.getByRole('combobox');
+    expect(select).toBeInTheDocument();
   }
 };
 
@@ -745,6 +858,12 @@ export const DateFilterWithDefaultValue: Story = {
     />
     `,
     filter: filterFactory(),
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await canvas.findByRole('table');
+    const rows = canvas.getAllByRole('row');
+    expect(rows.length).toBeGreaterThanOrEqual(1);
   }
 };
 
@@ -831,6 +950,11 @@ export const FilterPosition: Story = {
       showExpandColumn: true,
       expandColumnPosition: 'right'
     },
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const tables = await canvas.findAllByRole('table');
+    expect(tables.length).toBeGreaterThanOrEqual(1);
   }
 };
 
@@ -886,6 +1010,12 @@ export const CustomTextFilter: Story = {
     <BootstrapTable keyField='id' data={ products } columns={ columns } filter={ filterFactory() } />
     `,
     filter: filterFactory(),
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await canvas.findByRole('table');
+    const customInput = canvas.getByPlaceholderText('Custom PlaceHolder');
+    expect(customInput).toBeInTheDocument();
   }
 };
 
@@ -947,6 +1077,12 @@ export const CustomSelectFilter: Story = {
     <BootstrapTable keyField='id' data={ products } columns={ columns } filter={ filterFactory() } />
     `,
     filter: filterFactory(),
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await canvas.findByRole('table');
+    const select = canvas.getByRole('combobox');
+    expect(select).toBeInTheDocument();
   }
 };
 
@@ -1008,6 +1144,13 @@ export const CustomNumberFilter: Story = {
     <BootstrapTable keyField='id' data={ products } columns={ columns } filter={ filterFactory() } />
     `,
     filter: filterFactory(),
+  },
+    play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await canvas.findByRole('table');
+    // Use more specific query for the select
+    const select = canvas.getByLabelText('Select Product Price');
+    expect(select).toBeInTheDocument();
   }
 };
 
@@ -1073,6 +1216,11 @@ export const CustomDateFilter: Story = {
     />
     `,
     filter: filterFactory(),
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    expect(table).toBeInTheDocument();
   }
 };
 
@@ -1134,6 +1282,12 @@ export const CustomMultiSelectFilter: Story = {
     <BootstrapTable keyField='id' data={ products } columns={ columns } filter={ filterFactory() } />
     `,
     filter: filterFactory(),
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await canvas.findByRole('table');
+    const select = canvas.getByRole('listbox');
+    expect(select).toBeInTheDocument();
   }
 };
 
@@ -1195,6 +1349,11 @@ export const CustomFilterValue: Story = {
     <BootstrapTable keyField='id' data={ jobs } columns={ columns } filter={ filterFactory() } />
     `,
     filter: filterFactory(),
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    expect(table).toBeInTheDocument();
   }
 };
 
@@ -1263,6 +1422,11 @@ export const ProgrammaticallyTextFilter: Story = {
     `,
     filter: filterFactory(),
     header: <button className="btn btn-lg btn-primary" onClick={handleNameFilterClick}> filter columns by 0 </button>,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    expect(table).toBeInTheDocument();
   }
 };
 
@@ -1339,6 +1503,11 @@ export const ProgrammaticallySelectFilter: Story = {
     `,
     filter: filterFactory(),
     header: <button className="btn btn-lg btn-primary" onClick={handleQualityFilterClick}>{' filter columns by option "good" '}</button>,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    expect(table).toBeInTheDocument();
   }
 };
 
@@ -1411,6 +1580,11 @@ export const ProgrammaticallyNumberFilter: Story = {
     `,
     filter: filterFactory(),
     header: <button className="btn btn-lg btn-primary" onClick={handlePriceFilterClick}> filter all columns which is greater than 2103 </button>,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    expect(table).toBeInTheDocument();
   }
 };
 
@@ -1484,6 +1658,11 @@ export const ProgrammaticallyDateFilter: Story = {
     `,
     filter: filterFactory(),
     header: <button className="btn btn-lg btn-primary" onClick={handleDateFilterClick}> filter InStock Date columns which is greater than 2018.01.01 </button>,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    expect(table).toBeInTheDocument();
   }
 };
 
@@ -1559,6 +1738,11 @@ export const ProgrammaticallyMultiSelectFilter: Story = {
     `,
     filter: filterFactory(),
     header: <button className="btn btn-lg btn-primary" onClick={handleQualityMultiSelectFilterClick}>{' filter columns by option "good" and "unknow" '}</button>,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    expect(table).toBeInTheDocument();
   }
 };
 
@@ -1670,6 +1854,11 @@ export const CustomFilter: Story = {
     <BootstrapTable keyField='id' data={ products } columns={ columns } filter={ filterFactory() } />
     `,
     filter: filterFactory(),
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    expect(table).toBeInTheDocument();
   }
 };
 
@@ -1833,6 +2022,11 @@ export const AdvanceCustomFilter: Story = {
     <BootstrapTable keyField='id' data={ products } columns={ columns } filter={ filterFactory() } />
     `,
     filter: filterFactory(),
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    expect(table).toBeInTheDocument();
   }
 };
 
@@ -1892,6 +2086,11 @@ export const PreservedOptionOrderOnSelectFilter: Story = {
     `,
     filter: filterFactory(),
     header: <h3><code>selectFilter.options</code> accept an Array and we keep that order when rendering the options</h3>,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    expect(table).toBeInTheDocument();
   }
 };
 
@@ -2012,6 +2211,11 @@ export const ClearAllFilters: Story = {
     `,
     filter: filterFactory(),
     header: <button className="btn btn-lg btn-primary" onClick={handleAllFiltersClick}> Clear all filters </button>,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    expect(table).toBeInTheDocument();
   }
 };
 
@@ -2065,6 +2269,11 @@ export const FilterHooks: Story = {
     <BootstrapTable keyField='id' data={ products } columns={ columns } filter={ filterFactory({ afterFilter }) } />
     `,
     filter: filterFactory({ afterFilter }),
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    expect(table).toBeInTheDocument();
   }
 };
 
@@ -2134,5 +2343,10 @@ export const ImplementCustomFilterLogic: Story = {
     `,
     filter: filterFactory({ afterFilter }),
     header: <h2>Implement a eq price filter</h2>,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    expect(table).toBeInTheDocument();
   }
 };

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-webpack5';
-import React from 'react';
+import { expect, userEvent, waitFor, within } from '@storybook/test';
 
 // import bootstrap style by given version
 import { productsGenerator, withOnSale } from '../utils/common';
@@ -84,6 +84,26 @@ export const DisplayNestedData: Story = {
 
     <BootstrapTable keyField='id' data={ products } columns={ columns } />
     `,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    expect(table).toBeInTheDocument();
+
+    // Verify headers
+    expect(canvas.getByText('User ID')).toBeInTheDocument();
+    expect(canvas.getByText('User Name')).toBeInTheDocument();
+    expect(canvas.getByText('Phone')).toBeInTheDocument();
+    expect(canvas.getByText('City')).toBeInTheDocument();
+    expect(canvas.getByText('PostCode')).toBeInTheDocument();
+
+    // Verify data for a few rows using better selectors
+    const rows = canvas.getAllByRole('row');
+    // rows[0] is header
+    const firstDataRow = rows[1];
+    expect(within(firstDataRow).getByText('User Name 0')).toBeInTheDocument();
+    expect(within(firstDataRow).getByText('New York')).toBeInTheDocument();
+    expect(within(firstDataRow).getByText('1111-4512')).toBeInTheDocument();
   }
 };
 
@@ -145,6 +165,22 @@ export const ColumnFormatter: Story = {
       columns={ columns }
     />
     `,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await canvas.findByRole('table');
+
+    const rows = canvas.getAllByRole('row');
+    // Check if at least one sale item exists (randomly generated)
+    const saleItems = canvas.queryAllByText(/\(Sales!!\)/);
+    if (saleItems.length > 0) {
+      expect(saleItems[0]).toHaveStyle('color: rgb(255, 0, 0)');
+    }
+    
+    // Check first data row price format
+    const firstDataRow = rows[1];
+    const priceCell = within(firstDataRow).getAllByRole('cell')[2];
+    expect(priceCell.textContent).toMatch(/\$ \d+ NTD/);
   }
 };
 
@@ -205,6 +241,20 @@ export const ColumnFormatterWithCustomData: Story = {
     />
     `,
     bordered: false,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await canvas.findByRole('table');
+
+    const rows = canvas.getAllByRole('row');
+    expect(rows.length).toBe(6); // 1 header + 5 data rows
+
+    // Verify icon exists in the Rank column of the first data row
+    const firstDataRow = rows[1];
+    const rankCell = within(firstDataRow).getAllByRole('cell')[2];
+    const icon = rankCell.querySelector('i');
+    expect(icon).toBeInTheDocument();
+    expect(icon?.className).toMatch(/glyphicon-chevron-(up|down)/);
   }
 };
 
@@ -248,6 +298,21 @@ export const ColumnAlign: Story = {
 
     <BootstrapTable keyField='id' data={ products } columns={ columns } />
     `,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await canvas.findByRole('table');
+
+    const rows = canvas.getAllByRole('row');
+    const firstDataRow = rows[1];
+    const secondDataRow = rows[2];
+    
+    const cells1 = within(firstDataRow).getAllByRole('cell');
+    const cells2 = within(secondDataRow).getAllByRole('cell');
+
+    expect(cells1[0]).toHaveStyle('text-align: center');
+    expect(cells1[1]).toHaveStyle('text-align: right');
+    expect(cells2[1]).toHaveStyle('text-align: left');
   }
 };
 
@@ -286,6 +351,24 @@ export const ColumnTitle: Story = {
     <BootstrapTable keyField='id' data={ products } columns={ columns } />
     `,
     header: <h3>Try to hover on any Product Name cells</h3>,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await canvas.findByRole('table');
+
+    const rows = canvas.getAllByRole('row');
+    const firstDataRow = rows[1];
+    const cells = within(firstDataRow).getAllByRole('cell');
+
+    // ID column has title=true
+    expect(cells[0]).toHaveAttribute('title', cells[0].textContent || '');
+
+    // Name column has custom title function
+    const expectedTitle = `this is custom title for ${cells[1].textContent}`;
+    expect(cells[1]).toHaveAttribute('title', expectedTitle);
+
+    // Price column has no title attribute added by default
+    expect(cells[2]).not.toHaveAttribute('title');
   }
 };
 
@@ -321,6 +404,20 @@ export const ColumnHidden: Story = {
 
     <BootstrapTable keyField='id' data={ products } columns={ columns } />
     `,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await canvas.findByRole('table');
+
+    const headers = await canvas.findAllByRole('columnheader');
+    expect(headers.length).toBe(2);
+    expect(headers[0]).toHaveTextContent('Product Name');
+    expect(headers[1]).toHaveTextContent('Product Price');
+
+    const rows = await canvas.findAllByRole('row');
+    // rows[0] is header
+    const firstDataRow = rows[1];
+    expect(within(firstDataRow).getAllByRole('cell').length).toBe(2);
   }
 };
 
@@ -332,19 +429,9 @@ export const ColumnEvent: Story = {
       text: 'Product ID',
       events: {
         onClick: (e: any, column: any, columnIndex: number, row: any, rowIndex: number) => {
-          console.log(e);
-          console.log(column);
-          console.log(columnIndex);
-          console.log(row);
-          console.log(rowIndex);
-          alert('Click on Product ID field');
+          console.log('onClick on Product ID field');
         },
         onMouseEnter: (e: any, column: any, columnIndex: number, row: any, rowIndex: number) => {
-          console.log(e);
-          console.log(column);
-          console.log(columnIndex);
-          console.log(row);
-          console.log(rowIndex);
           console.log('onMouseEnter on Product ID field');
         }
       }
@@ -364,19 +451,10 @@ export const ColumnEvent: Story = {
       text: 'Product ID',
       events: {
         onClick: (e, column, columnIndex, row, rowIndex) => {
-          console.log(e);
-          console.log(column);
-          console.log(columnIndex);
-          console.log(row);
-          console.log(rowIndex);
+          console.log('onClick on Product ID field');
           alert('Click on Product ID field');
         },
         onMouseEnter: (e, column, columnIndex, row, rowIndex) => {
-          console.log(e);
-          console.log(column);
-          console.log(columnIndex);
-          console.log(row);
-          console.log(rowIndex);
           console.log('onMouseEnter on Product ID field');
         }
       }
@@ -391,6 +469,14 @@ export const ColumnEvent: Story = {
     <BootstrapTable keyField='id' data={ products } columns={ columns } />
     `,
     header: <h3>Try to Click or Mouse over on Product ID columns</h3>,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await canvas.findByRole('table');
+
+    const firstCell = (await canvas.findAllByRole('cell'))[0];
+    await userEvent.click(firstCell);
+    expect(firstCell).toBeInTheDocument();
   }
 };
 
@@ -434,6 +520,16 @@ export const CustomizeColumnClass: Story = {
 
     <BootstrapTable keyField='id' data={ products } columns={ columns } />
     `,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await canvas.findByText('Product Name');
+
+    const row1 = canvas.getAllByRole('row')[1];
+    const cells1 = within(row1).getAllByRole('cell');
+
+    expect(cells1[0]).toHaveClass('demo-key-row');
+    expect(cells1[1]).toHaveClass('demo-row-even');
   }
 };
 
@@ -495,6 +591,16 @@ export const CustomizeColumnStyle: Story = {
 
     <BootstrapTable keyField='id' data={ products } columns={ columns } />
     `,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await canvas.findByText('Product Name');
+
+    const row1 = canvas.getAllByRole('row')[1];
+    const cells1 = within(row1).getAllByRole('cell');
+
+    expect(cells1[0]).toHaveStyle('font-weight: 700');
+    expect(cells1[1]).toHaveStyle('background-color: rgb(129, 199, 132)');
   }
 };
 
@@ -533,6 +639,16 @@ export const CustomizeColumnHTMLAttribute: Story = {
     <BootstrapTable keyField='id' data={ products } columns={ columns } />
     `,
     header: <h3>Try to hover on Product ID Cell</h3>,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await canvas.findByText('Product Name');
+
+    const row1 = canvas.getAllByRole('row')[1];
+    const cells1 = within(row1).getAllByRole('cell');
+
+    expect(cells1[0]).toHaveAttribute('title', 'id column');
+    expect(cells1[1]).toHaveAttribute('data-test', 'customized data 0');
   }
 };
 
@@ -540,6 +656,31 @@ export const DummyColumn: Story = {
   name: "Dummy column",
   args: {
     mode: "dummy",
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await canvas.findByRole('table');
+
+    // Find row with Item 13
+    const row13 = await canvas.findByText('Item 13');
+    const row = row13.closest('tr') as HTMLElement;
+    
+    // Verify initial state
+    const checkbox = within(row).getByRole('checkbox') as HTMLInputElement;
+    expect(checkbox.checked).toBe(true);
+    expect(within(row).getAllByText('Available')[0]).toBeInTheDocument();
+
+    // Toggle stock status
+    const toggleButton = canvas.getByText('Toggle item 13 stock status');
+    await userEvent.click(toggleButton);
+
+    // Verify updated state
+    await waitFor(async () => {
+      const updatedRow13 = await canvas.findByText('Item 13');
+      const updatedRow = updatedRow13.closest('tr') as HTMLElement;
+      const updatedCheckbox = within(updatedRow).getByRole('checkbox') as HTMLInputElement;
+      expect(updatedCheckbox.checked).toBe(false);
+    });
   }
 };
 
@@ -547,5 +688,16 @@ export const RowExpandWithDummyColumn: Story = {
   name: "Row expand with dummy column formatter",
   args: {
     mode: "rowdummy",
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await canvas.findByRole('table');
+
+    const firstDataRow = canvas.getAllByRole('row')[1];
+    const expandToggle = within(firstDataRow).getByText('(+)');
+    await userEvent.click(expandToggle);
+    
+    const elements = await canvas.findAllByText('Content');
+    expect(elements.length).toBeGreaterThan(0);
   }
 };

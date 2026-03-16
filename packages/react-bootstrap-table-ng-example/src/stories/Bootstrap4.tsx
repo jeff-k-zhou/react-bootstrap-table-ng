@@ -83,7 +83,7 @@ export default ({
               <div>
                 <ToggleList {...props.columnToggleProps} />
                 <hr />
-                <BootstrapTable {...props.baseProps} />
+                <BootstrapTable bootstrap4 {...props.baseProps} />
               </div>
             )}
           </ToolkitProvider>
@@ -102,7 +102,7 @@ export default ({
                 <SearchBar {...props.searchProps} />
                 <ClearSearchButton {...props.searchProps} />
                 <hr />
-                <BootstrapTable {...props.baseProps} />
+                <BootstrapTable bootstrap4 {...props.baseProps} />
                 <ExportCSVButton {...props.csvProps}>
                   Export CSV!!
                 </ExportCSVButton>
