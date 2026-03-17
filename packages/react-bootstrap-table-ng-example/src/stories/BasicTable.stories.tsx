@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-webpack5';
-import { expect, userEvent, within } from 'storybook/test';
+import { expect, userEvent, within, spyOn } from 'storybook/test';
 
 // import bootstrap style by given version
 import { columns, productsGenerator, sortFilterColumns } from '../utils/common';
@@ -373,13 +373,57 @@ export const ExposedAPITable: Story = {
     
     // Wait for buttons to appear
     await canvas.findByText(buttons[0]);
+
+    const consoleSpy = spyOn(console, 'log').mockName('console.log');
     
     for (const label of buttons) {
       const button = canvas.getByText(label);
       expect(button).toBeInTheDocument();
-      await userEvent.click(button);
+      if (label === 'Get Current Display Rows') {
+        await userEvent.click(button);
+        const loggedArray = consoleSpy.mock.calls[0][0];
+        expect(loggedArray).toHaveLength(10);
+        consoleSpy.mockClear();
+      } else if (label === 'Get Current Selected Rows') {
+        await userEvent.click(button);
+        const loggedArray = consoleSpy.mock.calls[0][0];
+        expect(loggedArray).toHaveLength(0);
+        consoleSpy.mockClear();
+      } else if (label === 'Get Current Expanded Rows') {
+        await userEvent.click(button);
+        const loggedArray = consoleSpy.mock.calls[0][0];
+        expect(loggedArray).toHaveLength(0);
+        consoleSpy.mockClear();
+      } else if (label === 'Get Current Page') {
+        await userEvent.click(button);
+        expect(consoleSpy).toHaveBeenCalledWith(expect.any(Number));
+        consoleSpy.mockClear();
+      } else if (label === 'Get Current Size Per Page') {
+        await userEvent.click(button);
+        expect(consoleSpy).toHaveBeenCalledWith(expect.any(Number));
+        consoleSpy.mockClear();
+      } else if (label === 'Get Current Sort Column') {
+        await userEvent.click(button);
+        expect(consoleSpy).toHaveBeenCalledWith(undefined);
+        const sColumn = canvas.getByText('Product ID');
+        userEvent.click(sColumn); 
+        await userEvent.click(button);
+        expect(consoleSpy).toHaveBeenCalledWith(expect.objectContaining({dataField: 'id', text: 'Product ID', sort: true}));
+        consoleSpy.mockClear();
+      } else if (label === 'Get Current Sort Order') {
+        await userEvent.click(button);
+        //expect(consoleSpy).toHaveBeenCalledWith(undefined);
+        const sColumn = canvas.getByText('Product ID');
+        userEvent.click(sColumn);
+        expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining('sc'));
+        consoleSpy.mockClear();
+      } else if (label === 'Get Current Filter Information') {
+        await userEvent.click(button);
+        expect(consoleSpy).toHaveBeenCalledWith(expect.any(Object));
+        consoleSpy.mockClear();
+      }
     }
-    
+
     // Check if table rendered
     expect(await canvas.findByRole('table')).toBeInTheDocument();
   }

@@ -91,14 +91,14 @@ const withContext = (Base: any) => {
     // Expose API
     useImperativeHandle(ref, () => ({
       ...remoteResolver,
-      table: tableRef.current,
-      selectionContext: selectionContextRef.current,
-      rowExpandContext: rowExpandContextRef.current,
-      paginationContext: paginationContextRef.current,
-      sortContext: sortContextRef.current,
-      searchContext: searchContextRef.current,
-      filterContext: filterContextRef.current,
-      cellEditContext: cellEditContextRef.current,
+      get table() { return tableRef.current; },
+      get selectionContext() { return selectionContextRef.current; },
+      get rowExpandContext() { return rowExpandContextRef.current; },
+      get paginationContext() { return paginationContextRef.current; },
+      get sortContext() { return sortContextRef.current; },
+      get searchContext() { return searchContextRef.current; },
+      get filterContext() { return filterContextRef.current; },
+      get cellEditContext() { return cellEditContextRef.current; },
     }));
 
     // Context objects - using useMemo to keep them stable
