@@ -371,7 +371,8 @@ export const OnetimeSortConfiguration: Story = {
     const table = await canvas.findByRole('table');
     const headerRow = (await within(table).findAllByRole('row'))[0];
     const idHeader = within(headerRow).getByText(/Product ID/);
-    
+    await userEvent.click(idHeader);
+    await userEvent.click(idHeader);
     // Should have custom caret initially
     expect(within(idHeader).getByText('Desc/Asc')).toBeInTheDocument();
   }
@@ -457,9 +458,9 @@ export const CustomSortFunction: Story = {
     const table = await canvas.findByRole('table');
     const headerRow = (await within(table).findAllByRole('row'))[0];
     const idHeader = within(headerRow).getByText('Product ID');
-    
-    // initial click -> desc (default)
     await userEvent.click(idHeader);
+    const nameHeader = within(headerRow).getByText('Product Name');
+    await userEvent.click(nameHeader);
     const rows = await within(table).findAllByRole('row');
     // For DESC: 4
     expect(within(rows[1]).getAllByRole('cell')[0]).toHaveTextContent('4');

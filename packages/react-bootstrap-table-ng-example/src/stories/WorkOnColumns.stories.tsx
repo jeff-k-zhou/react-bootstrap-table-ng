@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-webpack5';
-import { expect, userEvent, waitFor, within } from '@storybook/test';
+import { expect, userEvent, waitFor, within, spyOn } from '@storybook/test';
 
 // import bootstrap style by given version
 import { productsGenerator, withOnSale } from '../utils/common';
@@ -471,11 +471,15 @@ export const ColumnEvent: Story = {
     header: <h3>Try to Click or Mouse over on Product ID columns</h3>,
   },
   play: async ({ canvasElement }: any) => {
+    const consoleSpy = spyOn(console, 'log').mockName('console.log');
     const canvas = within(canvasElement);
     await canvas.findByRole('table');
 
     const firstCell = (await canvas.findAllByRole('cell'))[0];
     await userEvent.click(firstCell);
+    expect(consoleSpy).toHaveBeenCalledWith('onClick on Product ID field');
+    await userEvent.hover(firstCell);
+    expect(consoleSpy).toHaveBeenCalledWith('onMouseEnter on Product ID field');
     expect(firstCell).toBeInTheDocument();
   }
 };
