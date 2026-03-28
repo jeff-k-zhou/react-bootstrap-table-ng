@@ -385,22 +385,39 @@ export const ExposedAPITable: Story = {
         expect(loggedArray).toHaveLength(10);
         consoleSpy.mockClear();
       } else if (label === 'Get Current Selected Rows') {
+        //find all checkbox
+        const allCheckbox = canvas.getAllByRole('checkbox');
+        await userEvent.click(allCheckbox[0]);
         await userEvent.click(button);
         const loggedArray = consoleSpy.mock.calls[0][0];
-        expect(loggedArray).toHaveLength(0);
+        expect(loggedArray).toHaveLength(10);
+        await userEvent.click(allCheckbox[0]);
+        await userEvent.click(button);
+        const loggedArray2 = consoleSpy.mock.calls[1][0];
+        expect(loggedArray2).toHaveLength(0);
         consoleSpy.mockClear();
       } else if (label === 'Get Current Expanded Rows') {
         await userEvent.click(button);
         const loggedArray = consoleSpy.mock.calls[0][0];
         expect(loggedArray).toHaveLength(0);
+        //expand all rows
+        const expandCells = canvas.getAllByText('(+)');
+        await userEvent.click(expandCells[0]);
+        await userEvent.click(button);
+        const loggedArray2 = consoleSpy.mock.calls[1][0];
+        expect(loggedArray2).toHaveLength(10);
+        await userEvent.click(expandCells[1]);
+        await userEvent.click(button);
+        const loggedArray3 = consoleSpy.mock.calls[2][0];
+        expect(loggedArray3).toHaveLength(9);
         consoleSpy.mockClear();
       } else if (label === 'Get Current Page') {
         await userEvent.click(button);
-        expect(consoleSpy).toHaveBeenCalledWith(expect.any(Number));
+        expect(consoleSpy).toHaveBeenCalledWith(1);
         consoleSpy.mockClear();
       } else if (label === 'Get Current Size Per Page') {
         await userEvent.click(button);
-        expect(consoleSpy).toHaveBeenCalledWith(expect.any(Number));
+        expect(consoleSpy).toHaveBeenCalledWith(10);
         consoleSpy.mockClear();
       } else if (label === 'Get Current Sort Column') {
         await userEvent.click(button);
@@ -419,7 +436,18 @@ export const ExposedAPITable: Story = {
         consoleSpy.mockClear();
       } else if (label === 'Get Current Filter Information') {
         await userEvent.click(button);
-        expect(consoleSpy).toHaveBeenCalledWith(expect.any(Object));
+        //expect empty filteer
+        expect(consoleSpy).toHaveBeenCalledWith(expect.objectContaining({}));
+        consoleSpy.mockClear();
+        //find filter input
+        const filterInput = canvas.getByPlaceholderText('Enter Product Name...');
+        await userEvent.type(filterInput, '1');
+        //user press enter key
+        await userEvent.type(filterInput, '{enter}');
+        //wait for filter to apply
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        await userEvent.click(button);
+        expect(consoleSpy).toHaveBeenCalledWith(expect.objectContaining({name: {caseSensitive: false, comparator: "LIKE", filterType: "TEXT", filterVal: "1"}}));
         consoleSpy.mockClear();
       }
     }
