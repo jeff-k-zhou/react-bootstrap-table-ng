@@ -67,9 +67,20 @@ const RowPureContent: React.FC<RowPureContentProps> = React.memo((props) => {
           cellAttrs = { ...cellAttrs, ...events };
         }
 
-        const cellClasses = _.isFunction(column.classes)
+        let cellClasses = _.isFunction(column.classes)
           ? column.classes(content, row, rowIndex, index)
           : column.classes;
+
+        let isExpandableCell = true;
+        if (_.isDefined(column.cellExpandable)) {
+          isExpandableCell = column.cellExpandable as boolean;
+        } else if (_.isDefined(props.cellExpandable)) {
+          isExpandableCell = props.cellExpandable as boolean;
+        }
+
+        if (isExpandableCell) {
+          cellClasses = cellClasses ? `${cellClasses} expandable-cell` : "expandable-cell";
+        }
 
         if (column.style) {
           cellStyle = _.isFunction(column.style)

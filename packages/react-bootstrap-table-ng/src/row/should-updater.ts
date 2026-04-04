@@ -22,6 +22,7 @@ export interface RowProps {
   expandRow?: any;
   expanded?: boolean;
   expandable?: boolean;
+  cellExpandable?: boolean;
   visibleColumnSize?: number;
   keyField?: string;
   value?: any;
@@ -80,6 +81,7 @@ export const shouldUpdatedByNormalProps = (prevProps: RowProps, nextProps: RowPr
     prevProps.editable !== nextProps.editable ||
     prevProps.expanded !== nextProps.expanded ||
     prevProps.expandable !== nextProps.expandable ||
+    prevProps.cellExpandable !== nextProps.cellExpandable ||
     !_.isEqual(prevProps.row, nextProps.row) ||
     (prevProps.columns?.length !== nextProps.columns?.length)
   );

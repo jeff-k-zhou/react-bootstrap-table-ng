@@ -31,6 +31,7 @@ interface BodyProps {
   rowEvents?: Record<string, any> | null;
   expandRow?: ExpandRowProps<any, any> | undefined;
   className?: string;
+  cellExpandable?: boolean;
 }
 
 const Body: React.FC<BodyProps> = (props) => {
@@ -49,6 +50,7 @@ const Body: React.FC<BodyProps> = (props) => {
     rowEvents,
     expandRow,
     className,
+    cellExpandable,
   } = props;
 
     const selectRowEnabled =
@@ -107,6 +109,7 @@ const Body: React.FC<BodyProps> = (props) => {
     const expandRowEnabled = !!expandRow?.renderer;
 
     const additionalRowProps: RowProps = {};
+    additionalRowProps.cellExpandable = cellExpandable;
 
     if (cellEdit?.createContext) {
       additionalRowProps.EditingCellComponent = EditingCell;

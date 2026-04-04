@@ -70,6 +70,7 @@ const BootstrapTable = React.forwardRef<any, BootstrapTableProps>((props, ref) =
     columnResize,
     bodyClasses,
     footerClasses,
+    cellExpandable = true,
   } = props;
 
   const { validateProps, isEmpty, visibleRows, getVisibleColumnSize } =
@@ -155,6 +156,7 @@ const BootstrapTable = React.forwardRef<any, BootstrapTableProps>((props, ref) =
           <Body
             className={bodyClasses}
             data={visibleRows}
+            cellExpandable={cellExpandable}
             keyField={keyField}
             tabIndexCell={tabIndexCell}
             columns={columns}

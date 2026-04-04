@@ -244,6 +244,7 @@ export interface ColumnDescription<T extends object = any, E = any> {
      * Toggle column display in CSV export
      */
     csvExport?: boolean | undefined;
+    cellExpandable?: boolean | undefined;
     /**
      * Column toggle list used by Toolkit provider
      */
@@ -669,6 +670,7 @@ export interface BootstrapTableProps<T extends object = any, K = number> {
     search?: SearchProps<T> | boolean | undefined;
     // TODO Added On
     loading?: boolean | undefined;
+    cellExpandable?: boolean | undefined;
     sortField?: string;
     sortOrder?: string;
     currFilters?: object;
