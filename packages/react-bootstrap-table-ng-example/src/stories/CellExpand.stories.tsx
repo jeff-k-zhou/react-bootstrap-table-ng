@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-webpack5';
+import { expect, userEvent, within } from 'storybook/test';
 
 import { productsGenerator } from '../utils/common';
 import CellExpand from './CellExpand';
@@ -59,6 +60,19 @@ export const TableLevelExpandable: Story = {
 
     <BootstrapTable keyField='id' data={ products } columns={ columns } cellExpandable={false} />
     `,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    expect(table).toBeInTheDocument();
+    
+    const rows = canvas.getAllByRole('row');
+    // First data row (index 1), ID cell (index 0), Name cell (index 1), Price cell (index 2)
+    const nameCell = rows[1].querySelectorAll('td')[1];
+    const priceCell = rows[1].querySelectorAll('td')[2];
+    
+    expect(nameCell).not.toHaveClass('expandable-cell');
+    expect(priceCell).not.toHaveClass('expandable-cell');
   }
 };
 
@@ -94,6 +108,19 @@ export const TableLevelExpandableDefault: Story = {
 
     <BootstrapTable keyField='id' data={ products } columns={ columns }/>
     `,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    expect(table).toBeInTheDocument();
+    
+    const rows = canvas.getAllByRole('row');
+    const nameCell = rows[1].querySelectorAll('td')[1];
+    const priceCell = rows[1].querySelectorAll('td')[2];
+    
+    // By default, it should be true
+    expect(nameCell).toHaveClass('expandable-cell');
+    expect(priceCell).toHaveClass('expandable-cell');
   }
 };
 
@@ -133,5 +160,23 @@ export const ColumnLevelExpandable: Story = {
     // cellExpandable defaults to true at table level.
     <BootstrapTable keyField='id' data={ products } columns={ columns } />
     `,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    expect(table).toBeInTheDocument();
+    
+    const rows = canvas.getAllByRole('row');
+    const nameCell = rows[1].querySelectorAll('td')[1];
+    const priceCell = rows[1].querySelectorAll('td')[2];
+    
+    // Name should have it (default table level true)
+    expect(nameCell).toHaveClass('expandable-cell');
+    // Price should NOT have it (explicitly false for this column)
+    expect(priceCell).not.toHaveClass('expandable-cell');
+
+    // Test hover effect (though we mainly check class, we can simulate)
+    await userEvent.hover(nameCell);
+    // The CSS handles the display change, so we verify the class presence.
   }
 };

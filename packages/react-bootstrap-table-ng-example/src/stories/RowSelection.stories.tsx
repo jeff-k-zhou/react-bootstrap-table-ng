@@ -1,4 +1,4 @@
-import { expect, userEvent, within } from '@storybook/test';
+import { expect, userEvent, within } from 'storybook/test';
 import type { Meta, StoryObj } from '@storybook/react-webpack5';
 
 // import bootstrap style by given version

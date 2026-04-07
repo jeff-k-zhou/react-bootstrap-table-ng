@@ -24,30 +24,30 @@
     /* Modules */
     "module": "commonjs", /* Specify what module code is generated. */
     // "rootDir": "./",                                  /* Specify the root folder within your source files. */
-    "baseUrl": "./", /* Specify the base directory to resolve non-relative module names. */
+    //"baseUrl": "./", /* Specify the base directory to resolve non-relative module names. */
     "paths": {
       "react-bootstrap-table-ng": [
-        "packages/react-bootstrap-table-ng/index.ts"
+        "./packages/react-bootstrap-table-ng/index.ts"
       ],
       "react-bootstrap-table-ng-editor": [
-        "packages/react-bootstrap-table-ng-editor/index.ts"
+        "./packages/react-bootstrap-table-ng-editor/index.ts"
       ],
       "react-bootstrap-table-ng-filter": [
-        "packages/react-bootstrap-table-ng-filter/index.ts"
+        "./packages/react-bootstrap-table-ng-filter/index.ts"
       ],
       "react-bootstrap-table-ng-overlay": [
-        "packages/react-bootstrap-table-ng-overlay/index.tsx"
+        "./packages/react-bootstrap-table-ng-overlay/index.tsx"
       ],
       "react-bootstrap-table-ng-paginator": [
-        "packages/react-bootstrap-table-ng-paginator/index.tsx"
+        "./packages/react-bootstrap-table-ng-paginator/index.tsx"
       ],
       "react-bootstrap-table-ng-toolkit": [
-        "packages/react-bootstrap-table-ng-toolkit/index.ts"
+        "./packages/react-bootstrap-table-ng-toolkit/index.ts"
       ]
     }, /* Specify a set of entries that re-map imports to additional lookup locations. */
     // "rootDirs": [],                                   /* Allow multiple folders to be treated as one when resolving modules. */
     // "typeRoots": [],                                  /* Specify multiple folders that act like './node_modules/@types'. */
-    // "types": [],                                      /* Specify type package names to be included without being referenced in a source file. */
+    "types": ["node", "jest"],                                      /* Specify type package names to be included without being referenced in a source file. */
     // "allowUmdGlobalAccess": true,                     /* Allow accessing UMD globals from modules. */
     // "moduleSuffixes": [],                              /* List of file name suffixes to search when resolving a module. */
     // "allowImportingTsExtensions": true,               /* Allow imports to include TypeScript file extensions. Requires '--moduleResolution bundler' and either '--noEmit' or '--emitDeclarationOnly' to be set. */
@@ -117,9 +117,9 @@
     "skipLibCheck": true /* Skip type checking all .d.ts files. */
   },
   "exclude": [
-    "packages/react-bootstrap-table-ng-example",
-    "packages/**/*.d.ts",
-    "packages/**/*.js",
-    "packages/**/*.js.map"
+    "./packages/react-bootstrap-table-ng-example",
+    "./packages/**/*.d.ts",
+    "./packages/**/*.js",
+    "./packages/**/*.js.map"
   ]
 }

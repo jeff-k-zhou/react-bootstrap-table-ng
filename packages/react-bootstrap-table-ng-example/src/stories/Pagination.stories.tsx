@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import type { Meta, StoryObj } from '@storybook/react-webpack5';
-import { expect, userEvent, within } from '@storybook/test';
+import { expect, userEvent, within } from 'storybook/test';
 
 // import bootstrap style by given version
 import paginationFactory from "../../../react-bootstrap-table-ng-paginator";

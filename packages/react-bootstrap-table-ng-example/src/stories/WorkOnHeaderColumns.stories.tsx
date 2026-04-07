@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-webpack5';
-import { expect, userEvent, waitFor, within } from '@storybook/test';
+import { expect, userEvent, waitFor, within } from 'storybook/test';
 
 // import bootstrap style by given version
 import filterFactory, { textFilter } from '../../../react-bootstrap-table-ng-filter';

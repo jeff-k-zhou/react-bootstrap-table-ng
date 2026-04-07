@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-webpack5';
-import { expect, userEvent, waitFor, within, spyOn } from '@storybook/test';
+import { expect, userEvent, waitFor, within, spyOn } from 'storybook/test';
 
 // import bootstrap style by given version
 import { productsGenerator, withOnSale } from '../utils/common';
