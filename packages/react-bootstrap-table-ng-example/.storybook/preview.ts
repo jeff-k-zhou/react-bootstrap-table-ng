@@ -27,6 +27,7 @@ const preview: Preview = {
           "Footer",
           "Sort Table",
           "Cell Editing",
+          "Cell Expand",
           "Row Selection",
           "Row Expand",
           "Pagination",

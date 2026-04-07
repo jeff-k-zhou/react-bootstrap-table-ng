@@ -113,7 +113,6 @@ export const columns = [
   {
     dataField: "price",
     text: "Product Price",
-    classes: "expandable-cell",
   },
 ];
 
