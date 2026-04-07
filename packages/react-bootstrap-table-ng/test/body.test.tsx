@@ -220,6 +220,7 @@ describe("Body", () => {
       selectRow,
       expandRow,
       attrs,
+      cellExpandable,
       ...props
     }: any) => <tr {...props} />;
     const cellEdit = {
