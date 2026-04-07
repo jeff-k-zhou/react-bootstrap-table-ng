@@ -34,8 +34,16 @@ const ColumnResizer: React.FC<ColumnResizerProps> = (props) => {
   return (
     <div
       ref={resizer}
+      role="button"
+      tabIndex={0}
+      aria-label="Resize column"
       className={`react-bootstrap-table-column-resizer ${className || ""}`}
       onMouseDown={onMouseDown}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+        }
+      }}
       style={{
         position: "absolute",
         right: 0,

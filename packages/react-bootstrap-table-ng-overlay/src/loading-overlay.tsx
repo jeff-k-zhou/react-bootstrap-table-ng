@@ -129,11 +129,19 @@ const LoadingOverlay = forwardRef<any, LoadingOverlayProps>((props, ref) => {
         {(state) => (
           <div
             data-testid="overlay"
+            role="button"
+            tabIndex={0}
             className={getCx(
               "overlay",
               css(getStyles("overlay", state))
             )}
             onClick={onClick}
+            onKeyDown={(e) => {
+              if (onClick && (e.key === "Enter" || e.key === " ")) {
+                e.preventDefault();
+                onClick(e as any);
+              }
+            }}
           >
             <div
               className={getCx("content", css(getStyles("content")))}

@@ -6,10 +6,7 @@ import jsxA11y from "eslint-plugin-jsx-a11y";
 import importPlugin from 'eslint-plugin-import';
 
 export default [
-    jsxA11y.flatConfigs.recommended,
-    importPlugin.flatConfigs.recommended,
     {
-        files: ["**/*.ts", "**/*.tsx", "**/*.jsx"],
         ignores: [
             "**/node_modules",
             "**/package-lock.json",
@@ -26,10 +23,14 @@ export default [
             "**/lib",
             "**/*.d.ts",
             "**/*.js.map",
-            "packages/**/src/**/*.js",
+            "**/*.js",
+            "packages/**/src/**/*.mjs",
         ],
     }, 
+    jsxA11y.flatConfigs.recommended,
+    importPlugin.flatConfigs.recommended,
     {
+        files: ["**/*.ts", "**/*.tsx"],
         plugins: {
             react,
         },
@@ -49,7 +50,7 @@ export default [
             parser: babelParser,
             parserOptions: {
                 ecmaFeatures: {
-                jsx: true,
+                    jsx: true,
                 },
             },
         },

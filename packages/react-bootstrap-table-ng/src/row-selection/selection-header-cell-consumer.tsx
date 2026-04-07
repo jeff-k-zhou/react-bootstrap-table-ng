@@ -1,6 +1,5 @@
 import React from "react";
-import createSelectionContext from "../contexts/selection-context";
-import { SelectionContextValue } from "../contexts/selection-context";
+import createSelectionContext, { SelectionContextValue } from "../contexts/selection-context";
 
 interface Props extends SelectionContextValue { }
 

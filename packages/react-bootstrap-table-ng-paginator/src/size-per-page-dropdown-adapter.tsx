@@ -1,7 +1,5 @@
 /* eslint react/prop-types: 0 */
-import React, { Component } from "react";
-
-import { useState, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import { usePagination } from "./hooks/usePagination";
 import SizePerPageDropDown from "./size-per-page-dropdown";
 

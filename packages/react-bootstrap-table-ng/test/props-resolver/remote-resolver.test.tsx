@@ -1,6 +1,5 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import React from "react";
-import { act } from "react";
+import React, { act } from "react";
 import { stub } from "sinon";
 import BootstrapTable from "../../src/bootstrap-table";
 import withContext from "../../src/contexts";

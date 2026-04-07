@@ -6,7 +6,7 @@ import createDataContext from "./src/data-context";
 import PaginationListStandalone from "./src/pagination-list-standalone";
 import PaginationTotalStandalone from "./src/pagination-total-standalone";
 import SizePerPageDropdownStandalone from "./src/size-per-page-dropdown-standalone";
-import createBaseContext from "./src/state-context";
+import createBaseContext, { StateContext } from "./src/state-context";
 
 export interface PaginationCtxOptions {
   options?: PaginationOptions | undefined;
@@ -54,8 +54,6 @@ export default (options = {}) => ({
   createContext: createDataContext,
   options,
 });
-
-import { StateContext } from "./src/state-context";
 
 const { Provider } = createBaseContext();
 
