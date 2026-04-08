@@ -1,8 +1,15 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import sizePerPageDropdownAdapter from "../src/size-per-page-dropdown-adapter";
 
-const MockComponent = () => null;
+const MockComponent = (props: any) => (
+  <div data-testid="mock-component">
+    <button data-testid="toggle-btn" onClick={props.onClick}>Toggle</button>
+    <button data-testid="change-btn" onClick={() => props.onSizePerPageChange(25)}>Change</button>
+    <div data-testid="dropdown-state">{props.open ? "open" : "closed"}</div>
+    <div data-testid="curr-size">{props.currSizePerPage}</div>
+  </div>
+);
 
 const SizePerPageDropdownAdapter = sizePerPageDropdownAdapter(MockComponent);
 
@@ -22,111 +29,67 @@ describe("sizePerPageDropdownAdapter", () => {
   });
 
   describe("render", () => {
-    it("should render successfully", () => {
-      let receivedProps: any = null;
-      const SpyComponent = (p: any) => {
-        receivedProps = p;
-        return null;
-      };
-      const AdapterWithSpy = sizePerPageDropdownAdapter(SpyComponent);
-      render(<AdapterWithSpy {...createMockProps()} />);
-      expect(receivedProps).toBeDefined();
-      expect(receivedProps.currSizePerPage).toEqual("10");
-      expect(receivedProps.options).toBeDefined();
-      expect(receivedProps.optionRenderer).toBeDefined();
-      expect(typeof receivedProps.onSizePerPageChange).toBe("function");
-      expect(typeof receivedProps.onClick).toBe("function");
-      expect(typeof receivedProps.onBlur).toBe("function");
-      expect(typeof receivedProps.open).toBe("boolean");
+    it("should render successfully and pass correct props", () => {
+      render(<SizePerPageDropdownAdapter {...createMockProps()} />);
+      expect(screen.getByTestId("mock-component")).toBeInTheDocument();
+      expect(screen.getByTestId("curr-size")).toHaveTextContent("10");
+      expect(screen.getByTestId("dropdown-state")).toHaveTextContent("closed");
     });
   });
 
   describe("when props.sizePerPageList is empty array", () => {
     it("should not render component", () => {
-      let rendered = false;
-      const SpyComponent = () => {
-        rendered = true;
-        return null;
-      };
-      const AdapterWithSpy = sizePerPageDropdownAdapter(SpyComponent);
-      render(<AdapterWithSpy {...createMockProps({ sizePerPageList: [] })} />);
-      expect(rendered).toBe(false);
+      render(<SizePerPageDropdownAdapter {...createMockProps({ sizePerPageList: [] })} />);
+      expect(screen.queryByTestId("mock-component")).not.toBeInTheDocument();
     });
   });
 
   describe("when props.hideSizePerPage is true", () => {
     it("should not render component", () => {
-      let rendered = false;
-      const SpyComponent = () => {
-        rendered = true;
-        return null;
-      };
-      const AdapterWithSpy = sizePerPageDropdownAdapter(SpyComponent);
-      render(<AdapterWithSpy {...createMockProps({ hideSizePerPage: true })} />);
-      expect(rendered).toBe(false);
+      render(<SizePerPageDropdownAdapter {...createMockProps({ hideSizePerPage: true })} />);
+      expect(screen.queryByTestId("mock-component")).not.toBeInTheDocument();
     });
   });
 
   describe("toggleDropDown", () => {
     it("should toggle dropdownOpen state", () => {
-      const AdapterClass: any = SizePerPageDropdownAdapter;
-      const instance = new AdapterClass(createMockProps());
-      instance.setState = (updater: any) => {
-        const nextState = typeof updater === "function" ? updater(instance.state) : updater;
-        instance.state = { ...instance.state, ...nextState };
-      };
-      expect(instance.state.dropdownOpen).toBeFalsy();
-      instance.toggleDropDown();
-      expect(instance.state.dropdownOpen).toBeTruthy();
-      instance.toggleDropDown();
-      expect(instance.state.dropdownOpen).toBeFalsy();
-    });
-  });
+      render(<SizePerPageDropdownAdapter {...createMockProps()} />);
+      const toggleBtn = screen.getByTestId("toggle-btn");
+      const state = screen.getByTestId("dropdown-state");
 
-  describe("closeDropDown", () => {
-    it("should always set dropdownOpen to false", () => {
-      const AdapterClass: any = SizePerPageDropdownAdapter;
-      const instance = new AdapterClass(createMockProps());
-      instance.setState = (updater: any) => {
-        const nextState = typeof updater === "function" ? updater(instance.state) : updater;
-        instance.state = { ...instance.state, ...nextState };
-      };
-      instance.state.dropdownOpen = true;
-      instance.closeDropDown();
-      expect(instance.state.dropdownOpen).toBeFalsy();
-      instance.closeDropDown();
-      expect(instance.state.dropdownOpen).toBeFalsy();
+      expect(state).toHaveTextContent("closed");
+      fireEvent.click(toggleBtn);
+      expect(state).toHaveTextContent("open");
+      fireEvent.click(toggleBtn);
+      expect(state).toHaveTextContent("closed");
     });
   });
 
   describe("handleChangeSizePerPage", () => {
     it("should call props.onSizePerPageChange and close dropdown", () => {
       const props = createMockProps();
-      const AdapterClass: any = SizePerPageDropdownAdapter;
-      const instance = new AdapterClass(props);
-      instance.setState = jest.fn();
-      instance.handleChangeSizePerPage(25);
-      expect(props.onSizePerPageChange).toHaveBeenCalledTimes(1);
-      expect(props.onSizePerPageChange).toHaveBeenCalledWith(25);
-      expect(instance.setState).toHaveBeenCalledWith(expect.any(Function));
+      render(<SizePerPageDropdownAdapter {...props} />);
+      
+      const toggleBtn = screen.getByTestId("toggle-btn");
+      const changeBtn = screen.getByTestId("change-btn");
+      const state = screen.getByTestId("dropdown-state");
+
+      fireEvent.click(toggleBtn);
+      expect(state).toHaveTextContent("open");
+
+      fireEvent.click(changeBtn);
+      expect(props.onSizePerPageChange).toHaveBeenCalledWith(25, 1);
+      expect(state).toHaveTextContent("closed");
     });
   });
 
   describe("when props.sizePerPageRenderer is defined", () => {
     it("should not render default component and call renderer", () => {
-      const sizePerPageRenderer = jest.fn().mockReturnValue(null);
-      let rendered = false;
-      const SpyComponent = () => {
-        rendered = true;
-        return null;
-      };
-      const AdapterWithSpy = sizePerPageDropdownAdapter(SpyComponent);
-      render(
-        <AdapterWithSpy
-          {...createMockProps({ sizePerPageRenderer })}
-        />
-      );
-      expect(rendered).toBe(false);
+      const sizePerPageRenderer = jest.fn().mockReturnValue(<div data-testid="custom-renderer" />);
+      render(<SizePerPageDropdownAdapter {...createMockProps({ sizePerPageRenderer })} />);
+      
+      expect(screen.queryByTestId("mock-component")).not.toBeInTheDocument();
+      expect(screen.getByTestId("custom-renderer")).toBeInTheDocument();
       expect(sizePerPageRenderer).toHaveBeenCalledTimes(1);
     });
   });

@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-webpack5';
+import { expect, userEvent, within } from 'storybook/test';
 
 // import bootstrap style by given version
 import { textFilter } from '../../../react-bootstrap-table-ng-filter';
@@ -72,6 +73,12 @@ export const BasicExportCSV: Story = {
       }
     </ToolkitProvider>
     `,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const exportBtn = await canvas.findByRole('button', { name: 'Export CSV!!' });
+    expect(exportBtn).toBeInTheDocument();
+    await userEvent.click(exportBtn);
   }
 };
 
@@ -124,6 +131,12 @@ export const FormatCSVColumn: Story = {
       }
     </ToolkitProvider>
     `,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const exportBtn = await canvas.findByRole('button', { name: 'Export CSV!!' });
+    expect(exportBtn).toBeInTheDocument();
+    await userEvent.click(exportBtn);
   }
 };
 
@@ -180,6 +193,12 @@ export const CustomCSVHeader: Story = {
       }
     </ToolkitProvider>
     `,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const exportBtn = await canvas.findByRole('button', { name: 'Export CSV!!' });
+    expect(exportBtn).toBeInTheDocument();
+    await userEvent.click(exportBtn);
   }
 };
 
@@ -232,6 +251,12 @@ export const HideSVColumn: Story = {
       }
     </ToolkitProvider>
     `,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const exportBtn = await canvas.findByRole('button', { name: 'Export CSV!!' });
+    expect(exportBtn).toBeInTheDocument();
+    await userEvent.click(exportBtn);
   }
 };
 
@@ -305,6 +330,22 @@ export const OnlyExportSelectedRows: Story = {
       }
     </ToolkitProvider>
     `,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const tables = await canvas.findAllByRole('table');
+    expect(tables.length).toBe(2);
+
+    // Select first row in first table
+    const checkboxes = canvas.getAllByRole('checkbox');
+    await userEvent.click(checkboxes[1]); // Index 0 is often "select all"
+
+    // Verify it's checked
+    expect(checkboxes[1]).toBeChecked();
+
+    // Find and click export button for first table
+    const exportBtns = canvas.getAllByRole('button', { name: 'Export CSV!!' });
+    await userEvent.click(exportBtns[0]);
   }
 };
 
@@ -371,6 +412,19 @@ export const OnlyExportFilteredSearchedRows: Story = {
       }
     </ToolkitProvider>
     `,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const searchBar = await canvas.findByPlaceholderText(/Search/i);
+    await userEvent.type(searchBar, 'Item name 1');
+    await new Promise(resolve => setTimeout(resolve, 500));
+
+    // Verify filtering
+    const rows = canvas.getAllByRole('row');
+    expect(rows.length).toBeLessThan(151);
+
+    const exportBtn = canvas.getByRole('button', { name: 'Export CSV!!' });
+    await userEvent.click(exportBtn);
   }
 };
 
@@ -423,6 +477,12 @@ export const CSVColumnType: Story = {
       }
     </ToolkitProvider>
     `,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const exportBtn = await canvas.findByRole('button', { name: 'Export CSV!!' });
+    expect(exportBtn).toBeInTheDocument();
+    await userEvent.click(exportBtn);
   }
 };
 
@@ -475,6 +535,12 @@ export const CustomCSVButton: Story = {
       }
     </ToolkitProvider>
     `,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const exportBtn = await canvas.findByRole('button', { name: 'Export to CSV' });
+    expect(exportBtn).toBeInTheDocument();
+    await userEvent.click(exportBtn);
   }
 };
 
@@ -527,6 +593,12 @@ export const ExportCustomData: Story = {
       }
     </ToolkitProvider>
     `,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const exportBtn = await canvas.findByRole('button', { name: /Only export Product ID bigger than 2/i });
+    expect(exportBtn).toBeInTheDocument();
+    await userEvent.click(exportBtn);
   }
 };
 
@@ -602,18 +674,19 @@ export const ExportTableFooter: Story = {
     import ToolkitProvider, { CSVExport } from 'react-bootstrap-table-ng-toolkit';
 
     const { ExportCSVButton } = CSVExport;
-    const columns = [{
+    columns: [{
       dataField: 'id',
       text: 'Product ID',
       footer: 'Footer 1'
     }, {
       dataField: 'name',
       text: 'Product Name',
-      footer: 'Footer 2'
+      footer: '',
+      footerFormatter: (column: any) => column.text
     }, {
       dataField: 'price',
       text: 'Product Price',
-      footer: 'Footer 3'
+      footer: (columnData: any) => columnData.reduce((acc: any, item: any) => acc + item, 0)
     }];
 
     <ToolkitProvider
@@ -635,6 +708,12 @@ export const ExportTableFooter: Story = {
       }
     </ToolkitProvider>
     `,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const exportBtn = await canvas.findByRole('button', { name: 'Export CSV!!' });
+    expect(exportBtn).toBeInTheDocument();
+    await userEvent.click(exportBtn);
   }
 };
 

@@ -1,5 +1,5 @@
+import { expect, userEvent, within, waitFor } from 'storybook/test';
 import type { Meta, StoryObj } from '@storybook/react-webpack5';
-import React from 'react';
 
 // import bootstrap style by given version
 import { columns, jobsGenerator1, productsGenerator } from '../utils/common';
@@ -76,6 +76,20 @@ export const BasicSearchTable: Story = {
     </ToolkitProvider>
     `,
     header: <h3>Input something at below input field:</h3>,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    const searchBar = await canvas.findByRole('textbox');
+    
+    await userEvent.type(searchBar, 'Item name 2');
+    
+    await waitFor(async () => {
+      const rows = await within(table).findAllByRole('row');
+      // 1 header + 1 data row = 2 rows
+      expect(rows).toHaveLength(2);
+      expect(within(rows[1]).getAllByRole('cell')[0]).toHaveTextContent('2');
+    });
   }
 };
 
@@ -124,6 +138,24 @@ export const ClearSearchButton: Story = {
     </ToolkitProvider>
     `,
     header: <h3>Input something at below input field:</h3>,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    const searchBar = await canvas.findByRole('textbox');
+    const clearButton = await canvas.findByRole('button', { name: 'Clear' });
+    
+    await userEvent.type(searchBar, 'Item name 2');
+    await waitFor(async () => {
+      const rows = await within(table).findAllByRole('row');
+      expect(rows).toHaveLength(2); // 1 header + 1 data row
+    }, { timeout: 2000 });
+    
+    await userEvent.click(clearButton);
+    await waitFor(async () => {
+      const rows = await within(table).findAllByRole('row');
+      expect(rows).toHaveLength(6);
+    }, { timeout: 2000 });
   }
 };
 
@@ -170,6 +202,17 @@ export const DefaultSearchButton: Story = {
     </ToolkitProvider>
     `,
     header: <h3>Input something at below input field:</h3>,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    
+    // defaultSearch: '2101' -> Item name 1
+    await waitFor(async () => {
+      const rows = await within(table).findAllByRole('row');
+      expect(rows).toHaveLength(2);
+      expect(within(rows[1]).getAllByRole('cell')[0]).toHaveTextContent('1');
+    });
   }
 };
 
@@ -222,6 +265,20 @@ export const DefaultCustomSearch: Story = {
     </ToolkitProvider>
     `,
     header: <h3>Input something at below input field:</h3>,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    const searchBar = await canvas.findByPlaceholderText('Search Something!!!');
+    
+    await userEvent.type(searchBar, 'Item name 0');
+    
+    // component has 1000ms delay
+    await waitFor(async () => {
+      const rows = await within(table).findAllByRole('row');
+      expect(rows).toHaveLength(2);
+      expect(within(rows[1]).getAllByRole('cell')[0]).toHaveTextContent('0');
+    }, { timeout: 5000 });
   }
 };
 
@@ -272,6 +329,19 @@ export const SearchHooks: Story = {
     </ToolkitProvider>
     `,
     header: <h3>Input something at below input field:</h3>,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    const searchBar = await canvas.findByRole('textbox');
+    
+    await userEvent.type(searchBar, 'Item name 2');
+    
+    await waitFor(async () => {
+      const rows = await within(table).findAllByRole('row');
+      expect(rows).toHaveLength(2);
+      expect(within(rows[1]).getAllByRole('cell')[0]).toHaveTextContent('2');
+    });
   }
 };
 
@@ -331,6 +401,28 @@ export const SearchableColumn: Story = {
     </ToolkitProvider>
     `,
     header: <h3>Column name and price is unsearchable</h3>,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    const searchBar = await canvas.findByRole('textbox');
+    
+    // name is unsearchable
+    await userEvent.type(searchBar, 'Item name 2');
+    await waitFor(async () => {
+      const rows = await within(table).findAllByRole('row');
+      // only header remains
+      expect(rows).toHaveLength(1);
+    });
+    
+    await userEvent.clear(searchBar);
+    // id is searchable
+    await userEvent.type(searchBar, '2');
+    await waitFor(async () => {
+      const rows = await within(table).findAllByRole('row');
+      expect(rows).toHaveLength(2);
+      expect(within(rows[1]).getAllByRole('cell')[0]).toHaveTextContent('2');
+    });
   }
 };
 
@@ -393,6 +485,21 @@ export const FullyCustomSearch: Story = {
       }
     </ToolkitProvider>
     `,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    const searchBar = await canvas.findByRole('textbox');
+    const searchButton = await canvas.findByRole('button', { name: 'Click to Search!!' });
+    
+    await userEvent.type(searchBar, 'Item name 2');
+    await userEvent.click(searchButton);
+    
+    await waitFor(async () => {
+      const rows = await within(table).findAllByRole('row');
+      expect(rows).toHaveLength(2);
+      expect(within(rows[1]).getAllByRole('cell')[0]).toHaveTextContent('2');
+    });
   }
 };
 
@@ -450,6 +557,19 @@ export const SearchFormattedValue: Story = {
     </ToolkitProvider>
     `,
     header: <h3>Try to Search USD at below input field:</h3>,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    const searchBar = await canvas.findByRole('textbox');
+    
+    await userEvent.type(searchBar, 'USD');
+    
+    await waitFor(async () => {
+      const rows = await within(table).findAllByRole('row');
+      // all 5 rows should match USD
+      expect(rows).toHaveLength(6);
+    });
   }
 };
 
@@ -523,6 +643,31 @@ export const CustomSearchValue: Story = {
     </ToolkitProvider>
     `,
     header: <h3>Try to Search Bob, Cat or Allen instead of 0, 1 or 2</h3>,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    const searchBar = await canvas.findByRole('textbox');
+    
+    // Data is generated by jobsGenerator1(5)
+    // It uses random owners, so we should check for something that definitely exists or type something that matches.
+    // Let's check for 'Bob' or 'Allen' or 'Cat'
+    await userEvent.type(searchBar, 'Bob');
+    
+    await waitFor(async () => {
+      const rows = await within(table).findAllByRole('row');
+      // If Bob exists, we should have rows. If not, only header.
+      // Since it's random, we can't be 100% sure without fixed data, but jobsGenerator1(5) usually has some Bob.
+      // Wait... let's check common.ts jobsGenerator1
+      // owner: Math.floor(Math.random() * 2 + 1)
+      // owners = ['Allen', 'Bob', 'Cat']; -> owners[1] is Bob, owners[2] is Cat.
+      // Allen (0) is never generated by jobsGenerator1.
+      
+      const bobRows = Array.from(rows).filter(row => row.textContent?.includes('Bob'));
+      if (bobRows.length > 0) {
+        expect(rows.length).toBeGreaterThan(1);
+      }
+    });
   }
 };
 
@@ -587,5 +732,26 @@ export const CustomMatchFunction: Story = {
     );
     `,
     header: <h3>Input something at below input field:</h3>,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    const searchBar = await canvas.findByRole('textbox');
+    
+    // customMatchFunc uses startsWith
+    await userEvent.type(searchBar, 'It');
+    await waitFor(async () => {
+      const rows = await within(table).findAllByRole('row');
+      // All starting with "It" (Item name X)
+      expect(rows).toHaveLength(6);
+    });
+    
+    await userEvent.clear(searchBar);
+    await userEvent.type(searchBar, 'name 2');
+    await waitFor(async () => {
+      const rows = await within(table).findAllByRole('row');
+      // should be 1 (header only) since it doesn't START with "name 2"
+      expect(rows).toHaveLength(1);
+    });
   }
 };

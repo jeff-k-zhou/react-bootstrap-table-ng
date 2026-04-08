@@ -1,4 +1,4 @@
-import React, { Component, ReactNode } from "react";
+import React, { ReactNode, useMemo } from "react";
 
 import { ExpandRowProps, SelectRowProps } from "./types";
 import { ROW_SELECT_DISABLED } from "./const";
@@ -31,128 +31,127 @@ interface BodyProps {
   rowEvents?: Record<string, any> | null;
   expandRow?: ExpandRowProps<any, any> | undefined;
   className?: string;
+  cellExpandable?: boolean;
 }
 
-class Body extends Component<BodyProps> {
-  EditingCell: any;
-  RowComponent: any;
+const Body: React.FC<BodyProps> = (props) => {
+  const {
+    columns,
+    data,
+    tabIndexCell,
+    keyField,
+    isEmpty,
+    noDataIndication,
+    visibleColumnSize,
+    cellEdit,
+    selectRow,
+    rowStyle,
+    rowClasses,
+    rowEvents,
+    expandRow,
+    className,
+    cellExpandable,
+  } = props;
 
-  constructor(props: BodyProps) {
-    super(props);
-    const { keyField, cellEdit, selectRow, expandRow } = props;
+    const selectRowEnabled =
+      selectRow?.mode !== undefined && selectRow.mode !== ROW_SELECT_DISABLED;
+    const expandRowEnabled = !!expandRow?.renderer;
+    const cellEditEnabled = !!cellEdit?.createContext;
 
-    // Construct Editing Cell Component
-    if (cellEdit?.createContext) {
-      this.EditingCell = cellEdit.createEditingCell(
+  const { EditingCell, RowComponent } = useMemo(() => {
+    let currentEditingCell: any = null;
+    if (cellEditEnabled) {
+      currentEditingCell = cellEdit.createEditingCell(
         _,
         cellEdit.options.onStartEdit
       );
     }
 
-    // Construct Row Component
-    let RowComponent: any = SimpleRow;
-
-    const selectRowEnabled = selectRow?.mode !== ROW_SELECT_DISABLED;
-    const expandRowEnabled = !!expandRow!.renderer;
+    let currentRowComponent: any = SimpleRow;
 
     if (expandRowEnabled) {
-      RowComponent = withRowExpansion(RowAggregator);
+      currentRowComponent = withRowExpansion(RowAggregator);
     }
 
     if (selectRowEnabled) {
-      RowComponent = withRowSelection(
-        expandRowEnabled ? RowComponent : RowAggregator
+      currentRowComponent = withRowSelection(
+        expandRowEnabled ? currentRowComponent : RowAggregator
       );
     }
 
-    if (cellEdit?.createContext) {
-      RowComponent = cellEdit.withRowLevelCellEdit(
-        RowComponent,
+    if (cellEditEnabled) {
+      currentRowComponent = cellEdit.withRowLevelCellEdit(
+        currentRowComponent,
         selectRowEnabled,
         keyField,
         _
       );
     }
 
-    this.RowComponent = RowComponent;
-  }
+    return {
+      EditingCell: currentEditingCell,
+      RowComponent: currentRowComponent,
+    };
+  }, [cellEditEnabled, selectRowEnabled, expandRowEnabled, keyField]);
 
-  render() {
-    const {
-      columns,
-      data,
-      tabIndexCell,
-      keyField,
-      isEmpty,
-      noDataIndication,
-      visibleColumnSize,
-      cellEdit,
-      selectRow,
-      rowStyle,
-      rowClasses,
-      rowEvents,
-      expandRow,
-      className,
-    } = this.props;
+  let content: ReactNode;
 
-    let content: ReactNode;
+  if (isEmpty) {
+    const indication = typeof noDataIndication === "function"
+      ? (noDataIndication as Function)()
+      : noDataIndication;
+    if (!indication) {
+      return null;
+    }
+    content = <RowSection content={indication} colSpan={visibleColumnSize} />;
+  } else {
+    const selectRowEnabled = selectRow?.mode !== ROW_SELECT_DISABLED;
+    const expandRowEnabled = !!expandRow?.renderer;
 
-    if (isEmpty) {
-      const indication = _.isFunction(noDataIndication)
-        ? noDataIndication()
-        : noDataIndication;
-      if (!indication) {
-        return null;
-      }
-      content = <RowSection content={indication} colSpan={visibleColumnSize} />;
-    } else {
-      const selectRowEnabled = selectRow?.mode !== ROW_SELECT_DISABLED;
-      const expandRowEnabled = !!expandRow!.renderer;
+    const additionalRowProps: RowProps = {};
+    additionalRowProps.cellExpandable = cellExpandable;
 
-      const additionalRowProps: RowProps = {};
-
-      if (cellEdit?.createContext) {
-        additionalRowProps.EditingCellComponent = this.EditingCell;
-      }
-
-      if (selectRowEnabled || expandRowEnabled) {
-        additionalRowProps.expandRow = expandRow;
-        additionalRowProps.selectRow = selectRow;
-      }
-
-      content = data.map((row, index) => {
-        if (row) {
-          const key = _.get(row, keyField);
-          const baseRowProps = {
-            key,
-            row,
-            tabIndexCell,
-            columns,
-            keyField,
-            cellEdit,
-            value: key,
-            rowIndex: index,
-            visibleColumnSize,
-            attrs: rowEvents || {},
-            ...additionalRowProps,
-          };
-
-          baseRowProps.style = _.isFunction(rowStyle)
-            ? (rowStyle(row, index) as any)
-            : (rowStyle as any);
-          baseRowProps.className = _.isFunction(rowClasses)
-            ? rowClasses(row, index)
-            : rowClasses;
-
-          return <this.RowComponent {...baseRowProps} />;
-        } else {
-          return null;
-        }
-      });
+    if (cellEdit?.createContext) {
+      additionalRowProps.EditingCellComponent = EditingCell;
     }
 
-    return <tbody className={className}>{content}</tbody>;
+    if (selectRowEnabled || expandRowEnabled) {
+      additionalRowProps.expandRow = expandRow;
+      additionalRowProps.selectRow = selectRow;
+    }
+
+    content = data.map((row, index) => {
+      if (row) {
+        const key = _.get(row, keyField);
+        const baseRowProps: any = {
+          key,
+          row,
+          tabIndexCell,
+          columns,
+          keyField,
+          cellEdit,
+          value: key,
+          rowIndex: index,
+          visibleColumnSize,
+          attrs: rowEvents || {},
+          ...additionalRowProps,
+        };
+
+        baseRowProps.style = typeof rowStyle === "function"
+          ? (rowStyle(row, index) as any)
+          : (rowStyle as any);
+        baseRowProps.className = typeof rowClasses === "function"
+          ? (rowClasses(row, index) as any)
+          : rowClasses;
+
+        const { key: rowKey, ...rest } = baseRowProps;
+        return <RowComponent key={rowKey} {...rest} />;
+      } else {
+        return null;
+      }
+    });
   }
-}
+  return <tbody className={className}>{content}</tbody>;
+};
 
 export default Body;

@@ -2,7 +2,7 @@ import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { INDICATOR_POSITION_RIGHT } from "../..";
 import createExpansionContext from "../../src/contexts/row-expand-context";
-import { createSelectionContext } from "../../src/contexts/selection-context";
+import createSelectionContext from "../../src/contexts/selection-context";
 import ExpandCell from "../../src/row-expand/expand-cell";
 import bindExpansion from "../../src/row-expand/row-consumer";
 import bindSelection from "../../src/row-selection/row-consumer";

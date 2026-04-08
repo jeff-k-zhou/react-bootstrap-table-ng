@@ -224,37 +224,37 @@ describe("Multi Select Filter", () => {
   describe("cleanFiltered", () => {
     it("should call onFilter and set state correctly when defaultValue is defined", () => {
       const defaultValue = ["0"];
-      let filterRef: any;
+      let filterMethod: any;
       render(
         <MultiSelectFilter
           onFilter={onFilter}
           column={column}
           options={options}
           defaultValue={defaultValue}
-          ref={(ref: any) => (filterRef = ref)}
+          getFilter={(f: any) => (filterMethod = f)}
         />
       );
       const { act } = require("@testing-library/react");
       act(() => {
-        filterRef.cleanFiltered();
+        filterMethod([]);
       });
       expect(onFilter).toHaveBeenCalled();
       expect(onFilterFirstReturn).toHaveBeenCalled();
     });
 
     it("should call onFilter and set state correctly when defaultValue is not defined", () => {
-      let filterRef: any;
+      let filterMethod: any;
       render(
         <MultiSelectFilter
           onFilter={onFilter}
           column={column}
           options={options}
-          ref={(ref: any) => (filterRef = ref)}
+          getFilter={(f: any) => (filterMethod = f)}
         />
       );
       const { act } = require("@testing-library/react");
       act(() => {
-        filterRef.cleanFiltered();
+        filterMethod([]);
       });
       expect(onFilter).toHaveBeenCalled();
       expect(onFilterFirstReturn).toHaveBeenCalled();
@@ -264,18 +264,18 @@ describe("Multi Select Filter", () => {
   describe("applyFilter", () => {
     const values = ["2"];
     it("should call onFilter and set state correctly", () => {
-      let filterRef: any;
+      let filterMethod: any;
       render(
         <MultiSelectFilter
           onFilter={onFilter}
           column={column}
           options={options}
-          ref={(ref: any) => (filterRef = ref)}
+          getFilter={(f: any) => (filterMethod = f)}
         />
       );
       const { act } = require("@testing-library/react");
       act(() => {
-        filterRef.applyFilter(values);
+        filterMethod(values);
       });
       expect(onFilter).toHaveBeenCalled();
       expect(onFilterFirstReturn).toHaveBeenCalledWith(values);

@@ -63,7 +63,8 @@ const SizePerPageDropDown = (props: SizePerPageDropDownProps) => {
     className
   );
 
-  const id = tableId ? `${tableId}-pageDropDown` : "pageDropDown";
+  const generatedId = React.useId();
+  const id = tableId ? `${tableId}-pageDropDown` : `pageDropDown-${generatedId}`;
 
   return (
     <span

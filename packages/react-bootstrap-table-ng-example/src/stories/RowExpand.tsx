@@ -1,5 +1,5 @@
 /* eslint-disable import/no-anonymous-default-export */
-import React from "react";
+import React, { useState } from "react";
 
 import BootstrapTable from "../../../react-bootstrap-table-ng";
 import Code from "../components/common/code-block";
@@ -20,52 +20,38 @@ interface RowExpandManagementState {
   expanded: number[];
 }
 
-class RowExpandManagement extends React.Component<RowExpandManagementProps, RowExpandManagementState> {
-  constructor(props: RowExpandManagementProps) {
-    super(props);
-    this.state = { expanded: [0, 1] };
-  }
+const RowExpandManagement: React.FC<RowExpandManagementProps> = ({ products, columns }) => {
+  const [expanded, setExpanded] = useState<number[]>([0, 1]);
 
-  handleBtnClick = () => {
-    if (!this.state.expanded.includes(2)) {
-      this.setState(() => ({
-        expanded: [...this.state.expanded, 2],
-      }));
+  const handleBtnClick = () => {
+    if (!expanded.includes(2)) {
+      setExpanded([...expanded, 2]);
     } else {
-      this.setState(() => ({
-        expanded: this.state.expanded.filter((x) => x !== 2),
-      }));
+      setExpanded(expanded.filter((x) => x !== 2));
     }
-  }
+  };
 
-  handleOnExpand = (row: any, isExpand: boolean, rowIndex: number, e: React.MouseEvent) => {
+  const handleOnExpand = (row: any, isExpand: boolean, rowIndex: number, e: React.MouseEvent) => {
     if (isExpand) {
-      this.setState(() => ({
-        expanded: [...this.state.expanded, row.id],
-      }));
+      setExpanded([...expanded, row.id]);
     } else {
-      this.setState(() => ({
-        expanded: this.state.expanded.filter((x) => x !== row.id),
-      }));
+      setExpanded(expanded.filter((x) => x !== row.id));
     }
-  }
+  };
 
-  render() {
-    const { products, columns } = this.props;
+  const expandRow = {
+    renderer: (row: any) => (
+      <div>
+        <p>{`This Expand row is belong to rowKey ${row.id}`}</p>
+        <p>You can render anything here, also you can add additional data on every row object</p>
+        <p>expandRow.renderer callback will pass the origin row object to you</p>
+      </div>
+    ),
+    expanded: expanded,
+    onExpand: handleOnExpand,
+  };
 
-    const expandRow = {
-      renderer: (row: any) => (
-        <div>
-          <p>{`This Expand row is belong to rowKey ${row.id}`}</p>
-          <p>You can render anything here, also you can add additional data on every row object</p>
-          <p>expandRow.renderer callback will pass the origin row object to you</p>
-        </div>
-      ),
-      expanded: this.state.expanded,
-      onExpand: this.handleOnExpand,
-    };
-
-    const sourceCode = `\
+  const sourceCode = `\
     import BootstrapTable from 'react-bootstrap-table-ng';
 
     const columns = [{
@@ -79,68 +65,55 @@ class RowExpandManagement extends React.Component<RowExpandManagementProps, RowE
       text: 'Product Price'
     }];
 
-    class RowExpandManagment extends React.Component {
-      constructor(props) {
-        super(props);
-        this.state = { expanded: [0, 1] };
-      }
+    const RowExpandManagment = () => {
+      const [expanded, setExpanded] = React.useState([0, 1]);
 
-      handleBtnClick = () => {
-        if (!this.state.expanded.includes(2)) {
-          this.setState(() => ({
-            expanded: [...this.state.expanded, 2]
-          }));
+      const handleBtnClick = () => {
+        if (!expanded.includes(2)) {
+          setExpanded([...expanded, 2]);
         } else {
-          this.setState(() => ({
-            expanded: this.state.expanded.filter(x => x !== 2)
-          }));
+          setExpanded(expanded.filter(x => x !== 2));
         }
-      }
+      };
 
-      handleOnExpand = (row, isExpand, rowIndex, e) => {
+      const handleOnExpand = (row, isExpand, rowIndex, e) => {
         if (isExpand) {
-          this.setState(() => ({
-            expanded: [...this.state.expanded, row.id]
-          }));
+          setExpanded([...expanded, row.id]);
         } else {
-          this.setState(() => ({
-            expanded: this.state.expanded.filter(x => x !== row.id)
-          }));
+          setExpanded(expanded.filter(x => x !== row.id));
         }
-      }
+      };
 
-      render() {
-        const expandRow = {
-          renderer: row => (
-            <div>
-              <p>{ \`This Expand row is belong to rowKey $\{row.id}\` }</p>
-              <p>You can render anything here, also you can add additional data on every row object</p>
-              <p>expandRow.renderer callback will pass the origin row object to you</p>
-            </div>
-          ),
-          expanded: this.state.expanded,
-          onExpand: this.handleOnExpand
-        };
-        return (
+      const expandRow = {
+        renderer: row => (
           <div>
-            <button className="btn btn-success" onClick={ this.handleBtnClick }>Expand/Collapse 3rd row</button>
-            <BootstrapTable keyField="id" data={ products } columns={ columns } expandRow={ expandRow } />
-            <Code>{ sourceCode }</Code>
+            <p>{ \`This Expand row is belong to rowKey \${row.id}\` }</p>
+            <p>You can render anything here, also you can add additional data on every row object</p>
+            <p>expandRow.renderer callback will pass the origin row object to you</p>
           </div>
-        );
-      }
-    }
+        ),
+        expanded: expanded,
+        onExpand: handleOnExpand
+      };
+      
+      return (
+        <div>
+          <button className="btn btn-success" onClick={ handleBtnClick }>Expand/Collapse 3rd row</button>
+          <BootstrapTable keyField="id" data={ products } columns={ columns } expandRow={ expandRow } />
+          <Code>{ sourceCode }</Code>
+        </div>
+      );
+    };
     `;
 
-    return (
-      <div>
-        <button className="btn btn-success" onClick={this.handleBtnClick}>Expand/Collapse 3rd row</button>
-        <BootstrapTable keyField="id" data={products} columns={columns} expandRow={expandRow} />
-        <Code>{sourceCode}</Code>
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      <button className="btn btn-success" onClick={handleBtnClick}>Expand/Collapse 3rd row</button>
+      <BootstrapTable keyField="id" data={products} columns={columns} expandRow={expandRow} />
+      <Code>{sourceCode}</Code>
+    </div>
+  );
+};
 
 interface RowExpandProps {
   mode?: any;

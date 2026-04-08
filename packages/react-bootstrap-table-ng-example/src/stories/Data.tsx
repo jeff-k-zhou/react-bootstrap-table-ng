@@ -1,5 +1,5 @@
 /* eslint-disable import/no-anonymous-default-export */
-import React from "react";
+import React, { useState } from "react";
 
 import BootstrapTable from "../../../react-bootstrap-table-ng";
 import filterFactory, {
@@ -24,171 +24,148 @@ interface WithoutPaginationCaseState {
   rowCount: number;
 }
 
-class WithoutPaginationCase extends React.Component<
-  {},
-  WithoutPaginationCaseState
-> {
-  products1 = productsGenerator(8);
+const WithoutPaginationCase: React.FC = () => {
+  const products1 = productsGenerator(8);
+  const [rowCount, setRowCount] = useState(products1.length);
 
-  constructor(props: any) {
-    super(props);
-    this.state = { rowCount: this.products1.length };
-  }
-
-  handleDataChange = ({ dataSize }: any) => {
-    this.setState({ rowCount: dataSize });
+  const handleDataChange = ({ dataSize }: any) => {
+    setRowCount(dataSize);
   };
 
-  render() {
-    const sourceCode2 = `\
+  const sourceCode2 = `\
     import BootstrapTable from 'react-bootstrap-table-ng';
     import filterFactory, { textFilter } from 'react-bootstrap-table-ng-filter';
     import paginationFactory from 'react-bootstrap-table-ng-paginator';
 
-    class Case2 extends React.Component {
-      constructor(props) {
-        super(props);
-        this.state = { rowCount: products.length };
-      }
+    const Case2 = () => {
+      const [rowCount, setRowCount] = React.useState(products.length);
 
-      handleDataChange = ({ dataSize }) => {
-        this.setState({ rowCount: dataSize });
-      }
+      const handleDataChange = ({ dataSize }) => {
+        setRowCount(dataSize);
+      };
 
-      render() {
-        return (
-          <div>
-            <h5>Row Count:<span className="badge">{ this.state.rowCount }</span></h5>
-            <BootstrapTable
-              onDataSizeChange={ this.handleDataChange }
-              keyField="id"
-              data={ products }
-              columns={ columns }
-              filter={ filterFactory() }
-              pagination={ paginationFactory() }
-            />
-            <Code>{ sourceCode }</Code>
-          </div>
-        );
-      }
+      return (
+        <div>
+          <h5>Row Count:<span className="badge">{ rowCount }</span></h5>
+          <BootstrapTable
+            onDataSizeChange={ handleDataChange }
+            keyField="id"
+            data={ products }
+            columns={ columns }
+            filter={ filterFactory() }
+            pagination={ paginationFactory() }
+          />
+          <Code>{ sourceCode }</Code>
+        </div>
+      );
+    };
     `;
 
-    return (
-      <div>
-        <h3>Without Pagination Case</h3>
-        <h5>
-          Row Count:<span className="badge">{this.state.rowCount}</span>
-        </h5>
-        <BootstrapTable
-          onDataSizeChange={this.handleDataChange}
-          keyField="id"
-          data={this.products1}
-          columns={[
-            {
-              dataField: "id",
-              text: "Product ID",
-            },
-            {
-              dataField: "name",
-              text: "Product Name",
-              filter: textFilter(),
-            },
-            {
-              dataField: "price",
-              text: "Product Price",
-              filter: textFilter(),
-            },
-          ]}
-          filter={filterFactory()}
-        />
-        <Code>{sourceCode2}</Code>
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      <h3>Without Pagination Case</h3>
+      <h5>
+        Row Count:<span className="badge">{rowCount}</span>
+      </h5>
+      <BootstrapTable
+        onDataSizeChange={handleDataChange}
+        keyField="id"
+        data={products1}
+        columns={[
+          {
+            dataField: "id",
+            text: "Product ID",
+          },
+          {
+            dataField: "name",
+            text: "Product Name",
+            filter: textFilter(),
+          },
+          {
+            dataField: "price",
+            text: "Product Price",
+            filter: textFilter(),
+          },
+        ]}
+        filter={filterFactory()}
+      />
+      <Code>{sourceCode2}</Code>
+    </div>
+  );
+};
 
 interface WithPaginationCaseState {
   rowCount: number;
 }
 
-class WithPaginationCase extends React.Component<{}, WithPaginationCaseState> {
-  products2 = productsGenerator(88);
+const WithPaginationCase: React.FC = () => {
+  const products2 = productsGenerator(88);
+  const [rowCount, setRowCount] = useState(products2.length);
 
-  constructor(props: any) {
-    super(props);
-    this.state = { rowCount: this.products2.length };
-  }
-
-  handleDataChange = ({ dataSize }: any) => {
-    this.setState({ rowCount: dataSize });
+  const handleDataChange = ({ dataSize }: any) => {
+    setRowCount(dataSize);
   };
 
-  render() {
-    const sourceCode1 = `\
+  const sourceCode1 = `\
     import BootstrapTable from 'react-bootstrap-table-ng';
     import filterFactory, { textFilter } from 'react-bootstrap-table-ng-filter';
 
-    class Case1 extends React.Component {
-      constructor(props) {
-        super(props);
-        this.state = { rowCount: products.length };
-      }
+    const Case1 = () => {
+      const [rowCount, setRowCount] = React.useState(products.length);
 
-      handleDataChange = ({ dataSize }) => {
-        this.setState({ rowCount: dataSize });
-      }
+      const handleDataChange = ({ dataSize }) => {
+        setRowCount(dataSize);
+      };
 
-      render() {
-        return (
-          <div>
-            <h5>Row Count:<span className="badge">{ this.state.rowCount }</span></h5>
-            <BootstrapTable
-              onDataSizeChange={ this.handleDataChange }
-              keyField="id"
-              data={ products }
-              columns={ columns }
-              filter={ filterFactory() }
-            />
-            <Code>{ sourceCode }</Code>
-          </div>
-        );
-      }
+      return (
+        <div>
+          <h5>Row Count:<span className="badge">{ rowCount }</span></h5>
+          <BootstrapTable
+            onDataSizeChange={ handleDataChange }
+            keyField="id"
+            data={ products }
+            columns={ columns }
+            filter={ filterFactory() }
+          />
+          <Code>{ sourceCode }</Code>
+        </div>
+      );
+    };
     `;
 
-    return (
-      <div>
-        <h3>Without Pagination Case</h3>
-        <h5>
-          Row Count:<span className="badge">{this.state.rowCount}</span>
-        </h5>
-        <BootstrapTable
-          onDataSizeChange={this.handleDataChange}
-          keyField="id"
-          data={this.products2}
-          columns={[
-            {
-              dataField: "id",
-              text: "Product ID",
-            },
-            {
-              dataField: "name",
-              text: "Product Name",
-              filter: textFilter(),
-            },
-            {
-              dataField: "price",
-              text: "Product Price",
-              filter: textFilter(),
-            },
-          ]}
-          filter={filterFactory()}
-          pagination={paginationFactory()}
-        />
-        <Code>{sourceCode1}</Code>
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      <h3>Without Pagination Case</h3>
+      <h5>
+        Row Count:<span className="badge">{rowCount}</span>
+      </h5>
+      <BootstrapTable
+        onDataSizeChange={handleDataChange}
+        keyField="id"
+        data={products2}
+        columns={[
+          {
+            dataField: "id",
+            text: "Product ID",
+          },
+          {
+            dataField: "name",
+            text: "Product Name",
+            filter: textFilter(),
+          },
+          {
+            dataField: "price",
+            text: "Product Price",
+            filter: textFilter(),
+          },
+        ]}
+        filter={filterFactory()}
+        pagination={paginationFactory()}
+      />
+      <Code>{sourceCode1}</Code>
+    </div>
+  );
+};
 
 const LoadDataWithFilterProductList = (props: any) => {
   const columns = [
@@ -221,44 +198,30 @@ const LoadDataWithFilterProductList = (props: any) => {
   );
 };
 
-interface LoadDataWithFilterState {
-  products: any[];
-}
+const LoadDataWithFilterComponent: React.FC = () => {
+  const [products, setProducts] = useState<any[]>([]);
 
-class LoadDataWithFilterComponent extends React.Component<
-  {},
-  LoadDataWithFilterState
-> {
-  constructor(props: any) {
-    super(props);
-    this.state = { products: [] };
-  }
-
-  loadData = () => {
-    this.setState({
-      products: productsGenerator(),
-    });
+  const loadData = () => {
+    setProducts(productsGenerator());
   };
 
-  render() {
-    return (
-      <div>
-        <button
-          onClick={this.loadData}
-          style={{
-            fontSize: "20px",
-            position: "absolute",
-            left: "200px",
-            top: "40px",
-          }}
-        >
-          Load Data
-        </button>
-        <LoadDataWithFilterProductList products={this.state.products} />
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      <button
+        onClick={loadData}
+        style={{
+          fontSize: "20px",
+          position: "absolute",
+          left: "200px",
+          top: "40px",
+        }}
+      >
+        Load Data
+      </button>
+      <LoadDataWithFilterProductList products={products} />
+    </div>
+  );
+};
 
 const LoadDataWithDefaultFilterProductList = (props: any) => {
   const columns = [
@@ -293,43 +256,30 @@ const LoadDataWithDefaultFilterProductList = (props: any) => {
   );
 };
 
-interface LoadDataWithDefaultFilterState {
-  products: any[];
-}
+const LoadDataWithDefaultFilterComponent: React.FC = () => {
+  const [products, setProducts] = useState<any[]>(productsGenerator(3));
 
-class LoadDataWithDefaultFilterComponent extends React.Component<
-  {},
-  LoadDataWithDefaultFilterState
-> {
-  state = {
-    products: productsGenerator(3),
+  const loadData = () => {
+    setProducts(productsGenerator(14));
   };
 
-  loadData = () => {
-    this.setState({
-      products: productsGenerator(14),
-    });
-  };
-
-  render() {
-    return (
-      <div>
-        <button
-          onClick={this.loadData}
-          style={{
-            fontSize: "20px",
-            position: "absolute",
-            left: "200px",
-            top: "40px",
-          }}
-        >
-          Load Data
-        </button>
-        <LoadDataWithDefaultFilterProductList products={this.state.products} />
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      <button
+        onClick={loadData}
+        style={{
+          fontSize: "20px",
+          position: "absolute",
+          left: "200px",
+          top: "40px",
+        }}
+      >
+        Load Data
+      </button>
+      <LoadDataWithDefaultFilterProductList products={products} />
+    </div>
+  );
+};
 
 const { SearchBar } = Search;
 
@@ -358,7 +308,7 @@ const LoadDataWithSearchProductList = (props: any) => {
         columns={columns}
         search
       >
-        {(toolkitprops) => (
+        {(toolkitprops: any) => (
           <div>
             <SearchBar {...toolkitprops.searchProps} />
             <BootstrapTable striped hover {...toolkitprops.baseProps} />
@@ -369,44 +319,30 @@ const LoadDataWithSearchProductList = (props: any) => {
   );
 };
 
-interface LoadDataWithSearchState {
-  products: any[];
-}
+const LodadDataWithSearchComponent: React.FC = () => {
+  const [products, setProducts] = useState<any[]>([]);
 
-class LodadDataWithSearchComponent extends React.Component<
-  {},
-  LoadDataWithSearchState
-> {
-  constructor(props: any) {
-    super(props);
-    this.state = { products: [] };
-  }
-
-  loadData = () => {
-    this.setState({
-      products: productsGenerator(),
-    });
+  const loadData = () => {
+    setProducts(productsGenerator());
   };
 
-  render() {
-    return (
-      <div>
-        <button
-          onClick={this.loadData}
-          style={{
-            fontSize: "20px",
-            position: "absolute",
-            left: "200px",
-            top: "40px",
-          }}
-        >
-          Load Data
-        </button>
-        <LoadDataWithSearchProductList products={this.state.products} />
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      <button
+        onClick={loadData}
+        style={{
+          fontSize: "20px",
+          position: "absolute",
+          left: "200px",
+          top: "40px",
+        }}
+      >
+        Load Data
+      </button>
+      <LoadDataWithSearchProductList products={products} />
+    </div>
+  );
+};
 
 const LoadDataWithDefaultSearchProductList = (props: any) => {
   const columns = [
@@ -433,7 +369,7 @@ const LoadDataWithDefaultSearchProductList = (props: any) => {
         columns={columns}
         search={{ defaultSearch: "3" }}
       >
-        {(toolkitprops) => (
+        {(toolkitprops: any) => (
           <div>
             <SearchBar {...toolkitprops.searchProps} />
             <BootstrapTable striped hover {...toolkitprops.baseProps} />
@@ -444,44 +380,30 @@ const LoadDataWithDefaultSearchProductList = (props: any) => {
   );
 };
 
-interface LoadDataWithDefaultSearchState {
-  products: any[];
-}
+const LodadDataWithDefaultSearchComponent: React.FC = () => {
+  const [products, setProducts] = useState<any[]>(productsGenerator(4));
 
-class LodadDataWithDefaultSearchComponent extends React.Component<
-  {},
-  LoadDataWithDefaultSearchState
-> {
-  constructor(props: any) {
-    super(props);
-    this.state = { products: productsGenerator(4) };
-  }
-
-  loadData = () => {
-    this.setState({
-      products: productsGenerator(34),
-    });
+  const loadData = () => {
+    setProducts(productsGenerator(34));
   };
 
-  render() {
-    return (
-      <div>
-        <button
-          onClick={this.loadData}
-          style={{
-            fontSize: "20px",
-            position: "absolute",
-            left: "200px",
-            top: "40px",
-          }}
-        >
-          Load Data
-        </button>
-        <LoadDataWithDefaultSearchProductList products={this.state.products} />
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      <button
+        onClick={loadData}
+        style={{
+          fontSize: "20px",
+          position: "absolute",
+          left: "200px",
+          top: "40px",
+        }}
+      >
+        Load Data
+      </button>
+      <LoadDataWithDefaultSearchProductList products={products} />
+    </div>
+  );
+};
 
 const LodadDataWithFilterAndPaginationProductList = (props: any) => {
   const columns = [
@@ -517,46 +439,32 @@ const LodadDataWithFilterAndPaginationProductList = (props: any) => {
   );
 };
 
-interface LodadDataWithFilterAndPaginationState {
-  products: any[];
-}
+const LodadDataWithFilterAndPaginationComponent: React.FC = () => {
+  const [products, setProducts] = useState<any[]>(productsGenerator(60));
 
-class LodadDataWithFilterAndPaginationComponent extends React.Component<
-  {},
-  LodadDataWithFilterAndPaginationState
-> {
-  constructor(props: any) {
-    super(props);
-    this.state = { products: productsGenerator(60) };
-  }
-
-  loadData = () => {
-    this.setState({
-      products: productsGenerator(14),
-    });
+  const loadData = () => {
+    setProducts(productsGenerator(14));
   };
 
-  render() {
-    return (
-      <div>
-        <button
-          onClick={this.loadData}
-          style={{
-            fontSize: "20px",
-            position: "absolute",
-            left: "200px",
-            top: "40px",
-          }}
-        >
-          Load Data
-        </button>
-        <LodadDataWithFilterAndPaginationProductList
-          products={this.state.products}
-        />
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      <button
+        onClick={loadData}
+        style={{
+          fontSize: "20px",
+          position: "absolute",
+          left: "200px",
+          top: "40px",
+        }}
+      >
+        Load Data
+      </button>
+      <LodadDataWithFilterAndPaginationProductList
+        products={products}
+      />
+    </div>
+  );
+};
 
 interface DataProps {
   mode?: any;

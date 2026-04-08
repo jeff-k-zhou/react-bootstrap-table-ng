@@ -48,27 +48,25 @@ describe("BootstrapTable", () => {
       expect(table.className).toBe("table table-bordered");
     });
 
-    it("should not have customized id as default", () => {
+    it("should have customized id as default", () => {
       render(<BootstrapTable keyField="id" columns={columns} data={data} />);
       const table = screen.getByRole("table");
-      expect(table.getAttribute("id")).toBeNull();
+      expect(table.getAttribute("id")).not.toBeNull();
     });
   });
 
-  describe("getData", () => {
-    it("should return props.data", () => {
-      // getData is a class method, so we need to access the instance
-      // We'll use a ref to access the instance
-      let instance: any = null;
-      render(
-        <BootstrapTable
-          keyField="id"
-          columns={columns}
-          data={data}
-          ref={(ref) => { instance = ref; }}
-        />
-      );
-      expect(instance.getData()).toEqual(data);
+  describe("rendered data", () => {
+    it("should render the correct number of rows", () => {
+      render(<BootstrapTable keyField="id" columns={columns} data={data} />);
+      const rows = screen.getAllByRole("row");
+      // 1 header row + 2 data rows
+      expect(rows).toHaveLength(3);
+    });
+
+    it("should render data content correctly", () => {
+      render(<BootstrapTable keyField="id" columns={columns} data={data} />);
+      expect(screen.getByText("A")).toBeInTheDocument();
+      expect(screen.getByText("B")).toBeInTheDocument();
     });
   });
 
@@ -178,6 +176,119 @@ describe("BootstrapTable", () => {
       // Caption is rendered as a child, so check for its content
       expect(screen.getByText("test")).toBeInTheDocument();
       expect(screen.getByText("test")).toHaveClass("table-caption");
+    });
+  });
+
+  describe("cellExpandable", () => {
+    it("should have expandable-cell class on data cell by default", () => {
+      render(<BootstrapTable keyField="id" columns={columns} data={data} />);
+      const cells = screen.getAllByRole("cell");
+      cells.forEach((cell) => {
+        expect(cell).toHaveClass("expandable-cell");
+      });
+    });
+
+    it("should have expandable-cell class on data cell when cellExpandable prop is true", () => {
+      render(
+        <BootstrapTable
+          keyField="id"
+          columns={columns}
+          data={data}
+          cellExpandable
+        />
+      );
+      const cells = screen.getAllByRole("cell");
+      cells.forEach((cell) => {
+        expect(cell).toHaveClass("expandable-cell");
+      });
+    });
+
+    it("should not have expandable-cell class on data cell when cellExpandable prop is false", () => {
+      render(
+        <BootstrapTable
+          keyField="id"
+          columns={columns}
+          data={data}
+          cellExpandable={false}
+        />
+      );
+      const cells = screen.getAllByRole("cell");
+      cells.forEach((cell) => {
+        expect(cell).not.toHaveClass("expandable-cell");
+      });
+    });
+
+    it("should not have expandable-cell class on data cell when column.cellExpandable is false", () => {
+      const columnWithExpandableFalse = [
+        {
+          dataField: "id",
+          text: "ID",
+          cellExpandable: false,
+        },
+        {
+          dataField: "name",
+          text: "Name",
+        },
+      ];
+      render(
+        <BootstrapTable
+          keyField="id"
+          columns={columnWithExpandableFalse}
+          data={data}
+        />
+      );
+      const idCells = screen.getAllByRole("cell").filter((cell) => {
+        const text = cell.textContent;
+        return text === "1" || text === "2";
+      });
+      const nameCells = screen.getAllByRole("cell").filter((cell) => {
+        const text = cell.textContent;
+        return text === "A" || text === "B";
+      });
+
+      idCells.forEach((cell) => {
+        expect(cell).not.toHaveClass("expandable-cell");
+      });
+      nameCells.forEach((cell) => {
+        expect(cell).toHaveClass("expandable-cell");
+      });
+    });
+
+    it("should have expandable-cell class on data cell when column.cellExpandable is true while cellExpandable prop is false", () => {
+      const columnWithExpandableTrue = [
+        {
+          dataField: "id",
+          text: "ID",
+          cellExpandable: true,
+        },
+        {
+          dataField: "name",
+          text: "Name",
+        },
+      ];
+      render(
+        <BootstrapTable
+          keyField="id"
+          columns={columnWithExpandableTrue}
+          data={data}
+          cellExpandable={false}
+        />
+      );
+      const idCells = screen.getAllByRole("cell").filter((cell) => {
+        const text = cell.textContent;
+        return text === "1" || text === "2";
+      });
+      const nameCells = screen.getAllByRole("cell").filter((cell) => {
+        const text = cell.textContent;
+        return text === "A" || text === "B";
+      });
+
+      idCells.forEach((cell) => {
+        expect(cell).toHaveClass("expandable-cell");
+      });
+      nameCells.forEach((cell) => {
+        expect(cell).not.toHaveClass("expandable-cell");
+      });
     });
   });
 });

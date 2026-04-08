@@ -2,8 +2,8 @@
 /* eslint no-return-assign: 0 */
 /* eslint react/no-unused-prop-types: 0 */
 /* eslint class-methods-use-this: 0 */
-import React, { Component } from "react";
-import { EQ, FILTER_TYPES, SelectFilterProps } from "../..";
+import React, { forwardRef, useId, useImperativeHandle } from "react";
+import { EQ, FILTER_TYPES, SelectFilterProps } from "../const";
 
 function optionsEquals(currOpts: any, prevOpts: any) {
   if (Array.isArray(currOpts)) {
@@ -32,127 +32,141 @@ function optionsEquals(currOpts: any, prevOpts: any) {
 function getOptionValue(options: any, key: any) {
   if (Array.isArray(options)) {
     const result = options
-      .filter(({ label }) => label === key)
-      .map(({ value }) => value);
+      .filter(({ label }: any) => label === key)
+      .map(({ value }: any) => value);
     return result[0];
   }
   return options[key];
 }
 
-interface SelectFilterState {
-  isSelected: boolean;
-}
+const SelectFilter = forwardRef<any, SelectFilterProps>((props, ref) => {
+  const {
+    id,
+    style,
+    className,
+    defaultValue = "",
+    onFilter,
+    column,
+    options: propOptions,
+    comparator = EQ,
+    withoutEmptyOption = false,
+    caseSensitive = true,
+    getFilter,
+    filterState = {},
+    placeholder,
+    ...rest
+  } = props;
 
-class SelectFilter extends Component<SelectFilterProps, SelectFilterState> {
-  options: any;
-  selectInput: any;
-  constructor(props: any) {
-    super(props);
-    this.filter = this.filter.bind(this);
-    this.options = this.getOptions(props);
-    const isSelected =
-      getOptionValue(this.options, this.getDefaultValue()) !== undefined;
-    this.state = { isSelected };
-  }
+  const generatedId = useId();
+  const resolvedOptions = React.useMemo(() => {
+    return typeof propOptions === "function"
+      ? propOptions(column)
+      : propOptions;
+  }, [propOptions, column]);
 
-  componentDidMount() {
-    const { column, onFilter, getFilter } = this.props;
-
-    const value = this.selectInput.value;
-    if (value && value !== "") {
-      // TODO
-      // @ts-ignore
-      onFilter(column, FILTER_TYPES.SELECT, true)(value);
-    }
-
-    // export onFilter function to allow users to access
-    if (getFilter) {
-      getFilter((filterVal: any) => {
-        this.setState(() => ({ isSelected: filterVal !== "" }));
-        this.selectInput.value = filterVal;
-
-        // TODO
-        // @ts-ignore
-        onFilter(column, FILTER_TYPES.SELECT)(filterVal);
-      });
-    }
-  }
-
-  componentDidUpdate(prevProps: SelectFilterProps) {
-    let needFilter = false;
-    const { column, onFilter, defaultValue } = this.props;
-    const nextOptions = this.getOptions(this.props);
-    if (defaultValue !== prevProps.defaultValue) {
-      this.selectInput.value = defaultValue;
-      needFilter = true;
-    } else if (!optionsEquals(nextOptions, this.options)) {
-      this.options = nextOptions;
-      needFilter = true;
-    }
-    if (needFilter) {
-      const value = this.selectInput.value;
-      if (value) {
-        // TODO
-        // @ts-ignore
-        onFilter(column, FILTER_TYPES.SELECT)(value);
-      }
-    }
-  }
-
-  getOptions(props: SelectFilterProps) {
-    return typeof props.options === "function"
-      ? props.options(props.column)
-      : props.options;
-  }
-
-  getDefaultValue() {
-    const { filterState, defaultValue } = this.props;
+  const getDefaultValue = React.useCallback(() => {
     if (filterState && typeof filterState.filterVal !== "undefined") {
       return filterState.filterVal;
     }
     return defaultValue;
-  }
+  }, [filterState, defaultValue]);
 
-  cleanFiltered() {
-    const value =
-      this.props.defaultValue !== undefined ? this.props.defaultValue : "";
-    this.setState(() => ({ isSelected: value !== "" }));
-    this.selectInput.value = value;
-    // TODO
-    // @ts-ignore
-    this.props.onFilter(this.props.column, FILTER_TYPES.SELECT)(value);
-  }
+  const [isSelected, setIsSelected] = React.useState(() => {
+    const val = getOptionValue(resolvedOptions, getDefaultValue());
+    return val !== undefined && val !== "";
+  });
 
-  applyFilter(value: any) {
-    this.selectInput.value = value;
-    this.setState(() => ({ isSelected: value !== "" }));
-    // TODO
-    // @ts-ignore
-    this.props.onFilter(this.props.column, FILTER_TYPES.SELECT)(value);
-  }
+  const selectInputRef = React.useRef<HTMLSelectElement>(null);
 
-  filter(e: any) {
-    const { value } = e.target;
-    this.setState(() => ({ isSelected: value !== "" }));
-    // TODO
-    // @ts-ignore
-    this.props.onFilter(this.props.column, FILTER_TYPES.SELECT)(value);
-  }
+  useImperativeHandle(ref, () => ({
+    applyFilter: (val: any) => {
+        setIsSelected(val !== "");
+        if (selectInputRef.current) {
+          selectInputRef.current.value = val;
+        }
+        if (onFilter) {
+          (onFilter as any)(column, FILTER_TYPES.SELECT)(val);
+        }
+    },
+    cleanFiltered: () => {
+        setIsSelected(false);
+        if (selectInputRef.current) {
+          selectInputRef.current.value = "";
+        }
+        if (onFilter) {
+          (onFilter as any)(column, FILTER_TYPES.SELECT)("");
+        }
+    }
+  }));
 
-  renderOptions() {
+  React.useEffect(() => {
+    // export onFilter function to allow users to access
+    if (getFilter) {
+      getFilter((filterVal: any) => {
+        setIsSelected(filterVal !== "");
+        if (selectInputRef.current) {
+          selectInputRef.current.value = filterVal;
+        }
+
+        if (onFilter) {
+          (onFilter as any)(column, FILTER_TYPES.SELECT)(filterVal);
+        }
+      });
+    }
+
+    const value = selectInputRef.current?.value;
+    if (onFilter && value && value !== "") {
+      (onFilter as any)(column, FILTER_TYPES.SELECT, true)(value);
+    }
+  }, []);
+
+  const prevDefaultValue = React.useRef(defaultValue);
+  const prevOptions = React.useRef(resolvedOptions);
+
+  React.useEffect(() => {
+    let needFilter = false;
+    if (defaultValue !== prevDefaultValue.current) {
+      if (selectInputRef.current) {
+        selectInputRef.current.value = defaultValue;
+      }
+      needFilter = true;
+    } else if (!optionsEquals(resolvedOptions, prevOptions.current)) {
+      needFilter = true;
+    }
+
+    if (needFilter) {
+      const value = selectInputRef.current?.value;
+      if (onFilter && typeof value !== 'undefined') {
+        (onFilter as any)(column, FILTER_TYPES.SELECT)(value);
+      }
+    }
+    prevDefaultValue.current = defaultValue;
+    prevOptions.current = resolvedOptions;
+  }, [defaultValue, resolvedOptions, column, onFilter]);
+
+  const filterHandler = React.useCallback(
+    (e: any) => {
+      const { value } = e.target;
+      setIsSelected(value !== "");
+      if (onFilter) {
+        (onFilter as any)(column, FILTER_TYPES.SELECT)(value);
+      }
+    },
+    [column, onFilter]
+  );
+
+  const renderOptions = () => {
     const optionTags = [];
-    const { options } = this;
-    const { placeholder, column, withoutEmptyOption, defaultValue } = this.props;
-    const isSelected = defaultValue !== undefined && defaultValue !== "";
-    if (!withoutEmptyOption && !isSelected) {
+    const isValSelected = defaultValue !== undefined && defaultValue !== "";
+    if (!withoutEmptyOption && !isValSelected) {
       optionTags.push(
         <option key="-1" value="" data-testid="select-filter-placeholder">
           {placeholder || `Select ${column.text}...`}
         </option>
       );
     }
-    if (Array.isArray(options)) {
-      options.forEach(({ value, label }) =>
+    if (Array.isArray(resolvedOptions)) {
+      resolvedOptions.forEach(({ value, label }: any) =>
         optionTags.push(
           <option key={value} value={value}>
             {label}
@@ -160,67 +174,42 @@ class SelectFilter extends Component<SelectFilterProps, SelectFilterState> {
         )
       );
     } else {
-      Object.keys(options).forEach((key) =>
+      Object.keys(resolvedOptions).forEach((key) =>
         optionTags.push(
           <option key={key} value={key}>
-            {options[key]}
+            {resolvedOptions[key]}
           </option>
         )
       );
     }
     return optionTags;
-  }
-
-  render() {
-    const {
-      id,
-      style,
-      className,
-      defaultValue,
-      onFilter,
-      column,
-      options,
-      comparator,
-      withoutEmptyOption,
-      caseSensitive,
-      getFilter,
-      filterState,
-      ...rest
-    } = this.props;
-
-    const selectClass = `filter select-filter form-control ${className} ${this.state.isSelected ? "" : "placeholder-selected"
-      }`;
-    const elmId = `select-filter-column-${column.dataField}${id ? `-${id}` : ""
-      }`;
-
-    return (
-      <label className="filter-label" htmlFor={elmId}>
-        <span className="sr-only visually-hidden">Filter by {column.text}</span>
-        <select
-          {...rest}
-          ref={(n) => { this.selectInput = n; }}
-          id={elmId}
-          style={style}
-          className={selectClass}
-          onChange={this.filter}
-          onClick={(e) => e.stopPropagation()}
-          defaultValue={this.getDefaultValue() || ""}
-          data-testid="select-filter"
-        >
-          {this.renderOptions()}
-        </select>
-      </label>
-    );
-  }
-  static defaultProps = {
-    defaultValue: '',
-    filterState: {},
-    className: '',
-    withoutEmptyOption: false,
-    comparator: EQ,
-    caseSensitive: true,
-    id: null
   };
-}
+
+  const selectClass = `filter select-filter form-control ${className} ${
+    isSelected ? "" : "placeholder-selected"
+  }`;
+  const elmId = id || `select-filter-column-${column.dataField}-${generatedId}`;
+
+  return (
+    <label className="filter-label" htmlFor={elmId}>
+      <span className="sr-only visually-hidden">Filter by {column.text}</span>
+      <select
+        {...rest}
+        ref={selectInputRef}
+        id={elmId}
+        style={style}
+        className={selectClass}
+        onChange={filterHandler}
+        onClick={(e) => e.stopPropagation()}
+        defaultValue={getDefaultValue() || ""}
+        data-testid="select-filter"
+      >
+        {renderOptions()}
+      </select>
+    </label>
+  );
+});
+
+SelectFilter.displayName = "SelectFilter";
 
 export default SelectFilter;

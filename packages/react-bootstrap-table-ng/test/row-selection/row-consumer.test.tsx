@@ -1,15 +1,24 @@
 import React from "react";
 import { render } from "@testing-library/react";
-import { createSelectionContext } from "../../src/contexts/selection-context";
+import createSelectionContext from "../../src/contexts/selection-context";
 import withSelectionConsumer from "../../src/row-selection/row-consumer";
 
 describe("withSelectionConsumer", () => {
   let selectRow: any;
-  const BaseComponent = (props: any) => (
+  const BaseComponent = ({
+    selected,
+    selectable,
+    selectRow: _selectRow,
+    row,
+    value,
+    keyField,
+    rowIndex,
+    ...props
+  }: any) => (
     <div
       data-testid="base"
-      data-selected={String(props.selected)}
-      data-selectable={String(props.selectable)}
+      data-selected={String(selected)}
+      data-selectable={String(selectable)}
       {...props}
     />
   );

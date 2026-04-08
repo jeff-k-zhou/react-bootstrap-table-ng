@@ -1,11 +1,6 @@
-// Type definitions for React-Loading-Overlay 1.0
-// Project: https://github.com/derrickpelletier/react-loading-overlay
-// Definitions by: DefinitelyTyped <https://github.com/DefinitelyTyped>
-// Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 import { css, cx } from "@emotion/css";
 import { CSSTransition } from "react-transition-group";
-
-import React, { createRef } from "react";
+import React, { useState, useLayoutEffect, useEffect, useRef, forwardRef, useImperativeHandle } from "react";
 import Spinner from "./loading-overlay-spinner";
 import STYLES from "./loading-overlay-styles";
 
@@ -58,125 +53,116 @@ export interface LoadingOverlayProps {
   children?: any;
 }
 
-export interface LoadingOverlayState {
-  overflowCSS: Record<string, string>;
-}
+const LoadingOverlay = forwardRef<any, LoadingOverlayProps>((props, ref) => {
+  const {
+    children,
+    className,
+    onClick,
+    active,
+    fadeSpeed = 500,
+    spinner,
+    text,
+    classNamePrefix = "_loading_overlay_",
+    styles
+  } = props;
 
-class LoadingOverlay extends React.Component<
-  LoadingOverlayProps,
-  LoadingOverlayState
-> {
-  wrapper = createRef<HTMLDivElement>();
-  nodeRef = createRef<HTMLDivElement>();
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const nodeRef = useRef<HTMLDivElement>(null);
 
-  constructor(props: LoadingOverlayProps) {
-    super(props);
-    this.state = { overflowCSS: {} };
-  }
+  useImperativeHandle(ref, () => ({
+    wrapper: wrapperRef
+  }));
 
-  componentDidMount() {
-    if (!this.wrapper.current) return;
-    const wrapperStyle = window.getComputedStyle(this.wrapper.current);
-    const overflowCSS = ["overflow", "overflowX", "overflowY"].reduce(
-      (m: Record<string, string>, i: string) => {
-        if (wrapperStyle[i as any] !== "visible") m[i] = "hidden";
-        return m;
-      },
-      {}
-    );
-    this.setState({ overflowCSS });
-  }
 
-  componentDidUpdate(prevProps: LoadingOverlayProps) {
-    const { active } = this.props;
-    if (active && this.wrapper.current) this.wrapper.current.scrollTop = 0;
-  }
+  useEffect(() => {
+    if (active && wrapperRef.current) {
+      wrapperRef.current.scrollTop = 0;
+    }
+  }, [active]);
 
   /**
    * Return an emotion css object for a given element key
    * If a custom style was provided via props, run it with
    * the base css obj.
    */
-  getStyles = (key: keyof LoadingOverlayStyles, providedState?: any) => {
-    const base = STYLES[key](providedState, this.props);
-    const custom = this.props.styles ? this.props.styles[key] : undefined;
-    if (!custom) { return base };
-    return typeof custom === "function" ? custom(base, this.props) : custom;
+  const getStyles = (key: keyof LoadingOverlayStyles, providedState?: any) => {
+    const base = STYLES[key](providedState, props);
+    const custom = styles ? styles[key] : undefined;
+    if (!custom) return base;
+    return typeof custom === "function" ? (custom as any)(base, props) : custom;
   };
 
   /**
    * Convenience cx wrapper to add prefix classes to each of the child
    * elements for styling purposes.
    */
-  cx = (names: string | (string | boolean | undefined)[], ...args: any[]) => {
+  const getCx = (names: string | (string | boolean | undefined)[], ...args: any[]) => {
     const arr = Array.isArray(names) ? names : [names];
     return cx(
       ...arr.map((name) =>
         name
-          ? `${this.props.classNamePrefix ?? "_loading_overlay_"}${name}`
+          ? `${classNamePrefix}${name}`
           : ""
       ),
       ...args
     );
   };
 
-  render() {
-    const {
-      children,
-      className,
-      onClick,
-      active,
-      fadeSpeed = 500,
-      spinner,
-      text,
-    } = this.props;
-
-    return (
-      <div
-        data-testid="wrapper"
-        ref={this.wrapper}
-        className={this.cx(
-          ["wrapper", active && "wrapper--active"],
-          css(this.getStyles("wrapper", active ? this.state.overflowCSS : {})),
-          className
-        )}
+  return (
+    <div
+      data-testid="wrapper"
+      ref={wrapperRef}
+      className={getCx(
+        ["wrapper", active && "wrapper--active"],
+        css(getStyles("wrapper")),
+        className
+      )}
+    >
+      <CSSTransition
+        in={active}
+        classNames="_loading-overlay-transition"
+        timeout={fadeSpeed}
+        unmountOnExit
+        nodeRef={nodeRef}
+        addEndListener={() => { }}
       >
-        <CSSTransition
-          in={active}
-          classNames="_loading-overlay-transition"
-          timeout={fadeSpeed}
-          unmountOnExit
-          nodeRef={this.nodeRef}
-          addEndListener={() => { }}
-        >
-          {(state) => (
+        {(state) => (
+          <div
+            data-testid="overlay"
+            role="button"
+            tabIndex={0}
+            className={getCx(
+              "overlay",
+              css(getStyles("overlay", state))
+            )}
+            onClick={onClick}
+            onKeyDown={(e) => {
+              if (onClick && (e.key === "Enter" || e.key === " ")) {
+                e.preventDefault();
+                onClick(e as any);
+              }
+            }}
+          >
             <div
-              data-testid="overlay"
-              className={this.cx(
-                "overlay",
-                css(this.getStyles("overlay", state))
-              )}
-              onClick={onClick}
+              className={getCx("content", css(getStyles("content")))}
+              ref={nodeRef}
             >
-              <div
-                className={this.cx("content", css(this.getStyles("content")))}
-                ref={this.nodeRef}
-              >
-                {spinner &&
-                  (typeof spinner === "boolean" ? (
-                    <Spinner cx={this.cx} getStyles={this.getStyles} />
-                  ) : (
-                    spinner
-                  ))}
-                {text}
-              </div>
+              {spinner &&
+                (typeof spinner === "boolean" ? (
+                  <Spinner cx={getCx as any} getStyles={getStyles} />
+                ) : (
+                  spinner
+                ))}
+              {text}
             </div>
-          )}
-        </CSSTransition>
-        {children}
-      </div>
-    );
-  }
-}
+          </div>
+        )}
+      </CSSTransition>
+      {children}
+    </div>
+  );
+});
+
+LoadingOverlay.displayName = "LoadingOverlay";
 
 export default LoadingOverlay;

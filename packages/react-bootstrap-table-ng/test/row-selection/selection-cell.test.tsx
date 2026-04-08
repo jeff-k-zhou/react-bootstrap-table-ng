@@ -7,50 +7,6 @@ describe("<SelectionCell />", () => {
   const mode = "checkbox";
   const rowIndex = 1;
 
-  describe("shouldComponentUpdate", () => {
-    let props: any;
-    let nextProps: any;
-
-    function getInstance(props: any) {
-      // Directly instantiate for logic testing
-      return new SelectionCell(props);
-    }
-
-    it("should return true when selected prop has been changed", () => {
-      props = { selected: false, mode, rowIndex, disabled: false, rowKey: 1 };
-      nextProps = { ...props, selected: true };
-      const instance = getInstance(props);
-      expect(instance.shouldComponentUpdate(nextProps)).toBe(true);
-    });
-
-    it("should return true when rowIndex prop has been changed", () => {
-      props = { selected: false, mode, rowIndex, disabled: false, rowKey: 1 };
-      nextProps = { ...props, rowIndex: 2 };
-      const instance = getInstance(props);
-      expect(instance.shouldComponentUpdate(nextProps)).toBe(true);
-    });
-
-    it("should return true when tabIndex prop has been changed", () => {
-      props = { selected: false, mode, rowIndex, disabled: false, tabIndex: 0, rowKey: 1 };
-      nextProps = { ...props, tabIndex: 2 };
-      const instance = getInstance(props);
-      expect(instance.shouldComponentUpdate(nextProps)).toBe(true);
-    });
-
-    it("should return true when disabled prop has been changed", () => {
-      props = { selected: false, mode, rowIndex, disabled: false, rowKey: 1 };
-      nextProps = { ...props, disabled: true };
-      const instance = getInstance(props);
-      expect(instance.shouldComponentUpdate(nextProps)).toBe(true);
-    });
-
-    it("should return true when rowKey prop has been changed", () => {
-      props = { selected: false, mode, rowIndex, disabled: false, rowKey: 1 };
-      nextProps = { ...props, rowKey: "1" };
-      const instance = getInstance(props);
-      expect(instance.shouldComponentUpdate(nextProps)).toBe(true);
-    });
-  });
 
   describe("handleClick", () => {
     const rowKey = 1;
@@ -61,13 +17,15 @@ describe("<SelectionCell />", () => {
       render(
         <table>
           <tbody>
-            <SelectionCell
-              selected
-              rowKey={rowKey}
-              mode={mode}
-              rowIndex={rowIndex}
-              onRowSelect={mockOnRowSelect}
-            />
+            <tr>
+              <SelectionCell
+                selected
+                rowKey={rowKey}
+                mode={mode}
+                rowIndex={rowIndex}
+                onRowSelect={mockOnRowSelect}
+              />
+            </tr>
           </tbody>
         </table>
       );
@@ -80,14 +38,16 @@ describe("<SelectionCell />", () => {
       render(
         <table>
           <tbody>
-            <SelectionCell
-              selected
-              rowKey={rowKey}
-              mode={mode}
-              rowIndex={rowIndex}
-              onRowSelect={mockOnRowSelect}
-              disabled
-            />
+            <tr>
+              <SelectionCell
+                selected
+                rowKey={rowKey}
+                mode={mode}
+                rowIndex={rowIndex}
+                onRowSelect={mockOnRowSelect}
+                disabled
+              />
+            </tr>
           </tbody>
         </table>
       );
@@ -100,13 +60,15 @@ describe("<SelectionCell />", () => {
       render(
         <table>
           <tbody>
-            <SelectionCell
-              selected
-              rowKey={rowKey}
-              mode="radio"
-              rowIndex={rowIndex}
-              onRowSelect={mockOnRowSelect}
-            />
+            <tr>
+              <SelectionCell
+                selected
+                rowKey={rowKey}
+                mode="radio"
+                rowIndex={rowIndex}
+                onRowSelect={mockOnRowSelect}
+              />
+            </tr>
           </tbody>
         </table>
       );
@@ -119,13 +81,15 @@ describe("<SelectionCell />", () => {
       render(
         <table>
           <tbody>
-            <SelectionCell
-              rowKey={rowKey}
-              mode="checkbox"
-              rowIndex={rowIndex}
-              selected
-              onRowSelect={mockOnRowSelect}
-            />
+            <tr>
+              <SelectionCell
+                rowKey={rowKey}
+                mode="checkbox"
+                rowIndex={rowIndex}
+                selected
+                onRowSelect={mockOnRowSelect}
+              />
+            </tr>
           </tbody>
         </table>
       );
@@ -141,12 +105,14 @@ describe("<SelectionCell />", () => {
       render(
         <table>
           <tbody>
-            <SelectionCell
-              rowKey={1}
-              mode={mode}
-              rowIndex={rowIndex}
-              selected={selected}
-            />
+            <tr>
+              <SelectionCell
+                rowKey={1}
+                mode={mode}
+                rowIndex={rowIndex}
+                selected={selected}
+              />
+            </tr>
           </tbody>
         </table>
       );
@@ -162,13 +128,15 @@ describe("<SelectionCell />", () => {
       render(
         <table>
           <tbody>
-            <SelectionCell
-              rowKey={1}
-              mode={mode}
-              rowIndex={rowIndex}
-              selected={selected}
-              disabled
-            />
+            <tr>
+              <SelectionCell
+                rowKey={1}
+                mode={mode}
+                rowIndex={rowIndex}
+                selected={selected}
+                disabled
+              />
+            </tr>
           </tbody>
         </table>
       );
@@ -182,13 +150,15 @@ describe("<SelectionCell />", () => {
       render(
         <table>
           <tbody>
-            <SelectionCell
-              rowKey={1}
-              mode={mode}
-              rowIndex={rowIndex}
-              selected={selected}
-              selectionRenderer={selectionRenderer}
-            />
+            <tr>
+              <SelectionCell
+                rowKey={1}
+                mode={mode}
+                rowIndex={rowIndex}
+                selected={selected}
+                selectionRenderer={selectionRenderer}
+              />
+            </tr>
           </tbody>
         </table>
       );
@@ -208,12 +178,14 @@ describe("<SelectionCell />", () => {
         <BootstrapContext.Provider value={{ bootstrap4: true }}>
           <table>
             <tbody>
-              <SelectionCell
-                rowKey={1}
-                mode={mode}
-                rowIndex={rowIndex}
-                selected={selected}
-              />
+              <tr>
+                <SelectionCell
+                  rowKey={1}
+                  mode={mode}
+                  rowIndex={rowIndex}
+                  selected={selected}
+                />
+              </tr>
             </tbody>
           </table>
         </BootstrapContext.Provider>
@@ -227,12 +199,14 @@ describe("<SelectionCell />", () => {
         <BootstrapContext.Provider value={{ bootstrap5: true }}>
           <table>
             <tbody>
-              <SelectionCell
-                rowKey={1}
-                mode={mode}
-                rowIndex={rowIndex}
-                selected={selected}
-              />
+              <tr>
+                <SelectionCell
+                  rowKey={1}
+                  mode={mode}
+                  rowIndex={rowIndex}
+                  selected={selected}
+                />
+              </tr>
             </tbody>
           </table>
         </BootstrapContext.Provider>

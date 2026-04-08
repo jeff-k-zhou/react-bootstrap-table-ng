@@ -13,7 +13,7 @@ const config: StorybookConfig = {
     addons: [
         getAbsolutePath("@storybook/addon-links"),
         //getAbsolutePath("@storybook/addon-onboarding"),
-        getAbsolutePath("@storybook/addon-docs"),
+        getAbsolutePath("@storybook/addon-docs")
     ],
 
     framework: {
@@ -100,6 +100,13 @@ const config: StorybookConfig = {
             config.module.rules.push({
                 test: /\.(png|jpg|jpeg|gif|svg)$/i,
                 type: "asset/resource",
+            });
+
+            config.module.rules.push({
+                test: /\.m?js/,
+                resolve: {
+                    fullySpecified: false,
+                },
             });
         }
 

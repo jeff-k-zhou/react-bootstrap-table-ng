@@ -9,44 +9,41 @@ interface DateEditorProps {
   onUpdate?: any;
 }
 
-class DateEditor extends Component<DateEditorProps> {
-  date: any;
-  componentDidMount() {
-    const { defaultValue = "", didMount } = this.props;
-    this.date.valueAsDate = new Date(defaultValue);
-    this.date.focus();
-    if (didMount) {
-      didMount();
+const DateEditor = React.forwardRef<any, DateEditorProps>((props, ref) => {
+  const {
+    defaultValue = "",
+    didMount,
+    className = "",
+    onUpdate,
+    ...rest
+  } = props;
+
+  const dateRef = React.useRef<HTMLInputElement>(null);
+
+  React.useImperativeHandle(ref, () => ({
+    getValue() {
+      return dateRef.current?.value;
     }
-  }
+  }));
 
-  getValue() {
-    return this.date.value;
-  }
+  React.useEffect(() => {
+    if (dateRef.current) {
+      dateRef.current.valueAsDate = new Date(defaultValue);
+      dateRef.current.focus();
+    }
+    if (didMount) didMount();
+  }, []); // Run only once on mount
 
-  render() {
-    const {
-      defaultValue = "",
-      didMount,
-      className = "",
-      onUpdate,
-      ...rest
-    } = this.props;
-    const editorClass = cs(className, "form-control editor edit-date");
-    return (
-      <input
-        ref={(node) => { this.date = node; }}
-        type="date"
-        className={editorClass}
-        {...rest}
-      />
-    );
-  }
-  static defaultProps = {
-    className: '',
-    defaultValue: '',
-    didMount: undefined
-  };
-}
+  const editorClass = cs(className, "form-control editor edit-date");
+  return (
+    <input
+      ref={dateRef}
+      type="date"
+      lang="en-US"
+      className={editorClass}
+      {...rest}
+    />
+  );
+});
 
 export default DateEditor;

@@ -1,148 +1,135 @@
-/* eslint react/prop-types: 0 */
-/* eslint react/require-default-props: 0 */
-/* eslint no-continue: 0 */
-/* eslint no-lonely-if: 0 */
-/* eslint class-methods-use-this: 0 */
-/* eslint camelcase: 0 */
-import React from "react";
-import { SearchMatchProps, TableSearchProps } from "../..";
+import React, { useState, useMemo, useEffect, useRef, useImperativeHandle } from "react";
+import _ from "lodash";
+import { TableSearchProps } from "../..";
 
 interface DataChangeListener {
   emit: (event: string, value: any) => void;
 }
 
-interface SearchProviderProps extends SearchMatchProps {
+interface SearchProviderProps {
   data: any[];
   dataChangeListener?: DataChangeListener;
-  children: React.ReactNode;
+  children: any;
+  columns: any[];
+  searchText?: string;
+  options?: TableSearchProps;
+  isRemoteSearch: () => boolean;
+  handleRemoteSearchChange: (searchText: string) => void;
 }
 
-interface SearchProviderState {
-  data: any[];
-}
+const SearchContext = React.createContext<any>(null);
 
-export default (
-    options: TableSearchProps = {
+const SearchProvider = React.forwardRef<any, SearchProviderProps>((props, ref) => {
+  const {
+    data,
+    searchText = "",
+    children,
+    dataChangeListener,
+    columns,
+    options = {
       searchFormatted: false,
       afterSearch: undefined,
-      onColumnMatch: () => false,
-    }
-  ) =>
-  (
-    _: any,
-    isRemoteSearch: () => boolean,
-    handleRemoteSearchChange: (searchText: string) => void
-  ) => {
-    const SearchContext = React.createContext<any>(null);
+    },
+    isRemoteSearch,
+    handleRemoteSearchChange,
+  } = props;
 
-    class SearchProvider extends React.Component<
-      SearchProviderProps,
-      SearchProviderState
-    > {
-      constructor(props: SearchProviderProps) {
-        super(props);
-        let initialData = props.data;
-        if (isRemoteSearch() && this.props.searchText !== "") {
-          handleRemoteSearchChange(this.props.searchText!);
-        } else {
-          initialData = this.search(props);
-          this.triggerListener(initialData, true);
-        }
-        this.state = { data: initialData };
-      }
+  const [stateData, setStateData] = useState<any[]>(data);
+  const isInitialMount = useRef(true);
 
-      getSearched() {
-        return this.state.data;
-      }
+  useImperativeHandle(ref, () => ({
+    getSearched: () => stateData,
+  }));
 
-      triggerListener(result: any, skipInit?: any) {
-        if (options.afterSearch && !skipInit) {
-          options.afterSearch(result);
-        }
-        if (this.props.dataChangeListener) {
-          this.props.dataChangeListener.emit("filterChanged", result.length);
-        }
-      }
-
-      componentDidUpdate(prevProps: SearchProviderProps) {
-        if (prevProps.searchText !== this.props.searchText) {
-          if (isRemoteSearch()) {
-            handleRemoteSearchChange(this.props.searchText);
-          } else {
-            const result = this.search(this.props);
-            this.triggerListener(result);
-            this.setState({
-              data: result,
-            });
-          }
-        } else {
-          if (isRemoteSearch()) {
-            if (!_.isEqual(this.state.data, this.props.data)) {
-              this.setState({ data: this.props.data });
-            }
-          } else if (!_.isEqual(prevProps.data, this.props.data)) {
-            const result = this.search(this.props);
-            this.triggerListener(result);
-            this.setState({
-              data: result,
-            });
-          }
-        }
-      }
-
-      search(props: any) {
-        const { data, columns } = props;
-        const searchText = props.searchText.toLowerCase();
-        return data.filter((row: any, ridx: any) => {
-          for (let cidx = 0; cidx < columns.length; cidx += 1) {
-            const column = columns[cidx];
-            if (column.searchable === false) continue;
-            let targetValue = _.get(row, column.dataField);
-            if (column.formatter && options.searchFormatted) {
-              targetValue = column.formatter(
-                targetValue,
-                row,
-                ridx,
-                column.formatExtraData
-              );
-            } else if (column.filterValue) {
-              targetValue = column.filterValue(targetValue, row);
-            }
-            if (options.onColumnMatch) {
-              if (
-                options.onColumnMatch({
-                  searchText,
-                  value: targetValue,
-                  column,
-                  row,
-                })
-              ) {
-                return true;
-              }
-            } else {
-              if (targetValue !== null && typeof targetValue !== "undefined") {
-                targetValue = targetValue.toString().toLowerCase();
-                if (targetValue.indexOf(searchText) > -1) {
-                  return true;
-                }
-              }
-            }
-          }
-          return false;
-        });
-      }
-
-      render() {
-        return (
-          <SearchContext.Provider value={{ data: this.state.data }}>
-            {this.props.children}
-          </SearchContext.Provider>
-        );
-      }
+  const searchResult = useMemo(() => {
+    if (isRemoteSearch()) {
+      return data;
     }
 
-    return {
-      Provider: SearchProvider,
-      Consumer: SearchContext.Consumer,
-    };
-  };
+    const lowerSearchText = (searchText || "").toLowerCase();
+
+    if (!lowerSearchText) return data;
+
+    return data.filter((row: any, ridx: any) => {
+      for (let cidx = 0; cidx < columns.length; cidx += 1) {
+        const column = columns[cidx];
+        if (column.searchable === false) continue;
+        let targetValue = _.get(row, column.dataField);
+        if (column.formatter && options.searchFormatted) {
+          targetValue = column.formatter(
+            targetValue,
+            row,
+            ridx,
+            column.formatExtraData
+          );
+        } else if (column.filterValue) {
+          targetValue = column.filterValue(targetValue, row);
+        }
+        if (typeof options.onColumnMatch === 'function') {
+          if (
+            options.onColumnMatch({
+              searchText: lowerSearchText,
+              value: targetValue,
+              column,
+              row,
+            })
+          ) {
+            return true;
+          }
+        } else {
+          if (targetValue !== null && typeof targetValue !== "undefined") {
+            targetValue = targetValue.toString().toLowerCase();
+            if (targetValue.indexOf(lowerSearchText) > -1) {
+              return true;
+            }
+          }
+        }
+      }
+      return false;
+    });
+  }, [data, searchText, columns, options, isRemoteSearch]);
+
+  useEffect(() => {
+    if (isRemoteSearch()) {
+      handleRemoteSearchChange(searchText);
+    }
+  }, [searchText, isRemoteSearch, handleRemoteSearchChange]);
+
+  useEffect(() => {
+    if (!isRemoteSearch()) {
+      if (options.afterSearch && !isInitialMount.current) {
+        options.afterSearch(searchResult);
+      }
+      if (dataChangeListener) {
+        dataChangeListener.emit("filterChanged", searchResult.length);
+      }
+      setStateData(searchResult);
+    }
+    isInitialMount.current = false;
+  }, [searchResult, dataChangeListener, isRemoteSearch, options]);
+
+  // Handle remote search data updates
+  useEffect(() => {
+    if (isRemoteSearch()) {
+      setStateData(data);
+    }
+  }, [data, isRemoteSearch]);
+
+  const content = typeof children === 'function' ? children({ data: stateData }) : children;
+
+  return (
+    <SearchContext.Provider value={{ data: stateData }}>
+      {content}
+    </SearchContext.Provider>
+  );
+});
+
+export default (options: TableSearchProps) => (
+  __: any,
+  isRemoteSearch: () => boolean,
+  handleRemoteSearchChange: (searchText: string) => void
+) => ({
+  Provider: SearchProvider,
+  Consumer: SearchContext.Consumer,
+  options,
+});

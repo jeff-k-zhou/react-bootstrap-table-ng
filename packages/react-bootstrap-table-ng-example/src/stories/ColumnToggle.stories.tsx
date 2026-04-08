@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-webpack5';
+import { expect, userEvent, within } from 'storybook/test';
 
 // import bootstrap style by given version
 import { textFilter } from '../../../react-bootstrap-table-ng-filter';
@@ -72,6 +73,27 @@ export const BasicColumnToggle: Story = {
       }
     </ToolkitProvider>
     `,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    expect(table).toBeInTheDocument();
+
+    // Verify initial headers using role to distinguish from buttons
+    expect(canvas.getByRole('columnheader', { name: 'Product ID' })).toBeInTheDocument();
+    expect(canvas.getByRole('columnheader', { name: 'Product Name' })).toBeInTheDocument();
+    expect(canvas.getByRole('columnheader', { name: 'Product Price' })).toBeInTheDocument();
+
+    // Toggle "Product Name"
+    const toggleBtn = canvas.getByRole('button', { name: 'Product Name' });
+    await userEvent.click(toggleBtn);
+
+    // Verify "Product Name" header is gone (button still exists)
+    expect(canvas.queryByRole('columnheader', { name: 'Product Name' })).not.toBeInTheDocument();
+
+    // Toggle back
+    await userEvent.click(toggleBtn);
+    expect(canvas.getByRole('columnheader', { name: 'Product Name' })).toBeInTheDocument();
   }
 };
 
@@ -126,6 +148,23 @@ export const DefaultVisibility: Story = {
       }
     </ToolkitProvider>
     `,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    expect(table).toBeInTheDocument();
+
+    // Initially only ID is visible as header
+    expect(canvas.getByRole('columnheader', { name: 'Product ID' })).toBeInTheDocument();
+    expect(canvas.queryByRole('columnheader', { name: 'Product Name' })).not.toBeInTheDocument();
+    expect(canvas.queryByRole('columnheader', { name: 'Product Price' })).not.toBeInTheDocument();
+
+    // Toggle "Product Price"
+    const toggleBtn = canvas.getByRole('button', { name: 'Product Price' });
+    await userEvent.click(toggleBtn);
+
+    // Verify "Product Price" header appeared
+    expect(canvas.getByRole('columnheader', { name: 'Product Price' })).toBeInTheDocument();
   }
 };
 
@@ -175,6 +214,20 @@ export const StylingColumnToggle: Story = {
       }
     </ToolkitProvider>
     `,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    expect(table).toBeInTheDocument();
+
+    // Verify custom class
+    const container = canvasElement.querySelector('.list-custom-class');
+    expect(container).toBeInTheDocument();
+
+    // Basic toggle check
+    const toggleBtn = canvas.getByRole('button', { name: 'Product ID' });
+    await userEvent.click(toggleBtn);
+    expect(canvas.queryByRole('columnheader', { name: 'Product ID' })).not.toBeInTheDocument();
   }
 };
 
@@ -246,6 +299,22 @@ export const CustomColumnToggle: Story = {
       }
     </ToolkitProvider>
     `,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    expect(table).toBeInTheDocument();
+
+    // Verify custom buttons exist (they are btn-warning)
+    const customBtns = canvasElement.querySelectorAll('.btn-warning');
+    expect(customBtns.length).toBe(3);
+
+    // Toggle "Product Price"
+    const toggleBtn = canvas.getByRole('button', { name: 'Product Price' });
+    await userEvent.click(toggleBtn);
+
+    // Verify "Product Price" header is gone
+    expect(canvas.queryByRole('columnheader', { name: 'Product Price' })).not.toBeInTheDocument();
   }
 };
 
@@ -309,5 +378,28 @@ export const ColumnToggleWithFilter: Story = {
       }
     </ToolkitProvider>
     `,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    expect(table).toBeInTheDocument();
+
+    // Toggle "Product ID" first to see if headers are accessible
+    const toggleBtn = canvas.getByRole('button', { name: 'Product ID' });
+    await userEvent.click(toggleBtn);
+    
+    // Verify header absence
+    await new Promise(resolve => setTimeout(resolve, 500));
+    const headers = canvasElement.querySelectorAll('th');
+    const headerTexts = Array.from(headers).map(h => h.textContent);
+    expect(headerTexts).not.toContain('Product ID');
+
+    // Toggle back
+    await userEvent.click(toggleBtn);
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
+    // Now verify we have the input (using a more generic query if placeholder is tricky)
+    const inputs = canvasElement.querySelectorAll('input');
+    expect(inputs.length).toBeGreaterThanOrEqual(2); // name and price filters
   }
 };

@@ -2,7 +2,6 @@
  * @jest-environment jsdom
  */
 
-/* eslint react/prop-types: 0 */
 import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import React from "react";
@@ -55,14 +54,16 @@ describe("EditingCell", () => {
     onEscape = stub();
     onUpdate = stub();
     render(
-      <EditingCell
-        row={row}
-        rowIndex={rowIndex}
-        columnIndex={columnIndex}
-        column={column}
-        onUpdate={onUpdate}
-        onEscape={onEscape}
-      />
+      <TableRowWrapper>
+        <EditingCell
+          row={row}
+          rowIndex={rowIndex}
+          columnIndex={columnIndex}
+          column={column}
+          onUpdate={onUpdate}
+          onEscape={onEscape}
+        />
+      </TableRowWrapper>
     );
   });
 
@@ -103,15 +104,17 @@ describe("EditingCell", () => {
     const customStyle = { backgroundColor: "red" };
     beforeEach(() => {
       render(
-        <EditingCell
-          row={row}
-          rowIndex={rowIndex}
-          columnIndex={columnIndex}
-          column={column}
-          onUpdate={onUpdate}
-          onEscape={onEscape}
-          style={customStyle}
-        />
+        <TableRowWrapper>
+          <EditingCell
+            row={row}
+            rowIndex={rowIndex}
+            columnIndex={columnIndex}
+            column={column}
+            onUpdate={onUpdate}
+            onEscape={onEscape}
+            style={customStyle}
+          />
+        </TableRowWrapper>
       );
     });
 
@@ -124,15 +127,17 @@ describe("EditingCell", () => {
     const className = "test-class";
     beforeEach(() => {
       render(
-        <EditingCell
-          row={row}
-          rowIndex={rowIndex}
-          columnIndex={columnIndex}
-          column={column}
-          onUpdate={onUpdate}
-          onEscape={onEscape}
-          className={className}
-        />
+        <TableRowWrapper>
+          <EditingCell
+            row={row}
+            rowIndex={rowIndex}
+            columnIndex={columnIndex}
+            column={column}
+            onUpdate={onUpdate}
+            onEscape={onEscape}
+            className={className}
+          />
+        </TableRowWrapper>
       );
     });
 
@@ -152,14 +157,16 @@ describe("EditingCell", () => {
           editorClasses: jest.fn(() => classes),
         };
         render(
-          <EditingCell
-            row={row}
-            rowIndex={rowIndex}
-            columnIndex={columnIndex}
-            column={columnWithEditorClasses}
-            onUpdate={onUpdate}
-            onEscape={onEscape}
-          />
+          <TableRowWrapper>
+            <EditingCell
+              row={row}
+              rowIndex={rowIndex}
+              columnIndex={columnIndex}
+              column={columnWithEditorClasses}
+              onUpdate={onUpdate}
+              onEscape={onEscape}
+            />
+          </TableRowWrapper>
         );
       });
 
@@ -186,14 +193,16 @@ describe("EditingCell", () => {
           editorClasses: classes,
         };
         render(
-          <EditingCell
-            row={row}
-            rowIndex={rowIndex}
-            columnIndex={columnIndex}
-            column={columnWithEditorClasses}
-            onUpdate={onUpdate}
-            onEscape={onEscape}
-          />
+          <TableRowWrapper>
+            <EditingCell
+              row={row}
+              rowIndex={rowIndex}
+              columnIndex={columnIndex}
+              column={columnWithEditorClasses}
+              onUpdate={onUpdate}
+              onEscape={onEscape}
+            />
+          </TableRowWrapper>
         );
       });
 
@@ -215,14 +224,16 @@ describe("EditingCell", () => {
           editorStyle: jest.fn(() => style),
         };
         render(
-          <EditingCell
-            row={row}
-            rowIndex={rowIndex}
-            columnIndex={columnIndex}
-            column={columnWithEditorStyle}
-            onUpdate={onUpdate}
-            onEscape={onEscape}
-          />
+          <TableRowWrapper>
+            <EditingCell
+              row={row}
+              rowIndex={rowIndex}
+              columnIndex={columnIndex}
+              column={columnWithEditorStyle}
+              onUpdate={onUpdate}
+              onEscape={onEscape}
+            />
+          </TableRowWrapper>
         );
       });
 
@@ -249,14 +260,16 @@ describe("EditingCell", () => {
           editorStyle: style,
         };
         render(
-          <EditingCell
-            row={row}
-            rowIndex={rowIndex}
-            columnIndex={columnIndex}
-            column={columnWithEditorStyle}
-            onUpdate={onUpdate}
-            onEscape={onEscape}
-          />
+          <TableRowWrapper>
+            <EditingCell
+              row={row}
+              rowIndex={rowIndex}
+              columnIndex={columnIndex}
+              column={columnWithEditorStyle}
+              onUpdate={onUpdate}
+              onEscape={onEscape}
+            />
+          </TableRowWrapper>
         );
       });
 
@@ -307,14 +320,16 @@ describe("EditingCell", () => {
           validator: validatorCallBack,
         };
         render(
-          <EditingCell
-            row={row}
-            rowIndex={rowIndex}
-            columnIndex={columnIndex}
-            column={column}
-            onUpdate={onUpdate}
-            onEscape={onEscape}
-          />
+          <TableRowWrapper>
+            <EditingCell
+              row={row}
+              rowIndex={rowIndex}
+              columnIndex={columnIndex}
+              column={column}
+              onUpdate={onUpdate}
+              onEscape={onEscape}
+            />
+          </TableRowWrapper>
         );
         // Trigger validation
         const textEditor = screen.getAllByRole("textbox")[1];
@@ -362,14 +377,16 @@ describe("EditingCell", () => {
           validator: validatorCallBack,
         };
         render(
-          <EditingCell
-            row={row}
-            rowIndex={rowIndex}
-            columnIndex={columnIndex}
-            column={column}
-            onUpdate={onUpdate}
-            onEscape={onEscape}
-          />
+          <TableRowWrapper>
+            <EditingCell
+              row={row}
+              rowIndex={rowIndex}
+              columnIndex={columnIndex}
+              column={column}
+              onUpdate={onUpdate}
+              onEscape={onEscape}
+            />
+          </TableRowWrapper>
         );
         // Trigger validation
         const textEditor = screen.getAllByRole("textbox")[1];
@@ -399,14 +416,16 @@ describe("EditingCell", () => {
       };
 
       render(
-        <EditingCell
-          row={row}
-          rowIndex={rowIndex}
-          columnIndex={columnIndex}
-          column={column}
-          onUpdate={onUpdate}
-          onEscape={onEscape}
-        />
+        <TableRowWrapper>
+          <EditingCell
+            row={row}
+            rowIndex={rowIndex}
+            columnIndex={columnIndex}
+            column={column}
+            onUpdate={onUpdate}
+            onEscape={onEscape}
+          />
+        </TableRowWrapper>
       );
     });
 
@@ -436,14 +455,16 @@ describe("EditingCell", () => {
       };
 
       render(
-        <EditingCell
-          row={row}
-          rowIndex={rowIndex}
-          columnIndex={columnIndex}
-          column={column}
-          onUpdate={onUpdate}
-          onEscape={onEscape}
-        />
+        <TableRowWrapper>
+          <EditingCell
+            row={row}
+            rowIndex={rowIndex}
+            columnIndex={columnIndex}
+            column={column}
+            onUpdate={onUpdate}
+            onEscape={onEscape}
+          />
+        </TableRowWrapper>
       );
     });
 
@@ -464,14 +485,16 @@ describe("EditingCell", () => {
       };
 
       render(
-        <EditingCell
-          row={row}
-          rowIndex={rowIndex}
-          columnIndex={columnIndex}
-          column={column}
-          onUpdate={onUpdate}
-          onEscape={onEscape}
-        />
+        <TableRowWrapper>
+          <EditingCell
+            row={row}
+            rowIndex={rowIndex}
+            columnIndex={columnIndex}
+            column={column}
+            onUpdate={onUpdate}
+            onEscape={onEscape}
+          />
+        </TableRowWrapper>
       );
     });
 
@@ -492,14 +515,16 @@ describe("EditingCell", () => {
       };
 
       render(
-        <EditingCell
-          row={row}
-          rowIndex={rowIndex}
-          columnIndex={columnIndex}
-          column={column}
-          onUpdate={onUpdate}
-          onEscape={onEscape}
-        />
+        <TableRowWrapper>
+          <EditingCell
+            row={row}
+            rowIndex={rowIndex}
+            columnIndex={columnIndex}
+            column={column}
+            onUpdate={onUpdate}
+            onEscape={onEscape}
+          />
+        </TableRowWrapper>
       );
     });
 
@@ -520,14 +545,16 @@ describe("EditingCell", () => {
       };
 
       render(
-        <EditingCell
-          row={row}
-          rowIndex={rowIndex}
-          columnIndex={columnIndex}
-          column={column}
-          onUpdate={onUpdate}
-          onEscape={onEscape}
-        />
+        <TableRowWrapper>
+          <EditingCell
+            row={row}
+            rowIndex={rowIndex}
+            columnIndex={columnIndex}
+            column={column}
+            onUpdate={onUpdate}
+            onEscape={onEscape}
+          />
+        </TableRowWrapper>
       );
     });
 

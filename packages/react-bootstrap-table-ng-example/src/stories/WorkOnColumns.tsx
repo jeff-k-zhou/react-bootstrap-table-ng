@@ -1,5 +1,5 @@
 /* eslint-disable import/no-anonymous-default-export */
-import React from "react";
+import React, { useState } from "react";
 
 import BootstrapTable from "../../../react-bootstrap-table-ng";
 import Code from "../components/common/code-block";
@@ -14,26 +14,16 @@ import "./stylesheet/tomorrow.min.css";
 
 interface ProductListProps { }
 
-interface ProductListState {
-  products: any[];
-  count: number;
-}
+const ProductList: React.FC = () => {
+  const [products, setProducts] = useState([
+    { id: 12, name: "Item 12", price: 12.5, inStock: false },
+    { id: 13, name: "Item 13", price: 13.5, inStock: true },
+    { id: 14, name: "Item 14", price: 14.5, inStock: true },
+  ]);
+  const [count, setCount] = useState(0);
 
-class ProductList extends React.Component<ProductListProps, ProductListState> {
-  constructor(props: ProductListProps) {
-    super(props);
-    this.state = {
-      products: [
-        { id: 12, name: "Item 12", price: 12.5, inStock: false },
-        { id: 13, name: "Item 13", price: 13.5, inStock: true },
-        { id: 14, name: "Item 14", price: 14.5, inStock: true },
-      ],
-      count: 0,
-    };
-  }
-
-  toggleInStock = () => {
-    let newProducts = [...this.state.products];
+  const toggleInStock = () => {
+    let newProducts = [...products];
     newProducts = newProducts.map((d) => {
       if (d.id === 13) {
         return {
@@ -43,97 +33,94 @@ class ProductList extends React.Component<ProductListProps, ProductListState> {
       }
       return d;
     });
-    this.setState((curr) => ({ ...curr, products: newProducts }));
+    setProducts(newProducts);
   };
 
-  counter = () => {
-    this.setState((curr) => ({ ...curr, count: this.state.count + 1 }));
+  const counter = () => {
+    setCount((prev) => prev + 1);
   };
 
-  render() {
-    const columns = [
-      {
-        dataField: "id",
-        text: "Product ID",
-        formatter: (cell: any, row: any, rowIndex: number, extraData: any) => (
-          <div>
-            <span>ID: {row.id}</span>
-            <br />
-            <span>Counter: {extraData}</span>
-          </div>
-        ),
-        formatExtraData: this.state.count,
-      },
-      {
-        dataField: "name",
-        text: "Product Name",
-      },
-      {
-        dataField: "price",
-        text: "Product Price",
-      },
-      {
-        dataField: "inStock",
-        text: "In Stock",
-        formatter: (cellContent: any, row: any) => (
-          <div className="checkbox disabled">
-            <label>
-              <input type="checkbox" checked={row.inStock} disabled />
-            </label>
-          </div>
-        ),
-      },
-      {
-        dataField: "df1",
-        isDummyField: true,
-        text: "Action 1",
-        formatter: (cellContent: any, row: any) => {
-          if (row.inStock) {
-            return (
-              <h5>
-                <span className="label label-success"> Available</span>
-              </h5>
-            );
-          }
+  const columns = [
+    {
+      dataField: "id",
+      text: "Product ID",
+      formatter: (cell: any, row: any, rowIndex: number, extraData: any) => (
+        <div>
+          <span>ID: {row.id}</span>
+          <br />
+          <span>Counter: {extraData}</span>
+        </div>
+      ),
+      formatExtraData: count,
+    },
+    {
+      dataField: "name",
+      text: "Product Name",
+    },
+    {
+      dataField: "price",
+      text: "Product Price",
+    },
+    {
+      dataField: "inStock",
+      text: "In Stock",
+      formatter: (cellContent: any, row: any) => (
+        <div className="checkbox disabled">
+          <label>
+            <input type="checkbox" checked={row.inStock} disabled />
+          </label>
+        </div>
+      ),
+    },
+    {
+      dataField: "df1",
+      isDummyField: true,
+      text: "Action 1",
+      formatter: (cellContent: any, row: any) => {
+        if (row.inStock) {
           return (
             <h5>
-              <span className="label label-danger"> Backordered</span>
+              <span className="label label-success"> Available</span>
             </h5>
           );
-        },
+        }
+        return (
+          <h5>
+            <span className="label label-danger"> Backordered</span>
+          </h5>
+        );
       },
-      {
-        dataField: "df2",
-        isDummyField: true,
-        text: "Action 2",
-        formatter: (cellContent: any, row: any) => {
-          if (row.inStock) {
-            return (
-              <h5>
-                <span className="label label-success"> Available</span>
-              </h5>
-            );
-          }
+    },
+    {
+      dataField: "df2",
+      isDummyField: true,
+      text: "Action 2",
+      formatter: (cellContent: any, row: any) => {
+        if (row.inStock) {
           return (
             <h5>
-              <span className="label label-danger"> Backordered</span>
+              <span className="label label-success"> Available</span>
             </h5>
           );
-        },
+        }
+        return (
+          <h5>
+            <span className="label label-danger"> Backordered</span>
+          </h5>
+        );
       },
-    ];
+    },
+  ];
 
-    const sourceCode = `\
+  const sourceCode = `\
     import BootstrapTable from 'react-bootstrap-table-ng';
 
-    class ProductList extends React.Component {
-      constructor(props) {
-        super(props);
-        this.state = { products, count: 0 };
-      }
+    const ProductList = () => {
+      const [products, setProducts] = React.useState(products);
+      const [count, setCount] = React.useState(0);
 
-      toggleInStock = () => {
-        let newProducts = [...this.state.products];
+      const toggleInStock = () => {
+        let newProducts = [...products];
         newProducts = newProducts.map((d) => {
           if (d.id === 13) {
             return {
@@ -143,145 +130,130 @@ class ProductList extends React.Component<ProductListProps, ProductListState> {
           }
           return d;
         });
-        this.setState(curr => ({ ...curr, products: newProducts }));
+        setProducts(newProducts);
       };
 
-      render() {
-        const columns = [
-          {
-            dataField: 'id',
-            text: 'Product ID',
-            formatter: (cell, row, rowIndex, extraData) => (
-              <div>
-                <span>ID: {row.id}</span>
-                <br />
-                <span>state: {extraData}</span>
-              </div>
-            ),
-            formatExtraData: this.state.count
-          },
-          {
-            dataField: 'name',
-            text: 'Product Name'
-          },
-          {
-            dataField: 'price',
-            text: 'Product Price'
-          },
-          {
-            dataField: 'inStock',
-            text: 'In Stock',
-            formatter: (cellContent, row) => (
-              <div className="checkbox disabled">
-                <label>
-                  <input type="checkbox" checked={ row.inStock } disabled />
-                </label>
-              </div>
-            )
-          },
-          {
-            dataField: 'df1',
-            isDummyField: true,
-            text: 'Action 1',
-            formatter: (cellContent, row) => {
-              if (row.inStock) {
-                return (
-                  <h5>
-                    <span className="label label-success"> Available</span>
-                  </h5>
-                );
-              }
+      const columns = [
+        {
+          dataField: 'id',
+          text: 'Product ID',
+          formatter: (cell, row, rowIndex, extraData) => (
+            <div>
+              <span>ID: {row.id}</span>
+              <br />
+              <span>state: {extraData}</span>
+            </div>
+          ),
+          formatExtraData: count
+        },
+        {
+          dataField: 'name',
+          text: 'Product Name'
+        },
+        {
+          dataField: 'price',
+          text: 'Product Price'
+        },
+        {
+          dataField: 'inStock',
+          text: 'In Stock',
+          formatter: (cellContent, row) => (
+            <div className="checkbox disabled">
+              <label>
+                <input type="checkbox" checked={ row.inStock } disabled />
+              </label>
+            </div>
+          )
+        },
+        {
+          dataField: 'df1',
+          isDummyField: true,
+          text: 'Action 1',
+          formatter: (cellContent, row) => {
+            if (row.inStock) {
               return (
                 <h5>
-                  <span className="label label-danger"> Backordered</span>
+                  <span className="label label-success"> Available</span>
                 </h5>
               );
             }
-          },
-          {
-            dataField: 'df2',
-            isDummyField: true,
-            text: 'Action 2',
-            formatter: (cellContent, row) => {
-              if (row.inStock) {
-                return (
-                  <h5>
-                    <span className="label label-success"> Available</span>
-                  </h5>
-                );
-              }
-              return (
-                <h5>
-                  <span className="label label-danger"> Backordered</span>
-                </h5>
-              );
-            }
+            return (
+              <h5>
+                <span className="label label-danger"> Backordered</span>
+              </h5>
+            );
           }
-        ];
+        },
+        {
+          dataField: 'df2',
+          isDummyField: true,
+          text: 'Action 2',
+          formatter: (cellContent, row) => {
+            if (row.inStock) {
+              return (
+                <h5>
+                  <span className="label label-success"> Available</span>
+                </h5>
+              );
+            }
+            return (
+              <h5>
+                <span className="label label-danger"> Backordered</span>
+              </h5>
+            );
+          }
+        }
+      ];
 
-        return (
-          <div>
-            <h3>Action 1 and Action 2 are dummy column</h3>
-            <button onClick={ this.toggleInStock } className="btn btn-primary">
-              Toggle item 13 stock status
-            </button>
-            <button
-              className="btn btn-success"
-              onClick={ () => this.setState(() => ({ count: this.state.count + 1 })) }
-            >
-              Click me to Increase counter
-            </button>
-            <BootstrapTable
-              keyField="id"
-              data={ this.state.products }
-              columns={ columns }
-            />
-            <Code>{ sourceCode }</Code>
-          </div>
-        );
-      }
-    }
+      return (
+        <div>
+          <h3>Action 1 and Action 2 are dummy column</h3>
+          <button onClick={ toggleInStock } className="btn btn-primary">
+            Toggle item 13 stock status
+          </button>
+          <button
+            className="btn btn-success"
+            onClick={ () => setCount(count + 1) }
+          >
+            Click me to Increase counter
+          </button>
+          <BootstrapTable
+            keyField="id"
+            data={ products }
+            columns={ columns }
+          />
+          <Code>{ sourceCode }</Code>
+        </div>
+      );
+    };
     `;
 
-    return (
-      <div>
-        <h3>Action 1 and Action 2 are dummy column</h3>
-        <button onClick={this.toggleInStock} className="btn btn-primary">
-          Toggle item 13 stock status
-        </button>
-        <button className="btn btn-success" onClick={this.counter}>
-          Click me to Increase counter
-        </button>
-        <BootstrapTable
-          keyField="id"
-          data={this.state.products}
-          columns={columns}
-        />
-        <Code>{sourceCode}</Code>
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      <h3>Action 1 and Action 2 are dummy column</h3>
+      <button onClick={toggleInStock} className="btn btn-primary">
+        Toggle item 13 stock status
+      </button>
+      <button className="btn btn-success" onClick={counter}>
+        Click me to Increase counter
+      </button>
+      <BootstrapTable
+        keyField="id"
+        data={products}
+        columns={columns}
+      />
+      <Code>{sourceCode}</Code>
+    </div>
+  );
+};
 
 interface DummyColumnWithRowExpandProps { }
 
-interface DummyColumnWithRowExpandState {
-  hoverIdx: any;
-}
+const DummyColumnWithRowExpand: React.FC = () => {
+  const [hoverIdx, setHoverIdx] = useState<number | null>(null);
+  const [products] = useState(() => productsGenerator());
 
-class DummyColumnWithRowExpand extends React.Component<
-  DummyColumnWithRowExpandProps,
-  DummyColumnWithRowExpandState
-> {
-  constructor(props: DummyColumnWithRowExpandProps) {
-    super(props);
-
-    this.state = {
-      hoverIdx: null,
-    };
-  }
-
-  expandRow = {
+  const expandRow = {
     renderer: () => (
       <div style={{ width: "100%", height: "20px" }}>Content</div>
     ),
@@ -289,10 +261,15 @@ class DummyColumnWithRowExpand extends React.Component<
     expandByColumnOnly: true,
   };
 
-  actionFormater = (cell: any, row: any, rowIndex: number, { hoverIdx }: any) => {
+  const actionFormater = (
+    cell: any,
+    row: any,
+    rowIndex: number,
+    { hoverIdx: localHoverIdx }: any
+  ) => {
     if (
-      (hoverIdx !== null || hoverIdx !== undefined) &&
-      hoverIdx === rowIndex
+      (localHoverIdx !== null || localHoverIdx !== undefined) &&
+      localHoverIdx === rowIndex
     ) {
       return (
         <div
@@ -303,17 +280,16 @@ class DummyColumnWithRowExpand extends React.Component<
     return <div style={{ width: "20px", height: "20px" }} />;
   };
 
-  rowEvents = {
+  const rowEvents = {
     onMouseEnter: (e: any, row: any, rowIndex: number) => {
-      this.setState({ hoverIdx: rowIndex });
+      setHoverIdx(rowIndex);
     },
     onMouseLeave: () => {
-      this.setState({ hoverIdx: null });
+      setHoverIdx(null);
     },
   };
 
-  rowStyle = (row: any, rowIndex: number) => {
-    (row as any).index = rowIndex;
+  const rowStyle = (row: any, rowIndex: number) => {
     const style: { backgroundColor?: any; borderTop?: any } = {};
     if (rowIndex % 2 === 0) {
       style.backgroundColor = "transparent";
@@ -325,42 +301,37 @@ class DummyColumnWithRowExpand extends React.Component<
     return style;
   };
 
-  render() {
-    const columns = [
-      {
-        dataField: "id",
-        text: "Product ID",
-      },
-      {
-        dataField: "name",
-        text: "Product Name",
-      },
-      {
-        dataField: "price",
-        text: "Product Price",
-      },
-      {
-        isDummyField: true,
-        text: "",
-        formatter: this.actionFormater,
-        formatExtraData: { hoverIdx: this.state.hoverIdx },
-        headerStyle: { width: "50px" },
-        style: { height: "30px" },
-      },
-    ];
-    const sourceCode = `\
+  const columns = [
+    {
+      dataField: "id",
+      text: "Product ID",
+    },
+    {
+      dataField: "name",
+      text: "Product Name",
+    },
+    {
+      dataField: "price",
+      text: "Product Price",
+    },
+    {
+      dataField: "action",
+      isDummyField: true,
+      text: "",
+      formatter: actionFormater,
+      formatExtraData: { hoverIdx },
+      headerStyle: { width: "50px" },
+      style: { height: "30px" },
+    },
+  ];
+
+  const sourceCode = `\
     import BootstrapTable from 'react-bootstrap-table-ng';
 
-    class DummyColumnWithRowExpand extends React.Component {
-      constructor(props) {
-        super(props);
+    const DummyColumnWithRowExpand = () => {
+      const [hoverIdx, setHoverIdx] = React.useState(null);
 
-        this.state = {
-          hoverIdx: null
-        };
-      }
-
-      expandRow = {
+      const expandRow = {
         renderer: () => (
           <div style={ { width: '100%', height: '20px' } }>Content</div>
         ),
@@ -368,8 +339,8 @@ class DummyColumnWithRowExpand extends React.Component<
         expandByColumnOnly: true
       };
 
-      actionFormater = (cell, row, rowIndex, { hoverIdx }) => {
-        if ((hoverIdx !== null || hoverIdx !== undefined) && hoverIdx === rowIndex) {
+      const actionFormater = (cell, row, rowIndex, { hoverIdx: tempHoverIdx }) => {
+        if ((tempHoverIdx !== null || tempHoverIdx !== undefined) && tempHoverIdx === rowIndex) {
           return (
             <div
               style={ { width: '20px', height: '20px', backgroundColor: 'orange' } }
@@ -381,18 +352,18 @@ class DummyColumnWithRowExpand extends React.Component<
             style={ { width: '20px', height: '20px' } }
           />
         );
-      }
+      };
 
-      rowEvents = {
+      const rowEvents = {
         onMouseEnter: (e, row, rowIndex) => {
-          this.setState({ hoverIdx: rowIndex });
+          setHoverIdx(rowIndex);
         },
         onMouseLeave: () => {
-          this.setState({ hoverIdx: null });
+          setHoverIdx(null);
         }
-      }
+      };
 
-      rowStyle = (row, rowIndex) => {
+      const rowStyle = (row, rowIndex) => {
         row.index = rowIndex;
         const style = {};
         if (rowIndex % 2 === 0) {
@@ -403,59 +374,58 @@ class DummyColumnWithRowExpand extends React.Component<
         style.borderTop = 'none';
 
         return style;
-      }
+      };
 
-      render() {
-        const columns = [{
-          dataField: 'id',
-          text: 'Product ID'
-        }, {
-          dataField: 'name',
-          text: 'Product Name'
-        }, {
-          dataField: 'price',
-          text: 'Product Price'
-        }, {
-          text: '',
-          isDummyField: true,
-          formatter: this.actionFormater,
-          formatExtraData: { hoverIdx: this.state.hoverIdx },
-          headerStyle: { width: '50px' },
-          style: { height: '30px' }
-        }];
-        return (
-          <div>
-            <BootstrapTable
-              keyField="id"
-              data={ products }
-              columns={ columns }
-              noDataIndication="There is no data"
-              classes="table"
-              rowStyle={ this.rowStyle }
-              rowEvents={ this.rowEvents }
-              expandRow={ this.expandRow }
-            />
-          </div>
-        );
-      }
-    }
+      const columns = [{
+        dataField: 'id',
+        text: 'Product ID'
+      }, {
+        dataField: 'name',
+        text: 'Product Name'
+      }, {
+        dataField: 'price',
+        text: 'Product Price'
+      }, {
+        dataField: 'action',
+        text: '',
+        isDummyField: true,
+        formatter: actionFormater,
+        formatExtraData: { hoverIdx },
+        headerStyle: { width: '50px' },
+        style: { height: '30px' }
+      }];
+
+      return (
+        <div>
+          <BootstrapTable
+            keyField="id"
+            data={ products }
+            columns={ columns }
+            noDataIndication="There is no data"
+            classes="table"
+            rowStyle={ rowStyle }
+            rowEvents={ rowEvents }
+            expandRow={ expandRow }
+          />
+        </div>
+      );
+    };
     `;
 
-    return (
-      <div>
-        <BootstrapTable
-          keyField="id"
-          data={productsGenerator()}
-          columns={columns}
-          rowStyle={this.rowStyle}
-          rowEvents={this.rowEvents}
-          expandRow={this.expandRow}
-        />
-        <Code>{sourceCode}</Code>
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      <BootstrapTable
+        keyField="id"
+        data={products}
+        columns={columns}
+        rowStyle={rowStyle}
+        rowEvents={rowEvents}
+        expandRow={expandRow}
+      />
+      <Code>{sourceCode}</Code>
+    </div>
+  );
+};
 
 interface WorkOnColumnsProps {
   mode?: any;

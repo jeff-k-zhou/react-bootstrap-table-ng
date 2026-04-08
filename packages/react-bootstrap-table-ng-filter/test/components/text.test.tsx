@@ -154,17 +154,17 @@ describe("Text Filter", () => {
   describe("cleanFiltered", () => {
     const defaultValue = "";
     it("should set value and call onFilter", () => {
-      let filterRef: any;
+      let filterMethod: any;
       render(
         <TextFilter
           onFilter={onFilter}
           column={column}
-          ref={(ref: any) => (filterRef = ref)}
+          getFilter={(f: any) => (filterMethod = f)}
         />
       );
       const { act } = require("@testing-library/react");
       act(() => {
-        filterRef.cleanFiltered();
+        filterMethod("");
       });
       expect(screen.getByRole("textbox")).toHaveValue(defaultValue);
       expect(onFilter).toHaveBeenCalled();
@@ -175,17 +175,17 @@ describe("Text Filter", () => {
   describe("applyFilter", () => {
     const filterText = "test";
     it("should set value and call onFilter", () => {
-      let filterRef: any;
+      let filterMethod: any;
       render(
         <TextFilter
           onFilter={onFilter}
           column={column}
-          ref={(ref: any) => (filterRef = ref)}
+          getFilter={(f: any) => (filterMethod = f)}
         />
       );
       const { act } = require("@testing-library/react");
       act(() => {
-        filterRef.applyFilter(filterText);
+        filterMethod(filterText);
       });
       expect(screen.getByRole("textbox")).toHaveValue(filterText);
       expect(onFilter).toHaveBeenCalled();

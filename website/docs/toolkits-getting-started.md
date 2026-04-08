@@ -33,19 +33,11 @@ import "react-bootstrap-table-ng-toolkit/dist/react-bootstrap-table-ng-toolkit.m
 `react-bootstrap-table-ng-toolkit` default give you a react context wrapper: `ToolkitProvider`. When you use any toolkit functionalities, you are supposed to render toolkit component and `BootstrapTable` as the children of `ToolkitProvider`:
 
 ```js
-import ToolkitProvider from 'react-bootstrap-table-ng-toolkit';
+import ToolkitProvider from "react-bootstrap-table-ng-toolkit";
 
-
-<ToolkitProvider
-  keyField="id"
-  data={ products }
-  columns={ columns }
->
-  {
-    props =>
-      `<BootstrapTable` { ...props.baseProps } />`
-  }
-</ToolkitProvider>
+<ToolkitProvider keyField="id" data={products} columns={columns}>
+  {(props) => <BootstrapTable {...props.baseProps} />}
+</ToolkitProvider>;
 ```
 
 In addition, You have to move following required props from `BootstraTable` to `ToolkitProvider` and inject them to `BootstrapTable` from the `baseProps` provided by `ToolkitProvider`:

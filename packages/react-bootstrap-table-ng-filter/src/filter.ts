@@ -1,6 +1,6 @@
 /* eslint eqeqeq: 0 */
 /* eslint no-console: 0 */
-import { EQ, FILTER_TYPES, GE, GT, LE, LIKE, LT, NE } from "..";
+import { EQ, FILTER_TYPES, GE, GT, LE, LIKE, LT, NE } from "./const";
 
 export const filterByText =
   (_: any) =>

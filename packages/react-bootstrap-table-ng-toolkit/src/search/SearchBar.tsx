@@ -1,6 +1,4 @@
-/* eslint camelcase: 0 */
-/* eslint no-return-assign: 0 */
-import React from "react";
+import React, { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import { SearchBarProps } from "../..";
 
 const handleDebounce = <T extends (...args: any[]) => void>(
@@ -31,76 +29,66 @@ const handleDebounce = <T extends (...args: any[]) => void>(
   };
 };
 
-interface SearchBarState {
-  value: string;
-}
+const SearchBar: React.FC<SearchBarProps> = (props) => {
+  const {
+    className = "",
+    style = {},
+    placeholder = "Search",
+    tableId = "0",
+    srText = "Search this table",
+    searchText: defaultSearchText = "",
+    delay = 250,
+    onSearch,
+  } = props as any;
 
-class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
-  input: HTMLInputElement | null = null;
+  const [value, setValue] = useState(defaultSearchText ?? "");
+  const inputRef = useRef<HTMLInputElement>(null);
+  const previousDefaultSearchText = useRef(defaultSearchText);
 
-  constructor(props: SearchBarProps) {
-    super(props);
-    this.state = {
-      value: props.searchText ?? "",
-    };
-  }
+  const debouncedSearch = useMemo(
+    () =>
+      handleDebounce((val: string) => {
+        if (onSearch) {
+          onSearch(val);
+        }
+      }, delay),
+    [onSearch, delay]
+  );
 
-  onChangeValue = (e: any) => {
-    this.setState({ value: e.target.value });
-  };
+  const onChangeValue = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.target.value;
+    setValue(newValue);
+    debouncedSearch(newValue);
+  }, [debouncedSearch]);
 
-  onKeyup = () => {
-    const { delay = 250, onSearch } = this.props as any;
-    const debounceCallback = handleDebounce(() => {
-      onSearch!(this.input?.value ?? "");
-    }, delay);
-    debounceCallback();
-  };
-
-  componentDidUpdate(prevProps: SearchBarProps) {
-    if (this.props.searchText !== prevProps.searchText) {
-      this.setState({ value: this.props.searchText || "" });
+  useEffect(() => {
+    if (defaultSearchText !== previousDefaultSearchText.current) {
+      setValue(defaultSearchText || "");
+      previousDefaultSearchText.current = defaultSearchText;
     }
-  }
+  }, [defaultSearchText]);
 
-  render() {
-    const {
-      className = "",
-      style = {},
-      placeholder = "Search",
-      tableId = "0",
-      searchText = "Search this table",
-    } = this.props as any;
-
-    return (
-      <label htmlFor={`search-bar-${tableId}`} className="search-label">
-        <span id={`search-bar-${tableId}-label`} className="sr-only visually-hidden">
-          {searchText}
+  return (
+    <div className="search-label-container">
+      <label htmlFor={`search-bar-${tableId}`} className="search-label" id={`search-bar-${tableId}-label`}>
+        <span className="sr-only visually-hidden">
+          {srText}
         </span>
-        <input
-          ref={(n) => { this.input = n; }}
-          id={`search-bar-${tableId}`}
-          type="text"
-          style={style as any}
-          aria-labelledby={`search-bar-${tableId}-label`}
-          onKeyUp={() => this.onKeyup()}
-          onChange={this.onChangeValue}
-          className={`form-control ${className}`}
-          value={this.state.value}
-          placeholder={placeholder}
-        />
+        {srText}
       </label>
-    );
-  }
-  static defaultProps = {
-    className: '',
-    style: {},
-    placeholder: 'Search',
-    delay: 250,
-    searchText: '',
-    tableId: '0',
-    srText: 'Search this table'
-  };
-}
+      <input
+        ref={inputRef}
+        id={`search-bar-${tableId}`}
+        type="text"
+        style={style as any}
+        aria-labelledby={`search-bar-${tableId}-label`}
+        onChange={onChangeValue}
+        className={`form-control ${className}`}
+        value={value}
+        placeholder={placeholder}
+      />
+    </div>
+  );
+};
 
 export default SearchBar;

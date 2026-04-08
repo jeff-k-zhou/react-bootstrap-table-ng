@@ -21,12 +21,12 @@ $ npm install react-bootstrap-table-ng-editor --save
 
 We have [two ways](./cell-edit-props#celleditmode-string) to trigger a editable cell as editing cell:
 
-* click
-* dbclick
+- click
+- dbclick
 
 That's look into how we enable the cell edit on tabe:
 
-```js
+````js
 import cellEditFactory from 'react-bootstrap-table-ng-editor';
 
 // omit
@@ -182,7 +182,7 @@ const columns = [
     if (typeof cell !== 'object') {
       dateObj = new Date(cell);
     }
-    return `${('0' + dateObj.getUTCDate()).slice(-2)}/${('0' + (dateObj.getUTCMonth() + 1)).slice(-2)}/${dateObj.getUTCFullYear()}`;
+    return `${('0' + (dateObj.getUTCMonth() + 1)).slice(-2)}/${('0' + dateObj.getUTCDate()).slice(-2)}/${dateObj.getUTCFullYear()}`;
   },
   editor: {
     type: Type.DATE
@@ -239,38 +239,48 @@ If you feel above predefined editors are not satisfied to your requirement, you 
 Following is a short example:
 
 ```js
-class QualityRanger extends React.Component {
-  static propTypes = {
-    value: PropTypes.number,
-    onUpdate: PropTypes.func.isRequired
-  }
-  static defaultProps = {
-    value: 0
-  }
-  getValue() {
-    return parseInt(this.range.value, 10);
-  }
-  render() {
-    const { value, onUpdate, ...rest } = this.props;
-    return [
+interface QualityRangerProps {
+  value?: number;
+  onUpdate: (value: number) => void;
+  didMount?: () => void;
+}
+
+const QualityRanger = ({ value = 0, onUpdate, didMount, ...rest }: QualityRangerProps) => {
+  const rangeRef = React.useRef<HTMLInputElement>(null);
+  const id = React.useId();
+
+  React.useEffect(() => {
+    if (rangeRef.current) {
+      rangeRef.current.focus();
+    }
+  }, []);
+
+  const getValue = () => {
+    return parseInt(rangeRef.current?.value || '0', 10);
+  };
+
+  return (
+    <>
       <input
-        { ...rest }
+        {...rest}
+        name="quality"
+        id={id}
         key="range"
-        ref={ node => this.range = node }
+        ref={rangeRef}
         type="range"
         min="0"
         max="100"
-      />,
+      />
       <button
         key="submit"
         className="btn btn-default"
-        onClick={ () => onUpdate(this.getValue()) }
+        onClick={() => onUpdate(getValue())}
       >
         done
       </button>
-    ];
-  }
-}
+    </>
+  );
+};
 
 const columns = [
   ..., {

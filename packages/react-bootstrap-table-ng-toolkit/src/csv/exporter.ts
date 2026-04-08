@@ -1,4 +1,3 @@
-/* eslint no-unneeded-ternary: 0 */
 import FileSaver from "file-saver";
 
 export const getMetaInfo = (columns: any) =>
@@ -9,7 +8,7 @@ export const getMetaInfo = (columns: any) =>
       formatter: column.csvFormatter,
       formatExtraData: column.formatExtraData,
       header: column.csvText || column.text,
-      export: column.csvExport === false ? false : true,
+      export: column.csvExport !== false,
       row: Number(column.row) || 0,
       rowSpan: Number(column.rowSpan) || 1,
       colSpan: Number(column.colSpan) || 1,

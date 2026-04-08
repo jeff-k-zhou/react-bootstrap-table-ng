@@ -27,6 +27,9 @@ const SizePerPageOption = ({
         e.preventDefault();
         onSizePerPageChange(page);
       }}
+      onClick={(e) => {
+        e.preventDefault();
+      }}
     >
       {text}
     </a>
@@ -40,6 +43,9 @@ const SizePerPageOption = ({
         onMouseDown={(e) => {
           e.preventDefault();
           onSizePerPageChange(page);
+        }}
+        onClick={(e) => {
+          e.preventDefault();
         }}
       >
         {text}

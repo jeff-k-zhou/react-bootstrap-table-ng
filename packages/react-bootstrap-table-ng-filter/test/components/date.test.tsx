@@ -47,7 +47,16 @@ describe("Date Filter", () => {
   });
 
   describe("when defaultValue.date props is defined", () => {
-    const date = new Date(2018, 0, 1);
+    const date = new Date(Date.UTC(2018, 0, 1));
+
+    const dateParser = (d: any) => {
+      if (!d) return "";
+      const date = new Date(d);
+      if (isNaN(date.getTime())) return "";
+      return `${date.getUTCFullYear()}-${("0" + (date.getUTCMonth() + 1)).slice(-2)}-${(
+        "0" + date.getUTCDate()
+      ).slice(-2)}`;
+    };
 
     it("should render input successfully", () => {
       render(
@@ -60,7 +69,7 @@ describe("Date Filter", () => {
       const input = screen.getByTestId("date-filter-input");
       expect(input).toBeInTheDocument();
       // The defaultValue is formatted as yyyy-mm-dd
-      const expectedValue = new DateFilter({ onFilter, column, defaultValue: { date } }).getDefaultDate();
+      const expectedValue = dateParser(date);
       expect(input).toHaveValue(expectedValue);
     });
   });
@@ -85,7 +94,7 @@ describe("Date Filter", () => {
   describe("when props.getFilter is defined", () => {
     let programmaticallyFilter: any;
     const comparator = EQ;
-    const date = new Date(2018, 0, 1);
+    const date = new Date(Date.UTC(2018, 0, 1));
 
     const getFilter = (filter: any) => {
       programmaticallyFilter = filter;
@@ -95,7 +104,10 @@ describe("Date Filter", () => {
       render(
         <DateFilter onFilter={onFilter} column={column} getFilter={getFilter} />
       );
-      programmaticallyFilter({ comparator, date });
+      const { act } = require("@testing-library/react");
+      act(() => {
+        programmaticallyFilter({ comparator, date });
+      });
       expect(onFilter).toHaveBeenCalledTimes(1);
       expect(onFilter).toHaveBeenCalledWith(
         column,

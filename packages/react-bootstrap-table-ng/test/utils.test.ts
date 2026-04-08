@@ -54,17 +54,12 @@ describe("Utils", () => {
       expect(data.address.city.name).toEqual(newValue);
     });
 
-    it("should throw error if target not existing", () => {
+    it("should not throw error if target not existing", () => {
       expect(() => {
-        _.set(data, "address.not.existing", newValue);
-      }).toThrow();
-    });
-
-    it("should not throw error if target not existing but with safe=true", () => {
-      expect(() => {
-        _.set(data, "address.not.existing", newValue, true);
+        _.set(data, "address.new.path", newValue);
       }).not.toThrow();
-      expect(data.address.not?.existing).toEqual({});
+      const addr = data.address as any;
+      expect(addr.new.path).toEqual(newValue);
     });
   });
 

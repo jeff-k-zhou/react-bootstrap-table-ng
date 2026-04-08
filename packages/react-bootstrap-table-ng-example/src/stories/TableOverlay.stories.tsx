@@ -1,3 +1,4 @@
+import { expect, userEvent, within, waitFor } from 'storybook/test';
 import type { Meta, StoryObj } from '@storybook/react-webpack5';
 
 // import bootstrap style by given version
@@ -31,6 +32,29 @@ export const EmptyTableOverlay: Story = {
   name: "Empty table overlay",
   args: {
     mode: "empty",
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    
+    // pagination button 2
+    // We target the link inside the pagination component
+    const page2Button = await canvas.findByRole('link', { name: '2' });
+    await userEvent.click(page2Button);
+    
+    // verify spinner appears (it should appear since handleTableChange calls setData([]))
+    await waitFor(() => {
+      const spinner = canvasElement.querySelector('.spinner');
+      expect(spinner).toBeInTheDocument();
+    }, { timeout: 2000 });
+    
+    // wait for data to load (3s delay in component)
+    await waitFor(async () => {
+      const table = canvasElement.querySelector('table');
+      if (!table) throw new Error('Table not found');
+      const rows = table.querySelectorAll('tr');
+      // rows[0] is header, rows[1] is first data row
+      expect(rows[1]).toHaveTextContent('Item name 10');
+    }, { timeout: 10000 });
   }
 };
 
@@ -38,5 +62,29 @@ export const TableOverlay: Story = {
   name: "Table overlay",
   args: {
     mode: undefined,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    
+    // pagination button 2
+    const page2Button = await canvas.findByRole('link', { name: '2' });
+    await userEvent.click(page2Button);
+    
+    // verify overlay spinner appears
+    await waitFor(() => {
+      // Search for something that identifies the loading overlay
+      const overlay = canvasElement.querySelector('._loading_overlay_overlay') || 
+                      canvasElement.querySelector('.loading-overlay'); 
+      // Also look for any element with 'loading' text or classes if possible
+      expect(overlay).toBeInTheDocument();
+    }, { timeout: 2000 });
+    
+    // wait for data to load
+    await waitFor(async () => {
+      const table = canvasElement.querySelector('table');
+      if (!table) throw new Error('Table not found');
+      const rows = table.querySelectorAll('tr');
+      expect(rows[1]).toHaveTextContent('Item name 10');
+    }, { timeout: 10000 });
   }
 };

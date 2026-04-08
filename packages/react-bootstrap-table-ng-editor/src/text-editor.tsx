@@ -10,45 +10,42 @@ interface TextEditorProps {
   onUpdate: (row: object, column: object, value: any) => void;
 }
 
-class TextEditor extends Component<TextEditorProps> {
-  text: any;
-  componentDidMount() {
-    const { defaultValue = "", didMount, autoSelectText = false } = this.props;
-    this.text.value = defaultValue;
-    this.text.focus();
-    if (autoSelectText) this.text.select();
+const TextEditor = React.forwardRef<any, TextEditorProps>((props, ref) => {
+  const {
+    defaultValue = "",
+    didMount,
+    className = "",
+    autoSelectText = false,
+    onUpdate,
+    ...rest
+  } = props;
+
+  const inputRef = React.useRef<HTMLInputElement>(null);
+
+  React.useImperativeHandle(ref, () => ({
+    getValue() {
+      return inputRef.current?.value;
+    }
+  }));
+
+  React.useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.value = defaultValue as string;
+      inputRef.current.focus();
+      if (autoSelectText) inputRef.current.select();
+    }
     if (didMount) didMount();
-  }
+  }, []); // Run only once on mount
 
-  getValue() {
-    return this.text.value;
-  }
-
-  render() {
-    const {
-      defaultValue = "",
-      didMount,
-      className = "",
-      autoSelectText = false,
-      onUpdate,
-      ...rest
-    } = this.props;
-    const editorClass = cs(className, "form-control editor edit-text");
-    return (
-      <input
-        ref={(node) => { this.text = node; }}
-        type="text"
-        className={editorClass}
-        {...rest}
-      />
-    );
-  }
-  static defaultProps = {
-    className: null,
-    defaultValue: '',
-    autoSelectText: false,
-    didMount: undefined
-  };
-}
+  const editorClass = cs(className, "form-control editor edit-text");
+  return (
+    <input
+      ref={inputRef}
+      type="text"
+      className={editorClass}
+      {...rest}
+    />
+  );
+});
 
 export default TextEditor;

@@ -17,53 +17,47 @@ export const BOOTSTRAP_VERSION = {
   THREE: "3.4.1",
 };
 
-class WithBootstrapStyle extends PureComponent<WithBootstrapStyleProps, WithBootstrapStyleState> {
+const WithBootstrapStyle = ({ version, render }: WithBootstrapStyleProps) => {
+  const [loading, setLoading] = React.useState(true);
+  const styleRef = React.useRef<HTMLLinkElement>(null);
 
+  React.useEffect(() => {
+    const handleLoadEvent = () => {
+      setLoading(false);
+    };
 
-  style: HTMLLinkElement | null = null;
+    const linkElement = styleRef.current;
+    if (linkElement) {
+      linkElement.addEventListener("load", handleLoadEvent);
+    }
 
-  constructor(props: WithBootstrapStyleProps) {
-    super(props);
-    this.state = { loading: true };
-  }
+    return () => {
+      if (linkElement) {
+        linkElement.removeEventListener("load", handleLoadEvent);
+      }
+    };
+  }, []);
 
-  componentDidMount() {
-    this.style?.addEventListener("load", this.handleLoadEvent);
-  }
+  const href = `style/bootstrap.${version}.min.css`;
 
-  componentWillUnmount() {
-    this.style?.removeEventListener("load", this.handleLoadEvent);
-  }
-
-  handleLoadEvent = () => {
-    this.setState({ loading: false });
-  };
-
-  render() {
-    const { version, render } = this.props;
-
-    const href = `style/bootstrap.${version}.min.css`;
-
-    return (
-      <Fragment>
-        <link
-          href={href}
-          rel="stylesheet"
-          ref={(element) => (this.style = element)}
-        />
-        {render(this.state.loading)}
-      </Fragment>
-    );
-  }
-}
+  return (
+    <Fragment>
+      <link
+        href={href}
+        rel="stylesheet"
+        ref={styleRef}
+      />
+      {render(loading)}
+    </Fragment>
+  );
+};
 
 /**
  * Currently we adopt version 3 as default.
  */
-// eslint-disable-next-line import/no-anonymous-default-export
-export default (version: string = BOOTSTRAP_VERSION.THREE) => (story: () => React.ReactNode) => (
+export default (version: string = BOOTSTRAP_VERSION.THREE) => (Story: any) => (
   <WithBootstrapStyle
     version={version}
-    render={(loading) => !loading && story()}
+    render={(loading) => !loading && <Story />}
   />
 );

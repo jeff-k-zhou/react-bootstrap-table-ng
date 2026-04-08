@@ -1,5 +1,5 @@
+import { expect, userEvent, within } from 'storybook/test';
 import type { Meta, StoryObj } from '@storybook/react-webpack5';
-import React from 'react';
 
 // import bootstrap style by given version
 import { productsGenerator } from '../utils/common';
@@ -66,6 +66,24 @@ export const EnableSort: Story = {
 
     <BootstrapTable keyField='id' data={ products } columns={ columns } />
     `,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    const headerRow = (await within(table).findAllByRole('row'))[0];
+    const idHeader = within(headerRow).getByText('Product ID');
+    
+    // click to sort desc (default behavior on first click)
+    await userEvent.click(idHeader);
+    let rows = await within(table).findAllByRole('row');
+    // rows[1] should be ID 20 (productsGenerator(21))
+    expect(within(rows[1]).getAllByRole('cell')[0]).toHaveTextContent('20');
+    
+    // click to sort asc
+    await userEvent.click(idHeader);
+    rows = await within(table).findAllByRole('row');
+    // rows[1] should be ID 0
+    expect(within(rows[1]).getAllByRole('cell')[0]).toHaveTextContent('0');
   }
 };
 
@@ -113,17 +131,27 @@ export const DefaultSortTable: Story = {
       data={ products }
       columns={ columns }
       defaultSorted={ defaultSorted }
-    />
+          />
     `,
     defaultSorted: [{
       dataField: 'name',
       order: 'desc'
     }],
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    const rows = await within(table).findAllByRole('row');
+    
+    // productsGenerator() default size is 5 (0, 1, 2, 3, 4)
+    // names are "Item name 0", "Item name 1" ...
+    // desc order should be 4, 3, 2, 1, 0
+    expect(within(rows[1]).getAllByRole('cell')[1]).toHaveTextContent('Item name 4');
   }
 };
 
 export const DefaultSortDirectionTable: Story = {
-  name: "Default sort table",
+  name: "Default sort direction table",
   args: {
     columns: [{
       dataField: 'id',
@@ -223,6 +251,17 @@ export const SortManagement: Story = {
   name: "Sort management",
   args: {
     mode: "management",
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    const button = await canvas.findByText('Sort By ID');
+    
+    await userEvent.click(button);
+    
+    const rows = await within(table).findAllByRole('row');
+    // Sorted by ID desc (size 5) -> 4, 3, 2, 1, 0
+    expect(within(rows[1]).getAllByRole('cell')[0]).toHaveTextContent('4');
   }
 };
 
@@ -275,8 +314,8 @@ export const OnetimeSortConfiguration: Story = {
       text: 'Product Price'
     }];
 
-    class OnetimeSortConfiguration extends React.Component {
-      sortFunc = (a: any, b: any, order: string, dataField: any) => {
+    const OnetimeSortConfiguration = () => {
+      const sortFunc = React.useCallback((a: any, b: any, order: string, dataField: any) => {
         if (order === 'desc') {
           if (typeof b === 'string' && typeof a === 'string') {
             return b.localeCompare(a);
@@ -290,29 +329,31 @@ export const OnetimeSortConfiguration: Story = {
             return a - b;
           }
         }
-      }
+      }, []);
 
-      render() {
-        const sortOption = {
-          // No need to configure sortFunc per column
-          sortFunc: this.sortFunc,
-          // No need to configure sortCaret per column
-          sortCaret: (order, column) => {
-            if (!order) return (<span>&nbsp;&nbsp;Desc/Asc</span>);
-            else if (order === 'asc') return (<span>&nbsp;&nbsp;Desc/<p style={{color: "red"}}>Asc</p></span>);
-            else if (order === 'desc') return (<span>&nbsp;&nbsp;<p style={{color: "red"}}>Desc</p>/Asc</span>);
-            return null;
-          }
-        };
+      const sortOption = React.useMemo(() => ({
+        // No need to configure sortFunc per column
+        sortFunc: sortFunc,
+        // No need to configure sortCaret per column
+        sortCaret: (order: string | undefined, column: any) => {
+          if (!order) return (<span>&nbsp;&nbsp;Desc/Asc</span>);
+          else if (order === 'asc') return (<span>&nbsp;&nbsp;Desc/<span style={{color: "red"}}>Asc</span></span>);
+          else if (order === 'desc') return (<span>&nbsp;&nbsp;<span style={{color: "red"}}>Desc</span>/Asc</span>);
+          return null;
+        }
+      }), [sortFunc]);
 
-        return (
-          <div>
-            <button className="btn btn-default" onClick={ this.handleClick }>Change Data</button>
-            <BootstrapTable keyField="id" data={ products } columns={ columns } sort={ sortOption } />
-            <Code>{ sourceCode }</Code>
-          </div>
-        );
-      }
+      const handleClick = () => {
+        // Implementation for changing data (assuming standard example logic)
+      };
+
+      return (
+        <div>
+          <button className="btn btn-default" onClick={ handleClick }>Change Data</button>
+          <BootstrapTable keyField="id" data={ products } columns={ columns } sort={ sortOption } />
+          <Code>{ sourceCode }</Code>
+        </div>
+      );
     }
     `,
     sort: {
@@ -324,6 +365,16 @@ export const OnetimeSortConfiguration: Story = {
         return null;
       }
     },
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    const headerRow = (await within(table).findAllByRole('row'))[0];
+    const idHeader = within(headerRow).getByText(/Product ID/);
+    await userEvent.click(idHeader);
+    await userEvent.click(idHeader);
+    // Should have custom caret initially
+    expect(within(idHeader).getByText('Desc/Asc')).toBeInTheDocument();
   }
 };
 
@@ -401,6 +452,18 @@ export const CustomSortFunction: Story = {
     <BootstrapTable keyField='id' data={ products } columns={ columns } />
     `,
     header: <h3>Product ID sorting is reverted</h3>,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    const headerRow = (await within(table).findAllByRole('row'))[0];
+    const idHeader = within(headerRow).getByText('Product ID');
+    await userEvent.click(idHeader);
+    const nameHeader = within(headerRow).getByText('Product Name');
+    await userEvent.click(nameHeader);
+    const rows = await within(table).findAllByRole('row');
+    // For DESC: 4
+    expect(within(rows[1]).getAllByRole('cell')[0]).toHaveTextContent('4');
   }
 };
 

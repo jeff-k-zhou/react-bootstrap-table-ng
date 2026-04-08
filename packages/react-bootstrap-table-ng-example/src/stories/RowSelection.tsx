@@ -1,5 +1,5 @@
 /* eslint-disable import/no-anonymous-default-export */
-import React from "react";
+import React, { useState } from "react";
 
 import BootstrapTable from "../../../react-bootstrap-table-ng";
 import Code from "../components/common/code-block";
@@ -18,155 +18,119 @@ interface SelectionManagmentState {
   selected: number[];
 }
 
-class SelectionManagment extends React.Component<
-  SelectionManagmentProps,
-  SelectionManagmentState
-> {
-  constructor(props: SelectionManagmentProps) {
-    super(props);
-    this.state = { selected: [0, 1] };
-  }
+const SelectionManagment: React.FC<SelectionManagmentProps> = () => {
+  const [selected, setSelected] = useState<number[]>([0, 1]);
 
-  handleBtnClick = () => {
-    if (!this.state.selected.includes(2)) {
-      this.setState((prevState) => ({
-        selected: [...prevState.selected, 2],
-      }));
+  const handleBtnClick = () => {
+    if (!selected.includes(2)) {
+      setSelected([...selected, 2]);
     } else {
-      this.setState((prevState) => ({
-        selected: prevState.selected.filter((x) => x !== 2),
-      }));
+      setSelected(selected.filter((x) => x !== 2));
     }
   };
 
-  handleOnSelect = (row: { id: number }, isSelect: boolean) => {
+  const handleOnSelect = (row: { id: number }, isSelect: boolean) => {
     if (isSelect) {
-      this.setState((prevState) => ({
-        selected: [...prevState.selected, row.id],
-      }));
+      setSelected([...selected, row.id]);
     } else {
-      this.setState((prevState) => ({
-        selected: prevState.selected.filter((x) => x !== row.id),
-      }));
+      setSelected(selected.filter((x) => x !== row.id));
     }
   };
 
-  handleOnSelectAll = (isSelect: boolean, rows: { id: number }[]) => {
+  const handleOnSelectAll = (isSelect: boolean, rows: { id: number }[]) => {
     const ids = rows.map((r) => r.id);
     if (isSelect) {
-      this.setState(() => ({
-        selected: ids,
-      }));
+      setSelected(ids);
     } else {
-      this.setState(() => ({
-        selected: [],
-      }));
+      setSelected([]);
     }
   };
 
-  render() {
-    const products = productsGenerator();
-    const columns = [{
-      dataField: 'id',
-      text: 'Product ID'
-    }, {
-      dataField: 'name',
-      text: 'Product Name'
-    }, {
-      dataField: 'price',
-      text: 'Product Price'
-    }];
-    const selectRow = {
-      mode: 'checkbox',
-      clickToSelect: true,
-      selected: this.state.selected,
-      onSelect: this.handleOnSelect,
-      onSelectAll: this.handleOnSelectAll,
-    };
-    const sourceCode = `\
+  const products = productsGenerator();
+  const columns = [{
+    dataField: 'id',
+    text: 'Product ID'
+  }, {
+    dataField: 'name',
+    text: 'Product Name'
+  }, {
+    dataField: 'price',
+    text: 'Product Price'
+  }];
+  const selectRow = {
+    mode: 'checkbox',
+    clickToSelect: true,
+    selected: selected,
+    onSelect: handleOnSelect,
+    onSelectAll: handleOnSelectAll,
+  };
+  const sourceCode = `\
     import BootstrapTable from 'react-bootstrap-table-ng';
 
-    class SelectionManagment extends React.Component {
-      constructor(props) {
-        super(props);
-        this.state = { selected: [0, 1] };
-      }
+    const SelectionManagment = () => {
+      const [selected, setSelected] = React.useState([0, 1]);
 
-      handleBtnClick = () => {
-        if (!this.state.selected.includes(2)) {
-          this.setState(() => ({
-            selected: [...this.state.selected, 2]
-          }));
+      const handleBtnClick = () => {
+        if (!selected.includes(2)) {
+          setSelected([...selected, 2]);
         } else {
-          this.setState(() => ({
-            selected: this.state.selected.filter(x => x !== 2)
-          }));
+          setSelected(selected.filter(x => x !== 2));
         }
-      }
+      };
 
-      handleOnSelect = (row, isSelect) => {
+      const handleOnSelect = (row, isSelect) => {
         if (isSelect) {
-          this.setState(() => ({
-            selected: [...this.state.selected, row.id]
-          }));
+          setSelected([...selected, row.id]);
         } else {
-          this.setState(() => ({
-            selected: this.state.selected.filter(x => x !== row.id)
-          }));
+          setSelected(selected.filter(x => x !== row.id));
         }
-      }
+      };
 
-      handleOnSelectAll = (isSelect, rows) => {
+      const handleOnSelectAll = (isSelect, rows) => {
         const ids = rows.map(r => r.id);
         if (isSelect) {
-          this.setState(() => ({
-            selected: ids
-          }));
+          setSelected(ids);
         } else {
-          this.setState(() => ({
-            selected: []
-          }));
+          setSelected([]);
         }
-      }
+      };
 
-      render() {
-        const selectRow = {
-          mode: 'checkbox',
-          clickToSelect: true,
-          selected: this.state.selected,
-          onSelect: this.handleOnSelect,
-          onSelectAll: this.handleOnSelectAll
-        };
-        return (
-          <div>
-            <button className="btn btn-success" onClick={ this.handleBtnClick }>Select/UnSelect 3rd row</button>
-            <BootstrapTable keyField="id" data={ products } columns={ columns } selectRow={ selectRow } />
-            <Code>{ sourceCode }</Code>
-          </div>
-        );
-      }
-    }
+      const selectRow = {
+        mode: 'checkbox',
+        clickToSelect: true,
+        selected: selected,
+        onSelect: handleOnSelect,
+        onSelectAll: handleOnSelectAll
+      };
+
+      return (
+        <div>
+          <button className="btn btn-success" onClick={ handleBtnClick }>Select/UnSelect 3rd row</button>
+          <BootstrapTable keyField="id" data={ products } columns={ columns } selectRow={ selectRow } />
+          <Code>{ sourceCode }</Code>
+        </div>
+      );
+    };
     `;
 
-    return (
-      <div>
-        <button
-          className="btn btn-success"
-          onClick={this.handleBtnClick}
-        >
-          Select/UnSelect 3rd row
-        </button>
-        <BootstrapTable
-          keyField="id"
-          data={products}
-          columns={columns}
-          selectRow={selectRow}
-        />
-        <Code>{sourceCode}</Code>
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      <button
+        className="btn btn-success"
+        onClick={handleBtnClick}
+      >
+        Select/UnSelect 3rd row
+      </button>
+      <BootstrapTable
+        keyField="id"
+        data={products}
+        columns={columns}
+        selectRow={selectRow as any}
+      />
+      <Code>{sourceCode}</Code>
+    </div>
+  );
+};
 
 interface RowSelectionProps {
   mode?: any;

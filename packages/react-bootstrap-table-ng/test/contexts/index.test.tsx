@@ -121,7 +121,11 @@ describe("Context", () => {
       const CellEditContext = React.createContext(null);
       const cellEdit = {
         createContext: jest.fn().mockReturnValue({
-          Provider: CellEditContext.Provider,
+          Provider: (props: any) => (
+            <CellEditContext.Provider value={props}>
+              {props.children}
+            </CellEditContext.Provider>
+          ),
           Consumer: CellEditContext.Consumer,
         }),
         options: {},
@@ -144,7 +148,14 @@ describe("Context", () => {
     it("should render with search context", () => {
       const SearchContext = React.createContext(null);
       const search = {
-        searchContext: jest.fn().mockReturnValue(SearchContext),
+        searchContext: jest.fn().mockReturnValue({
+          Provider: (props: any) => (
+            <SearchContext.Provider value={props}>
+              {props.children}
+            </SearchContext.Provider>
+          ),
+          Consumer: SearchContext.Consumer,
+        }),
         searchText: "",
       };
       const { container } = render(
@@ -164,7 +175,11 @@ describe("Context", () => {
       const FilterContext = React.createContext(null);
       const filter = {
         createContext: jest.fn().mockReturnValue({
-          Provider: FilterContext.Provider,
+          Provider: (props: any) => (
+            <FilterContext.Provider value={props}>
+              {props.children}
+            </FilterContext.Provider>
+          ),
           Consumer: FilterContext.Consumer,
         }),
       };
@@ -185,7 +200,11 @@ describe("Context", () => {
       const PaginationContext = React.createContext(null);
       const paginator = {
         createContext: jest.fn().mockReturnValue({
-          Provider: PaginationContext.Provider,
+          Provider: (props: any) => (
+            <PaginationContext.Provider value={props}>
+              {props.children}
+            </PaginationContext.Provider>
+          ),
           Consumer: PaginationContext.Consumer,
         }),
       };
@@ -207,7 +226,11 @@ describe("Context", () => {
       const PaginationContext = React.createContext(null);
       const paginator = {
         createContext: jest.fn().mockReturnValue({
-          Provider: PaginationContext.Provider,
+          Provider: (props: any) => (
+            <PaginationContext.Provider value={props}>
+              {props.children}
+            </PaginationContext.Provider>
+          ),
           Consumer: PaginationContext.Consumer,
         }),
       };

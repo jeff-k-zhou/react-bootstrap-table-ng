@@ -21,7 +21,7 @@ describe("SortContext", () => {
     handleRemoteSortChange.mockReset();
     mockBase.mockReset();
     SortContext = createSortContext(
-      dataOperator,
+      dataOperator as any,
       jest.fn().mockReturnValue(enableRemote),
       handleRemoteSortChange
     );
@@ -60,8 +60,7 @@ describe("SortContext", () => {
 
     it("should provide correct sort props to children element", () => {
       renderContext();
-      expect(mockBase).toHaveBeenCalled();
-      const props = mockBase.mock.calls[0][0];
+      const props = mockBase.mock.calls[mockBase.mock.calls.length - 1][0];
       expect(props.data).toEqual(data);
       expect(props.sortOrder).toBeUndefined();
       expect(typeof props.onSort).toBe("function");

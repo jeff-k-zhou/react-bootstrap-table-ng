@@ -1,6 +1,6 @@
 import React from 'react';
-
 import type { Meta, StoryObj } from '@storybook/react-webpack5';
+import { expect, userEvent, within } from 'storybook/test';
 
 // import bootstrap style by given version
 import cellEditFactory, { Type } from '../../../react-bootstrap-table-ng-editor';
@@ -96,6 +96,22 @@ export const DoubleClickToEdit: Story = {
     />
     `,
     cellEdit: cellEditFactory({ mode: 'dbclick' }),
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    expect(table).toBeInTheDocument();
+
+    // Double-click the 'Product Name' cell in the first data row
+    const cells = canvas.getAllByRole('cell');
+    await userEvent.dblClick(cells[1]);
+
+    // An inline text input should appear
+    const input = await canvas.findByRole('textbox');
+    expect(input).toBeInTheDocument();
+
+    // Press Escape to cancel editing
+    await userEvent.keyboard('{Escape}');
   }
 };
 
@@ -130,6 +146,25 @@ export const BlurToSaveCell: Story = {
     />
     `,
     cellEdit: cellEditFactory({ mode: 'click', blurToSave: true }),
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await canvas.findByRole('table');
+
+    // Click a 'Product Name' cell to edit it
+    const cells = canvas.getAllByRole('cell');
+    await userEvent.click(cells[1]);
+
+    const input = await canvas.findByRole('textbox');
+    expect(input).toBeInTheDocument();
+
+    // Clear and type a new value, then blur to save
+    await userEvent.clear(input);
+    await userEvent.type(input, 'Updated Name');
+    await userEvent.tab(); // blur triggers save
+
+    // The cell should now display the new value
+    expect(await canvas.findByText('Updated Name')).toBeInTheDocument();
   }
 };
 
@@ -165,6 +200,26 @@ export const RowLevelEditable: Story = {
     />
     `,
     cellEdit: cellEditFactory({ mode: 'click', blurToSave: true, nonEditableRows: () => [0, 3] }),
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await canvas.findByRole('table');
+    const rows = canvas.getAllByRole('row');
+
+    // Row index 0 = header, Row index 1 = first data row (id=0, non-editable)
+    const nonEditableRow = rows[1];
+    const nonEditableCells = within(nonEditableRow).getAllByRole('cell');
+    await userEvent.click(nonEditableCells[1]); // click name cell in non-editable row
+    // No editor should appear for a non-editable row
+    expect(canvas.queryByRole('textbox')).toBeNull();
+
+    // Row index 2 = second data row (id=1, editable)
+    const editableRow = rows[2];
+    const editableCells = within(editableRow).getAllByRole('cell');
+    await userEvent.click(editableCells[1]);
+    const input = await canvas.findByRole('textbox');
+    expect(input).toBeInTheDocument();
+    await userEvent.keyboard('{Escape}');
   }
 };
 
@@ -211,6 +266,22 @@ export const ColumnLevelEditable: Story = {
     />
     `,
     cellEdit: cellEditFactory({ mode: 'click', blurToSave: true }),
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await canvas.findByRole('table');
+    const cells = canvas.getAllByRole('cell');
+
+    // Click the non-editable 'Product Name' cell (editable: false)
+    await userEvent.click(cells[1]);
+    // No editor should appear
+    expect(canvas.queryByRole('textbox')).toBeNull();
+
+    // Click 'Product Price' cell (editable, cells[2])
+    await userEvent.click(cells[2]);
+    const input = await canvas.findByRole('textbox');
+    expect(input).toBeInTheDocument();
+    await userEvent.keyboard('{Escape}');
   }
 };
 
@@ -253,6 +324,22 @@ export const CellLevelEditable: Story = {
     />
     `,
     cellEdit: cellEditFactory({ mode: 'click' }),
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await canvas.findByRole('table');
+    // productsGenerator price: row 0=2100 (NOT editable >2101), row 2=2102 (IS editable)
+    const cells = canvas.getAllByRole('cell');
+
+    // First row price (2100) should NOT be editable
+    await userEvent.click(cells[2]);
+    expect(canvas.queryByRole('textbox')).toBeNull();
+
+    // Third row price (2102) IS editable (index=2, price=2102 > 2101)
+    await userEvent.click(cells[8]);
+    const input = await canvas.findByRole('textbox');
+    expect(input).toBeInTheDocument();
+    await userEvent.keyboard('{Escape}');
   }
 };
 
@@ -294,6 +381,17 @@ export const RichHookFunctions: Story = {
       beforeSaveCell: (oldValue: any, newValue: any, row: any, column: any) => { console.log('Before Saving Cell!!'); },
       afterSaveCell: (oldValue: any, newValue: any, row: any, column: any) => { console.log('After Saving Cell!!'); }
     }),
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await canvas.findByRole('table');
+
+    // Click a cell to start editing (fires onStartEdit)
+    const cells = canvas.getAllByRole('cell');
+    await userEvent.click(cells[1]);
+    const input = await canvas.findByRole('textbox');
+    expect(input).toBeInTheDocument();
+    await userEvent.keyboard('{Escape}');
   }
 };
 
@@ -351,6 +449,13 @@ export const AsyncHookFunctions: Story = {
     />
     `,
     cellEdit: cellEditFactory({ mode: 'click', beforeSaveCell }),
+  },
+  play: async ({ canvasElement }: any) => {
+    // AsyncHookFunctions uses confirm() which can't be reliably tested in headless mode.
+    // Smoke test: verify table renders.
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    expect(table).toBeInTheDocument();
   }
 };
 
@@ -567,6 +672,17 @@ export const AutoSelectTextInput: Story = {
     `,
     cellEdit: cellEditFactory({ mode: 'click', autoSelectText: true }),
     header: <h3>Auto Select Text Input Field When Editing</h3>,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await canvas.findByRole('table');
+
+    // Click 'Job Name' cell - plain text input with autoSelectText
+    const cells = canvas.getAllByRole('cell');
+    await userEvent.click(cells[1]);
+    const input = await canvas.findByRole('textbox');
+    expect(input).toBeInTheDocument();
+    await userEvent.keyboard('{Escape}');
   }
 };
 
@@ -811,6 +927,18 @@ export const DoubleClickToEditWithSelection: Story = {
       clickToEdit: true
     },
     header: <h3>Double click to edit cell</h3>,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await canvas.findByRole('table');
+
+    // Double-click a data cell to start editing
+    const cells = canvas.getAllByRole('cell');
+    // cells[0] is checkbox, cells[1] is id, cells[2] is name
+    await userEvent.dblClick(cells[2]);
+    const input = await canvas.findByRole('textbox');
+    expect(input).toBeInTheDocument();
+    await userEvent.keyboard('{Escape}');
   }
 };
 
@@ -896,6 +1024,19 @@ export const DropdownEditor: Story = {
     `,
     cellEdit: cellEditFactory({ mode: 'click', blurToSave: true }),
     header: <h3>Dropdown Editor</h3>,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await canvas.findByRole('table');
+
+    // Click 'Job Type' cell (dropdown editor, cells[3] in first row)
+    const cells = canvas.getAllByRole('cell');
+    await userEvent.click(cells[3]);
+
+    // A <select> element should appear
+    const select = await canvas.findByRole('combobox');
+    expect(select).toBeInTheDocument();
+    await userEvent.keyboard('{Escape}');
   }
 };
 
@@ -1041,6 +1182,12 @@ export const DropdownEditorWithDynamicOptions: Story = {
     `,
     cellEdit: cellEditFactory({ mode: 'click', blurToSave: true }),
     header: <h3>Dropdown Editor with Dynamic Options</h3>,
+  },
+  play: async ({ canvasElement }: any) => {
+    // Dynamic options loaded asynchronously; smoke test only.
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    expect(table).toBeInTheDocument();
   }
 };
 
@@ -1097,7 +1244,7 @@ export const TextareaEditor: Story = {
 };
 
 export const CheckboxEditor: Story = {
-  name: "Textarea editor",
+  name: "Checkbox editor",
   args: {
     columns: [{
       dataField: 'id',
@@ -1142,6 +1289,19 @@ export const CheckboxEditor: Story = {
     `,
     cellEdit: cellEditFactory({ mode: 'click', blurToSave: true }),
     header: <h3>Checkbox Editor</h3>,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await canvas.findByRole('table');
+
+    // Click 'Done' cell (checkbox editor, cells[2] in first row)
+    const cells = canvas.getAllByRole('cell');
+    await userEvent.click(cells[2]);
+
+    // A checkbox should appear
+    const checkbox = await canvas.findByRole('checkbox');
+    expect(checkbox).toBeInTheDocument();
+    await userEvent.keyboard('{Escape}');
   }
 };
 
@@ -1162,7 +1322,7 @@ export const DateEditor: Story = {
         if (typeof cell !== 'object') {
           dateObj = new Date(cell);
         }
-        return `${('0' + dateObj.getUTCDate()).slice(-2)}/${('0' + (dateObj.getUTCMonth() + 1)).slice(-2)}/${dateObj.getUTCFullYear()}`;
+        return `${('0' + (dateObj.getUTCMonth() + 1)).slice(-2)}/${('0' + dateObj.getUTCDate()).slice(-2)}/${dateObj.getUTCFullYear()}`;
       },
       editor: {
         type: Type.DATE
@@ -1203,58 +1363,64 @@ export const DateEditor: Story = {
     `,
     cellEdit: cellEditFactory({ mode: 'click', blurToSave: true }),
     header: <h3>Date Editor</h3>,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await canvas.findByRole('table');
+
+    // Click 'Stock Date' cell (date editor, cells[2] in first row)
+    const cells = canvas.getAllByRole('cell');
+    await userEvent.click(cells[2]);
+
+    // A date input should appear
+    const dateInput = await canvas.findByDisplayValue(/\d{4}-\d{2}-\d{2}/);
+    expect(dateInput).toBeInTheDocument();
+    await userEvent.keyboard('{Escape}');
   }
 };
 
 interface QualityRangerProps {
   value?: number;
   onUpdate: (value: number) => void;
+  didMount?: () => void;
 }
 
-interface QualityRangerState { }
+const QualityRanger = ({ value = 0, onUpdate, didMount, ...rest }: QualityRangerProps) => {
+  const rangeRef = React.useRef<HTMLInputElement>(null);
+  const id = React.useId();
 
-class QualityRanger extends React.Component<QualityRangerProps, QualityRangerState> {
-  range: HTMLInputElement | null = null;
+  React.useEffect(() => {
+    if (rangeRef.current) {
+      rangeRef.current.focus();
+    }
+  }, []);
 
-
-  static defaultProps = {
-    value: 0,
+  const getValue = () => {
+    return parseInt(rangeRef.current?.value || '0', 10);
   };
 
-  componentDidMount() {
-    if (this.range) {
-      this.range.focus();
-    }
-  }
-
-  getValue() {
-    return parseInt(this.range?.value || '0', 10);
-  }
-
-  render() {
-    const { value, onUpdate, ...rest } = this.props;
-
-    return (
-      <>
-        <input
-          {...rest}
-          key="range"
-          ref={(node) => (this.range = node)}
-          type="range"
-          min="0"
-          max="100"
-        />
-        <button
-          key="submit"
-          className="btn btn-default"
-          onClick={() => onUpdate(this.getValue())}
-        >
-          done
-        </button>
-      </>
-    );
-  }
-}
+  return (
+    <>
+      <input
+        {...rest}
+        name="quality"
+        id={id}
+        key="range"
+        ref={rangeRef}
+        type="range"
+        min="0"
+        max="100"
+      />
+      <button
+        key="submit"
+        className="btn btn-default"
+        onClick={() => onUpdate(getValue())}
+      >
+        done
+      </button>
+    </>
+  );
+};
 
 export const CustomEditor: Story = {
   name: "Custom editor",
@@ -1280,39 +1446,34 @@ export const CustomEditor: Story = {
     interface QualityRangerProps {
       value?: number;
       onUpdate: (value: number) => void;
+      didMount?: () => void;
     }
 
-    interface QualityRangerState { }
+    const QualityRanger = ({ value = 0, onUpdate, ...rest }: QualityRangerProps) => {
+      const rangeRef = React.useRef<HTMLInputElement>(null);
 
-    class QualityRanger extends React.Component<QualityRangerProps, QualityRangerState> {
+      const getValue = () => {
+        return parseInt(rangeRef.current?.value || '0', 10);
+      };
 
-      static defaultProps = {
-        value: 0
-      }
-      getValue() {
-        return parseInt(this.range.value, 10);
-      }
-      render() {
-        const { value, onUpdate, ...rest } = this.props;
-        return [
-          <input
-            { ...rest }
-            key="range"
-            ref={ node => this.range = node }
-            type="range"
-            min="0"
-            max="100"
-          />,
-          <button
-            key="submit"
-            className="btn btn-default"
-            onClick={ () => onUpdate(this.getValue()) }
-          >
-            done
-          </button>
-        ];
-      }
-    }
+      return [
+        <input
+          { ...rest }
+          key="range"
+          ref={ rangeRef }
+          type="range"
+          min="0"
+          max="100"
+        />,
+        <button
+          key="submit"
+          className="btn btn-default"
+          onClick={ () => onUpdate(getValue()) }
+        >
+          done
+        </button>
+      ];
+    };
 
     const columns = [{
       dataField: 'id',
@@ -1376,7 +1537,7 @@ export const CellEditorWithDataType: Story = {
         if (typeof cell !== 'object') {
           dateObj = new Date(cell);
         }
-        return `${('0' + dateObj.getUTCDate()).slice(-2)}/${('0' + (dateObj.getUTCMonth() + 1)).slice(-2)}/${dateObj.getUTCFullYear()}`;
+        return `${('0' + (dateObj.getUTCMonth() + 1)).slice(-2)}/${('0' + dateObj.getUTCDate()).slice(-2)}/${dateObj.getUTCFullYear()}`;
       },
       editor: {
         type: Type.DATE
@@ -1440,5 +1601,17 @@ export const CellEditorWithDataType: Story = {
     />
     `,
     cellEdit: cellEditFactory({ mode: 'click', blurToSave: true, afterSaveCell }),
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    expect(table).toBeInTheDocument();
+
+    // Click 'Stock Name' (text) cell
+    const cells = canvas.getAllByRole('cell');
+    await userEvent.click(cells[1]);
+    const input = await canvas.findByRole('textbox');
+    expect(input).toBeInTheDocument();
+    await userEvent.keyboard('{Escape}');
   }
 };

@@ -1,20 +1,13 @@
-import React from "react";
-import shouldUpdater from "../../src/row/should-updater";
+import {
+  shouldUpdateByCellEditing,
+  shouldUpdatedBySelfProps,
+  shouldUpdateByColumnsForSimpleCheck,
+  shouldUpdatedByNormalProps
+} from "../../src/row/should-updater";
 
 describe("Row shouldUpdater", () => {
   let props: any;
   let nextProps: any;
-
-  class DummyComponent extends shouldUpdater(React.Component) {
-    render() {
-      return null;
-    }
-  }
-
-  function getInstance(initialProps: any) {
-    // Directly instantiate the class for logic testing (no DOM needed)
-    return new DummyComponent(initialProps);
-  }
 
   describe("shouldUpdateByCellEditing", () => {
     describe("when nextProps.clickToEdit and nexrProps.dbclickToEdit both are negative", () => {
@@ -27,9 +20,8 @@ describe("Row shouldUpdater", () => {
 
       it("should always return false", () => {
         nextProps = { ...props, editingRowIdx: 0 };
-        const instance = getInstance(props);
         expect(
-          instance.shouldUpdateByCellEditing(nextProps)
+          shouldUpdateByCellEditing(props, nextProps)
         ).toBeFalsy();
       });
     });
@@ -45,9 +37,8 @@ describe("Row shouldUpdater", () => {
 
       it("should return true", () => {
         nextProps = { ...props, editingRowIdx: 0 };
-        const instance = getInstance(props);
         expect(
-          instance.shouldUpdateByCellEditing(nextProps)
+          shouldUpdateByCellEditing(props, nextProps)
         ).toBeTruthy();
       });
     });
@@ -63,9 +54,8 @@ describe("Row shouldUpdater", () => {
 
       it("should return true", () => {
         nextProps = { ...props, editingRowIdx: null };
-        const instance = getInstance(props);
         expect(
-          instance.shouldUpdateByCellEditing(nextProps)
+          shouldUpdateByCellEditing(props, nextProps)
         ).toBeTruthy();
       });
     });
@@ -81,9 +71,8 @@ describe("Row shouldUpdater", () => {
 
       it("should return true", () => {
         nextProps = { ...props, className: "test" };
-        const instance = getInstance(props);
         expect(
-          instance.shouldUpdatedBySelfProps(nextProps)
+          shouldUpdatedBySelfProps(props, nextProps)
         ).toBeTruthy();
       });
     });
@@ -97,9 +86,8 @@ describe("Row shouldUpdater", () => {
 
       it("should return true", () => {
         nextProps = { ...props, style: { color: "red" } };
-        const instance = getInstance(props);
         expect(
-          instance.shouldUpdatedBySelfProps(nextProps)
+          shouldUpdatedBySelfProps(props, nextProps)
         ).toBeTruthy();
       });
     });
@@ -113,9 +101,8 @@ describe("Row shouldUpdater", () => {
 
       it("should return true", () => {
         nextProps = { ...props, attrs: { onClick: jest.fn() } };
-        const instance = getInstance(props);
         expect(
-          instance.shouldUpdatedBySelfProps(nextProps)
+          shouldUpdatedBySelfProps(props, nextProps)
         ).toBeTruthy();
       });
     });
@@ -134,9 +121,8 @@ describe("Row shouldUpdater", () => {
           ...props,
           columns: [...props.columns, { dataField: "name", text: "Name" }],
         };
-        const instance = getInstance(props);
         expect(
-          instance.shouldUpdateByColumnsForSimpleCheck(nextProps)
+          shouldUpdateByColumnsForSimpleCheck(props, nextProps)
         ).toBeTruthy();
       });
     });
@@ -153,9 +139,8 @@ describe("Row shouldUpdater", () => {
           ...props,
           columns: [{ dataField: "price", text: "Price", hidden: true }],
         };
-        const instance = getInstance(props);
         expect(
-          instance.shouldUpdateByColumnsForSimpleCheck(nextProps)
+          shouldUpdateByColumnsForSimpleCheck(props, nextProps)
         ).toBeTruthy();
       });
     });
@@ -169,9 +154,8 @@ describe("Row shouldUpdater", () => {
 
       it("should return false", () => {
         nextProps = { ...props, columns: [...props.columns] };
-        const instance = getInstance(props);
         expect(
-          instance.shouldUpdateByColumnsForSimpleCheck(nextProps)
+          shouldUpdateByColumnsForSimpleCheck(props, nextProps)
         ).toBeFalsy();
       });
     });
@@ -187,9 +171,8 @@ describe("Row shouldUpdater", () => {
 
       it("should return true", () => {
         nextProps = { ...props, rowIndex: 1 };
-        const instance = getInstance(props);
         expect(
-          instance.shouldUpdatedByNormalProps(nextProps)
+          shouldUpdatedByNormalProps(props, nextProps)
         ).toBeTruthy();
       });
     });
@@ -203,9 +186,8 @@ describe("Row shouldUpdater", () => {
 
       it("should return true", () => {
         nextProps = { ...props, editable: true };
-        const instance = getInstance(props);
         expect(
-          instance.shouldUpdatedByNormalProps(nextProps)
+          shouldUpdatedByNormalProps(props, nextProps)
         ).toBeTruthy();
       });
     });
@@ -222,9 +204,8 @@ describe("Row shouldUpdater", () => {
           ...props,
           columns: [...props.columns, { dataField: "name", text: "Name" }],
         };
-        const instance = getInstance(props);
         expect(
-          instance.shouldUpdatedByNormalProps(nextProps)
+          shouldUpdatedByNormalProps(props, nextProps)
         ).toBeTruthy();
       });
     });
@@ -238,9 +219,8 @@ describe("Row shouldUpdater", () => {
 
       it("should return true", () => {
         nextProps = { ...props, row: { id: 1, name: "test", price: 123 } };
-        const instance = getInstance(props);
         expect(
-          instance.shouldUpdatedByNormalProps(nextProps)
+          shouldUpdatedByNormalProps(props, nextProps)
         ).toBeTruthy();
       });
     });

@@ -1,12 +1,21 @@
-/* eslint react/prop-types: 0 */
-import React from "react";
+import React, { useContext } from "react";
+import { StateContext } from "./state-context";
 
-export default (WrappedComponent: any) =>
-  ({ page, sizePerPage, ...rest }: any) =>
-    (
+export default (WrappedComponent: any) => {
+  const StandaloneAdapter = (props: any) => {
+    const context = useContext(StateContext);
+    const paginationProps = context ? context.paginationProps : {};
+
+    const { page, sizePerPage, ...rest } = props;
+
+    return (
       <WrappedComponent
+        {...paginationProps}
         {...rest}
-        currPage={page}
-        currSizePerPage={sizePerPage}
+        currPage={page ?? paginationProps.page}
+        currSizePerPage={sizePerPage ?? paginationProps.sizePerPage}
       />
     );
+  };
+  return StandaloneAdapter;
+};

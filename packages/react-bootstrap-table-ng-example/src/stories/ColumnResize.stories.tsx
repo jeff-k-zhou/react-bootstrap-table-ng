@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-webpack5';
-import React from 'react';
+import { expect, within } from 'storybook/test';
 
 import { columns, productsGenerator } from '../utils/common';
 import ColumnResize from './ColumnResize';
@@ -49,6 +49,15 @@ export const DefaultColumnResize: Story = {
 
     <BootstrapTable keyField='id' data={ products } columns={ columns } columnResize />
     `,
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    expect(table).toBeInTheDocument();
+
+    // Verify all 3 columns have resizer handles
+    const resizers = canvasElement.querySelectorAll('.react-bootstrap-table-column-resizer');
+    expect(resizers.length).toBe(3);
   }
 };
 
@@ -76,5 +85,19 @@ export const MixedColumnResize: Story = {
 
     <BootstrapTable keyField='id' data={ products } columns={ columns } columnResize />
     `,
+  },
+    play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    const table = await canvas.findByRole('table');
+    expect(table).toBeInTheDocument();
+
+    // In MixedColumnResize, only the second column (index 1) is resizable
+    const resizers = canvasElement.querySelectorAll('.react-bootstrap-table-column-resizer');
+    expect(resizers.length).toBe(1);
+
+    // Verify the resizer is inside the "Product Name" header cell
+    const productNameHeader = canvas.getByText('Product Name').closest('th');
+    const resizerInNameHeader = productNameHeader?.querySelector('.react-bootstrap-table-column-resizer');
+    expect(resizerInNameHeader).toBeInTheDocument();
   }
 };

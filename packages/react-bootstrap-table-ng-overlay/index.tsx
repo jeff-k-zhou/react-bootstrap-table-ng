@@ -1,46 +1,54 @@
-import React from "react";
-
+import React, { useLayoutEffect, useRef } from "react";
 import LoadingOverlay from "./src/loading-overlay";
 
 interface TableLoadingOverlayWrapperProps {
   children: React.ReactNode;
+  active?: boolean;
 }
 
-export default (options?: any) => (loading?: boolean) =>
-  class TableLoadingOverlayWrapper extends React.Component<TableLoadingOverlayWrapperProps> {
+export default (options?: any) => (loading?: boolean) => {
+  const TableLoadingOverlayWrapper: React.FC<TableLoadingOverlayWrapperProps> = ({
+    children,
+    active,
+  }) => {
+    const overlayRef = useRef<any>(null);
+    const isActive = typeof active !== "undefined" ? active : loading;
 
-    overlay: any;
+    useLayoutEffect(() => {
+      if (isActive && overlayRef.current && overlayRef.current.wrapper.current) {
+        const wrapper = overlayRef.current.wrapper.current;
+        const masker = wrapper.firstChild;
+        const parent = wrapper.parentElement;
 
-    componentDidMount() {
-      if (loading) {
-        const { wrapper } = this.overlay;
-        const masker = wrapper.current.firstChild;
-        const headerDOM = wrapper.current.parentElement.querySelector("thead");
-        const bodyDOM = wrapper.current.parentElement.querySelector("tbody");
-        const captionDOM =
-          wrapper.current.parentElement.querySelector("caption");
-        let marginTop = window.getComputedStyle(headerDOM).height;
-        if (captionDOM) {
-          marginTop = parseFloat(marginTop.replace("px", "")).toString();
-          marginTop += parseFloat(
-            window.getComputedStyle(captionDOM).height.replace("px", "")
-          ).toString();
-          marginTop = `${marginTop}px`;
+        if (parent) {
+          const headerDOM = parent.querySelector("thead");
+          const bodyDOM = parent.querySelector("tbody");
+          const captionDOM = parent.querySelector("caption");
+
+          if (headerDOM && bodyDOM) {
+            let marginTop = window.getComputedStyle(headerDOM).height;
+            if (captionDOM) {
+              const captionHeight = parseFloat(
+                window.getComputedStyle(captionDOM).height.replace("px", "")
+              );
+              const currentHeaderHeight = parseFloat(marginTop.replace("px", ""));
+              marginTop = `${currentHeaderHeight + captionHeight}px`;
+            }
+            masker.style.marginTop = marginTop;
+            masker.style.height = window.getComputedStyle(bodyDOM).height;
+          }
         }
-        masker.style.marginTop = marginTop;
-        masker.style.height = window.getComputedStyle(bodyDOM).height;
       }
-    }
+    }, [isActive]);
 
-    render() {
-      return (
-        <LoadingOverlay
-          ref={(n: any) => { this.overlay = n; }}
-          {...options}
-          active={loading}
-        >
-          {this.props.children}
-        </LoadingOverlay>
-      );
-    }
+    return (
+      <LoadingOverlay ref={overlayRef} {...options} active={isActive}>
+        {children}
+      </LoadingOverlay>
+    );
   };
+
+  TableLoadingOverlayWrapper.displayName = "TableLoadingOverlayWrapper";
+
+  return TableLoadingOverlayWrapper;
+};

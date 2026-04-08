@@ -1,5 +1,4 @@
 .react-bootstrap-table {
-
   table {
     table-layout: fixed;
   }
@@ -111,24 +110,28 @@
     }
 
     .animated.bounceIn,
-    .animated.bounceOut{
-      animation-duration: .75s;
+    .animated.bounceOut {
+      animation-duration: 0.75s;
     }
 
-    .animated.shake{
-      animation-duration: .3s;
+    .animated.shake {
+      animation-duration: 0.3s;
     }
 
     @keyframes shake {
-      from, to {
+      from,
+      to {
         transform: translate3d(0, 0, 0);
       }
 
-      10%,  50%,  90% {
+      10%,
+      50%,
+      90% {
         transform: translate3d(-10px, 0, 0);
       }
 
-      30%, 70%{
+      30%,
+      70% {
         transform: translate3d(10px, 0, 0);
       }
     }
@@ -138,13 +141,18 @@
     }
 
     @keyframes bounceIn {
-      from, 20%, 40%, 60%, 80%, to {
-        animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+      from,
+      20%,
+      40%,
+      60%,
+      80%,
+      to {
+        animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
       }
 
       0% {
         opacity: 0;
-        transform: scale3d(.3, .3, .3);
+        transform: scale3d(0.3, 0.3, 0.3);
       }
 
       20% {
@@ -152,7 +160,7 @@
       }
 
       40% {
-        transform: scale3d(.9, .9, .9);
+        transform: scale3d(0.9, 0.9, 0.9);
       }
 
       60% {
@@ -161,7 +169,7 @@
       }
 
       80% {
-        transform: scale3d(.97, .97, .97);
+        transform: scale3d(0.97, 0.97, 0.97);
       }
 
       to {
@@ -176,17 +184,18 @@
 
     @keyframes bounceOut {
       20% {
-        transform: scale3d(.9, .9, .9);
+        transform: scale3d(0.9, 0.9, 0.9);
       }
 
-      50%, 55% {
+      50%,
+      55% {
         opacity: 1;
         transform: scale3d(1.1, 1.1, 1.1);
       }
 
       to {
         opacity: 0;
-        transform: scale3d(.3, .3, .3);
+        transform: scale3d(0.3, 0.3, 0.3);
       }
     }
 
@@ -194,26 +203,49 @@
       animation-name: bounceOut;
     }
   }
-  .reset-expansion-style{
+  .reset-expansion-style {
     padding: 0;
   }
-  .row-expansion-style{
+  .row-expansion-style {
     padding: 8px;
   }
-  .row-expand-slide-appear{
+  .row-expand-slide-appear {
     max-height: 0;
     overflow: hidden;
   }
-  .row-expand-slide-appear-active{
+  .row-expand-slide-appear-active {
     max-height: 1000px;
-    transition: max-height 3s linear;
+    transition: max-height 400ms linear;
   }
-  .row-expand-slide-exit{
+  .row-expand-slide-exit {
     max-height: 1000px;
   }
-  .row-expand-slide-exit-active{
+  .row-expand-slide-exit-active {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 400ms cubic-bezier(0, 0.95, 0, 0.95)
+    transition: max-height 400ms cubic-bezier(0, 0.95, 0, 0.95);
   }
+
+  .edit-date {
+    width: max-content;
+    
+    &::-webkit-calendar-picker-indicator {
+      margin-left: 10px;
+    }
+  }
+
+  .expandable-cell {
+    /* Default state: truncated with ellipsis */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 200px; /* Adjust this to match your column width */
+    transition: all 0.2s ease;
+  }
+  .expandable-cell:hover {
+    /* Hover state: show everything */
+    white-space: normal;
+    overflow: visible;
+    word-wrap: break-word;
+}
 }

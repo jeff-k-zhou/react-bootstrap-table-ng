@@ -2,61 +2,76 @@
 id: filter-props
 title: Column Filter Props
 ---
+
 `react-bootstrap-table-ng` separate the filter core code base to [react-bootstrap-table-ng-filter](https://www.npmjs.com/package/react-bootstrap-table-ng-filter). The following are guideline about how to use and the details of props of [filterFactory](#filterfactory-props) and [filters](#filters-props). For more information, please take refer to the samples as [link](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/storybook/index.html?selectedKind=Column%20Filter&selectedStory=Text%20Filter&full=0&addons=1&stories=1&panelRight=0&addonPanel=storybook%2Factions%2Factions-panel) here.
 
 ## **Content Table**
 
-* [Getting Started](#getting-started)
-* [How to use](#how-to-use)
-* [Props of FilterFactory](#filterfactory-props)
-* [Props of Filters](#filters-props)
-   * [textFilter](#textfilter)
-   * [selectFilter](#selectFilter)
-   * [multiSelectFilter](#multiSelectFilter)
-   * [numberFilter](#numberFilter)
-   * [dateFilter](#dateFilter)
-   * [customFilter](#customFilter)
-* [Comparator](#comparator)
-* [FILTER_TYPES](#filter-types)
-* [Position](#position)
+- [Getting Started](#getting-started)
+- [How to use](#how-to-use)
+- [Props of FilterFactory](#filterfactory-props)
+- [Props of Filters](#filters-props)
+  - [textFilter](#textfilter)
+  - [selectFilter](#selectFilter)
+  - [multiSelectFilter](#multiSelectFilter)
+  - [numberFilter](#numberFilter)
+  - [dateFilter](#dateFilter)
+  - [customFilter](#customFilter)
+- [Comparator](#comparator)
+- [FILTER_TYPES](#filter-types)
+- [Position](#position)
 
 ## **Getting Started** {#getting-started}
+
 Please check [Getting Started Guide](./basic-filter)
 
 ## **How to use** {#how-to-use}
+
 You should apply following two props to enable filter functionality:
-* Give `filter` prop on `BootstrapTable` which value is the return value from calling `filterFactory` function
-* Add `filter` property on `column` object:
-   * textFilter
-   * selectFilter
-   * multiSelectFilter
-   * numberFilter
-   * dateFilter
-   * customFilter
+
+- Give `filter` prop on `BootstrapTable` which value is the return value from calling `filterFactory` function
+- Add `filter` property on `column` object:
+  - textFilter
+  - selectFilter
+  - multiSelectFilter
+  - numberFilter
+  - dateFilter
+  - customFilter
 
 For example:
 
 ```js
-import BootstrapTable from 'react-bootstrap-table-ng';
-import filterFactory, { textFilter } from 'react-bootstrap-table-ng-filter';
+import BootstrapTable from "react-bootstrap-table-ng";
+import filterFactory, { textFilter } from "react-bootstrap-table-ng-filter";
 
-const columns = [{
-  dataField: 'id',
-  text: 'Product ID'
-}, {
-  dataField: 'name',
-  text: 'Product Name'
-}, {
-  dataField: 'price',
-  text: 'Product Price',
-  filter: textFilter()
-}];
+const columns = [
+  {
+    dataField: "id",
+    text: "Product ID",
+  },
+  {
+    dataField: "name",
+    text: "Product Name",
+  },
+  {
+    dataField: "price",
+    text: "Product Price",
+    filter: textFilter(),
+  },
+];
+```
 
 ```js
-<BootstrapTable keyField='id' data={ products } columns={ columns } filter={ filterFactory() } />
+<BootstrapTable
+  keyField="id"
+  data={products}
+  columns={columns}
+  filter={filterFactory()}
+/>
 ```
 
 ## **Props of FilterFactory** {#filterfactory-props}
+
 **No Any Available Props Yet**
 
 ## **Props of Filters** {#filters-props}
@@ -66,37 +81,49 @@ const columns = [{
 **Required**: NONE
 
 **Optional**:
+
 ### textFilter.id - [String]
-* custom element HTML id for filter
+
+- custom element HTML id for filter
 
 ### textFilter.placeholder - [String]
-* custom the input placeholder
+
+- custom the input placeholder
 
 ### textFilter.className - [String]
-* custom class name on input
+
+- custom class name on input
 
 ### textFilter.defaultValue - [String]
-* default filtering value
+
+- default filtering value
 
 ### textFilter.comparator - [Comparator]
-* Specify what kind of comparator to compare. Default is Comparator.LIKE
+
+- Specify what kind of comparator to compare. Default is Comparator.LIKE
 
 ### textFilter.caseSensitive - [Boolean]
-* default is `false`, and `true` will only work when comparator is `LIKE`.
+
+- default is `false`, and `true` will only work when comparator is `LIKE`.
 
 ### textFilter.style - [Object]
-* your custom inline styles on `input`
+
+- your custom inline styles on `input`
 
 ### textFilter.delay - [Number]
-* Debounce time, which means how long will trigger filtering after user typing. Default is `500ms`. 
+
+- Debounce time, which means how long will trigger filtering after user typing. Default is `500ms`.
 
 ### textFilter.getFilter - [Function]
-* export `filter` function to allow users to access. For textFilter, `filter(value)` to filter columns dynamically.
+
+- export `filter` function to allow users to access. For textFilter, `filter(value)` to filter columns dynamically.
 
 ### textFilter.onFilter - [Function]
-* Register a listener which will be called when column filter being triggered. If you return an array value, `react-bootstrap-table-ng` will adopt this value as final filted result.
+
+- Register a listener which will be called when column filter being triggered. If you return an array value, `react-bootstrap-table-ng` will adopt this value as final filted result.
 
 **Example**
+
 ```js
 import BootstrapTable from 'react-bootstrap-table-ng';
 import filterFactory, { textFilter } from 'react-bootstrap-table-ng-filter';
@@ -128,43 +155,61 @@ const columns = [{
   text: 'Product Price',
   filter: textFilter()
 }];
+```
 
 ```js
-<BootstrapTable keyField='id' data={ products } columns={ columns } filter={ filterFactory() } />
+<BootstrapTable
+  keyField="id"
+  data={products}
+  columns={columns}
+  filter={filterFactory()}
+/>
 ```
 
 ## selectFilter {#selectFilter}
+
 **Required**:
 
 ### selectFilter.options - [Object | Array | Function]
-* (Required) the options for the list of drop down.
+
+- (Required) the options for the list of drop down.
 
 **Optional**:
 
 ### selectFilter.id - [String]
-* custom element HTML id for filter
+
+- custom element HTML id for filter
 
 ### selectFilter.className - [String]
-* custom class name on input
+
+- custom class name on input
 
 ### selectFilter.withoutEmptyOption - [Boolean]
-* When it was set to `true`, the drop down list would hide the default selection.
+
+- When it was set to `true`, the drop down list would hide the default selection.
+
 ### selectFilter.defaultValue - [String]
-* default filtering value
+
+- default filtering value
 
 ### selectFilter.comparator - [Comparator]
-* Specify what kind of comparator to compare. Default is `Comparator.EQ`
+
+- Specify what kind of comparator to compare. Default is `Comparator.EQ`
 
 ### selectFilter.style - [Object]
-* your custom inline styles on `input`
+
+- your custom inline styles on `input`
 
 ### selectFilter.getFilter - [Function]
-* export `filter` function to allow users to access. For selectFilter, `filter(value)` to filter columns dynamically.
+
+- export `filter` function to allow users to access. For selectFilter, `filter(value)` to filter columns dynamically.
 
 ### selectFilter.onFilter - [Function]
-* Register a listener which will be called when column filter being triggered. If you return an array value, `react-bootstrap-table-ng` will adopt this value as final filted result.
+
+- Register a listener which will be called when column filter being triggered. If you return an array value, `react-bootstrap-table-ng` will adopt this value as final filted result.
 
 **Example**
+
 ```js
 import BootstrapTable from 'react-bootstrap-table-ng';
 import filterFactory, { selectFilter } from 'react-bootstrap-table-ng-filter';
@@ -211,44 +256,61 @@ const columns = [
     }
   })
 }];
+```
 
 ```js
-<BootstrapTable keyField='id' data={ products } columns={ columns } filter={ filterFactory() } />
+<BootstrapTable
+  keyField="id"
+  data={products}
+  columns={columns}
+  filter={filterFactory()}
+/>
 ```
 
 ## multiSelectFilter {#multiSelectFilter}
+
 **Required**:
 
 ### multiSelectFilter.options - [Object]
-* (Required) the options for the list of drop down.
+
+- (Required) the options for the list of drop down.
 
 **Optional**:
 
 ### multiSelectFilter.id - [String]
-* custom element HTML id for filter
+
+- custom element HTML id for filter
 
 ### multiSelectFilter.className - [String]
-* custom class name on input
+
+- custom class name on input
 
 ### multiSelectFilter.withoutEmptyOption - [Boolean]
-* When it was set to `true`, the drop down list would hide the default selection.
+
+- When it was set to `true`, the drop down list would hide the default selection.
 
 ### multiSelectFilter.defaultValue - [Array]
-* default filtering value
+
+- default filtering value
 
 ### multiSelectFilter.comparator - [Comparator]
-* Specify what kind of comparator to compare. Default is `Comparator.EQ`
+
+- Specify what kind of comparator to compare. Default is `Comparator.EQ`
 
 ### multiSelectFilter.style - [Object]
-* your custom inline styles on `input`
+
+- your custom inline styles on `input`
 
 ### multiSelectFilter.getFilter - [Function]
-* export `filter` function to allow users to access. For multiSelectFilter, `filter(value)` to filter columns dynamically.
+
+- export `filter` function to allow users to access. For multiSelectFilter, `filter(value)` to filter columns dynamically.
 
 ### multiSelectFilter.onFilter - [Function]
-* Register a listener which will be called when column filter being triggered. If you return an array value, `react-bootstrap-table-ng` will adopt this value as final filted result.
+
+- Register a listener which will be called when column filter being triggered. If you return an array value, `react-bootstrap-table-ng` will adopt this value as final filted result.
 
 **Example**
+
 ```js
 import BootstrapTable from 'react-bootstrap-table-ng';
 import filterFactory, { multiSelectFilter } from 'react-bootstrap-table-ng-filter';
@@ -279,67 +341,91 @@ const columns = [
     }
   })
 }];
+```
 
 ```js
-<BootstrapTable keyField='id' data={ products } columns={ columns } filter={ filterFactory() } />
+<BootstrapTable
+  keyField="id"
+  data={products}
+  columns={columns}
+  filter={filterFactory()}
+/>
 ```
 
 ## numberFilter {#numberFilter}
+
 **Required**: NONE
 
 **Optional**:
 
 ### numberFilter.id - [String]
-* custom element HTML id for filter
+
+- custom element HTML id for filter
 
 ### numberFilter.options - [Array]
-* Once the `options` has been defined, it will render number `select` drop down instead of number input field.
+
+- Once the `options` has been defined, it will render number `select` drop down instead of number input field.
 
 ### numberFilter.delay - [Number]
-* Debounce time, which means how long will trigger filtering after user typing. Default is `500ms`.
+
+- Debounce time, which means how long will trigger filtering after user typing. Default is `500ms`.
 
 ### numberFilter.placeholder - [String]
-* customized placeholder for number input.
+
+- customized placeholder for number input.
 
 ### numberFilter.withoutEmptyComparatorOption - [Boolean]
-* When it was set to `true`, the drop down list of `comparator` would hide the default selection.
+
+- When it was set to `true`, the drop down list of `comparator` would hide the default selection.
 
 ### numberFilter.withoutEmptyNumberOption - [Boolean]
-* When it was set to `true`, the drop down list of `number` would hide the default selection. Besides, before picking up this prop, please make sure that you've defined the `props.options` correctly.
+
+- When it was set to `true`, the drop down list of `number` would hide the default selection. Besides, before picking up this prop, please make sure that you've defined the `props.options` correctly.
 
 ### numberFilter.defaultValue - [Object]
-* It is the default filtering value. Furthermore, it accepts **2** attributes:
-   * number: filter value
-   * comparator: what kind of comparator to compare
+
+- It is the default filtering value. Furthermore, it accepts **2** attributes:
+  - number: filter value
+  - comparator: what kind of comparator to compare
 
 ### numberFilter.comparator - [[Comparator]]
-* Specify what kind of comparator to compare. Default is to list `all` of comparators.
+
+- Specify what kind of comparator to compare. Default is to list `all` of comparators.
 
 ### numberFilter.className - [String]
-* custom class name on the `wrapper` of number input and comparator drop down.
+
+- custom class name on the `wrapper` of number input and comparator drop down.
 
 ### numberFilter.comparatorClassName - [String]
-* custom class name on the `comparator` drop down.
+
+- custom class name on the `comparator` drop down.
 
 ### numberFilter.numberClassName - [String]
-* custom class name on the number `input`.
+
+- custom class name on the number `input`.
 
 ### numberFilter.style - [Object]
-* custom inline styles on the `wrapper` of number input and comparator drop down.
+
+- custom inline styles on the `wrapper` of number input and comparator drop down.
 
 ### numberFilter.comparatorStyle - [Object]
-* custom inline styles on the `comparator` drop down.
+
+- custom inline styles on the `comparator` drop down.
 
 ### numberFilter.numberStyle - [Object]
-* custom inline styles on the number `input`.
+
+- custom inline styles on the number `input`.
 
 ### numberFilter.getFilter - [Function]
-* export `filter` function to allow users to access. For numberFilter,<br />`filter({ number, comparator })` to filter columns dynamically.
+
+- export `filter` function to allow users to access. For numberFilter,<br />`filter({ number, comparator })` to filter columns dynamically.
 
 ### numberFilter.onFilter - [Function]
-* Register a listener which will be called when column filter being triggered. If you return an array value, `react-bootstrap-table-ng` will adopt this value as final filted result.
+
+- Register a listener which will be called when column filter being triggered. If you return an array value, `react-bootstrap-table-ng` will adopt this value as final filted result.
 
 **Example**:
+
 ```js
 import BootstrapTable from 'react-bootstrap-table-ng';
 import filterFactory, { numberFilter, Comparator } from 'react-bootstrap-table-ng-filter';
@@ -369,61 +455,83 @@ const columns = [{ ... }, { ... }, {
     }
   })
 }];
+```
 
 ```js
-<BootstrapTable keyField='id' data={ products } columns={ columns } filter={ filterFactory() } />
+<BootstrapTable
+  keyField="id"
+  data={products}
+  columns={columns}
+  filter={filterFactory()}
+/>
 ```
 
 ## dateFilter {#dateFilter}
+
 **Required**: NONE
 
 **Optional**:
 
 ### dateFilter.id - [String]
-* custom element HTML id for filter
+
+- custom element HTML id for filter
 
 ### dateFilter.delay - [Number]
-* Debounce time, which means how long will trigger filtering after user typing. Default is 0.
+
+- Debounce time, which means how long will trigger filtering after user typing. Default is 0.
 
 ### dateFilter.placeholder - [String]
-* customized placeholder for date input.
+
+- customized placeholder for date input.
 
 ### dateFilter.withoutEmptyComparatorOption - [Boolean]
-* When it was set to `true`, the drop down list of `comparator` would hide the default selection.
+
+- When it was set to `true`, the drop down list of `comparator` would hide the default selection.
 
 ### dateFilter.defaultValue - [Object]
-* It is the default filtering value. Furthermore, it accepts **2** attributes:
-   * date: a date object which need to be filtered
-   * comparator: what kind of comparator to compare
+
+- It is the default filtering value. Furthermore, it accepts **2** attributes:
+  - date: a date object which need to be filtered
+  - comparator: what kind of comparator to compare
 
 ### dateFilter.comparator - [[Comparator]]
-* Specify what kind of comparator to compare. Default is to list `all` of comparators.
+
+- Specify what kind of comparator to compare. Default is to list `all` of comparators.
 
 ### dateFilter.className - [String]
-* custom class name on the `wrapper` of date input and comparator drop down.
+
+- custom class name on the `wrapper` of date input and comparator drop down.
 
 ### dateFilter.comparatorClassName - [String]
-* custom class name on the `comparator` drop down.
+
+- custom class name on the `comparator` drop down.
 
 ### dateFilter.dateClassName - [String]
-* custom class name on the date `input`.
+
+- custom class name on the date `input`.
 
 ### dateFilter.style - [Object]
-* custom inline styles on the `wrapper` of date input and comparator drop down.
+
+- custom inline styles on the `wrapper` of date input and comparator drop down.
 
 ### dateFilter.comparatorStyle - [Object]
-* custom inline styles on the `comparator` drop down.
+
+- custom inline styles on the `comparator` drop down.
 
 ### dateFilter.dateStyle - [Object]
-* custom inline styles on the date `input`.
+
+- custom inline styles on the date `input`.
 
 ### dateFilter.getFilter - [Function]
-* export `filter` function to allow users to access. For dateFilter,<br />`filter({ date, comparator })` to filter columns dynamically.
+
+- export `filter` function to allow users to access. For dateFilter,<br />`filter({ date, comparator })` to filter columns dynamically.
 
 ### dateFilter.onFilter - [Function]
-* Register a listener which will be called when column filter being triggered. If you return an array value, `react-bootstrap-table-ng` will adopt this value as final filted result.
+
+- Register a listener which will be called when column filter being triggered. If you return an array value, `react-bootstrap-table-ng` will adopt this value as final filted result.
 
 **Example**:
+
 ```js
 import BootstrapTable from 'react-bootstrap-table-next';
 import filterFactory, { dateFilter, Comparator } from 'react-bootstrap-table-ng-filter';
@@ -451,45 +559,58 @@ const columns = [{ ... }, { ... }, {
     }
   });
 }];
+```
 
 ```js
-<BootstrapTable keyField='id' data={ products } columns={ columns } filter={ filterFactory() } />
+<BootstrapTable
+  keyField="id"
+  data={products}
+  columns={columns}
+  filter={filterFactory()}
+/>
 ```
 
 ## customFilter {#customFilter}
+
 **Required**: NONE
 
 **Optional**:
+
 ### customFilter.type - [String]
-* Assign the filter mode when `react-bootstrap-table` filering your data, please check [FILTER_TYPES](#filter-types) for available values.
+
+- Assign the filter mode when `react-bootstrap-table` filering your data, please check [FILTER_TYPES](#filter-types) for available values.
+
 ### customFilter.comparator - [Comparator]
-* Specify what kind of comparator to compare. Default is `Comparator.LIKE`. But if `customFilter.type` is `FILTER_TYPES.SELECT`, this default value will be `Comparator.EQ`
+
+- Specify what kind of comparator to compare. Default is `Comparator.LIKE`. But if `customFilter.type` is `FILTER_TYPES.SELECT`, this default value will be `Comparator.EQ`
 
 ### customFilter.caseSensitive - [Boolean]
-* default is `false`, and `true` will only work when comparator is `LIKE`.
 
+- default is `false`, and `true` will only work when comparator is `LIKE`.
 
 ## **Comparator** {#comparator}
+
 We support the following ways to do the comparison. Each `filter` has its default comparator. For more information, please take refer to the introduction of props above.
 
-|   | Comparator      | Symbol | description             |
-|---|-----------------|--------|-------------------------|
-| 1 | Comparator.LIKE | N/A    | To include filter value |
-| 2 | Comparator.EQ   | =      |                         |
-| 3 | Comparator.NE   | !=     |                         |
-| 4 | Comparator.GT   | &gt;      |                         |
-| 5 | Comparator.GE   | &gt;=     |                         |
-| 6 | Comparator.LT   | &lt;      |                         |
-| 7 | Comparator.LE   | &lt;=     |                         |
+|     | Comparator      | Symbol | description             |
+| --- | --------------- | ------ | ----------------------- |
+| 1   | Comparator.LIKE | N/A    | To include filter value |
+| 2   | Comparator.EQ   | =      |                         |
+| 3   | Comparator.NE   | !=     |                         |
+| 4   | Comparator.GT   | &gt;   |                         |
+| 5   | Comparator.GE   | &gt;=  |                         |
+| 6   | Comparator.LT   | &lt;   |                         |
+| 7   | Comparator.LE   | &lt;=  |                         |
 
 ## **FILTER_TYPES** {#filter-types}
 
 Following properties is valid in `FILTER_TYPES`:
-* TEXT
-* SELECT
-* MULTISELECT
-* NUMBER
-* DATE
+
+- TEXT
+- SELECT
+- MULTISELECT
+- NUMBER
+- DATE
 
 You will only need the `FILTER_TYPES` when you are customize the filter component and you want to assign a specify filter mode.
 
@@ -501,21 +622,22 @@ Default filter is rendered inside the table column header, but you can choose to
 
 ```js
 <BootstrapTable
-  keyField='id'
-  data={ products }
-  columns={ columns }
-  filter={ filterFactory() }
+  keyField="id"
+  data={products}
+  columns={columns}
+  filter={filterFactory()}
   filterPosition="top"
 />
 ```
 
 ### Render in the bottom of table body
+
 ```js
 <BootstrapTable
-  keyField='id'
-  data={ products }
-  columns={ columns }
-  filter={ filterFactory() }
+  keyField="id"
+  data={products}
+  columns={columns}
+  filter={filterFactory()}
   filterPosition="bottom"
 />
 ```
@@ -526,7 +648,7 @@ Default filter is rendered inside the table column header, but you can choose to
 
 ### afterFilter
 
-This hook function will be called with two arguments(new filter result and filter object) when filtering completed. 
+This hook function will be called with two arguments(new filter result and filter object) when filtering completed.
 
 ```js
 function afterFilter(newResult, newFilters) {
@@ -535,13 +657,12 @@ function afterFilter(newResult, newFilters) {
 }
 export default () => (
   <div>
-```js
-<BootstrapTable
-  keyField="id"
-  data={ products }
-  columns={ columns }
-  filter={ filterFactory({ afterFilter }) }
-/>
-```  </div>
+    <BootstrapTable
+      keyField="id"
+      data={products}
+      columns={columns}
+      filter={filterFactory({ afterFilter })}
+    />{" "}
+  </div>
 );
 ```

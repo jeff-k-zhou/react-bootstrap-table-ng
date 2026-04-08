@@ -1,8 +1,3 @@
-/* eslint react/prop-types: 0 */
-/* eslint no-return-assign: 0 */
-/* eslint class-methods-use-this: 0 */
-/* eslint jsx-a11y/no-noninteractive-element-interactions: 0 */
-/* eslint camelcase: 0 */
 import cs from "classnames";
 
 import React, { Component } from "react";
@@ -42,252 +37,221 @@ interface EditingCellState {
   invalidMessage: any;
 }
 
-export default (_: any, onStartEdit?: any) =>
-  class EditingCell extends Component<EditingCellProps, EditingCellState> {
+const createEditingCell = (_: any, onStartEdit?: any) => {
+  const EditingCell: React.FC<EditingCellProps & { message?: any }> = (props) => {
+    const {
+      row,
+      rowIndex,
+      column,
+      columnIndex,
+      onUpdate,
+      onEscape,
+      timeToCloseMessage = TIME_TO_CLOSE_MESSAGE,
+      autoSelectText = false,
+      className,
+      style,
+      onErrorMessageDisappear,
+      blurToSave,
+      message: propMessage,
+    } = props;
 
+    const [invalidMessage, setInvalidMessage] = React.useState<any>(null);
+    const editorRef = React.useRef<any>(null);
+    const indicatorTimerRef = React.useRef<any>(null);
 
-    static defaultProps = {
-      timeToCloseMessage: TIME_TO_CLOSE_MESSAGE,
-      className: null,
-      autoSelectText: false,
-      style: {},
-    };
-
-    editor: any;
-    indicatorTimer: any;
-
-    constructor(props: any) {
-      super(props);
-      this.indicatorTimer = null;
-      this.clearTimer = this.clearTimer.bind(this);
-      this.handleBlur = this.handleBlur.bind(this);
-      this.handleClick = this.handleClick.bind(this);
-      this.handleKeyDown = this.handleKeyDown.bind(this);
-      this.beforeComplete = this.beforeComplete.bind(this);
-      this.asyncbeforeCompete = this.asyncbeforeCompete.bind(this);
-      this.displayErrorMessage = this.displayErrorMessage.bind(this);
-      this.state = {
-        invalidMessage: null,
-      };
-    }
-
-    componentWillUnmount() {
-      this.clearTimer();
-    }
-
-    componentDidUpdate({ message }: any) {
-      if (_.isDefined(message)) {
-        this.createTimer();
-        this.setState(() => ({
-          invalidMessage: message,
-        }));
+    const clearTimer = React.useCallback(() => {
+      if (indicatorTimerRef.current) {
+        clearTimeout(indicatorTimerRef.current);
       }
-    }
+    }, []);
 
-    clearTimer() {
-      if (this.indicatorTimer) {
-        clearTimeout(this.indicatorTimer);
-      }
-    }
-
-    createTimer() {
-      this.clearTimer();
-      const { timeToCloseMessage, onErrorMessageDisappear } = this.props;
-      this.indicatorTimer = _.sleep(() => {
-        this.setState(() => ({
-          invalidMessage: null,
-        }));
+    const createTimer = React.useCallback(() => {
+      clearTimer();
+      indicatorTimerRef.current = _.sleep(() => {
+        setInvalidMessage(null);
         if (_.isFunction(onErrorMessageDisappear)) onErrorMessageDisappear();
       }, timeToCloseMessage);
-    }
+    }, [clearTimer, onErrorMessageDisappear, timeToCloseMessage]);
 
-    displayErrorMessage(message: any) {
-      this.setState(() => ({
-        invalidMessage: message,
-      }));
-      this.createTimer();
-    }
+    const displayErrorMessage = React.useCallback((message: any) => {
+      setInvalidMessage(message);
+      createTimer();
+    }, [createTimer]);
 
-    asyncbeforeCompete(newValue: any) {
+    const asyncbeforeCompete = React.useCallback((newValue: any) => {
       return (result = { valid: true }) => {
-        // @ts-ignore
-        const { valid, message } = result;
-        const { onUpdate, row, column } = this.props;
+        const { valid, message } = result as any;
         if (!valid) {
-          this.displayErrorMessage(message);
+          displayErrorMessage(message);
           return;
         }
         onUpdate(row, column, newValue);
       };
-    }
+    }, [displayErrorMessage, onUpdate, row, column]);
 
-    beforeComplete(newValue: any) {
-      const { onUpdate, row, column } = this.props;
+    const beforeComplete = React.useCallback((newValue: any) => {
       if (_.isFunction(column.validator)) {
         const validateForm = column.validator(
           newValue,
           row,
           column,
-          this.asyncbeforeCompete(newValue)
+          asyncbeforeCompete(newValue)
         );
         if (_.isObject(validateForm)) {
           if (validateForm.async) {
             return;
           } else if (!validateForm.valid) {
-            this.displayErrorMessage(validateForm.message);
+            displayErrorMessage(validateForm.message);
             return;
           }
         }
       }
       onUpdate(row, column, newValue);
-    }
+    }, [column, row, asyncbeforeCompete, displayErrorMessage, onUpdate]);
 
-    handleBlur() {
-      const { onEscape, blurToSave } = this.props;
+    const handleBlur = React.useCallback(() => {
       if (blurToSave) {
-        this.beforeComplete(this.editor.getValue());
+        beforeComplete(editorRef.current?.getValue());
       } else {
         onEscape();
       }
-    }
+    }, [blurToSave, beforeComplete, onEscape]);
 
-    handleKeyDown(e: any) {
-      const { onEscape } = this.props;
+    const handleKeyDown = React.useCallback((e: any) => {
       if (e.keyCode === 27) {
         // ESC
         onEscape();
       } else if (e.keyCode === 13) {
         // ENTER
-        this.beforeComplete(this.editor.getValue());
+        beforeComplete(editorRef.current?.getValue());
       }
-    }
+    }, [beforeComplete, onEscape]);
 
-    handleClick(e: any) {
+    const handleClick = React.useCallback((e: any) => {
       if (e.target.tagName !== "TD") {
-        // To avoid the row selection event be triggered,
-        // When user define selectRow.clickToSelect and selectRow.clickToEdit
-        // We shouldn't trigger selection event even if user click on the cell editor(input)
         e.stopPropagation();
       }
+    }, []);
+
+    React.useEffect(() => {
+      return () => clearTimer();
+    }, [clearTimer]);
+
+    React.useEffect(() => {
+      if (_.isDefined(propMessage)) {
+        displayErrorMessage(propMessage);
+      }
+    }, [propMessage, displayErrorMessage]);
+
+    const { dataField } = column;
+    const value = _.get(row, dataField);
+    const hasError = _.isDefined(invalidMessage);
+
+    let customEditorClass = column.editorClasses || "";
+    if (_.isFunction(column.editorClasses)) {
+      customEditorClass = column.editorClasses(
+        value,
+        row,
+        rowIndex,
+        columnIndex
+      );
     }
 
-    render() {
-      let editor: any;
-      const {
+    let editorStyle = column.editorStyle || {};
+    if (_.isFunction(column.editorStyle)) {
+      editorStyle = column.editorStyle(value, row, rowIndex, columnIndex);
+    }
+
+    const editorClass = cs(
+      {
+        animated: hasError,
+        shake: hasError,
+      },
+      customEditorClass
+    );
+
+    let editorProps: any = {
+      ref: editorRef,
+      defaultValue: value,
+      style: editorStyle,
+      className: editorClass,
+      onKeyDown: handleKeyDown,
+      onBlur: handleBlur,
+      didMount: () => { },
+      onUpdate: () => { },
+    };
+
+    if (onStartEdit) {
+      editorProps.didMount = () =>
+        onStartEdit(row, column, rowIndex, columnIndex);
+    }
+
+    const isDefaultEditorDefined = _.isObject(column.editor);
+
+    if (isDefaultEditorDefined) {
+      editorProps = {
+        ...editorProps,
+        ...column.editor,
+      };
+    } else if (_.isFunction(column.editorRenderer)) {
+      editorProps = {
+        ...editorProps,
+        onUpdate: beforeComplete,
+      };
+    }
+
+    let editor: any;
+    if (_.isFunction(column.editorRenderer)) {
+      editor = column.editorRenderer!(
+        editorProps,
+        value,
         row,
         column,
-        className,
-        style,
         rowIndex,
-        columnIndex,
-        autoSelectText,
-      } = this.props;
-      const { dataField } = column;
-
-      const value = _.get(row, dataField);
-      const hasError = _.isDefined(this.state.invalidMessage);
-
-      let customEditorClass = column.editorClasses || "";
-      if (_.isFunction(column.editorClasses)) {
-        customEditorClass = column.editorClasses(
-          value,
-          row,
-          rowIndex,
-          columnIndex
-        );
-      }
-
-      let editorStyle = column.editorStyle || {};
-      if (_.isFunction(column.editorStyle)) {
-        editorStyle = column.editorStyle(value, row, rowIndex, columnIndex);
-      }
-
-      const editorClass = cs(
-        {
-          animated: hasError,
-          shake: hasError,
-        },
-        customEditorClass
+        columnIndex
       );
-
-      let editorProps = {
-        ref: (node: any) => (this.editor = node),
-        defaultValue: value,
-        style: editorStyle,
-        className: editorClass,
-        onKeyDown: this.handleKeyDown,
-        onBlur: this.handleBlur,
-        didMount: () => { },
-        onUpdate: (newValue: any) => { },
-      };
-
-      if (onStartEdit) {
-        editorProps.didMount = () =>
-          onStartEdit(row, column, rowIndex, columnIndex);
-      }
-
-      const isDefaultEditorDefined = _.isObject(column.editor);
-
-      if (isDefaultEditorDefined) {
-        editorProps = {
-          ...editorProps,
-          ...column.editor,
-        };
-      } else if (_.isFunction(column.editorRenderer)) {
-        editorProps = {
-          ...editorProps,
-          onUpdate: this.beforeComplete,
-        };
-      }
-
-      if (_.isFunction(column.editorRenderer)) {
-        editor = column.editorRenderer!(
-          editorProps,
-          value,
-          row,
-          column,
-          rowIndex,
-          columnIndex
-        );
-      } else if (
-        isDefaultEditorDefined &&
-        column.editor?.type === EDITTYPE.SELECT
-      ) {
-        editor = <DropdownEditor {...editorProps} row={row} column={column} />;
-      } else if (
-        isDefaultEditorDefined &&
-        column.editor?.type === EDITTYPE.TEXTAREA
-      ) {
-        editor = (
-          <TextAreaEditor {...editorProps} autoSelectText={autoSelectText} />
-        );
-      } else if (
-        isDefaultEditorDefined &&
-        column.editor?.type === EDITTYPE.CHECKBOX
-      ) {
-        editor = <CheckBoxEditor {...editorProps} />;
-      } else if (
-        isDefaultEditorDefined &&
-        column.editor?.type === EDITTYPE.DATE
-      ) {
-        editor = <DateEditor {...editorProps} />;
-      } else {
-        editor = (
-          <TextEditor {...editorProps} autoSelectText={autoSelectText} />
-        );
-      }
-
-      return (
-        <td
-          className={cs("react-bootstrap-table-editing-cell", className)}
-          style={style}
-          onClick={this.handleClick}
-        >
-          {editor}
-          {hasError ? (
-            <EditorIndicator invalidMessage={this.state.invalidMessage} />
-          ) : null}
-        </td>
+    } else if (
+      isDefaultEditorDefined &&
+      column.editor?.type === EDITTYPE.SELECT
+    ) {
+      editor = <DropdownEditor {...editorProps} row={row} column={column} />;
+    } else if (
+      isDefaultEditorDefined &&
+      column.editor?.type === EDITTYPE.TEXTAREA
+    ) {
+      editor = (
+        <TextAreaEditor {...editorProps} autoSelectText={autoSelectText} />
+      );
+    } else if (
+      isDefaultEditorDefined &&
+      column.editor?.type === EDITTYPE.CHECKBOX
+    ) {
+      editor = <CheckBoxEditor {...editorProps} />;
+    } else if (
+      isDefaultEditorDefined &&
+      column.editor?.type === EDITTYPE.DATE
+    ) {
+      editor = <DateEditor {...editorProps} />;
+    } else {
+      editor = (
+        <TextEditor {...editorProps} autoSelectText={autoSelectText} />
       );
     }
+
+    return (
+      <td
+        className={cs("react-bootstrap-table-editing-cell", className)}
+        style={style}
+        onClick={handleClick}
+      >
+        {editor}
+        {hasError ? (
+          <EditorIndicator invalidMessage={invalidMessage} />
+        ) : null}
+      </td>
+    );
   };
+  return EditingCell;
+};
+
+export default createEditingCell;

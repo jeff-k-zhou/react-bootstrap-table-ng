@@ -167,7 +167,7 @@ describe("SizePerPageDropDown", () => {
   });
 
   describe("when optionRenderer prop is defined", () => {
-    const optionRenderer = jest.fn((option: any) => <li role="menuitem">{option.text}</li>);
+    const optionRenderer = jest.fn((option: any) => <li role="menuitem" key={option.text}>{option.text}</li>);
     beforeEach(() => {
       optionRenderer.mockClear();
       render(<SizePerPageDropDown {...props} optionRenderer={optionRenderer} />);

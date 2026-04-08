@@ -41,48 +41,47 @@ interface DataContextValue {
 const defaultDataContext = { data: [], getData: () => [] };
 const DataContext = React.createContext<DataContextValue>(defaultDataContext);
 
-class DataProvider extends Component<DataProviderProps, DataProviderState> {
-  constructor(props: DataProviderProps) {
-    super(props);
-    this.state = { data: props.data };
-  }
+const DataProvider: React.FC<DataProviderProps> = (props) => {
+  const { data: propData, children } = props;
+  const [data] = React.useState(propData);
 
-  getData = (
-    filterProps?: FilterProps,
-    searchProps?: SearchProps,
-    sortProps?: SortProps,
-    paginationProps?: PaginationProps
-  ) => {
-    if (paginationProps) {
-      return paginationProps.data;
-    } else if (sortProps) {
-      return sortProps.data;
-    } else if (searchProps) {
-      return searchProps.data;
-    } else if (filterProps) {
-      if (
-        filterProps.data.length < this.props.data.length &&
-        !_.isEmpty(Object.keys(filterProps.currFilters))
-      ) {
-        return filterProps.data;
+  const getData = React.useCallback(
+    (
+      filterProps?: FilterProps,
+      searchProps?: SearchProps,
+      sortProps?: SortProps,
+      paginationProps?: PaginationProps
+    ) => {
+      if (paginationProps) {
+        return paginationProps.data;
+      } else if (sortProps) {
+        return sortProps.data;
+      } else if (searchProps) {
+        return searchProps.data;
+      } else if (filterProps) {
+        if (
+          filterProps.data.length < propData.length &&
+          !_.isEmptyObject(Object.keys(filterProps.currFilters))
+        ) {
+          return filterProps.data;
+        }
       }
-    }
-    return this.props.data;
-  };
+      return propData;
+    },
+    [propData]
+  );
 
-  render() {
-    return (
-      <DataContext.Provider
-        value={{
-          data: this.state.data,
-          getData: this.getData,
-        }}
-      >
-        {this.props.children}
-      </DataContext.Provider>
-    );
-  }
-}
+  return (
+    <DataContext.Provider
+      value={{
+        data,
+        getData,
+      }}
+    >
+      {children}
+    </DataContext.Provider>
+  );
+};
 
 export default () => ({
   Provider: DataProvider,

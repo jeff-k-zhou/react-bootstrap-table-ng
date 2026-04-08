@@ -9,31 +9,26 @@ export interface ExpansionHeaderCellProps {
   expandHeaderColumnRenderer?: (args: { isAnyExpands: boolean }) => ReactNode;
 }
 
-export default class ExpansionHeaderCell extends Component<ExpansionHeaderCellProps> {
-  constructor(props: ExpansionHeaderCellProps) {
-    super(props);
-    this.handleCheckBoxClick = this.handleCheckBoxClick.bind(this);
-  }
+const ExpansionHeaderCell: React.FC<ExpansionHeaderCellProps> = (props) => {
+  const { isAnyExpands, onAllRowExpand, expandHeaderColumnRenderer } = props;
 
-  handleCheckBoxClick(e: React.MouseEvent<HTMLTableHeaderCellElement>) {
-    const { isAnyExpands, onAllRowExpand } = this.props;
+  const handleCheckBoxClick = (e: React.MouseEvent<HTMLTableHeaderCellElement>) => {
     onAllRowExpand!(e, !isAnyExpands);
-  }
+  };
 
-  render() {
-    const { isAnyExpands, expandHeaderColumnRenderer } = this.props;
-    const attrs = {
-      onClick: this.handleCheckBoxClick,
-    };
+  const attrs = {
+    onClick: handleCheckBoxClick,
+  };
 
-    return (
-      <th className="expand-cell-header" data-row-selection {...attrs}>
-        {expandHeaderColumnRenderer
-          ? expandHeaderColumnRenderer({ isAnyExpands: isAnyExpands ?? false })
-          : isAnyExpands
-          ? "(-)"
-          : "(+)"}
-      </th>
-    );
-  }
-}
+  return (
+    <th className="expand-cell-header" data-row-selection {...attrs}>
+      {expandHeaderColumnRenderer
+        ? expandHeaderColumnRenderer({ isAnyExpands: isAnyExpands ?? false })
+        : isAnyExpands
+        ? "(-)"
+        : "(+)"}
+    </th>
+  );
+};
+
+export default ExpansionHeaderCell;

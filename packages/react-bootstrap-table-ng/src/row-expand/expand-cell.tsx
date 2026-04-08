@@ -19,43 +19,49 @@ interface ExpandCellProps {
   tabIndex?: number;
 }
 
-export default class ExpandCell extends Component<ExpandCellProps> {
-  handleClick = (e: MouseEvent<HTMLTableDataCellElement>) => {
-    const { rowKey, expanded, onRowExpand, rowIndex } = this.props;
+const ExpandCell: React.FC<ExpandCellProps> = React.memo((props) => {
+  const {
+    rowKey,
+    expanded,
+    expandable,
+    onRowExpand,
+    expandColumnRenderer,
+    rowIndex,
+    tabIndex,
+  } = props;
+
+  const handleClick = (e: React.MouseEvent<HTMLTableDataCellElement>) => {
     e.stopPropagation();
     onRowExpand(rowKey, !expanded, rowIndex, e);
   };
 
-  shouldComponentUpdate(nextProps: ExpandCellProps) {
-    const shouldUpdate =
-      this.props.rowIndex !== nextProps.rowIndex ||
-      this.props.expanded !== nextProps.expanded ||
-      this.props.rowKey !== nextProps.rowKey ||
-      this.props.tabIndex !== nextProps.tabIndex;
+  const attrs: { tabIndex?: number } = {};
+  if (tabIndex !== undefined && tabIndex !== -1) attrs.tabIndex = tabIndex;
 
-    return shouldUpdate;
-  }
+  return (
+    <td className="expand-cell" onClick={handleClick} data-testid="expand-cell" {...attrs}>
+      {expandColumnRenderer
+        ? expandColumnRenderer({
+          expandable,
+          expanded,
+          rowKey,
+        })
+        : expandable
+          ? expanded
+            ? "(-)"
+            : "(+)"
+          : ""}
+    </td>
+  );
+}, (prevProps, nextProps) => {
+  return (
+    prevProps.rowIndex === nextProps.rowIndex &&
+    prevProps.expanded === nextProps.expanded &&
+    prevProps.rowKey === nextProps.rowKey &&
+    prevProps.tabIndex === nextProps.tabIndex &&
+    prevProps.onRowExpand === nextProps.onRowExpand &&
+    prevProps.expandColumnRenderer === nextProps.expandColumnRenderer
+  );
+});
 
-  render() {
-    const { expanded, expandable, expandColumnRenderer, tabIndex, rowKey } =
-      this.props;
-    const attrs: { tabIndex?: number } = {};
-    if (tabIndex !== undefined && tabIndex !== -1) attrs.tabIndex = tabIndex;
-
-    return (
-      <td className="expand-cell" onClick={this.handleClick} data-testid="expand-cell" {...attrs}>
-        {expandColumnRenderer
-          ? expandColumnRenderer({
-            expandable,
-            expanded,
-            rowKey
-          })
-          : expandable
-            ? expanded
-              ? "(-)"
-              : "(+)"
-            : ""}
-      </td>
-    );
-  }
-}
+export default ExpandCell;

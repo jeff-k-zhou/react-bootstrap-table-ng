@@ -1,9 +1,10 @@
+import React from "react";
 import { spyOn } from "storybook/test";
 import type { Preview } from "@storybook/react-webpack5";
 
 const preview: Preview = {
   parameters: {
-    actions: { argTypesRegex: "^on[A-Z].*" },
+    actions: { },
     controls: {
       matchers: {
         color: /(background|color)$/i,
@@ -26,6 +27,7 @@ const preview: Preview = {
           "Footer",
           "Sort Table",
           "Cell Editing",
+          "Cell Expand",
           "Row Selection",
           "Row Expand",
           "Pagination",
@@ -39,6 +41,11 @@ const preview: Preview = {
       },
     },
   },
+  decorators: [
+    (Story) => (
+      React.createElement(React.StrictMode, null, React.createElement(Story))
+    ),
+  ],
 };
 
 export default preview;

@@ -32,20 +32,24 @@ This can help your application with less bundled size and also help `react-boots
 There is a big change is that there's no `TableHeaderColumn` in the `react-bootstrap-table-ng`, instead you are supposed to be define the `columns` prop on `BootstrapTable`:
 
 ```js
-import BootstrapTable from 'react-bootstrap-table-ng';
+import BootstrapTable from "react-bootstrap-table-ng";
 
-const columns = [{
-  dataField: 'id',
-  text: 'Product ID'
-}, {
-  dataField: 'name',
-  text: 'Product Name'
-}, {
-  dataField: 'price',
-  text: 'Product Price'
-}];
+const columns = [
+  {
+    dataField: "id",
+    text: "Product ID",
+  },
+  {
+    dataField: "name",
+    text: "Product Name",
+  },
+  {
+    dataField: "price",
+    text: "Product Price",
+  },
+];
 
-`<BootstrapTable` keyField='id' data={ products } columns={ columns } />`
+<BootstrapTable keyField="id" data={products} columns={columns} />;
 ```
 
 The `text` property is just same as the children for the `TableHeaderColumn`, if you want to custom the header, there's a new property is: [`headerFormatter`](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/docs/column-props#columnheaderformatter-function).

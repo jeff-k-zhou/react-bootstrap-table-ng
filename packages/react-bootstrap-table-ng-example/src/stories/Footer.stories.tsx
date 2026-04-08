@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-webpack5';
-import React from 'react';
+import { expect, within } from 'storybook/test';
 
 // import bootstrap style by given version
 import { productsGenerator } from '../utils/common';
@@ -80,6 +80,17 @@ export const SimpleFooter: Story = {
     />
     `,
   }
+    ,
+    play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    // Find basic text to confirm footer is there
+    await canvas.findByText('Footer 1');
+    await canvas.findByText('Footer 2');
+    await canvas.findByText('Footer 3');
+    
+    const tfoot = canvasElement.querySelector('tfoot');
+    expect(tfoot).toBeInTheDocument();
+  }
 };
 
 export const FunctionFooter: Story = {
@@ -130,6 +141,14 @@ export const FunctionFooter: Story = {
       columns={ columns }
     />
     `,
+  }
+    ,
+    play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await canvas.findByText('Footer 1');
+    const tfoot = canvasElement.querySelector('tfoot');
+    const footerCells = tfoot.querySelectorAll('th, td');
+    expect(footerCells[2].textContent).toMatch(/^\d+$/);
   }
 };
 
@@ -198,6 +217,14 @@ export const ColumnFormatter: Story = {
     />
     `,
   }
+    ,
+    play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await canvas.findByText('Footer 1');
+    const tfoot = canvasElement.querySelector('tfoot');
+    const strong = tfoot.querySelector('strong');
+    expect(strong).toHaveTextContent('$$ Product Price $$');
+  }
 };
 
 export const ColumnAlign: Story = {
@@ -241,6 +268,15 @@ export const ColumnAlign: Story = {
     <BootstrapTable keyField='id' data={ products } columns={ columns } />
     `,
   }
+    ,
+    play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await canvas.findByText('Footer 1');
+    const tfoot = canvasElement.querySelector('tfoot');
+    const footerCells = tfoot.querySelectorAll('th, td');
+    expect(footerCells[0]).toHaveStyle('text-align: center');
+    expect(footerCells[1]).toHaveStyle('text-align: right');
+  }
 };
 
 export const ColumnTitle: Story = {
@@ -254,7 +290,7 @@ export const ColumnTitle: Story = {
     }, {
       dataField: 'name',
       text: 'Product Name',
-      footerTitle: (column: any, colIndex: number) => `this is custom title for ${column.text}`,
+      footerTitle: (column: any, colIndex: number) => 'this is custom title for ' + column.text,
       footer: 'Footer 2'
     }, {
       dataField: 'price',
@@ -284,6 +320,15 @@ export const ColumnTitle: Story = {
     <BootstrapTable keyField='id' data={ products } columns={ columns } />
     `,
   }
+    ,
+    play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await canvas.findByText('Footer 1');
+    const tfoot = canvasElement.querySelector('tfoot');
+    const footerCells = tfoot.querySelectorAll('th, td');
+    expect(footerCells[0]).toHaveAttribute('title', 'Footer 1');
+    expect(footerCells[1]).toHaveAttribute('title', 'this is custom title for Product Name');
+  }
 };
 
 export const ColumnEvent: Story = {
@@ -293,7 +338,7 @@ export const ColumnEvent: Story = {
       dataField: 'id',
       text: 'Product ID',
       footerEvents: {
-        onClick: (e: any, column: any, columnIndex: number) => alert(`Click on Product ID header column, columnIndex: ${columnIndex}`)
+        onClick: (e: any, column: any, columnIndex: number) => alert('Click on Product ID header column, columnIndex: ' + columnIndex)
       },
       footer: 'Footer 1'
     }, {
@@ -328,6 +373,13 @@ export const ColumnEvent: Story = {
 
     <BootstrapTable keyField='id' data={ products } columns={ columns } />
     `,
+  }
+    ,
+    play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await canvas.findByText('Footer 1');
+    const tfoot = canvasElement.querySelector('tfoot');
+    expect(tfoot).toBeInTheDocument();
   }
 };
 
@@ -377,6 +429,15 @@ export const CustomizeColumnClass: Story = {
 
     <BootstrapTable keyField='id' data={ products } columns={ columns } />
     `,
+  }
+    ,
+    play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await canvas.findByText('Footer 1');
+    const tfoot = canvasElement.querySelector('tfoot');
+    const footerCells = tfoot.querySelectorAll('th, td');
+    expect(footerCells[1]).toHaveClass('demo-row-odd');
+    expect(footerCells[2]).toHaveClass('demo-row-even');
   }
 };
 
@@ -442,6 +503,14 @@ export const CustomizeColumnStyle: Story = {
 
     <BootstrapTable keyField='id' data={ products } columns={ columns } />
     `,
+  },
+    play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await canvas.findByText('Footer 1');
+    const tfoot = canvasElement.querySelector('tfoot');
+    const footerCells = tfoot.querySelectorAll('th, td');
+    expect(footerCells[1]).toHaveStyle('background-color: rgb(200, 230, 201)');
+    expect(footerCells[2]).toHaveStyle('background-color: rgb(129, 199, 132)');
   }
 };
 
@@ -457,7 +526,7 @@ export const CustomizeColumnHTMLAttribute: Story = {
       dataField: 'name',
       text: 'Product Name',
       footer: 'Footer 2',
-      footerAttrs: (column: any, colIndex: number) => ({ 'data-test': `customized data ${colIndex}` })
+      footerAttrs: (column: any, colIndex: number) => ({ 'data-test': 'customized data ' + colIndex })
     }, {
       dataField: 'price',
       text: 'Product Price',
@@ -485,6 +554,15 @@ export const CustomizeColumnHTMLAttribute: Story = {
 
     <BootstrapTable keyField='id' data={ products } columns={ columns } />
     `,
+  }
+    ,
+    play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await canvas.findByText('Footer 1');
+    const tfoot = canvasElement.querySelector('tfoot');
+    const footerCells = tfoot.querySelectorAll('th, td');
+    expect(footerCells[0]).toHaveAttribute('title', 'ID footer column');
+    expect(footerCells[1]).toHaveAttribute('data-test', 'customized data 1');
   }
 };
 
@@ -538,5 +616,12 @@ export const FooterClass: Story = {
     />
     `,
     footerClasses: "footer-class",
+  },
+    play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await canvas.findByText('Footer 1');
+    const tfoot = canvasElement.querySelector('tfoot');
+    const tr = tfoot.querySelector('tr');
+    expect(tr).toHaveClass('footer-class');
   }
 };

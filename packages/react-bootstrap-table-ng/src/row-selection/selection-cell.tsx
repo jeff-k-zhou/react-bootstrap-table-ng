@@ -34,95 +34,78 @@ interface SelectionCellProps {
   }) => React.CSSProperties);
 }
 
-export default class SelectionCell extends Component<SelectionCellProps> {
-  constructor(props: SelectionCellProps) {
-    super(props);
-    this.handleClick = this.handleClick.bind(this);
-  }
+const SelectionCell: React.FC<SelectionCellProps> = React.memo((props) => {
+  const {
+    rowKey,
+    mode: inputType,
+    selected,
+    onRowSelect,
+    disabled,
+    tabIndex = -1,
+    rowIndex = -1,
+    selectionRenderer,
+    selectColumnStyle,
+  } = props;
+  const { bootstrap4, bootstrap5 } = React.useContext(BootstrapContext);
 
-  shouldComponentUpdate(nextProps: SelectionCellProps) {
-    const shouldUpdate =
-      this.props.rowIndex !== nextProps.rowIndex ||
-      this.props.selected !== nextProps.selected ||
-      this.props.disabled !== nextProps.disabled ||
-      this.props.rowKey !== nextProps.rowKey ||
-      this.props.tabIndex !== nextProps.tabIndex ||
-      this.props.selectColumnStyle !== nextProps.selectColumnStyle;
-
-    return shouldUpdate;
-  }
-
-  handleClick(e: MouseEvent<HTMLTableCellElement>) {
-    const {
-      mode: inputType,
-      rowKey,
-      selected,
-      onRowSelect,
-      disabled,
-      rowIndex = -1,
-    } = this.props;
+  const handleClick = (e: React.MouseEvent<HTMLTableCellElement>) => {
     e.stopPropagation();
     if (disabled) return;
 
     const checked = inputType === ROW_SELECT_SINGLE ? true : !selected;
-
     onRowSelect!(rowKey, checked, rowIndex, e);
-  }
+  };
 
-  render() {
-    const {
-      rowKey,
-      mode: inputType,
-      selected,
+  const attrs: React.HTMLAttributes<HTMLTableCellElement> = {};
+  if (tabIndex !== -1) attrs.tabIndex = tabIndex;
+
+  attrs.style = (_.isFunction(selectColumnStyle)
+    ? selectColumnStyle({
+      checked: selected,
       disabled,
-      tabIndex = -1,
-      rowIndex,
-      selectionRenderer,
-      selectColumnStyle,
-    } = this.props;
+      rowindex: rowIndex,
+      rowkey: rowKey,
+    })
+    : selectColumnStyle) as any;
 
-    const attrs: React.HTMLAttributes<HTMLTableCellElement> = {};
-    if (tabIndex !== -1) attrs.tabIndex = tabIndex;
+  return (
+    <td className="selection-cell" onClick={handleClick} data-testid="selection-cell" {...attrs as any}>
+      {selectionRenderer ? (
+        selectionRenderer({
+          mode: inputType!,
+          checked: selected,
+          disabled: disabled ?? false,
+          rowindex: rowIndex,
+          rowkey: rowKey,
+        })
+      ) : (
+        <input
+          type={inputType}
+          checked={selected}
+          disabled={disabled ?? false}
+          className={
+            bootstrap5
+              ? "selection-input-5"
+              : bootstrap4
+              ? "selection-input-4"
+              : ""
+          }
+          onChange={() => { }}
+        />
+      )}
+    </td>
+  );
+}, (prevProps, nextProps) => {
+  return (
+    prevProps.rowIndex === nextProps.rowIndex &&
+    prevProps.selected === nextProps.selected &&
+    prevProps.disabled === nextProps.disabled &&
+    prevProps.rowKey === nextProps.rowKey &&
+    prevProps.tabIndex === nextProps.tabIndex &&
+    prevProps.onRowSelect === nextProps.onRowSelect &&
+    prevProps.selectionRenderer === nextProps.selectionRenderer &&
+    prevProps.selectColumnStyle === nextProps.selectColumnStyle
+  );
+});
 
-    attrs.style = (_.isFunction(selectColumnStyle)
-      ? selectColumnStyle({
-        checked: selected,
-        disabled,
-        rowindex: rowIndex,
-        rowkey: rowKey,
-      })
-      : selectColumnStyle) as any;
-
-    return (
-      <BootstrapContext.Consumer>
-        {({ bootstrap4, bootstrap5 }) => (
-          <td className="selection-cell" onClick={this.handleClick} data-testid="selection-cell" {...attrs as any}>
-            {selectionRenderer ? (
-              selectionRenderer({
-                mode: inputType!,
-                checked: selected,
-                disabled: disabled ?? false,
-                rowindex: rowIndex,
-                rowkey: rowKey,
-              })
-            ) : (
-              <input
-                type={inputType}
-                checked={selected}
-                disabled={disabled ?? false}
-                className={
-                  bootstrap5
-                    ? "selection-input-5"
-                    : bootstrap4
-                    ? "selection-input-4"
-                    : ""
-                }
-                onChange={() => { }}
-              />
-            )}
-          </td>
-        )}
-      </BootstrapContext.Consumer>
-    );
-  }
-}
+export default SelectionCell;

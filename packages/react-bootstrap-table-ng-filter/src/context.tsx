@@ -4,7 +4,7 @@
 
 import React from "react";
 
-import { EQ, FILTER_TYPES, LIKE } from "..";
+import { EQ, FILTER_TYPES, LIKE } from "./const";
 import { filters } from "./filter";
 
 export interface FilterProviderProps {
@@ -15,58 +15,90 @@ export interface FilterProviderProps {
   children: any;
 }
 
-export default (
-  _: any,
-  isRemoteFiltering: () => boolean,
-  handleFilterChange: (filters: any) => void
-) => {
-  const FilterContext = React.createContext<any>({});
+export const FilterContext = React.createContext<any>({});
+export const FilterProvider = React.forwardRef<any, FilterProviderProps & {
+  _: any;
+  isRemoteFiltering: () => boolean;
+  handleFilterChange: (filters: any) => void;
+}>((props, ref) => {
+  const {
+    data: propData,
+    columns,
+    children,
+    filter,
+    dataChangeListener,
+    _,
+    isRemoteFiltering,
+    handleFilterChange,
+  } = props;
 
-  class FilterProvider extends React.Component<FilterProviderProps> {
+  const currFiltersRef = React.useRef<{ [key: string]: any }>({});
+  const [currFilters, setCurrFilters] = React.useState<{ [key: string]: any }>({});
+  const [clearFilters, setClearFilters] = React.useState<{ [key: string]: any }>({});
+  const [data, setData] = React.useState<any[]>(propData);
+  const rendered = React.useRef(false);
 
+  // Keep a ref to the latest columns so the filter effect doesn't need to
+  // re-run every time columns gets a new reference (e.g. when filter factories
+  // are called inline inside a parent component's render function).
+  const columnsRef = React.useRef(columns);
+  React.useLayoutEffect(() => {
+    columnsRef.current = columns;
+  });
 
-    currFilters: { [key: string]: any };
-    clearFilters: { [key: string]: any };
-    data: any[];
-    isEmitDataChange: boolean;
+  React.useImperativeHandle(ref, () => ({
+    currFilters,
+    getFiltered: () => data,
+  }));
 
-    constructor(props: FilterProviderProps) {
-      super(props);
-      this.currFilters = {};
-      this.clearFilters = {};
-      this.onFilter = this.onFilter.bind(this);
-      this.doFilter = this.doFilter.bind(this);
-      this.onExternalFilter = this.onExternalFilter.bind(this);
-      this.data = props.data;
-      this.isEmitDataChange = false;
-    }
-
-    componentDidMount() {
-      if (isRemoteFiltering() && Object.keys(this.currFilters).length > 0) {
-        handleFilterChange(this.currFilters);
+  React.useEffect(() => {
+    rendered.current = true;
+    if (isRemoteFiltering()) {
+      const initialFilters = currFiltersRef.current;
+      if (Object.keys(initialFilters).length > 0) {
+        handleFilterChange(initialFilters);
       }
     }
+  }, []);
 
-    onFilter(column: any, filterType: any, initialize = false) {
+  React.useEffect(() => {
+    if (!isRemoteFiltering()) {
+      const result = filters(
+        propData,
+        columnsRef.current,
+        _
+      )(currFilters, clearFilters);
+      if (filter && filter.afterFilter) {
+        filter.afterFilter(result, currFilters);
+      }
+      setData(result);
+      if (dataChangeListener) {
+        dataChangeListener.emit("filterChanged", result.length);
+      }
+    } else {
+      setData(propData);
+    }
+  }, [propData, currFilters, clearFilters, isRemoteFiltering, _]);
+
+  const onFilter = React.useCallback(
+    (column: any, filterType: any, initialize = false) => {
       return (filterVal: any) => {
-        // watch out here if migration to context API, #334
-        const currFilters = Object.assign({}, this.currFilters);
-        this.clearFilters = {};
-        const { dataField, filter } = column;
+        const nextCurrFilters = { ...currFiltersRef.current };
+        let nextClearFilters = {};
+        const { dataField, filter: colFilter } = column;
 
         const needClearFilters =
           !_.isDefined(filterVal) || filterVal === "" || filterVal.length === 0;
 
         if (needClearFilters) {
-          delete currFilters[dataField];
-          this.clearFilters = { [dataField]: { clear: true, filterVal } };
+          delete nextCurrFilters[dataField];
+          nextClearFilters = { [dataField]: { clear: true, filterVal } };
         } else {
-          // select default comparator is EQ, others are LIKE
           const {
             comparator = filterType === FILTER_TYPES.SELECT ? EQ : LIKE,
             caseSensitive = false,
-          } = filter.props;
-          currFilters[dataField] = {
+          } = colFilter.props;
+          nextCurrFilters[dataField] = {
             filterVal,
             filterType,
             comparator,
@@ -74,83 +106,53 @@ export default (
           };
         }
 
-        this.currFilters = currFilters;
+        currFiltersRef.current = nextCurrFilters;
+        setClearFilters(nextClearFilters);
+        setCurrFilters(nextCurrFilters);
 
         if (isRemoteFiltering()) {
-          if (!initialize) {
-            handleFilterChange(this.currFilters);
+          if (!initialize || rendered.current) {
+            handleFilterChange(nextCurrFilters);
           }
-          // TODO: Why we need to forceUpdate here? 
-          // It seems the filter component should be controlled by the parent component/Provider
-          // Introduce additional property, forceUpdate (default to false), to avoid infinite loop of this.forceUpdate(), will need to refactor the filter component to be controlled by the parent component/Provider
-          if (filter.props === undefined || filter.props.forceUpdate === undefined || filter.props.forceUpdate == false) return;
-          this.forceUpdate();
         }
-        this.doFilter(this.props);
       };
-    }
+    },
+    [isRemoteFiltering, handleFilterChange, _]
+  );
 
-    onExternalFilter(column: any, filterType: any) {
+  const onExternalFilter = React.useCallback(
+    (column: any, filterType: any) => {
       return (value: any) => {
-        this.onFilter(column, filterType)(value);
+        onFilter(column, filterType)(value);
       };
-    }
+    },
+    [onFilter]
+  );
 
-    getFiltered() {
-      return this.data;
-    }
-
-    shouldComponentUpdate(
-      nextProps: Readonly<FilterProviderProps>,
-      nextState: Readonly<{}>,
-      nextContext: any
-    ): boolean {
-      if (!isRemoteFiltering() && !_.isEqual(nextProps.data, this.data)) {
-        this.doFilter(nextProps, this.isEmitDataChange);
-      } else {
-        this.data = nextProps.data;
-      }
-      return true;
-    }
-
-    doFilter(props: FilterProviderProps, ignoreEmitDataChange = false) {
-      const { dataChangeListener, data, columns, filter } = props;
-      const result = filters(
+  return (
+    <FilterContext.Provider
+      value={{
         data,
-        columns,
-        _
-      )(this.currFilters, this.clearFilters);
-      if (filter.afterFilter) {
-        filter.afterFilter(result, this.currFilters);
-      }
-      this.data = result;
-      if (dataChangeListener && !ignoreEmitDataChange) {
-        this.isEmitDataChange = true;
-        dataChangeListener.emit("filterChanged", result.length);
-      } else {
-        this.isEmitDataChange = false;
-        this.forceUpdate();
-      }
-    }
+        onFilter,
+        onExternalFilter,
+        currFilters,
+      }}
+    >
+      {children}
+    </FilterContext.Provider>
+  );
+});
 
-    render() {
-      return (
-        <FilterContext.Provider
-          value={{
-            data: this.data,
-            onFilter: this.onFilter,
-            onExternalFilter: this.onExternalFilter,
-            currFilters: this.currFilters,
-          }}
-        >
-          {this.props.children}
-        </FilterContext.Provider>
-      );
-    }
-  }
-
+export default (
+  _: any,
+  isRemoteFiltering: () => boolean,
+  handleFilterChange: (filters: any) => void
+) => {
   return {
     Provider: FilterProvider,
     Consumer: FilterContext.Consumer,
+    isRemoteFiltering,
+    handleFilterChange,
+    _,
   };
 };

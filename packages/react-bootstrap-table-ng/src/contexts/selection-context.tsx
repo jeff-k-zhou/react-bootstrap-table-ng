@@ -11,7 +11,7 @@ import dataOperator from "../store/operators";
 import { getSelectionSummary } from "../store/selection";
 
 export interface SelectionContextValue {
-  selected?: any[];
+  selected?: (string | number)[];
   onRowSelect?: (
     rowKey: any,
     checked: boolean,
@@ -32,8 +32,8 @@ export interface SelectionContextValue {
     rowIndex: number,
     e: any
   ) => boolean | undefined;
-  onSelectAll?: (checked: boolean, selectedRows: any[], e: any) => void | any[];
-  nonSelectable?: any[];
+  onSelectAll?: (checked: boolean, selectedRows: any[], e: any) => void | (string | number)[];
+  nonSelectable?: (string | number)[];
   hideSelectAll?: boolean;
   selectionHeaderRenderer?: (args: {
     mode?: string;
@@ -65,8 +65,8 @@ interface SelectionProviderProps {
       checked: boolean,
       selectedRows: any[],
       e: any
-    ) => void | any[];
-    nonSelectable?: any[];
+    ) => void | (string | number)[];
+    nonSelectable?: (string | number)[];
     hideSelectAll?: boolean;
     selectionHeaderRenderer?: (args: {
       mode?: string;
@@ -84,144 +84,121 @@ const SelectionContext = React.createContext<SelectionContextValue>(
   defaultSelectionContext
 );
 
-class SelectionProvider extends Component<SelectionProviderProps> {
-  selected: any[];
-  isHandleRowSelect: boolean;
+const SelectionProvider = React.forwardRef<any, SelectionProviderProps>((props, ref) => {
+  const { data, keyField, selectRow, children } = props;
+  const [selected, setSelected] = React.useState<(string | number)[]>(selectRow.selected || []);
 
-  constructor(props: SelectionProviderProps) {
-    super(props);
-    this.selected = props.selectRow.selected || [];
-    this.isHandleRowSelect = false;
+  React.useImperativeHandle(ref, () => ({
+    selected,
+    getSelected: () => selected,
+  }));
+
+  // Sync with internal state when prop changes
+  React.useEffect(() => {
+    if (selectRow.selected && !_.isEqual(selectRow.selected, selected)) {
+      setSelected(selectRow.selected);
+    }
+  }, [selectRow.selected]);
+
+  const handleRowSelect = React.useCallback(
+    (rowKey: any, checked: boolean, rowIndex: number, e: any) => {
+      const { mode, onSelect } = selectRow;
+
+      setSelected((prevSelected) => {
+        let currSelected = [...prevSelected];
+        let result = true;
+
+        if (onSelect) {
+          const row = dataOperator.getRowByRowId(data, keyField, rowKey);
+          result = onSelect(row, checked, rowIndex, e);
+        }
+
+        if (result === true || result === undefined) {
+          if (mode === ROW_SELECT_SINGLE) {
+            currSelected = [rowKey];
+          } else if (checked) {
+            currSelected.push(rowKey);
+          } else {
+            currSelected = currSelected.filter((value) => value !== rowKey);
+          }
+        }
+        return currSelected;
+      });
+    },
+    [data, keyField, selectRow.onSelect, selectRow.mode]
+  );
+
+  const handleAllRowsSelect = React.useCallback(
+    (e: any, isUnSelect: boolean) => {
+      const { onSelectAll, nonSelectable } = selectRow;
+
+      setSelected((prevSelected) => {
+        let currSelected: any[];
+
+        if (!isUnSelect) {
+          currSelected = prevSelected.concat(
+            dataOperator.selectableKeys(data, keyField, nonSelectable)
+          );
+        } else {
+          currSelected = prevSelected.filter(
+            (s) =>
+              typeof data.find((d) => _.get(d, keyField) === s) === "undefined"
+          );
+        }
+
+        if (onSelectAll) {
+          const result = onSelectAll(
+            !isUnSelect,
+            dataOperator.getSelectedRows(
+              data,
+              keyField,
+              isUnSelect ? prevSelected : currSelected
+            ),
+            e
+          );
+          if (Array.isArray(result)) {
+            currSelected = result;
+          }
+        }
+        return currSelected;
+      });
+    },
+    [data, keyField, selectRow.onSelectAll, selectRow.nonSelectable]
+  );
+
+  const { allRowsSelected, allRowsNotSelected } = getSelectionSummary(
+    data,
+    keyField,
+    selected
+  );
+
+  let checkedStatus: string;
+  if (allRowsSelected) {
+    checkedStatus = CHECKBOX_STATUS_CHECKED;
+  } else if (allRowsNotSelected) {
+    checkedStatus = CHECKBOX_STATUS_UNCHECKED;
+  } else {
+    checkedStatus = CHECKBOX_STATUS_INDETERMINATE;
   }
 
-  // exposed API
-  getSelected() {
-    return this.selected;
-  }
+  return (
+    <SelectionContext.Provider
+      value={{
+        ...selectRow,
+        selected,
+        onRowSelect: handleRowSelect,
+        onAllRowsSelect: handleAllRowsSelect,
+        allRowsSelected,
+        allRowsNotSelected,
+        checkedStatus,
+      }}
+    >
+      {children}
+    </SelectionContext.Provider>
+  );
+});
 
-  componentDidUpdate(nextProps: SelectionProviderProps) {
-    if (this.isHandleRowSelect) {
-      this.isHandleRowSelect = false;
-    } else if (
-      nextProps.selectRow &&
-      nextProps.selectRow.selected &&
-      !_.isEqual(nextProps.selectRow.selected, this.selected)
-    ) {
-      this.selected = nextProps.selectRow.selected;
-      this.forceUpdate();
-    }
-  }
-
-  handleRowSelect = (
-    rowKey: any,
-    checked: boolean,
-    rowIndex: number,
-    e: any
-  ) => {
-    const {
-      data,
-      keyField,
-      selectRow: { mode, onSelect },
-    } = this.props;
-
-    let currSelected = [...this.selected];
-
-    let result = true;
-    if (onSelect) {
-      const row = dataOperator.getRowByRowId(data, keyField, rowKey);
-      result = onSelect(row, checked, rowIndex, e);
-    }
-
-    if (result === true || result === undefined) {
-      if (mode === ROW_SELECT_SINGLE) {
-        currSelected = [rowKey];
-      } else if (checked) {
-        currSelected.push(rowKey);
-      } else {
-        currSelected = currSelected.filter((value) => value !== rowKey);
-      }
-    }
-    this.selected = currSelected;
-    this.isHandleRowSelect = true;
-    this.forceUpdate();
-  };
-
-  handleAllRowsSelect = (e: any, isUnSelect: boolean) => {
-    const {
-      data,
-      keyField,
-      selectRow: { onSelectAll, nonSelectable },
-    } = this.props;
-    const { selected } = this;
-
-    let currSelected: any;
-
-    if (!isUnSelect) {
-      currSelected = selected.concat(
-        dataOperator.selectableKeys(data, keyField, nonSelectable)
-      );
-    } else {
-      currSelected = selected.filter(
-        (s) => typeof data.find((d) => _.get(d, keyField) === s) === "undefined"
-      );
-    }
-
-    let result: any;
-    if (onSelectAll) {
-      result = onSelectAll(
-        !isUnSelect,
-        dataOperator.getSelectedRows(
-          data,
-          keyField,
-          isUnSelect ? selected : currSelected
-        ),
-        e
-      );
-      if (Array.isArray(result)) {
-        currSelected = result;
-      }
-    }
-    this.selected = currSelected;
-    this.isHandleRowSelect = true;
-    this.forceUpdate();
-  };
-
-  render() {
-    const { allRowsSelected, allRowsNotSelected } = getSelectionSummary(
-      this.props.data,
-      this.props.keyField,
-      this.selected
-    );
-
-    let checkedStatus: string;
-
-    if (allRowsSelected) {
-      checkedStatus = CHECKBOX_STATUS_CHECKED;
-    } else if (allRowsNotSelected) {
-      checkedStatus = CHECKBOX_STATUS_UNCHECKED;
-    } else {
-      checkedStatus = CHECKBOX_STATUS_INDETERMINATE;
-    }
-
-    return (
-      <SelectionContext.Provider
-        value={{
-          ...this.props.selectRow,
-          selected: this.selected,
-          onRowSelect: this.handleRowSelect,
-          onAllRowsSelect: this.handleAllRowsSelect,
-          allRowsSelected,
-          allRowsNotSelected,
-          checkedStatus,
-        }}
-      >
-        {this.props.children}
-      </SelectionContext.Provider>
-    );
-  }
-}
-
-export const createSelectionContext = () => ({
+export default () => ({
   Provider: SelectionProvider,
   Consumer: SelectionContext.Consumer,
 });

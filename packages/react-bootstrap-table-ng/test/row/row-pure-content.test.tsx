@@ -590,4 +590,121 @@ describe("RowPureContent", () => {
       );
     });
   });
+
+  describe("cellExpandable", () => {
+    it("should have expandable-cell class by default", () => {
+      render(
+        <table>
+          <tbody>
+            <tr>
+              <RowPureContent
+                keyField={keyField}
+                rowIndex={rowIndex}
+                columns={defaultColumns}
+                row={row}
+              />
+            </tr>
+          </tbody>
+        </table>
+      );
+      screen.getAllByRole("cell").forEach((cell) => {
+        expect(cell).toHaveClass("expandable-cell");
+      });
+    });
+
+    it("should not have expandable-cell class when props.cellExpandable is false", () => {
+      render(
+        <table>
+          <tbody>
+            <tr>
+              <RowPureContent
+                keyField={keyField}
+                rowIndex={rowIndex}
+                columns={defaultColumns}
+                row={row}
+                cellExpandable={false}
+              />
+            </tr>
+          </tbody>
+        </table>
+      );
+      screen.getAllByRole("cell").forEach((cell) => {
+        expect(cell).not.toHaveClass("expandable-cell");
+      });
+    });
+
+    it("should not have expandable-cell class when column.cellExpandable is false", () => {
+      const columns = [
+        { dataField: "id", text: "ID", cellExpandable: false },
+        { dataField: "name", text: "Name" },
+      ];
+      render(
+        <table>
+          <tbody>
+            <tr>
+              <RowPureContent
+                keyField={keyField}
+                rowIndex={rowIndex}
+                columns={columns}
+                row={row}
+              />
+            </tr>
+          </tbody>
+        </table>
+      );
+      const cells = screen.getAllByRole("cell");
+      expect(cells[0]).not.toHaveClass("expandable-cell");
+      expect(cells[1]).toHaveClass("expandable-cell");
+    });
+
+    it("should have expandable-cell class when column.cellExpandable is true even if props.cellExpandable is false", () => {
+      const columns = [
+        { dataField: "id", text: "ID", cellExpandable: true },
+        { dataField: "name", text: "Name" },
+      ];
+      render(
+        <table>
+          <tbody>
+            <tr>
+              <RowPureContent
+                keyField={keyField}
+                rowIndex={rowIndex}
+                columns={columns}
+                row={row}
+                cellExpandable={false}
+              />
+            </tr>
+          </tbody>
+        </table>
+      );
+      const cells = screen.getAllByRole("cell");
+      expect(cells[0]).toHaveClass("expandable-cell");
+      expect(cells[1]).not.toHaveClass("expandable-cell");
+    });
+
+    it("should not have expandable-cell class when column.cellExpandable is false even if props.cellExpandable is true", () => {
+      const columns = [
+        { dataField: "id", text: "ID", cellExpandable: false },
+        { dataField: "name", text: "Name" },
+      ];
+      render(
+        <table>
+          <tbody>
+            <tr>
+              <RowPureContent
+                keyField={keyField}
+                rowIndex={rowIndex}
+                columns={columns}
+                row={row}
+                cellExpandable={true}
+              />
+            </tr>
+          </tbody>
+        </table>
+      );
+      const cells = screen.getAllByRole("cell");
+      expect(cells[0]).not.toHaveClass("expandable-cell");
+      expect(cells[1]).toHaveClass("expandable-cell");
+    });
+  });
 });

@@ -50,87 +50,80 @@ interface SelectionHeaderCellProps {
   | ((checkedStatus: string) => React.CSSProperties);
 }
 
-export default class SelectionHeaderCell extends Component<SelectionHeaderCellProps> {
-  constructor(props: SelectionHeaderCellProps) {
-    super(props);
-    this.handleCheckBoxClick = this.handleCheckBoxClick.bind(this);
+const SelectionHeaderCell: React.FC<SelectionHeaderCellProps> = React.memo((props) => {
+  const {
+    mode,
+    checkedStatus,
+    selectionHeaderRenderer,
+    onAllRowsSelect,
+    hideSelectAll,
+    headerColumnStyle,
+  } = props;
+  const { bootstrap4, bootstrap5 } = React.useContext(BootstrapContext);
+
+  if (hideSelectAll) {
+    return <th data-row-selection />;
   }
 
-  shouldComponentUpdate(nextProps: SelectionHeaderCellProps) {
-    const { mode, checkedStatus } = this.props;
-
-    if (mode === ROW_SELECT_SINGLE) return false;
-
-    return nextProps.checkedStatus !== checkedStatus;
-  }
-
-  handleCheckBoxClick(e: React.MouseEvent<HTMLTableHeaderCellElement>) {
-    const { onAllRowsSelect, checkedStatus } = this.props;
+  const handleCheckBoxClick = (e: React.MouseEvent<HTMLTableHeaderCellElement>) => {
     const isUnSelect =
       checkedStatus === CHECKBOX_STATUS_CHECKED ||
       checkedStatus === CHECKBOX_STATUS_INDETERMINATE;
 
     onAllRowsSelect!(e, isUnSelect);
+  };
+
+  const checked = checkedStatus === CHECKBOX_STATUS_CHECKED;
+  const indeterminate = checkedStatus === CHECKBOX_STATUS_INDETERMINATE;
+
+  const attrs: React.HTMLAttributes<HTMLTableHeaderCellElement> = {};
+  if (selectionHeaderRenderer || mode === ROW_SELECT_MULTIPLE) {
+    attrs.onClick = handleCheckBoxClick;
   }
 
-  render() {
-    const {
+  attrs.style = (_.isFunction(headerColumnStyle)
+    ? headerColumnStyle(checkedStatus!)
+    : headerColumnStyle) as any;
+
+  let content: React.ReactNode | undefined;
+  if (selectionHeaderRenderer) {
+    content = selectionHeaderRenderer({
       mode,
-      checkedStatus,
-      selectionHeaderRenderer,
-      hideSelectAll,
-      headerColumnStyle,
-    } = this.props;
-    if (hideSelectAll) {
-      return <th data-row-selection />;
-    }
-
-    const checked = checkedStatus === CHECKBOX_STATUS_CHECKED;
-
-    const indeterminate = checkedStatus === CHECKBOX_STATUS_INDETERMINATE;
-
-    const attrs: React.HTMLAttributes<HTMLTableHeaderCellElement> = {};
-    let content: ReactNode | undefined;
-    if (selectionHeaderRenderer || mode === ROW_SELECT_MULTIPLE) {
-      attrs.onClick = this.handleCheckBoxClick;
-    }
-
-    attrs.style = (_.isFunction(headerColumnStyle)
-      ? headerColumnStyle(checkedStatus!)
-      : headerColumnStyle) as any;
-
-    return (
-      <BootstrapContext.Consumer>
-        {({ bootstrap4, bootstrap5 }) => {
-          if (selectionHeaderRenderer) {
-            content = selectionHeaderRenderer({
-              mode,
-              checked,
-              indeterminate,
-            });
-          } else if (mode === ROW_SELECT_MULTIPLE) {
-            content = (
-              <CheckBox
-                {...this.props}
-                checked={checked}
-                className={
-                  bootstrap5
-                    ? "selection-input-5"
-                    : bootstrap4
-                    ? "selection-input-4"
-                    : ""
-                }
-                indeterminate={indeterminate}
-              />
-            );
-          }
-          return (
-            <th className="selection-cell-header" data-row-selection {...attrs as any}>
-              {content}
-            </th>
-          );
-        }}
-      </BootstrapContext.Consumer>
+      checked,
+      indeterminate,
+    });
+  } else if (mode === ROW_SELECT_MULTIPLE) {
+    content = (
+      <CheckBox
+        {...props}
+        checked={checked}
+        className={
+          bootstrap5
+            ? "selection-input-5"
+            : bootstrap4
+            ? "selection-input-4"
+            : ""
+        }
+        indeterminate={indeterminate}
+      />
     );
   }
-}
+
+  return (
+    <th className="selection-cell-header" data-row-selection {...attrs as any}>
+      {content}
+    </th>
+  );
+}, (prevProps, nextProps) => {
+  if (prevProps.mode === ROW_SELECT_SINGLE) return true;
+  return (
+    prevProps.mode === nextProps.mode &&
+    prevProps.checkedStatus === nextProps.checkedStatus &&
+    prevProps.onAllRowsSelect === nextProps.onAllRowsSelect &&
+    prevProps.hideSelectAll === nextProps.hideSelectAll &&
+    prevProps.selectionHeaderRenderer === nextProps.selectionHeaderRenderer &&
+    prevProps.headerColumnStyle === nextProps.headerColumnStyle
+  );
+});
+
+export default SelectionHeaderCell;

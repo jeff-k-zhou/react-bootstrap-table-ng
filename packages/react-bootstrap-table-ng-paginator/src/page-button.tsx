@@ -11,37 +11,31 @@ interface PageButtonProps {
   title?: string;
 }
 
-class PageButton extends Component<PageButtonProps> {
-  constructor(props: any) {
-    super(props);
-    this.handleClick = this.handleClick.bind(this);
-  }
+const PageButton: React.FC<PageButtonProps> = React.memo((props) => {
+  const { page, title, active, disabled, className, onPageChange } = props;
 
-  handleClick(e: any) {
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
-    this.props.onPageChange(this.props.page);
-  }
+    onPageChange(page);
+  };
 
-  render() {
-    const { page, title, active, disabled, className } = this.props;
-    const classes = cs(
-      {
-        active,
-        disabled,
-        "page-item": true,
-      },
-      className
-    );
+  const classes = cs(
+    {
+      active,
+      disabled,
+      "page-item": true,
+    },
+    className
+  );
 
-    return (
-      <li className={classes} title={title}>
-        <a href="#" onClick={this.handleClick} className="page-link">
-          {page}
-        </a>
-      </li>
-    );
-  }
-}
+  return (
+    <li className={classes} title={title}>
+      <a href="#" onClick={handleClick} className="page-link">
+        {page}
+      </a>
+    </li>
+  );
+});
 
 
 

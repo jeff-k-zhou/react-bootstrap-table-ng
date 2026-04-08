@@ -15,66 +15,50 @@ interface CheckBoxEditorState {
   checked: boolean;
 }
 
-class CheckBoxEditor extends Component<
-  CheckBoxEditorProps,
-  CheckBoxEditorState
-> {
-  checkbox: any;
+const CheckBoxEditor = React.forwardRef<any, CheckBoxEditorProps>((props, ref) => {
+  const {
+    defaultValue = false,
+    didMount,
+    className = "",
+    onUpdate,
+    onChange,
+    value = "on:off",
+    ...rest
+  } = props;
 
-  constructor(props: CheckBoxEditorProps) {
-    super(props);
-    this.state = {
-      checked:
-        (props.defaultValue ?? false).toString() ===
-        (props.value ?? "on:off").split(":")[0],
-    };
-    this.handleChange = this.handleChange.bind(this);
-  }
+  const [checked, setChecked] = React.useState(
+    (defaultValue ?? false).toString() === value.split(":")[0]
+  );
+  const checkboxRef = React.useRef<HTMLInputElement>(null);
 
-  componentDidMount() {
-    const { didMount } = this.props;
-    this.checkbox.focus();
+  React.useImperativeHandle(ref, () => ({
+    getValue() {
+      const [positive, negative] = value.split(":");
+      return checkboxRef.current?.checked ? positive : negative;
+    }
+  }));
+
+  React.useEffect(() => {
+    checkboxRef.current?.focus();
     if (didMount) didMount();
-  }
+  }, []); // Run only once on mount
 
-  getValue() {
-    const [positive, negative] = (this.props.value ?? "on:off").split(":");
-    return this.checkbox.checked ? positive : negative;
-  }
-
-  handleChange(e: any) {
-    if (this.props.onChange) this.props.onChange(e);
-    const { target } = e;
-    this.setState(() => ({ checked: target.checked }));
-  }
-
-  render() {
-    const {
-      defaultValue = false,
-      didMount,
-      className = "",
-      onUpdate,
-      ...rest
-    } = this.props;
-    const editorClass = cs("editor edit-chseckbox checkbox", className);
-    return (
-      <input
-        ref={(node) => { this.checkbox = node; }}
-        type="checkbox"
-        className={editorClass}
-        {...rest}
-        checked={this.state.checked}
-        onChange={this.handleChange}
-      />
-    );
-  }
-  static defaultProps = {
-    className: "",
-    value: "on:off",
-    defaultValue: false,
-    onChange: undefined,
-    didMount: undefined,
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (onChange) onChange(e);
+    setChecked(e.target.checked);
   };
-}
+
+  const editorClass = cs("editor edit-chseckbox checkbox", className);
+  return (
+    <input
+      ref={checkboxRef}
+      type="checkbox"
+      className={editorClass}
+      {...rest}
+      checked={checked}
+      onChange={handleChange}
+    />
+  );
+});
 
 export default CheckBoxEditor;

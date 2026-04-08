@@ -96,7 +96,7 @@ describe("Core Column Resizing", () => {
     expect(resizers.length).toBe(1);
   });
   it("should render percentage width when column.width is a percentage string", () => {
-    const columnsWithPercentage = [
+    const columnsWithPercentage: any[] = [
       {
         dataField: "id",
         text: "ID",
