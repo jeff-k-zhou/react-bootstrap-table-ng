@@ -58,5 +58,6 @@
   "devDependencies": {
     "@types/file-saver": "^2.0.5",
     "@types/lodash": "^4.17.24"
-  }
+  },
+  "gitHead": "36c5d25e3cba752d9aa02f3de916313bf47537b3"
 }
