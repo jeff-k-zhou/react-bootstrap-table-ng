@@ -61,6 +61,7 @@ Definition of columns props on BootstrapTable
 - [csvFormatter](#columncsvFormatter-function)
 - [csvText](#columncsvText-string)
 - [csvExport](#columncsvExport-bool)
+- [cellExpandable](#columncellexpandable-bool)
 
 ---
 
@@ -1053,3 +1054,53 @@ Custom the CSV header cell, Default is [`column.text`](#columntext-required-stri
 ## column.csvExport - [Bool] {#columncsvExport-bool}
 
 Default is `true`, `false` will hide this column when export CSV.
+
+## column.cellExpandable - [Bool] {#columncellexpandable-bool}
+
+Controls whether cells in this column receive the `expandable-cell` CSS class. When defined on a column, **this takes precedence over the table-level [`cellExpandable`](./table-props#cellexpandable-bool) prop**.
+
+| Value | Behavior |
+|-------|----------|
+| `true` | Cells in this column **always** get the `expandable-cell` class, even if the table-level prop is `false`. |
+| `false` | Cells in this column **never** get the `expandable-cell` class, even if the table-level prop is `true`. |
+| *(not set)* | Falls back to the table-level `cellExpandable` prop (default `true`). |
+
+**Example — opt a single column out:**
+
+```js
+const columns = [
+  { dataField: 'id',    text: 'Product ID' },
+  { dataField: 'name',  text: 'Product Name' },
+  {
+    dataField: 'price',
+    text: 'Product Price',
+    cellExpandable: false, // this column's cells will never have expandable-cell
+  },
+];
+
+// Table-level cellExpandable defaults to true;
+// 'id' and 'name' cells get the class, 'price' cells do not.
+<BootstrapTable keyField="id" data={products} columns={columns} />
+```
+
+**Example — opt a single column in when the table-level prop is disabled:**
+
+```js
+const columns = [
+  { dataField: 'id',   text: 'Product ID' },
+  {
+    dataField: 'name',
+    text: 'Product Name',
+    cellExpandable: true, // force expandable-cell on this column only
+  },
+  { dataField: 'price', text: 'Product Price' },
+];
+
+// Table-level cellExpandable is false;
+// only 'name' column cells get the expandable-cell class.
+<BootstrapTable keyField="id" data={products} columns={columns} cellExpandable={false} />
+```
+
+> **Note:** When `column.cellExpandable` is not defined, the column inherits the table-level
+> `cellExpandable` value (which defaults to `true`).
+> See [table-level cellExpandable](./table-props#cellexpandable-bool) for more detail.
