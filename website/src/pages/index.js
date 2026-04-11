@@ -46,7 +46,7 @@ export default function Home() {
                                 <div className="text--center padding-horiz--md">
                                     <Heading as="h2">Intuitive to use</Heading>
                                     <p>
-                                        Compatible for Bootstrap 3 and 4. <br />
+                                        Compatible for Bootstrap 3, 4 and 5. <br />
                                         Better than legacy react-bootstrap-table!!
                                     </p>
                                     <img

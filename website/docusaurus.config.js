@@ -69,6 +69,7 @@ const config = {
           // editUrl: 'https://github.com/jeff-k-zhou/react-bootstrap-table-ng/tree/main/website/',
         },
         blog: {
+          blogSidebarCount: 10,
           showReadingTime: true,
           feedOptions: {
             type: ['rss', 'atom'],

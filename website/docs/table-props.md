@@ -31,6 +31,7 @@ title: BootstrapTable Props
 - [headerClasses](#headerclasses-string)
 - [headerWrapperClasses](#headerwrapperclasses-string)
 - [cellEdit](#celledit-object)
+- [cellExpandable](#cellexpandable-bool)
 - [selectRow](#selectrow-object)
 - [rowStyle](#rowstyle-object-function)
 - [rowClasses](#rowclasses-string-function)
@@ -209,6 +210,39 @@ Customize class on `tbody`.
 ## cellEdit - [Object] {#celledit-object}
 
 Makes table cells editable, please see [cellEdit definition](./cell-edit-props) for more detail.
+
+## cellExpandable - [Bool] {#cellexpandable-bool}
+
+Default is `true`. When enabled, `react-bootstrap-table-ng` adds the `expandable-cell` CSS class to every `<td>` element in the table body. This class is intended to be used with truncated cell content — you can use it to show the full content on hover via CSS (e.g. `max-width` + `overflow: hidden` + `text-overflow: ellipsis` with a hover expansion effect).
+
+Set to `false` to disable the `expandable-cell` class for all columns at the table level:
+
+```jsx
+<BootstrapTable
+  keyField="id"
+  data={products}
+  columns={columns}
+  cellExpandable={false}
+/>
+```
+
+> **Note:** The column-level `cellExpandable` property (defined on a column definition object) takes precedence over this table-level prop.
+> If a column sets `cellExpandable: true`, that column's cells will receive the class even when the table-level prop is `false`, and vice versa.
+
+```jsx
+const columns = [
+  { dataField: 'id',    text: 'Product ID' },
+  { dataField: 'name',  text: 'Product Name' },
+  {
+    dataField: 'price',
+    text: 'Product Price',
+    cellExpandable: false,  // overrides the table-level cellExpandable
+  },
+];
+
+// Table-level cellExpandable defaults to true, but the 'price' column opts out.
+<BootstrapTable keyField="id" data={products} columns={columns} />
+```
 
 ## selectRow - [Object] {#selectrow-object}
 
