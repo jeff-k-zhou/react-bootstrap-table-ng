@@ -62,14 +62,14 @@
 <li class="">Cleanup unnecessary eslints</li>
 <li class="">Upgrade yarn and storybook to the latest</li>
 <li class="">Added interaction tests into stories</li>
-<li class="">Fixed table expose api issues, added console log checks for BasicTabl…</li>
+<li class="">Fixed table expose api issues, added console log checks for BasicTable</li>
 <li class="">Added checking console log for base table interaction test in storybook</li>
-<li class="">added click on sorting interaction tests</li>
+<li class="">Added click on sorting interaction tests</li>
 <li class="">Added showing full text when hover ellipsis cell</li>
-<li class="">added stories for cell expand</li>
-<li class="">upgraded storybook to 10.3.3, fixed size-per-page-option redirect iss…</li>
+<li class="">Added stories for cell expand</li>
+<li class="">Upgraded storybook to 10.3.3, fixed size-per-page-option redirect issue</li>
 <li class="">Added unit test for cell expandable flag</li>
-<li class="">fixed lint errors and warnings</li>
+<li class="">Fixed lint errors and warnings</li>
 </ul>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="bug-fixes">Bug fixes<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/04/11/version-bump#bug-fixes" class="hash-link" aria-label="Direct link to Bug fixes" title="Direct link to Bug fixes" translate="no">​</a></h3>
 <p>N/A</p>
