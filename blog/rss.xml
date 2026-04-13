@@ -13,8 +13,8 @@
             <link>https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/12/31/Introduce-react-bootstrap-table-ng</link>
             <guid>https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/12/31/Introduce-react-bootstrap-table-ng</guid>
             <pubDate>Thu, 31 Dec 2026 00:00:00 GMT</pubDate>
-            <description><![CDATA[react-bootstrap-table-ng is a maintance fork of [react-bootstrap-table-nextgen] (https//www.npmjs.com/package/react-bootstrap-table-nextgen), which is a fork of [react-bootstrap-table2] (https//www.npmjs.com/package/react-bootstrap-table-next) created by Allen Fang.]]></description>
-            <content:encoded><![CDATA[<p><code>react-bootstrap-table-ng</code> is a maintance fork of [<code>react-bootstrap-table-nextgen</code>] (<a href="https://github.com/react-bootstrap-table/react-bootstrap-table-nextgen" target="_blank" rel="noopener noreferrer" class="">https://github.com/react-bootstrap-table/react-bootstrap-table-nextgen</a>) / npm package [<code>react-bootstrap-table-nextgen</code>] (<a href="https://www.npmjs.com/package/react-bootstrap-table-nextgen" target="_blank" rel="noopener noreferrer" class="">https://www.npmjs.com/package/react-bootstrap-table-nextgen</a>), which is a fork of [<code>react-bootstrap-table2</code>] (<a href="https://github.com/react-bootstrap-table/react-bootstrap-table2" target="_blank" rel="noopener noreferrer" class="">https://github.com/react-bootstrap-table/react-bootstrap-table2</a>) / npm package [<code>react-bootstrap-table-next</code>] (<a href="https://www.npmjs.com/package/react-bootstrap-table-next" target="_blank" rel="noopener noreferrer" class="">https://www.npmjs.com/package/react-bootstrap-table-next</a>) created by Allen Fang.</p>
+            <description><![CDATA[react-bootstrap-table-ng is a maintance fork of react-bootstrap-table-nextgen / npm package react-bootstrap-table-nextgen, which is a fork of react-bootstrap-table2 / npm package react-bootstrap-table-next created by Allen Fang.]]></description>
+            <content:encoded><![CDATA[<p><code>react-bootstrap-table-ng</code> is a maintance fork of <a href="https://github.com/TerrenceMiao/react-bootstrap-table-nextgen" target="_blank" rel="noopener noreferrer" class=""><code>react-bootstrap-table-nextgen</code></a> / npm package <a href="https://www.npmjs.com/package/react-bootstrap-table-nextgen" target="_blank" rel="noopener noreferrer" class=""><code>react-bootstrap-table-nextgen</code></a>, which is a fork of <a href="https://github.com/react-bootstrap-table/react-bootstrap-table2" target="_blank" rel="noopener noreferrer" class=""><code>react-bootstrap-table2</code></a> / npm package <a href="https://www.npmjs.com/package/react-bootstrap-table-next" target="_blank" rel="noopener noreferrer" class=""><code>react-bootstrap-table-next</code></a> created by Allen Fang.</p>
 <p>The goal of this fork is to provide stable version to support React 18+ and Bootstrap 4+ with modern React 18+ features such as hooks, context, etc.</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="planned-changes">Planned changes<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/12/31/Introduce-react-bootstrap-table-ng#planned-changes" class="hash-link" aria-label="Direct link to Planned changes" title="Direct link to Planned changes" translate="no">​</a></h2>
 <p>on top of [<code>react-bootstrap-table-next</code>] and [<code>react-bootstrap-table-nextgen</code>]</p>
@@ -54,23 +54,22 @@
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="changelog">Changelog<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/04/11/version-bump#changelog" class="hash-link" aria-label="Direct link to Changelog" title="Direct link to Changelog" translate="no">​</a></h2>
 <ul>
 <li class="">Using react 18 features such hooks</li>
-<li class="">added table id if not specified</li>
+<li class="">Added table id if not specified</li>
 <li class="">Converted storybook code with react features</li>
-<li class="">Converted storybook code with react features</li>
-<li class="">set current page to 1 when do remote filter or search</li>
-<li class="">fixed remote with default filter value didn't do filtering issue</li>
-<li class="">added test case for remote filter with default value</li>
-<li class="">cleanup unnecessary eslints</li>
-<li class="">upgrade yarn and storybook to the latest</li>
-<li class="">added interaction tests into stories</li>
-<li class="">fixed table expose api issues, added console log checks for BasicTabl…</li>
-<li class="">added checking console log for base table interaction test in storybook</li>
+<li class="">Set current page to 1 when do remote filter or search</li>
+<li class="">Fixed remote with default filter value didn't do filtering issue</li>
+<li class="">Added test case for remote filter with default value</li>
+<li class="">Cleanup unnecessary eslints</li>
+<li class="">Upgrade yarn and storybook to the latest</li>
+<li class="">Added interaction tests into stories</li>
+<li class="">Fixed table expose api issues, added console log checks for BasicTabl…</li>
+<li class="">Added checking console log for base table interaction test in storybook</li>
 <li class="">added click on sorting interaction tests</li>
 <li class="">Added showing full text when hover ellipsis cell</li>
 <li class="">added stories for cell expand</li>
 <li class="">upgraded storybook to 10.3.3, fixed size-per-page-option redirect iss…</li>
 <li class="">Added unit test for cell expandable flag</li>
-<li class="">fixed lint errors and arnings</li>
+<li class="">fixed lint errors and warnings</li>
 </ul>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="bug-fixes">Bug fixes<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/04/11/version-bump#bug-fixes" class="hash-link" aria-label="Direct link to Bug fixes" title="Direct link to Bug fixes" translate="no">​</a></h3>
 <p>N/A</p>
