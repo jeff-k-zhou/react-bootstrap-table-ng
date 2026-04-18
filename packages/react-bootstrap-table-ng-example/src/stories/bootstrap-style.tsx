@@ -19,24 +19,6 @@ export const BOOTSTRAP_VERSION = {
 
 const WithBootstrapStyle = ({ version, render }: WithBootstrapStyleProps) => {
   const [loading, setLoading] = React.useState(true);
-  const styleRef = React.useRef<HTMLLinkElement>(null);
-
-  React.useEffect(() => {
-    const handleLoadEvent = () => {
-      setLoading(false);
-    };
-
-    const linkElement = styleRef.current;
-    if (linkElement) {
-      linkElement.addEventListener("load", handleLoadEvent);
-    }
-
-    return () => {
-      if (linkElement) {
-        linkElement.removeEventListener("load", handleLoadEvent);
-      }
-    };
-  }, []);
 
   const href = `style/bootstrap.${version}.min.css`;
 
@@ -45,7 +27,8 @@ const WithBootstrapStyle = ({ version, render }: WithBootstrapStyleProps) => {
       <link
         href={href}
         rel="stylesheet"
-        ref={styleRef}
+        onLoad={() => setLoading(false)}
+        onError={() => setLoading(false)}
       />
       {render(loading)}
     </Fragment>

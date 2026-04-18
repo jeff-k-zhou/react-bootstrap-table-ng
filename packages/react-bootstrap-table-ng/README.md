@@ -1,6 +1,6 @@
 # react-bootstrap-table-ng
 
-Maintance fork of [`react-bootstrap-table-nextgen`] (https://github.com/react-bootstrap-table/react-bootstrap-table-nextgen) / npm package [`react-bootstrap-table-nextgen`] (https://www.npmjs.com/package/react-bootstrap-table-nextgen), which is a fork of [`react-bootstrap-table2`] (https://github.com/react-bootstrap-table/react-bootstrap-table2) / npm package [`react-bootstrap-table-next`] (https://www.npmjs.com/package/react-bootstrap-table-next) created by Allen Fang.
+Maintenance fork of [`react-bootstrap-table-nextgen`](https://github.com/TerrenceMiao/react-bootstrap-table-nextgen) / npm package [`react-bootstrap-table-nextgen`](https://www.npmjs.com/package/react-bootstrap-table-nextgen), which is a fork of [`react-bootstrap-table2`](https://github.com/react-bootstrap-table/react-bootstrap-table2) / npm package [`react-bootstrap-table-next`](https://www.npmjs.com/package/react-bootstrap-table-next) created by Allen Fang.
 
 The goal of this fork is to provide stable version to supports React 18+ and Bootstrap 4+ with modern React 18+ features such as hooks, context, etc.
 
@@ -11,10 +11,11 @@ The goal of this fork is to provide stable version to supports React 18+ and Boo
 - Converted PropTypes to typescript types, and removed prop-types from dependency.
 - Replaced all class components with functional components
 - Added hooks and context API to support modern React features
-- Converted all test cases from Enzyme to React Testing Library (RTL), Removed Enzyme related dependencies
 - Added column resize functionality
+- Added cell expand functionality, i.e. showing full text when hover ellipsis cell
+- Converted all test cases from Enzyme to React Testing Library (RTL), Removed Enzyme related dependencies
 - Updated most dependencies to their latest stable versions to fix vulnerabilities
-- Upgraded Storybook to 10.2.19
+- Upgraded Storybook to 10.3.3
 - Upgraded Yarn to 4.13.0
 
 ## Release Notes

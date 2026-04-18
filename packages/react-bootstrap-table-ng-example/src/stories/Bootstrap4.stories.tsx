@@ -80,7 +80,7 @@ export const SortTableWithBootstrap4: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     expect(table).toBeInTheDocument();
 
     // The name column is sorted 'desc' by default in args.
@@ -97,7 +97,7 @@ export const SortTableWithBootstrap4: Story = {
     await userEvent.click(idHeader);
     
     // Check if table re-rendered/sorted
-    expect(await canvas.findByRole('table')).toBeInTheDocument();
+    expect(await canvas.findByRole('table', { hidden: true })).toBeInTheDocument();
   }
 };
 
@@ -171,7 +171,7 @@ export const RowSelectionTableWithBootstrap4: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     
     // Find a radio button in the first data row and click it
     const radios = canvas.getAllByRole('radio');
@@ -208,7 +208,7 @@ export const PaginationTableWithBootstrap4: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    await canvas.findByRole('table');
+    await canvas.findByRole('table', { hidden: true });
     
     // Target the page "2" link inside the pagination nav, not data cells
     const page2Link = canvas.getByRole('link', { name: '2' });
@@ -264,7 +264,7 @@ export const ColumnToggleWithBootstrap4: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     expect(table).toBeInTheDocument();
   }
 };

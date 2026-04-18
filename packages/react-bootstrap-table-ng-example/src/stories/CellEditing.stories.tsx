@@ -99,7 +99,7 @@ export const DoubleClickToEdit: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     expect(table).toBeInTheDocument();
 
     // Double-click the 'Product Name' cell in the first data row
@@ -107,7 +107,7 @@ export const DoubleClickToEdit: Story = {
     await userEvent.dblClick(cells[1]);
 
     // An inline text input should appear
-    const input = await canvas.findByRole('textbox');
+    const input = await canvas.findByRole('textbox', { hidden: true });
     expect(input).toBeInTheDocument();
 
     // Press Escape to cancel editing
@@ -149,13 +149,13 @@ export const BlurToSaveCell: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    await canvas.findByRole('table');
+    await canvas.findByRole('table', { hidden: true });
 
     // Click a 'Product Name' cell to edit it
     const cells = canvas.getAllByRole('cell');
     await userEvent.click(cells[1]);
 
-    const input = await canvas.findByRole('textbox');
+    const input = await canvas.findByRole('textbox', { hidden: true });
     expect(input).toBeInTheDocument();
 
     // Clear and type a new value, then blur to save
@@ -203,7 +203,7 @@ export const RowLevelEditable: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    await canvas.findByRole('table');
+    await canvas.findByRole('table', { hidden: true });
     const rows = canvas.getAllByRole('row');
 
     // Row index 0 = header, Row index 1 = first data row (id=0, non-editable)
@@ -217,7 +217,7 @@ export const RowLevelEditable: Story = {
     const editableRow = rows[2];
     const editableCells = within(editableRow).getAllByRole('cell');
     await userEvent.click(editableCells[1]);
-    const input = await canvas.findByRole('textbox');
+    const input = await canvas.findByRole('textbox', { hidden: true });
     expect(input).toBeInTheDocument();
     await userEvent.keyboard('{Escape}');
   }
@@ -269,7 +269,7 @@ export const ColumnLevelEditable: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    await canvas.findByRole('table');
+    await canvas.findByRole('table', { hidden: true });
     const cells = canvas.getAllByRole('cell');
 
     // Click the non-editable 'Product Name' cell (editable: false)
@@ -279,7 +279,7 @@ export const ColumnLevelEditable: Story = {
 
     // Click 'Product Price' cell (editable, cells[2])
     await userEvent.click(cells[2]);
-    const input = await canvas.findByRole('textbox');
+    const input = await canvas.findByRole('textbox', { hidden: true });
     expect(input).toBeInTheDocument();
     await userEvent.keyboard('{Escape}');
   }
@@ -327,7 +327,7 @@ export const CellLevelEditable: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    await canvas.findByRole('table');
+    await canvas.findByRole('table', { hidden: true });
     // productsGenerator price: row 0=2100 (NOT editable >2101), row 2=2102 (IS editable)
     const cells = canvas.getAllByRole('cell');
 
@@ -337,7 +337,7 @@ export const CellLevelEditable: Story = {
 
     // Third row price (2102) IS editable (index=2, price=2102 > 2101)
     await userEvent.click(cells[8]);
-    const input = await canvas.findByRole('textbox');
+    const input = await canvas.findByRole('textbox', { hidden: true });
     expect(input).toBeInTheDocument();
     await userEvent.keyboard('{Escape}');
   }
@@ -384,12 +384,12 @@ export const RichHookFunctions: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    await canvas.findByRole('table');
+    await canvas.findByRole('table', { hidden: true });
 
     // Click a cell to start editing (fires onStartEdit)
     const cells = canvas.getAllByRole('cell');
     await userEvent.click(cells[1]);
-    const input = await canvas.findByRole('textbox');
+    const input = await canvas.findByRole('textbox', { hidden: true });
     expect(input).toBeInTheDocument();
     await userEvent.keyboard('{Escape}');
   }
@@ -454,7 +454,7 @@ export const AsyncHookFunctions: Story = {
     // AsyncHookFunctions uses confirm() which can't be reliably tested in headless mode.
     // Smoke test: verify table renders.
     const canvas = within(canvasElement);
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     expect(table).toBeInTheDocument();
   }
 };
@@ -675,12 +675,12 @@ export const AutoSelectTextInput: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    await canvas.findByRole('table');
+    await canvas.findByRole('table', { hidden: true });
 
     // Click 'Job Name' cell - plain text input with autoSelectText
     const cells = canvas.getAllByRole('cell');
     await userEvent.click(cells[1]);
-    const input = await canvas.findByRole('textbox');
+    const input = await canvas.findByRole('textbox', { hidden: true });
     expect(input).toBeInTheDocument();
     await userEvent.keyboard('{Escape}');
   }
@@ -930,13 +930,13 @@ export const DoubleClickToEditWithSelection: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    await canvas.findByRole('table');
+    await canvas.findByRole('table', { hidden: true });
 
     // Double-click a data cell to start editing
     const cells = canvas.getAllByRole('cell');
     // cells[0] is checkbox, cells[1] is id, cells[2] is name
     await userEvent.dblClick(cells[2]);
-    const input = await canvas.findByRole('textbox');
+    const input = await canvas.findByRole('textbox', { hidden: true });
     expect(input).toBeInTheDocument();
     await userEvent.keyboard('{Escape}');
   }
@@ -1027,7 +1027,7 @@ export const DropdownEditor: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    await canvas.findByRole('table');
+    await canvas.findByRole('table', { hidden: true });
 
     // Click 'Job Type' cell (dropdown editor, cells[3] in first row)
     const cells = canvas.getAllByRole('cell');
@@ -1186,7 +1186,7 @@ export const DropdownEditorWithDynamicOptions: Story = {
   play: async ({ canvasElement }: any) => {
     // Dynamic options loaded asynchronously; smoke test only.
     const canvas = within(canvasElement);
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     expect(table).toBeInTheDocument();
   }
 };
@@ -1292,7 +1292,7 @@ export const CheckboxEditor: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    await canvas.findByRole('table');
+    await canvas.findByRole('table', { hidden: true });
 
     // Click 'Done' cell (checkbox editor, cells[2] in first row)
     const cells = canvas.getAllByRole('cell');
@@ -1366,7 +1366,7 @@ export const DateEditor: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    await canvas.findByRole('table');
+    await canvas.findByRole('table', { hidden: true });
 
     // Click 'Stock Date' cell (date editor, cells[2] in first row)
     const cells = canvas.getAllByRole('cell');
@@ -1604,13 +1604,13 @@ export const CellEditorWithDataType: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     expect(table).toBeInTheDocument();
 
     // Click 'Stock Name' (text) cell
     const cells = canvas.getAllByRole('cell');
     await userEvent.click(cells[1]);
-    const input = await canvas.findByRole('textbox');
+    const input = await canvas.findByRole('textbox', { hidden: true });
     expect(input).toBeInTheDocument();
     await userEvent.keyboard('{Escape}');
   }
