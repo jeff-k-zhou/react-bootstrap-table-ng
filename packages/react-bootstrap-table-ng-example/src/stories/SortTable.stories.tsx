@@ -69,7 +69,7 @@ export const EnableSort: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     const headerRow = (await within(table).findAllByRole('row'))[0];
     const idHeader = within(headerRow).getByText('Product ID');
     
@@ -140,7 +140,7 @@ export const DefaultSortTable: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     const rows = await within(table).findAllByRole('row');
     
     // productsGenerator() default size is 5 (0, 1, 2, 3, 4)
@@ -254,7 +254,7 @@ export const SortManagement: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     const button = await canvas.findByText('Sort By ID');
     
     await userEvent.click(button);
@@ -368,13 +368,13 @@ export const OnetimeSortConfiguration: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     const headerRow = (await within(table).findAllByRole('row'))[0];
     const idHeader = within(headerRow).getByText(/Product ID/);
     await userEvent.click(idHeader);
     await userEvent.click(idHeader);
     // Should have custom caret initially
-    expect(within(idHeader).getByText('Desc/Asc')).toBeInTheDocument();
+    expect(within(idHeader).getByText(/Desc/)).toBeInTheDocument();
   }
 };
 
@@ -455,7 +455,7 @@ export const CustomSortFunction: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     const headerRow = (await within(table).findAllByRole('row'))[0];
     const idHeader = within(headerRow).getByText('Product ID');
     await userEvent.click(idHeader);

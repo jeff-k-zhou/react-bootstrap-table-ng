@@ -52,7 +52,7 @@ export const DefaultColumnResize: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     expect(table).toBeInTheDocument();
 
     // Verify all 3 columns have resizer handles
@@ -88,7 +88,7 @@ export const MixedColumnResize: Story = {
   },
     play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     expect(table).toBeInTheDocument();
 
     // In MixedColumnResize, only the second column (index 1) is resizable

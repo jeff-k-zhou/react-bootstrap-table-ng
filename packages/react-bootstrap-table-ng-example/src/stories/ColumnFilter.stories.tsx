@@ -83,7 +83,7 @@ export const TextFilter: Story = {
   },
     play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    await canvas.findByRole('table');
+    await canvas.findByRole('table', { hidden: true });
     // Be more specific to avoid multiple matches
     const nameFilter = canvas.getByPlaceholderText('Enter Product Name...');
     await userEvent.type(nameFilter, 'Item name 0');
@@ -137,7 +137,7 @@ export const TextFilterWithDefaultValue: Story = {
   },
     play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    await canvas.findByRole('table');
+    await canvas.findByRole('table', { hidden: true });
     // If defaultValue isn't filtering on load in the test runner, at least verify the input value
     const priceFilter = canvas.getByDisplayValue('2103');
     expect(priceFilter).toBeInTheDocument();
@@ -190,7 +190,7 @@ export const TextFilterWithComparator: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    await canvas.findByRole('table');
+    await canvas.findByRole('table', { hidden: true });
     const filterInputs = canvas.getAllByRole('textbox');
     await userEvent.type(filterInputs[0], 'Item name 0');
     await new Promise(resolve => setTimeout(resolve, 600));
@@ -236,7 +236,7 @@ export const TextFilterWithCaseSensitive: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    await canvas.findByRole('table');
+    await canvas.findByRole('table', { hidden: true });
     const filterInput = canvas.getByRole('textbox');
     await userEvent.type(filterInput, 'item');
     await new Promise(resolve => setTimeout(resolve, 600));
@@ -300,7 +300,7 @@ export const SelectFilter: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    await canvas.findByRole('table');
+    await canvas.findByRole('table', { hidden: true });
     const select = canvas.getByRole('combobox');
     await userEvent.selectOptions(select, '0');
     await new Promise(resolve => setTimeout(resolve, 300));
@@ -480,7 +480,7 @@ export const SelectFilterWithDefaultValue: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    await canvas.findByRole('table');
+    await canvas.findByRole('table', { hidden: true });
     const rows = canvas.getAllByRole('row');
     expect(rows.length).toBeGreaterThanOrEqual(2);
     const select = canvas.getByRole('combobox');
@@ -541,7 +541,7 @@ export const SelectFilterWithComparator: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    await canvas.findByRole('table');
+    await canvas.findByRole('table', { hidden: true });
     const select = canvas.getByRole('combobox');
     await userEvent.selectOptions(select, '03');
     await new Promise(resolve => setTimeout(resolve, 300));
@@ -599,7 +599,7 @@ export const MultiSelectFilter: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    await canvas.findByRole('table');
+    await canvas.findByRole('table', { hidden: true });
     const select = canvas.getByRole('listbox');
     await userEvent.selectOptions(select, ['0']);
     await new Promise(resolve => setTimeout(resolve, 300));
@@ -659,7 +659,7 @@ export const MultiSelectFilterWithDefaultValue: Story = {
   },
     play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    await canvas.findByRole('table');
+    await canvas.findByRole('table', { hidden: true });
     const rows = canvas.getAllByRole('row');
     // Be more lenient on the upper bound if default filtering is flaky in test runner
     expect(rows.length).toBeGreaterThanOrEqual(2);
@@ -704,7 +704,7 @@ export const NumberFilter: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    await canvas.findByRole('table');
+    await canvas.findByRole('table', { hidden: true });
     const filterInputs = canvas.getAllByRole('spinbutton');
     await userEvent.clear(filterInputs[0]);
     await userEvent.type(filterInputs[0], '2103');
@@ -757,7 +757,7 @@ export const NumberFilterWithDefaultValue: Story = {
   },
     play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    await canvas.findByRole('table');
+    await canvas.findByRole('table', { hidden: true });
     const rows = canvas.getAllByRole('row');
     expect(rows.length).toBeGreaterThanOrEqual(2);
     expect(rows.length).toBeLessThanOrEqual(9);
@@ -807,7 +807,7 @@ export const DateFilter: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     expect(table).toBeInTheDocument();
     const select = canvas.getByRole('combobox');
     expect(select).toBeInTheDocument();
@@ -861,7 +861,7 @@ export const DateFilterWithDefaultValue: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    await canvas.findByRole('table');
+    await canvas.findByRole('table', { hidden: true });
     const rows = canvas.getAllByRole('row');
     expect(rows.length).toBeGreaterThanOrEqual(1);
   }
@@ -1013,7 +1013,7 @@ export const CustomTextFilter: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    await canvas.findByRole('table');
+    await canvas.findByRole('table', { hidden: true });
     const customInput = canvas.getByPlaceholderText('Custom PlaceHolder');
     expect(customInput).toBeInTheDocument();
   }
@@ -1080,7 +1080,7 @@ export const CustomSelectFilter: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    await canvas.findByRole('table');
+    await canvas.findByRole('table', { hidden: true });
     const select = canvas.getByRole('combobox');
     expect(select).toBeInTheDocument();
   }
@@ -1147,7 +1147,7 @@ export const CustomNumberFilter: Story = {
   },
     play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    await canvas.findByRole('table');
+    await canvas.findByRole('table', { hidden: true });
     // Use more specific query for the select
     const select = canvas.getByLabelText('Select Product Price');
     expect(select).toBeInTheDocument();
@@ -1219,7 +1219,7 @@ export const CustomDateFilter: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     expect(table).toBeInTheDocument();
   }
 };
@@ -1285,7 +1285,7 @@ export const CustomMultiSelectFilter: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    await canvas.findByRole('table');
+    await canvas.findByRole('table', { hidden: true });
     const select = canvas.getByRole('listbox');
     expect(select).toBeInTheDocument();
   }
@@ -1352,7 +1352,7 @@ export const CustomFilterValue: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     expect(table).toBeInTheDocument();
   }
 };
@@ -1425,7 +1425,7 @@ export const ProgrammaticallyTextFilter: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     expect(table).toBeInTheDocument();
   }
 };
@@ -1506,7 +1506,7 @@ export const ProgrammaticallySelectFilter: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     expect(table).toBeInTheDocument();
   }
 };
@@ -1583,7 +1583,7 @@ export const ProgrammaticallyNumberFilter: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     expect(table).toBeInTheDocument();
   }
 };
@@ -1661,7 +1661,7 @@ export const ProgrammaticallyDateFilter: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     expect(table).toBeInTheDocument();
   }
 };
@@ -1741,7 +1741,7 @@ export const ProgrammaticallyMultiSelectFilter: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     expect(table).toBeInTheDocument();
   }
 };
@@ -1857,7 +1857,7 @@ export const CustomFilter: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     expect(table).toBeInTheDocument();
   }
 };
@@ -2025,7 +2025,7 @@ export const AdvanceCustomFilter: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     expect(table).toBeInTheDocument();
   }
 };
@@ -2089,7 +2089,7 @@ export const PreservedOptionOrderOnSelectFilter: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     expect(table).toBeInTheDocument();
   }
 };
@@ -2214,7 +2214,7 @@ export const ClearAllFilters: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     expect(table).toBeInTheDocument();
   }
 };
@@ -2272,7 +2272,7 @@ export const FilterHooks: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     expect(table).toBeInTheDocument();
   }
 };
@@ -2346,7 +2346,7 @@ export const ImplementCustomFilterLogic: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     expect(table).toBeInTheDocument();
   }
 };

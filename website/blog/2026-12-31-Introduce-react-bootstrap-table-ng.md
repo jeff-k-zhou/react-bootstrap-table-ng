@@ -4,7 +4,7 @@ authors: jeff-k-zhou
 pinned: true
 ---
 
-`react-bootstrap-table-ng` is a maintance fork of [`react-bootstrap-table-nextgen`] (https://github.com/react-bootstrap-table/react-bootstrap-table-nextgen) / npm package [`react-bootstrap-table-nextgen`] (https://www.npmjs.com/package/react-bootstrap-table-nextgen), which is a fork of [`react-bootstrap-table2`] (https://github.com/react-bootstrap-table/react-bootstrap-table2) / npm package [`react-bootstrap-table-next`] (https://www.npmjs.com/package/react-bootstrap-table-next) created by Allen Fang.
+`react-bootstrap-table-ng` is a maintenance fork of [`react-bootstrap-table-nextgen`](https://github.com/TerrenceMiao/react-bootstrap-table-nextgen) / npm package [`react-bootstrap-table-nextgen`](https://www.npmjs.com/package/react-bootstrap-table-nextgen), which is a fork of [`react-bootstrap-table2`](https://github.com/react-bootstrap-table/react-bootstrap-table2) / npm package [`react-bootstrap-table-next`](https://www.npmjs.com/package/react-bootstrap-table-next) created by Allen Fang.
 
 The goal of this fork is to provide stable version to support React 18+ and Bootstrap 4+ with modern React 18+ features such as hooks, context, etc.
 

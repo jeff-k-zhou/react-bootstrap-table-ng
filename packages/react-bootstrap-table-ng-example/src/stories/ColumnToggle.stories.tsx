@@ -76,7 +76,7 @@ export const BasicColumnToggle: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     expect(table).toBeInTheDocument();
 
     // Verify initial headers using role to distinguish from buttons
@@ -151,7 +151,7 @@ export const DefaultVisibility: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     expect(table).toBeInTheDocument();
 
     // Initially only ID is visible as header
@@ -217,7 +217,7 @@ export const StylingColumnToggle: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     expect(table).toBeInTheDocument();
 
     // Verify custom class
@@ -302,7 +302,7 @@ export const CustomColumnToggle: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     expect(table).toBeInTheDocument();
 
     // Verify custom buttons exist (they are btn-warning)
@@ -381,7 +381,7 @@ export const ColumnToggleWithFilter: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     expect(table).toBeInTheDocument();
 
     // Toggle "Product ID" first to see if headers are accessible

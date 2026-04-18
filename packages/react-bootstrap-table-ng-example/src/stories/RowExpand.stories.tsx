@@ -85,7 +85,7 @@ export const BasicRowExpand: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     const rows = await within(table).findAllByRole('row');
     
     // initially just data rows
@@ -109,7 +109,7 @@ export const ExpandManagement: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     
     // In ExpandManagement mode, we have buttons
     const expandButton = await canvas.findByText('Expand/Collapse 3rd row');
@@ -172,7 +172,7 @@ export const NoExpandableRows: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     const rows = await within(table).findAllByRole('row');
     
     const firstDataRow = rows[1];
@@ -241,7 +241,7 @@ export const ExpandIndicator: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     const rows = await within(table).findAllByRole('row');
     
     const firstDataRow = rows[1];
@@ -305,7 +305,7 @@ export const OnlyExpandByIndicator: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     const rows = await within(table).findAllByRole('row');
     
     const firstDataRow = rows[1];
@@ -372,7 +372,7 @@ export const ExpandOnlyOneRowAtTheSameTime: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     const rows = await within(table).findAllByRole('row');
     
     const firstDataRow = rows[1];
@@ -475,7 +475,7 @@ export const CustomExpandIndicator: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     const rows = await within(table).findAllByRole('row');
     
     const firstDataRow = rows[1];
@@ -550,7 +550,7 @@ export const ExpandColumnPosition: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     const rows = await within(table).findAllByRole('row');
     
     const firstDataRow = rows[1];
@@ -593,7 +593,6 @@ export const ExpandHooks: Story = {
         console.log(row.id);
         console.log(isExpand);
         console.log(rowIndex);
-        console.log(e);
       },
       onExpandAll: (isExpandAll, rows, e) => {
         console.log(isExpandAll);
@@ -622,7 +621,6 @@ export const ExpandHooks: Story = {
         console.log(row.id);
         console.log(isExpand);
         console.log(rowIndex);
-        console.log(e);
       },
       onExpandAll: (isExpandAll: boolean, rows: any, e: any) => {
         console.log(isExpandAll);
@@ -631,7 +629,7 @@ export const ExpandHooks: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     const rows = await within(table).findAllByRole('row');
     
     const firstDataRow = rows[1];
@@ -716,22 +714,22 @@ export const CustomParentRowClassname: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    const tables = await canvas.findAllByRole('table');
+    const tables = await canvas.findAllByRole('table', { hidden: true });
     
     expect(tables.length).toBe(2);
     
     // first table
-    const rows1 = await within(tables[0]).findAllByRole('row');
+    const rows1 = await within(tables[0]).findAllByRole('row', { hidden: true });
     const firstDataRow1 = rows1[1];
     await userEvent.click(firstDataRow1);
     // Add wait to avoid flakiness with parent class toggling immediately
-    expect(firstDataRow1).toHaveClass('parent-expand-foo');
+    await waitFor(() => expect(firstDataRow1).toHaveClass('parent-expand-foo'));
     
     // second table
-    const rows2 = await within(tables[1]).findAllByRole('row');
+    const rows2 = await within(tables[1]).findAllByRole('row', { hidden: true });
     const firstDataRow2 = rows2[1];
     await userEvent.click(firstDataRow2);
-    expect(firstDataRow2).toHaveClass('parent-expand-bar'); // rowIndex <= 2 gets bar
+    await waitFor(() => expect(firstDataRow2).toHaveClass('parent-expand-bar')); // rowIndex <= 2 gets bar
   }
 };
 
@@ -808,22 +806,26 @@ export const CustomExpandingRowClassname: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    const tables = await canvas.findAllByRole('table');
+    const tables = await canvas.findAllByRole('table', { hidden: true });
     
     // first table
-    const rows1 = await within(tables[0]).findAllByRole('row');
+    const rows1 = await within(tables[0]).findAllByRole('row', { hidden: true });
     await userEvent.click(rows1[1]);
     
     // Find the newly appeared expanded row. It's inserted right after rows[1].
     // Since rows was queried statically before expansion, query again.
-    const newRows1 = await within(tables[0]).findAllByRole('row');
-    expect(within(newRows1[2]).getByRole('cell')).toHaveClass('expanding-foo');
+    await waitFor(async () => {
+      const newRows1 = await within(tables[0]).findAllByRole('row', { hidden: true });
+      expect(within(newRows1[2]).getByRole('cell', { hidden: true })).toHaveClass('expanding-foo');
+    });
     
     // second table
-    const rows2 = await within(tables[1]).findAllByRole('row');
+    const rows2 = await within(tables[1]).findAllByRole('row', { hidden: true });
     await userEvent.click(rows2[1]);
     
-    const newRows2 = await within(tables[1]).findAllByRole('row');
-    expect(within(newRows2[2]).getByRole('cell')).toHaveClass('expanding-bar');
+    await waitFor(async () => {
+      const newRows2 = await within(tables[1]).findAllByRole('row', { hidden: true });
+      expect(within(newRows2[2]).getByRole('cell', { hidden: true })).toHaveClass('expanding-bar');
+    });
   }
 };

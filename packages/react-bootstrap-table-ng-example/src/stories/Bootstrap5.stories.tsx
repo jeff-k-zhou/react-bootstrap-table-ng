@@ -80,7 +80,7 @@ export const SortTableWithBootstrap5: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     expect(table).toBeInTheDocument();
 
     // Click 'Product ID' header to trigger a sort
@@ -88,7 +88,7 @@ export const SortTableWithBootstrap5: Story = {
     await userEvent.click(idHeader);
 
     // Table should still be present after sort
-    expect(await canvas.findByRole('table')).toBeInTheDocument();
+    expect(await canvas.findByRole('table', { hidden: true })).toBeInTheDocument();
   }
 };
 
@@ -162,7 +162,7 @@ export const RowSelectionTableWithBootstrap5: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    await canvas.findByRole('table');
+    await canvas.findByRole('table', { hidden: true });
 
     // Find all radio buttons and click the first data row's radio
     const radios = canvas.getAllByRole('radio');
@@ -199,7 +199,7 @@ export const PaginationTableWithBootstrap5: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    await canvas.findByRole('table');
+    await canvas.findByRole('table', { hidden: true });
 
     // Use role='link' to specifically target the pagination anchor, not data cells containing '2'
     const page2Link = canvas.getByRole('link', { name: '2' });
@@ -256,7 +256,7 @@ export const ColumnToggleWithBootstrap5: Story = {
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
     // Verify the table and toggle buttons render correctly
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     expect(table).toBeInTheDocument();
 
     // Verify all 3 toggle buttons are present

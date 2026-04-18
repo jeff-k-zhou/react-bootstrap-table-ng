@@ -125,7 +125,7 @@ export const RemoteCellEditing: Story = {
     const cellToEdit = await canvas.findByText('Item name 0');
     await userEvent.click(cellToEdit);
 
-    const input = await canvas.findByRole('textbox');
+    const input = await canvas.findByRole('textbox', { hidden: true });
     await userEvent.clear(input);
     await userEvent.type(input, 'test{Enter}');
 

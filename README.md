@@ -57,7 +57,13 @@ $ yarn build
 # Run test with yarn
 $ yarn test
 
+# Build storybook
+$ yarn storybook:build
+
 # Start the stroybook server, then go to localhost:6006
 $ yarn storybook
+
+# Test storybook
+$ yarn storybook:test
 
 ```

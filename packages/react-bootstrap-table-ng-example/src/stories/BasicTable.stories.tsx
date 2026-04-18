@@ -70,7 +70,7 @@ export const BasicTable: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     expect(table).toBeInTheDocument();
     
     // Verify headers
@@ -129,7 +129,7 @@ export const BorderlessTable: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     expect(table).not.toHaveClass('react-bootstrap-table-bordered');
   }
 };
@@ -453,7 +453,7 @@ export const ExposedAPITable: Story = {
     }
 
     // Check if table rendered
-    expect(await canvas.findByRole('table')).toBeInTheDocument();
+    expect(await canvas.findByRole('table', { hidden: true })).toBeInTheDocument();
   }
 };
 

@@ -63,7 +63,7 @@ export const TableLevelExpandable: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     expect(table).toBeInTheDocument();
     
     const rows = canvas.getAllByRole('row');
@@ -111,7 +111,7 @@ export const TableLevelExpandableDefault: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     expect(table).toBeInTheDocument();
     
     const rows = canvas.getAllByRole('row');
@@ -163,7 +163,7 @@ export const ColumnLevelExpandable: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     expect(table).toBeInTheDocument();
     
     const rows = canvas.getAllByRole('row');

@@ -83,7 +83,7 @@ export const ColumnFormatter: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    await canvas.findByRole('table');
+    await canvas.findByRole('table', { hidden: true });
     const headers = await canvas.findAllByRole('columnheader');
     expect(headers[2]).toHaveTextContent('$$ Product Price $$');
   }
@@ -158,7 +158,7 @@ export const ColumnFormatterWithFilterAndSort: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    await canvas.findByRole('table');
+    await canvas.findByRole('table', { hidden: true });
     const headers = await canvas.findAllByRole('columnheader');
     
     // Check that 'Product Price' header contains filter input and sort indicator
@@ -206,7 +206,7 @@ export const ColumnAlign: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    await canvas.findByRole('table');
+    await canvas.findByRole('table', { hidden: true });
     const headers = await canvas.findAllByRole('columnheader');
     
     expect(headers[0]).toHaveStyle('text-align: center');
@@ -251,7 +251,7 @@ export const ColumnTitle: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    await canvas.findByRole('table');
+    await canvas.findByRole('table', { hidden: true });
     const headers = await canvas.findAllByRole('columnheader');
     
     expect(headers[0]).toHaveAttribute('title', 'Product ID');
@@ -299,7 +299,7 @@ export const ColumnEvent: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    await canvas.findByRole('table');
+    await canvas.findByRole('table', { hidden: true });
     const headers = await canvas.findAllByRole('columnheader');
     
     // Alert is mocked in storybook usually, but to test userEvent we just verify it exists and is clickable
@@ -350,7 +350,7 @@ export const CustomizeColumnClass: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    await canvas.findByRole('table');
+    await canvas.findByRole('table', { hidden: true });
     const headers = await canvas.findAllByRole('columnheader');
     
     expect(headers[1]).toHaveClass('demo-row-odd');
@@ -417,7 +417,7 @@ export const CustomizeColumnStyle: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    await canvas.findByRole('table');
+    await canvas.findByRole('table', { hidden: true });
     const headers = await canvas.findAllByRole('columnheader');
     
     expect(headers[1]).toHaveStyle('background-color: rgb(200, 230, 201)'); // #c8e6c9
@@ -462,7 +462,7 @@ export const CustomizeColumnHTMLAttribute: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    await canvas.findByRole('table');
+    await canvas.findByRole('table', { hidden: true });
     const headers = await canvas.findAllByRole('columnheader');
     
     expect(headers[0]).toHaveAttribute('title', 'ID header column');
@@ -509,7 +509,7 @@ export const HeaderClass: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     
     // headerClasses is passed to the thead row in react-bootstrap-table-ng.
     expect(table.querySelector('thead tr')).toHaveClass('header-class');

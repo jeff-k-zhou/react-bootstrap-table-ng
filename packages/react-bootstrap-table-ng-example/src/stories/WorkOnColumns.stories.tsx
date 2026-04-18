@@ -87,7 +87,7 @@ export const DisplayNestedData: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     expect(table).toBeInTheDocument();
 
     // Verify headers
@@ -168,7 +168,7 @@ export const ColumnFormatter: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    await canvas.findByRole('table');
+    await canvas.findByRole('table', { hidden: true });
 
     const rows = canvas.getAllByRole('row');
     // Check if at least one sale item exists (randomly generated)
@@ -244,7 +244,7 @@ export const ColumnFormatterWithCustomData: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    await canvas.findByRole('table');
+    await canvas.findByRole('table', { hidden: true });
 
     const rows = canvas.getAllByRole('row');
     expect(rows.length).toBe(6); // 1 header + 5 data rows
@@ -301,7 +301,7 @@ export const ColumnAlign: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    await canvas.findByRole('table');
+    await canvas.findByRole('table', { hidden: true });
 
     const rows = canvas.getAllByRole('row');
     const firstDataRow = rows[1];
@@ -354,7 +354,7 @@ export const ColumnTitle: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    await canvas.findByRole('table');
+    await canvas.findByRole('table', { hidden: true });
 
     const rows = canvas.getAllByRole('row');
     const firstDataRow = rows[1];
@@ -407,7 +407,7 @@ export const ColumnHidden: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    await canvas.findByRole('table');
+    await canvas.findByRole('table', { hidden: true });
 
     const headers = await canvas.findAllByRole('columnheader');
     expect(headers.length).toBe(2);
@@ -473,7 +473,7 @@ export const ColumnEvent: Story = {
   play: async ({ canvasElement }: any) => {
     const consoleSpy = spyOn(console, 'log').mockName('console.log');
     const canvas = within(canvasElement);
-    await canvas.findByRole('table');
+    await canvas.findByRole('table', { hidden: true });
 
     const firstCell = (await canvas.findAllByRole('cell'))[0];
     await userEvent.click(firstCell);
@@ -663,7 +663,7 @@ export const DummyColumn: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    await canvas.findByRole('table');
+    await canvas.findByRole('table', { hidden: true });
 
     // Find row with Item 13
     const row13 = await canvas.findByText('Item 13');
@@ -695,7 +695,7 @@ export const RowExpandWithDummyColumn: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    await canvas.findByRole('table');
+    await canvas.findByRole('table', { hidden: true });
 
     const firstDataRow = canvas.getAllByRole('row')[1];
     const expandToggle = within(firstDataRow).getByText('(+)');

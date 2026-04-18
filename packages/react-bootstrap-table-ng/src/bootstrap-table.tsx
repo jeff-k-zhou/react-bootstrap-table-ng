@@ -122,7 +122,7 @@ const BootstrapTable = React.forwardRef<any, BootstrapTableProps>((props, ref) =
 
     return (
       <div className={tableWrapperClass}>
-        <table id={tableId} className={tableClass}>
+        <table id={tableId} className={tableClass} role="table">
           {tableCaption}
           <Header
             columns={columns}

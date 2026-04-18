@@ -78,7 +78,7 @@ export const SingleSelection: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     const rows = await within(table).findAllByRole('row');
     
     // initially nothing selected
@@ -131,7 +131,7 @@ export const MultipleSelection: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     const rows = await within(table).findAllByRole('row');
     
     const checkboxes = canvas.getAllByRole('checkbox') as HTMLInputElement[];
@@ -183,7 +183,7 @@ export const ClickToSelect: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     const rows = await within(table).findAllByRole('row');
     const checkboxes = await canvas.findAllByRole('checkbox') as HTMLInputElement[];
     
@@ -235,7 +235,7 @@ export const DefaultSelect: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    await canvas.findByRole('table');
+    await canvas.findByRole('table', { hidden: true });
     const checkboxes = await canvas.findAllByRole('checkbox') as HTMLInputElement[];
     
     // IDs are 0, 1, 2, 3, 4
@@ -328,7 +328,7 @@ export const AdvanceSelectionManagement: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     const rows = await within(table).findAllByRole('row');
     const checkboxes = canvas.getAllByRole('checkbox') as HTMLInputElement[];
     
@@ -453,7 +453,7 @@ export const RowSelectAndExpand: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     const rows = await within(table).findAllByRole('row');
     const checkboxes = await canvas.findAllByRole('checkbox') as HTMLInputElement[];
     
@@ -783,7 +783,7 @@ export const HideSelectAll: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     const rows = await within(table).findAllByRole('row');
     const headerRow = rows[0];
     
@@ -987,7 +987,7 @@ export const NotSelectableRows: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     const rows = await within(table).findAllByRole('row');
     
     // row 0 (id 0) is non-selectable
@@ -1193,7 +1193,7 @@ export const HideSelectionColumn: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     const rows = await within(table).findAllByRole('row');
     
     // No checkbox column
@@ -1332,7 +1332,7 @@ export const SelectionColumnPosition: Story = {
   },
   play: async ({ canvasElement }: any) => {
     const canvas = within(canvasElement);
-    const table = await canvas.findByRole('table');
+    const table = await canvas.findByRole('table', { hidden: true });
     const headerRow = (await within(table).findAllByRole('row'))[0];
     const headerCells = within(headerRow).getAllByRole('columnheader');
     
