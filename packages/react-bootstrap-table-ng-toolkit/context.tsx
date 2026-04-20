@@ -28,6 +28,8 @@ const ToolkitProvider = (props: any) => {
     bootstrap5 = false,
     columnResize = false,
     children,
+    insertRow,
+    deleteRow,
   } = props;
 
   const [searchText, setSearchText] = useState(() => {
@@ -117,6 +119,25 @@ const ToolkitProvider = (props: any) => {
     [columns, exportCSV, data, keyField]
   );
 
+  const getSelectedRows = useCallback(() => {
+    const payload = { result: undefined };
+    tableExposedAPIEmitter.current?.emit("get.selected.rows", payload);
+    return (payload.result as unknown as any[]) ?? [];
+  }, []);
+
+  const handleDeleteRow = useCallback(() => {
+    const selections = getSelectedRows();
+    if (typeof deleteRow === 'function') {
+      deleteRow(selections);
+    }
+  }, [getSelectedRows, deleteRow]);
+
+  const handleInsertRow = useCallback((newRow: any) => {
+    if (typeof insertRow === 'function') {
+      insertRow(newRow);
+    }
+  }, [insertRow]);
+
   const searchContextValue = useMemo(() => {
     if (search) {
       return createSearchContext(search);
@@ -186,6 +207,11 @@ const ToolkitProvider = (props: any) => {
         toggles: columnToggle as any,
         onColumnToggle,
       },
+      opProps: {
+        onInsert: handleInsertRow,
+        onDelete: handleDeleteRow,
+        getSelections: getSelectedRows,
+      },
       baseProps,
     }),
     [
@@ -196,6 +222,9 @@ const ToolkitProvider = (props: any) => {
       columns,
       columnToggle,
       onColumnToggle,
+      handleInsertRow,
+      handleDeleteRow,
+      getSelectedRows,
       baseProps,
     ]
   );

@@ -52,6 +52,10 @@ const withContext = (Base: any) => {
       };
       remoteEmitter.on("paginationChange", handleRemotePageChange);
 
+      remoteEmitter.on("isRemotePagination", (e: any) => {
+        e.result = remoteResolver.isRemotePagination();
+      });
+
       if (props.registerExposedAPI) {
         const exposedAPIEmitter = new EventEmitter();
         exposedAPIEmitter.on(
@@ -85,6 +89,7 @@ const withContext = (Base: any) => {
 
       return () => {
         remoteEmitter.removeListener("paginationChange", handleRemotePageChange);
+        remoteEmitter.removeAllListeners("isRemotePagination");
       };
     }, []); // Run once on mount
 

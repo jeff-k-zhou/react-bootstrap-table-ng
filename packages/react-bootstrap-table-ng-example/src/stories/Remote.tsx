@@ -1244,7 +1244,7 @@ const RemoteAllExportComponent = () => {
             sizePerPage: sizePerPage,
             totalSize: totalSize,
             sizePerPageList: [10, 25, 50, 100],
-            showSizePerPage: true,
+            hideSizePerPage: false,
             showTotal: true,
             paginationTotalRenderer: customPaginationTotal,
           })}
@@ -1546,8 +1546,6 @@ const RemoteAllCustomComponent: React.FC = () => {
       {(props: any) => (
         <PaginationProvider
           isRemotePagination={() => true}
-          data={data}
-          remoteEmitter={{}}
           pagination={paginationFactory({
             ...remoteAllCustomPaginationOptions,
             page,
