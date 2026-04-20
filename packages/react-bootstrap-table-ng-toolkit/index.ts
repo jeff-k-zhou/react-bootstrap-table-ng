@@ -8,6 +8,11 @@ export { default as ColumnToggle } from "./src/column-toggle";
 export { default as CSVExport } from "./src/csv";
 export { default as Search } from "./src/search";
 
+export { default as DeleteRowButton } from "./src/op/delete-row-button";
+export { default as InsertRowButton } from "./src/op/insert-row-button";
+export { default as InsertModal } from "./src/op/insert-modal";
+export { default as InsertModalToggle } from "./src/op/insert-modal-toggle";
+
 /**
  * declaration for table toolkit sub module
  */
@@ -78,6 +83,11 @@ export interface ToolkitContextType {
      */
     toggles: { [dataField: string]: boolean };
     onColumnToggle: (dataField: string) => void;
+  };
+  opProps: {
+    onInsert: (newRow: any) => void;
+    onDelete: () => void;
+    getSelections: () => any[];
   };
   baseProps: {
     /**

@@ -52,6 +52,22 @@ export const useRemoteResolver = (props: any) => {
     );
   }, [isRemotePagination]);
 
+  const isRemoteInsertRow = useCallback(() => {
+    const { remote } = propsRef.current;
+    return (
+      remote === true ||
+      (typeof remote === 'object' && remote.insertRow)
+    );
+  }, []);
+
+  const isRemoteDeleteRow = useCallback(() => {
+    const { remote } = propsRef.current;
+    return (
+      remote === true ||
+      (typeof remote === 'object' && remote.deleteRow)
+    );
+  }, []);
+
   const getNewestState = useCallback((state = {}) => {
     const { pagination, filter, sort, search, data } = propsRef.current;
     let page: any;
@@ -121,17 +137,31 @@ export const useRemoteResolver = (props: any) => {
     onTableChange('search', getNewestState({ searchText }));
   }, [getNewestState]);
 
+  const handleRemoteInsertRow = useCallback((newRow: any) => {
+    const { onTableChange } = propsRef.current;
+    onTableChange('insertRow', getNewestState({ newRow }));
+  }, [getNewestState]);
+
+  const handleRemoteDeleteRow = useCallback((rowKeys: any[]) => {
+    const { onTableChange } = propsRef.current;
+    onTableChange('deleteRow', getNewestState({ rowKeys }));
+  }, [getNewestState]);
+
   return {
     isRemotePagination,
     isRemoteFiltering,
     isRemoteSort,
     isRemoteCellEdit,
     isRemoteSearch,
+    isRemoteInsertRow,
+    isRemoteDeleteRow,
     handleRemotePageChange,
     handleRemoteFilterChange,
     handleRemoteSortChange,
     handleRemoteCellChange,
     handleRemoteSearchChange,
+    handleRemoteInsertRow,
+    handleRemoteDeleteRow,
     getNewestState
   };
 };

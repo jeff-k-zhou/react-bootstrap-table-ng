@@ -52,7 +52,6 @@
     "@babel/plugin-transform-class-properties": "^7.28.6",
     "@babel/plugin-transform-private-property-in-object": "^7.28.6",
     "@storybook/addon-docs": "^10.3.5",
-    "@storybook/addon-interactions": "^8.6.18",
     "@storybook/addon-links": "^10.3.5",
     "@storybook/addon-onboarding": "^10.3.5",
     "@storybook/preset-create-react-app": "^10.3.5",

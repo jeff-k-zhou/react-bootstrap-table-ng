@@ -16,7 +16,7 @@ const PaginationDataContext = React.createContext<any>(null);
 
 const PaginationDataProvider = React.forwardRef<any, PaginationDataProviderProps>((props, ref) => {
   const {
-    data: propData,
+    data: propData = [],
     pagination,
     onDataSizeChange,
     children,

@@ -11,6 +11,7 @@ sidebar_label: Getting Started
 - Export CSV
 - Table Search
 - Column Toggle
+- Table Operation
 
 ## Installation
 
@@ -54,6 +55,8 @@ In addition, You have to move following required props from `BootstraTable` to `
 - [search](./search-props): For enabling search.
 - [exportCSV](./export-csv-props): For enabling export CSV.
 - **columnToggle**: For enabling column toggle.
+- **insertRow**: Function `(newRow: any) => void` for handling row insertions.
+- **deleteRow**: Function `(rowKeys: any[]) => void` for handling row deletions.
 
 ## Available children props
 
@@ -63,3 +66,4 @@ In addition, You have to move following required props from `BootstraTable` to `
 - `searchProps`: props for search component.
 - `csvProps`: props for export csv component.
 - `columnToggleProps`: props for column toggle component.
+- `opProps`: props for table operation components (InsertRowButton, InsertModalToggle, DeleteRowButton).

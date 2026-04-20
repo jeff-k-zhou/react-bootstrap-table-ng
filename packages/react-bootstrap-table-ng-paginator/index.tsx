@@ -28,15 +28,15 @@ export interface PaginationProviderProps {
   tableId?: string | undefined;
   bootstrap4?: boolean | undefined;
   bootstrap5?: boolean | undefined;
-  remoteEmitter: any;
-  data: any[];
-  isRemotePagination: Function;
+  remoteEmitter?: any;
+  data?: any[];
+  isRemotePagination?: Function;
 }
 
 export interface PaginationDataProviderProps {
-  data: any[];
-  remoteEmitter: Record<string, any>;
-  isRemotePagination: () => boolean;
+  data?: any[];
+  remoteEmitter?: Record<string, any>;
+  isRemotePagination?: () => boolean;
   children: React.ReactNode;
   pagination: {
     options: {
@@ -57,9 +57,13 @@ export default (options = {}) => ({
 
 const { Provider } = createBaseContext();
 
-const CustomizableProvider: React.FC<PaginationProviderProps> = (props) => {
+const CustomizableProvider: React.FC<PaginationProviderProps> = ({
+  remoteEmitter = {},
+  isRemotePagination = () => false,
+  ...props
+}) => {
   return (
-    <Provider {...props}>
+    <Provider remoteEmitter={remoteEmitter} isRemotePagination={isRemotePagination as any} {...(props as any)}>
       <StateContext.Consumer>
         {(context: any) => props.children(context)}
       </StateContext.Consumer>
