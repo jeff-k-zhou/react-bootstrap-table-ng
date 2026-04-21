@@ -2,17 +2,23 @@
 
 `react-bootstrap-table-ng` support some additional features in [`react-bootstrap-table-ng-toolkit`](https://github.com/jeff-k-zhou/react-bootstrap-table-ng/tree/main/packages/react-bootstrap-table-ng-toolkit).
 
-In the future, this toolkit will support other feature like row delete, insert etc. Right now we only following features:
+This toolkit supports the following features:
 
 - Table Search
 - Export CSV
 - Column Toggle
+- Insert Row
+- Delete Row
 
 **[Live Demo For Table Search](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/storybook/?path=/docs/table-search--docs)**
 
 **[Live Demo For Export CSV](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/storybook/?path=/docs/export-csv--docs)**
 
 **[Live Demo For Column Toggle](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/storybook/?path=/docs/column-toggle--docs)**
+
+**[Live Demo For Insert Row](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/storybook/?path=/docs/table-operation--insert-modal-row)**
+
+**[Live Demo For Delete Row](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/storybook/?path=/docs/table-operation--delete-selected-row)**
 
 **[API&Props Definitation](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/docs/pagination-props.html)**
 

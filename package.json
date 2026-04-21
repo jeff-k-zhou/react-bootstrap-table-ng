@@ -1,6 +1,6 @@
 {
   "name": "react-bootstrap-table-ng-monorepo",
-  "version": "5.19.3",
+  "version": "5.19.4",
   "private": true,
   "type": "module",
   "description": "Rebuilt for react-bootstrap-table, react-bootstrap-table-next, react-bootstrap-table-nextgen",
