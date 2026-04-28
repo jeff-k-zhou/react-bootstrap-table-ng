@@ -188,6 +188,7 @@ export const CustomPagination: Story = {
       firstPageTitle: 'Next page',
       lastPageTitle: 'Last page',
       showTotal: true,
+      showPageJump: true,
       paginationTotalRenderer: customTotal,
       disablePageTitle: true,
       sizePerPageList: [{
@@ -217,6 +218,7 @@ export const CustomPagination: Story = {
       firstPageTitle: 'Next page',
       lastPageTitle: 'Last page',
       showTotal: true,
+      showPageJump: true,
       paginationTotalRenderer: customTotal,
       disablePageTitle: true,
       sizePerPageList: [{
@@ -428,6 +430,9 @@ const sizePerPageOptionRenderer = ({
         e.preventDefault();
         onSizePerPageChange(page);
       }}
+      onClick={(e: any) => {
+        e.preventDefault(); // This prevents the redirect/# navigation
+      }}
       style={{ color: 'red' }}
     >
       {text}
@@ -490,7 +495,7 @@ export const CustomSizePerPageOption: Story = {
     const dropdownToggle = await canvas.findByRole('button', { name: /10/ });
     await userEvent.click(dropdownToggle);
     
-    const size25Btn = await canvas.findByText('25');
+    const size25Btn = await canvas.findByText('25', { selector: "li.dropdown-item a" });
     await userEvent.click(size25Btn);
 
     // Items up to 24 should be visible
@@ -633,6 +638,7 @@ export const StandaloneSizePerPageDropdown: Story = {
     await userEvent.click(dropdownToggle);
 
     const size25Btn = await canvas.findByText('25', { selector: '.dropdown-item a' });
+    console.log(size25Btn);
     await userEvent.click(size25Btn);
 
     await expect(await canvas.findByText('Item name 20')).toBeInTheDocument();
@@ -653,6 +659,24 @@ export const StandalonePaginationTotal: Story = {
     await userEvent.click(page2Btn);
 
     await expect(await canvas.findByText(/Showing rows 11 to 20 of/)).toBeInTheDocument();
+  }
+};
+
+export const StandalonePaginationJump: Story = {
+  name: "Standalone pagination jump",
+  args: {
+    mode: "standalone-jump",
+  },
+  play: async ({ canvasElement }: any) => {
+    const canvas = within(canvasElement);
+    await expect(await canvas.findByText('Item name 0')).toBeInTheDocument();
+    
+    // pagination jump click
+    const input = await canvas.findByLabelText(/Jump to page/);
+    await userEvent.clear(input);
+    await userEvent.type(input, '2{enter}');
+
+    await expect(await canvas.findByText('Item name 10')).toBeInTheDocument();
   }
 };
 

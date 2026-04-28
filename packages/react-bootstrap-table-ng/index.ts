@@ -337,6 +337,10 @@ export type PaginationOptions = Partial<{
    */
   showTotal: boolean;
   /**
+   * display page jump control
+   */
+  showPageJump: boolean;
+  /**
    * A numeric array is also available: [5, 10]. the purpose of above example is custom the text
    */
   sizePerPageList: number[] | Array<{ text: string; value: number }>;

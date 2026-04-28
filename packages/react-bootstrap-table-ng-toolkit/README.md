@@ -20,7 +20,7 @@ This toolkit supports the following features:
 
 **[Live Demo For Delete Row](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/storybook/?path=/docs/table-operation--delete-selected-row)**
 
-**[API&Props Definitation](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/docs/pagination-props.html)**
+**[API&Props Definition](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/docs/pagination-props.html)**
 
 ---
 

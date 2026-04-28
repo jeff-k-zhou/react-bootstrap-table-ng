@@ -134,14 +134,14 @@ In the customization case, you just need to pass `searchProps` to your component
 
 ## Search on Formatted Data
 
-`react-bootstrap-table-ng` default is search on your raw data. If you define a [`column.formatter`](./column-props#columnformatter-function) on a column, sometime that will cause
+`react-bootstrap-table-ng` default is search on your raw data. If you define a [`column.formatter`](./column-props#columnformatter-function) on a column, sometimes that will cause
 the search can't be performed accurately.
 
 Therefore, we support [`searchFormatted`](./search-props#searchsearchformatted-bool) to let search can work on the formatted data.
 
 ## Customize the Search Value
 
-Sometime, you hope `react-bootstrap-table-ng` to search another value instead of raw data, you can use [`column.filterValue`](./column-props#columnfiltervalue-function).
+Sometimes, you hope `react-bootstrap-table-ng` to search another value instead of raw data, you can use [`column.filterValue`](./column-props#columnfiltervalue-function).
 When table search on a specified column, will use the return value from `column.filterValue` for searching.
 
 

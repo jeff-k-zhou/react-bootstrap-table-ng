@@ -231,17 +231,17 @@ Set to `false` to disable the `expandable-cell` class for all columns at the tab
 
 ```jsx
 const columns = [
-  { dataField: 'id',    text: 'Product ID' },
-  { dataField: 'name',  text: 'Product Name' },
+  { dataField: "id", text: "Product ID" },
+  { dataField: "name", text: "Product Name" },
   {
-    dataField: 'price',
-    text: 'Product Price',
-    cellExpandable: false,  // overrides the table-level cellExpandable
+    dataField: "price",
+    text: "Product Price",
+    cellExpandable: false, // overrides the table-level cellExpandable
   },
 ];
 
 // Table-level cellExpandable defaults to true, but the 'price' column opts out.
-<BootstrapTable keyField="id" data={products} columns={columns} />
+<BootstrapTable keyField="id" data={products} columns={columns} />;
 ```
 
 ## selectRow - [Object] {#selectrow-object}
@@ -383,6 +383,7 @@ paginationFactory({
   pageStartIndex: 0, // first page will be 0, default is 1
   paginationSize: 3,  // the pagination bar size, default is 5
   showTotal: true, // display pagination information
+  showPageJump: true, // display page jump input
   sizePerPageList: [ {
     text: '5', value: 5
   }, {

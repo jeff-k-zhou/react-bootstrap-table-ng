@@ -7,6 +7,7 @@ import paginationFactory, {
   PaginationProvider,
   PaginationTotalStandalone,
   SizePerPageDropdownStandalone,
+  PaginationJumpStandalone,
 } from "../../../react-bootstrap-table-ng-paginator";
 import filterFactory, { selectFilter, textFilter } from "../../../react-bootstrap-table-ng-filter";
 import ToolkitProvider, { Search } from "../../../react-bootstrap-table-ng-toolkit";
@@ -452,6 +453,99 @@ const StandalonePaginationTotal: React.FC = () => {
   );
 };
 
+const StandalonePaginationJump: React.FC = () => {
+  const products = productsGenerator(87);
+  const columns = [
+    {
+      dataField: "id",
+      text: "Product ID",
+    },
+    {
+      dataField: "name",
+      text: "Product Name",
+    },
+    {
+      dataField: "price",
+      text: "Product Price",
+    },
+  ];
+  const options = {
+    custom: true,
+    totalSize: products.length,
+  };
+  const sourceCode = `\
+  import BootstrapTable from 'react-bootstrap-table-ng';
+  import paginationFactory, { PaginationProvider, PaginationJumpStandalone, PaginationListStandalone } from 'react-bootstrap-table-ng-paginator';
+
+  const columns = [{
+    dataField: 'id',
+    text: 'Product ID'
+  }, {
+    dataField: 'name',
+    text: 'Product Name'
+  }, {
+    dataField: 'price',
+    text: 'Product Price'
+  }];
+
+  const options = {
+    custom: true,
+    totalSize: products.length
+  };
+
+  <PaginationProvider
+    pagination={ paginationFactory(options) }
+  >
+    {
+      ({
+        paginationProps,
+        paginationTableProps
+      }) => (
+        <div>
+          <PaginationJumpStandalone
+            { ...paginationProps }
+          />
+          <PaginationListStandalone
+            { ...paginationProps }
+          />
+          <BootstrapTable
+            keyField="id"
+            data={ products }
+            columns={ columns }
+            { ...paginationTableProps }
+          />
+        </div>
+      )
+    }
+  </PaginationProvider>
+  `;
+
+  return (
+    <div>
+      <PaginationProvider
+        pagination={paginationFactory(options)}
+        data={products}
+        remoteEmitter={{}}
+        isRemotePagination={() => false}
+      >
+        {({ paginationProps, paginationTableProps }: any) => (
+          <div>
+            <PaginationJumpStandalone {...paginationProps} />
+            <PaginationListStandalone {...paginationProps} />
+            <BootstrapTable
+              keyField="id"
+              columns={columns}
+              data={products}
+              {...paginationTableProps}
+            />
+          </div>
+        )}
+      </PaginationProvider>
+      <Code>{sourceCode}</Code>
+    </div>
+  );
+};
+
 interface FullyCustomPaginationProps { }
 
 const FullyCustomPagination: React.FC = () => {
@@ -801,6 +895,7 @@ const PaginationFilter: React.FC = () => {
     firstPageTitle: 'Next page',
     lastPageTitle: 'Last page',
     showTotal: true,
+    showPageJump: true,
     totalSize: products.length,
   }), [products.length]);
 
@@ -855,6 +950,7 @@ const PaginationFilter: React.FC = () => {
       firstPageTitle: 'Next page',
       lastPageTitle: 'Last page',
       showTotal: true,
+      showPageJump: true,
       totalSize: products.length
     };
 
@@ -956,6 +1052,7 @@ const PaginationSearch: React.FC = () => {
     firstPageTitle: 'Next page',
     lastPageTitle: 'Last page',
     showTotal: true,
+    showPageJump: true,
     totalSize: products.length,
   }), [products.length]);
 
@@ -986,6 +1083,7 @@ const PaginationSearch: React.FC = () => {
       firstPageTitle: 'Next page',
       lastPageTitle: 'Last page',
       showTotal: true,
+      showPageJump: true,
       totalSize: products.length
     };
 
@@ -1116,6 +1214,12 @@ export default ({
       return (
         <div>
           <StandalonePaginationTotal />
+        </div>
+      );
+    case "standalone-jump":
+      return (
+        <div>
+          <StandalonePaginationJump />
         </div>
       );
     case "full":

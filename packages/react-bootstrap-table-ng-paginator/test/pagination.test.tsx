@@ -98,6 +98,14 @@ describe("Pagination", () => {
     });
   });
 
+  describe("when props.showPageJump is true", () => {
+    it("should render PaginationTotal correctly", () => {
+      const props = createMockProps({ showPageJump: true });
+      const { container } = render(<Pagination {...props} />);
+      expect(container.querySelector(".react-bootstrap-table-pagination-total")).toBeInTheDocument();
+    });
+  });
+
   describe("when props.showTotal is true", () => {
     it("should render PaginationTotal correctly", () => {
       const props = createMockProps({ showTotal: true });

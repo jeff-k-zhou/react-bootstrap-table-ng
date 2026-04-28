@@ -60,7 +60,7 @@ In addition, You have to move following required props from `BootstraTable` to `
 
 ## Available children props
 
-`ToolkitProvider` will pass following props to the childrens:
+`ToolkitProvider` will pass following props to the children:
 
 - `baseProps`: It have the basic props from `ToolkitProvider` and also contain few internal data.
 - `searchProps`: props for search component.

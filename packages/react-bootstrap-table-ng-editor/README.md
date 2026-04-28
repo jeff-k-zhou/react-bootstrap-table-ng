@@ -4,7 +4,7 @@
 
 **[Live Demo For Cell Edit](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/storybook/?path=/docs/cell-editing--docs)**
 
-**[API&Props Definitation](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/docs/cell-edit-props.html)**
+**[API&Props Definition](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/docs/cell-edit-props.html)**
 
 ---
 
