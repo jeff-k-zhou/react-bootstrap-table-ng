@@ -28,6 +28,7 @@ const RowAggregator = React.memo((props: RowProps) => {
     selectable,
     visibleColumnSize,
     tabIndexCell,
+    id,
     ...rest
   } = props;
 
@@ -119,7 +120,7 @@ const RowAggregator = React.memo((props: RowProps) => {
   }
 
   return (
-    <tr style={style} className={className} {...newAttrs}>
+    <tr id={id} style={style} className={className} {...newAttrs}>
       {childrens}
     </tr>
   );

@@ -26,6 +26,7 @@ export interface RowProps {
   visibleColumnSize?: number;
   keyField?: string;
   value?: any;
+  id?: string;
 }
 
 export default function RowShouldUpdater<P extends RowProps>(

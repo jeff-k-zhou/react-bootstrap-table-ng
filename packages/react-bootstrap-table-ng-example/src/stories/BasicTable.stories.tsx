@@ -177,7 +177,7 @@ export const CustomizedIdAndClassTable: Story = {
       text: 'Product Price'
     }];
 
-    <BootstrapTable id="bar" keyField='id' data={ products } columns={ columns } />
+    <BootstrapTable id="bar" keyField='id' data={ products } columns={ columns } rowIdPrefix="bar-row"/>
     <BootstrapTable classes="foo" keyField="id" data={ products } columns={ columns } />
     <BootstrapTable headerWrapperClasses="foo" keyField="id" data={ products } columns={ columns } />
     <BootstrapTable bodyClasses="foo" keyField="id" data={ products } columns={ columns } />
@@ -188,6 +188,7 @@ export const CustomizedIdAndClassTable: Story = {
     headerWrapperClasses: "foo",
     bodyClasses: "foo",
     wrapperClasses: "boo",
+    rowIdPrefix: "bar-row",
   }
 };
 

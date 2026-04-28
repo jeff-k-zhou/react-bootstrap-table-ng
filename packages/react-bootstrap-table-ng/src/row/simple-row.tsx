@@ -11,6 +11,7 @@ const SimpleRow = React.memo((props: RowProps) => {
     attrs = {},
     visibleColumnSize,
     tabIndexCell,
+    id,
     ...rest
   } = props;
 
@@ -39,7 +40,7 @@ const SimpleRow = React.memo((props: RowProps) => {
   });
 
   return (
-    <tr style={style} className={className} {...trAttrs}>
+    <tr id={id} style={style} className={className} {...trAttrs}>
       <RowPureContent
         shouldUpdate={shouldUpdateContent}
         tabIndexStart={tabIndexCell ? tabIndexStart : -1}

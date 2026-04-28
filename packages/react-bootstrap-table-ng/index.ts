@@ -701,6 +701,10 @@ export interface BootstrapTableProps<T extends object = any, K = number> {
   sortField?: string;
   sortOrder?: string;
   currFilters?: object;
+  /**
+   * Custom row ID prefix or generator.
+   */
+  rowIdPrefix?: string | ((row: T, rowIndex: number) => string) | undefined;
 }
 
 // declare class BootstrapTable<

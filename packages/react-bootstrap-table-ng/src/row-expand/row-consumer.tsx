@@ -48,6 +48,7 @@ export default (
       expanded || isClosing ? (
         <ExpandRow
           key={`${key}-expanding`}
+          id={props.id ? `${props.id}-expansion` : undefined}
           colSpan={props.visibleColumnSize!}
           expanded={expanded}
           onClosed={() => expandRow.onClosed(key)}

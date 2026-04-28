@@ -688,6 +688,10 @@ export interface BootstrapTableProps<T extends object = any, K = number> {
     columnToggle?: {
         toggles: { [key: string]: boolean };
     };
+    /**
+     * Custom row ID prefix or generator.
+     */
+    rowIdPrefix?: string | ((row: T, rowIndex: number) => string) | undefined;
 }
 
 /**
