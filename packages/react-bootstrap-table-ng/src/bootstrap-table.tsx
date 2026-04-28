@@ -71,6 +71,7 @@ const BootstrapTable = React.forwardRef<any, BootstrapTableProps>((props, ref) =
     bodyClasses,
     footerClasses,
     cellExpandable = true,
+    rowIdPrefix,
   } = props;
 
   const { validateProps, isEmpty, visibleRows, getVisibleColumnSize } =
@@ -169,6 +170,8 @@ const BootstrapTable = React.forwardRef<any, BootstrapTableProps>((props, ref) =
             rowStyle={rowStyle}
             rowClasses={rowClasses}
             rowEvents={rowEvents}
+            tableId={tableId}
+            rowIdPrefix={rowIdPrefix}
           />
           {hasFooter && (
             <Footer

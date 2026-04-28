@@ -32,6 +32,8 @@ interface BodyProps {
   expandRow?: ExpandRowProps<any, any> | undefined;
   className?: string;
   cellExpandable?: boolean;
+  tableId?: string;
+  rowIdPrefix?: string | ((row: any, index: number) => string) | undefined;
 }
 
 const Body: React.FC<BodyProps> = (props) => {
@@ -51,6 +53,8 @@ const Body: React.FC<BodyProps> = (props) => {
     expandRow,
     className,
     cellExpandable,
+    tableId,
+    rowIdPrefix,
   } = props;
 
     const selectRowEnabled =
@@ -136,6 +140,16 @@ const Body: React.FC<BodyProps> = (props) => {
           attrs: rowEvents || {},
           ...additionalRowProps,
         };
+
+        let id: string;
+        if (typeof rowIdPrefix === "function") {
+          id = rowIdPrefix(row, index);
+        } else if (rowIdPrefix) {
+          id = `${rowIdPrefix}-${key}`;
+        } else {
+          id = `${tableId}-row-${key}`;
+        }
+        baseRowProps.id = id;
 
         baseRowProps.style = typeof rowStyle === "function"
           ? (rowStyle(row, index) as any)

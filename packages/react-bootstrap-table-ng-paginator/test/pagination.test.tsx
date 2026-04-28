@@ -99,10 +99,11 @@ describe("Pagination", () => {
   });
 
   describe("when props.showPageJump is true", () => {
-    it("should render PaginationTotal correctly", () => {
+    it("should render Page Jump controls correctly", () => {
       const props = createMockProps({ showPageJump: true });
       const { container } = render(<Pagination {...props} />);
-      expect(container.querySelector(".react-bootstrap-table-pagination-total")).toBeInTheDocument();
+      expect(container.querySelector(".react-bootstrap-table-page-jump-label")).toBeInTheDocument();
+      expect(container.querySelector(".react-bootstrap-table-page-jump-input")).toBeInTheDocument();
     });
   });
 

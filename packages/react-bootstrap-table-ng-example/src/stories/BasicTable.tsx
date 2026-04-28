@@ -32,6 +32,7 @@ interface BasicTableProps {
   bordered?: any;
   noDataIndication?: any;
   tabIndexCell?: any;
+  rowIdPrefix?: string;
 }
 
 const BasicTable: React.FC<BasicTableProps> = ({
@@ -53,6 +54,7 @@ const BasicTable: React.FC<BasicTableProps> = ({
   bordered,
   noDataIndication,
   tabIndexCell,
+  rowIdPrefix,
 }) => {
   const node = useRef<any>(null);
 
@@ -94,6 +96,9 @@ const BasicTable: React.FC<BasicTableProps> = ({
         <div>
           <h4> Customized table ID </h4>
           <BootstrapTable id={id} keyField="id" data={data} columns={columns} />
+
+          <h4> Customized table row ID </h4>
+          <BootstrapTable id={id} keyField="id" data={data} columns={columns} rowIdPrefix={rowIdPrefix} />
 
           <h4> Customized table className </h4>
           <BootstrapTable

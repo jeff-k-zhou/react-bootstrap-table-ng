@@ -8,6 +8,7 @@ interface ExpandRowProps {
   onClosed?: () => void;
   className?: string;
   colSpan: number;
+  id?: string;
 }
 
 const ExpandRow: React.FC<ExpandRowProps> = (props) => {
@@ -17,12 +18,13 @@ const ExpandRow: React.FC<ExpandRowProps> = (props) => {
     onClosed,
     className = "",
     colSpan,
+    id,
     ...rest
   } = props;
   const nodeRef = React.useRef(null);
 
   return (
-    <tr>
+    <tr id={id}>
       <td className={cs("reset-expansion-style", className)} colSpan={colSpan} {...rest}>
         <CSSTransition
           appear

@@ -23,6 +23,7 @@ title: BootstrapTable Props
 - [hover](#hover-bool)
 - [condensed](#condensed-bool)
 - [id](#id-string)
+- [rowIdPrefix](#rowIdPrefix-string-function)
 - [tabIndexCell](#tabindexcell-bool)
 - [classes](#classes-string)
 - [bodyClasses](#bodyclasses-string)
@@ -178,6 +179,45 @@ Same as bootstrap `.table-condensed` class for making a table more compact by cu
 ## id - [String] {#id-string}
 
 Customize id on `table` element.
+
+## rowIdPrefix - [String | Function] {#rowIdPrefix-string-function}
+
+Customize the `id` attribute on each row (`tr`). This is useful for integration with external libraries (e.g., drag-and-drop or analytics) that require stable DOM IDs.
+
+### Using a string prefix
+
+If a string is provided, each row ID will be `${rowIdPrefix}-${rowKey}` (where `rowKey` is the value of the `keyField`).
+
+```jsx
+<BootstrapTable
+  keyField="id"
+  data={data}
+  columns={columns}
+  rowIdPrefix="custom-prefix"
+/>
+// Renders <tr id="custom-prefix-1">...
+```
+
+### Using a generator function
+
+For full control, provide a function that receives the row data and its index.
+
+```jsx
+<BootstrapTable
+  keyField="id"
+  data={data}
+  columns={columns}
+  rowIdPrefix={(row, index) => `row-${index}-${row.name}`}
+/>
+```
+
+### Expansion Rows
+
+Expansion rows also receive a stable ID based on the parent row ID: `${parentRowId}-expansion`.
+
+### Default behavior
+
+If not provided, the default ID for each row is `${tableId}-row-${rowKey}`.
 
 ## tabIndexCell - [Bool] {#tabindexcell-bool}
 
