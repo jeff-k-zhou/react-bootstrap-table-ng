@@ -4,7 +4,7 @@
 
 **[Live Demo For Pagination](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/storybook/?path=/docs/pagination--docs)**
 
-**[API&Props Definitation](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/docs/pagination-props.html)**
+**[API&Props Definition](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/docs/pagination-props.html)**
 
 ---
 
@@ -61,13 +61,14 @@ import paginationFactory from "react-bootstrap-table-ng-paginator";
 - [hideSizePerPage](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/docs/pagination-props.html#paginationhidesizeperpage-bool)
 - [hidePageListOnlyOnePage](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/docs/pagination-props.html#paginationhidepagelistonlyonepage-bool)
 - [showTotal](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/docs/pagination-props.html#paginationshowtotal-bool)
+- [showPageJump](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/docs/pagination-props.html#paginationshowpagejump-bool)
 - [disablePageTitle](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/docs/pagination-props.html#paginationdisablepagetitle-bool)
 
 You can check [this online demo](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/storybook/?path=/story/pagination--full-custom-pagination) for above props usage.
 
 ### Advance Customization
 
-Sometime, you may feel above props is not satisfied with your requirement, don't worry, we provide following renderer for each part of pagination:
+Sometimes, you may feel above props is not satisfied with your requirement, don't worry, we provide following renderer for each part of pagination:
 
 - [pageListRenderer](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/docs/pagination-props.html#paginationpagelistrenderer-function)
 - [pageButtonRenderer](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/docs/pagination-props.html#paginationpagebuttonrenderer-function)
@@ -77,7 +78,7 @@ Sometime, you may feel above props is not satisfied with your requirement, don't
 
 ### Fully Customization
 
-If you want to customize the pagination component completely, you may get interesting on following solutions:
+If you want to customize the pagination component completely, you may be interested in following solutions:
 
 - Standalone
 - Non-standalone
@@ -118,7 +119,7 @@ const paginationOption = {
 </PaginationProvider>
 ```
 
-`PaginationProvider` actually is a wrapper for the concumser of react context, so that now you have to get the props from context provide then render to your compoennt and `BootstrapTable`:
+`PaginationProvider` actually is a wrapper for the consumer of react context, so that now you have to get the props from context provide then render to your component and `BootstrapTable`:
 
 - `paginationProps`: this include everything about pagination, you will use it when you render standalone component or your custom component.
 - `paginationTableProps`: you don't need to know about this, but you have to render this as props to `BootstrapTable`.
@@ -144,11 +145,12 @@ Now, you have to choose which solution you like: standalone or non-standalone ?
 
 #### 4.1 Use Standalone Component
 
-`react-bootstrap-table-ng-paginator` provider three standalone components:
+`react-bootstrap-table-ng-paginator` provides four standalone components:
 
-- Size Per Page Dropdwn Standalone
+- Size Per Page Dropdown Standalone
 - Pagination List Standalone
 - Pagination Total Standalone
+- Page Jump Combobox Standalone
 
 When render each standalone, you just need to pass the `paginationProps` props to standalone component:
 
@@ -158,6 +160,7 @@ import paginationFactory, {
   PaginationListStandalone,
   SizePerPageDropdownStandalone,
   PaginationTotalStandalone,
+  PaginationJumpStandalone,
 } from "react-bootstrap-table-ng-paginator";
 
 <PaginationProvider pagination={paginationFactory(options)}>
@@ -171,13 +174,14 @@ import paginationFactory, {
         columns={columns}
         {...paginationTableProps}
       />
+      <PaginationJumpStandalone {...paginationProps} />
       <PaginationListStandalone {...paginationProps} />
     </div>
   )}
 </PaginationProvider>;
 ```
 
-That's it!! The benifit for using standalone is you can much easier to render the standalone component in any posistion. In the future, we will implement more featue like applying `style`, `className` etc on standalone components.
+That's it!! The benefit for using standalone is you can much easier to render the standalone component in any position. In the future, we will implement more feature like applying `style`, `className` etc on standalone components.
 
 ##### Customizable props for `PaginationListStandalone`
 
@@ -191,13 +195,17 @@ That's it!! The benifit for using standalone is you can much easier to render th
 - `variation`: Variation for dropdown, available value is `dropdown` and `dropup`.
 - `className`: Custom the class on size per page dropdown
 
-##### Customizable props for `SizePerPageDropdownStandalone`
+##### Customizable props for `PaginationTotalStandalone`
+
+- N/A
+
+##### Customizable props for `PaginationJumpStandalone`
 
 - N/A
 
 #### 4.2 Customization Everything
 
-If you choose to custom the pagination component by yourself, the `paginationProps` will be important for you. Becasue you have to know for example how to change page or what's the current page etc. Hence, following is all the props in `paginationProps` object:
+If you choose to custom the pagination component by yourself, the `paginationProps` will be important for you. Because you have to know for example how to change page or what's the current page etc. Hence, following is all the props in `paginationProps` object:
 
 ```js
 (page,
@@ -211,6 +219,7 @@ If you choose to custom the pagination component by yourself, the `paginationPro
   sizePerPageList,
   paginationSize,
   showTotal,
+  showPageJump,
   pageListRenderer,
   pageButtonRenderer,
   sizePerPageRenderer,
@@ -233,7 +242,7 @@ In most of case, `page`, `sizePerPage`, `onPageChange` and `onSizePerPageChange`
 
 - `page`: Current page.
 - `sizePerPage`: Current size per page.
-- `onPageChange`: Call it when you nede to change page. This function accept one number argument which indicate the new page
-- `onSizePerPageChange`: Call it when you nede to change size per page. This function accept two number argument which indicate the new sizePerPage and new page
+- `onPageChange`: Call it when you need to change page. This function accept one number argument which indicate the new page
+- `onSizePerPageChange`: Call it when you need to change size per page. This function accept two number argument which indicate the new sizePerPage and new page
 
 [Here](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/storybook/?path=/story/pagination--full-custom-pagination) is a online example.

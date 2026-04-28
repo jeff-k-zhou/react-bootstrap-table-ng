@@ -9,7 +9,7 @@ All `react-bootstrap-table-ng` packages version bump to `5.19.3`
 
 ## Changelog
 
-- Using react 18 features such hooks
+- Using react 18 features such as hooks
 - Added table id if not specified
 - Converted storybook code with react features
 - Set current page to 1 when do remote filter or search

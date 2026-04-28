@@ -591,7 +591,7 @@ const headerSortingClasses = (column, sortOrder, isLastSorting, colIndex) => { .
 
 ## headerSortingStyle - [Object | Function] {#headersortingstyle-object-function}
 
-It's similiar to [headerSortingClasses](#headersortingclasses-string-function). It allows to customize the style of header cell when this column is sorting. A style `Object` and `callback` are acceptable. `callback` takes **4** arguments and an `Object` is expected to return:
+It's similar to [headerSortingClasses](#headersortingclasses-string-function). It allows to customize the style of header cell when this column is sorting. A style `Object` and `callback` are acceptable. `callback` takes **4** arguments and an `Object` is expected to return:
 
 ```js
 const sortingHeaderStyle = {

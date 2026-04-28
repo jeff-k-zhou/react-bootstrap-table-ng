@@ -1,9 +1,10 @@
 export default {
   PAGINATION_SIZE: 5,
   PAGE_START_INDEX: 1,
-  With_FIRST_AND_LAST: true,
+  WITH_FIRST_AND_LAST: true,
   SHOW_ALL_PAGE_BTNS: false,
   SHOW_TOTAL: false,
+  SHOW_PAGE_JUMP: false,
   PAGINATION_TOTAL: null,
   FIRST_PAGE_TEXT: "<<",
   PRE_PAGE_TEXT: "<",
@@ -16,4 +17,5 @@ export default {
   SIZE_PER_PAGE_LIST: [10, 25, 30, 50],
   HIDE_SIZE_PER_PAGE: false,
   HIDE_PAGE_LIST_ONLY_ONE_PAGE: false,
+  DISABLE_PAGE_TITLE: false,
 };

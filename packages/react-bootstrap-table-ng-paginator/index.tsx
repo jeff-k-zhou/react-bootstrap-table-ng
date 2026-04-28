@@ -6,6 +6,7 @@ import createDataContext from "./src/data-context";
 import PaginationListStandalone from "./src/pagination-list-standalone";
 import PaginationTotalStandalone from "./src/pagination-total-standalone";
 import SizePerPageDropdownStandalone from "./src/size-per-page-dropdown-standalone";
+import PaginationJumpStandalone from "./src/pagination-jump-standalone";
 import createBaseContext, { StateContext } from "./src/state-context";
 
 export interface PaginationCtxOptions {
@@ -78,4 +79,5 @@ export {
   PaginationListStandalone,
   PaginationTotalStandalone,
   SizePerPageDropdownStandalone,
+  PaginationJumpStandalone
 };

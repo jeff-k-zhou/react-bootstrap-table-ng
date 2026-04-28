@@ -47,7 +47,8 @@ describe("PaginationStateContext", () => {
   describe("default render", () => {
     const options: {
       totalSize: number;
-      showTotal?: number;
+      showTotal?: boolean;
+      showPageJump?: boolean;
       paginationTotalRenderer?: any;
     } = {
       totalSize: data.length,
@@ -74,9 +75,10 @@ describe("PaginationStateContext", () => {
       expect(call.paginationProps.sizePerPageList).toEqual(Const.SIZE_PER_PAGE_LIST);
       expect(call.paginationProps.paginationSize).toEqual(Const.PAGINATION_SIZE);
       expect(call.paginationProps.showTotal).toEqual(options.showTotal);
+      expect(call.paginationProps.showPageJump).toEqual(options.showPageJump);
       expect(call.paginationProps.hidePageListOnlyOnePage).toEqual(Const.HIDE_PAGE_LIST_ONLY_ONE_PAGE);
       expect(call.paginationProps.pageStartIndex).toEqual(Const.PAGE_START_INDEX);
-      expect(call.paginationProps.withFirstAndLast).toEqual(Const.With_FIRST_AND_LAST);
+      expect(call.paginationProps.withFirstAndLast).toEqual(Const.WITH_FIRST_AND_LAST);
       expect(call.paginationProps.alwaysShowAllBtns).toEqual(Const.SHOW_ALL_PAGE_BTNS);
       expect(call.paginationProps.firstPageText).toEqual(Const.FIRST_PAGE_TEXT);
       expect(call.paginationProps.prePageText).toEqual(Const.PRE_PAGE_TEXT);
@@ -165,6 +167,21 @@ describe("PaginationStateContext", () => {
     it("should set correct dataSize", () => {
       const call = renderMockComponent.mock.calls[0][0];
       expect(call.paginationProps.dataSize).toEqual(totalSize);
+    });
+  });
+
+  describe("when options.showPageJump is defined", () => {
+    const showPageJump = true;
+    beforeEach(() => {
+      renderContext({
+        ...defaultPagination,
+        showPageJump,
+      });
+    });
+
+    it("should set correct showPageJump", () => {
+      const call = renderMockComponent.mock.calls[0][0];
+      expect(call.paginationProps.showPageJump).toEqual(showPageJump);
     });
   });
 

@@ -45,6 +45,7 @@ const pagination = paginationFactory({
 - [onPageChange](#paginationonpagechange-function)
 - [onSizePerPageChange](#paginationonsizeperpagechange-function)
 - [showTotal](#paginationshowtotal-bool)
+- [showPageJump](#paginationshowpagejump-bool)
 - [pageButtonRenderer](#paginationpagebuttonrenderer-function)
 - [pageListRenderer](#paginationpagelistrenderer-function)
 - [sizePerPageRenderer](#paginationsizeperpagerenderer-function)
@@ -162,6 +163,10 @@ You can hide the pagination when there's only one page in table. Default is `fal
 ## pagination.showTotal - [Bool] {#paginationshowtotal-bool}
 
 Default is `false`, if enable will display a text to indicate the row range of current page.
+
+## pagination.showPageJump - [Bool] {#paginationshowpagejump-bool}
+
+Default is `false`, if enable will display a page jump input to allow users to jump to a specific page.
 
 ## pagination.disablePageTitle - [Bool] {#paginationdisablepagetitle-bool}
 

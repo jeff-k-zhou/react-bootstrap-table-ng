@@ -4,7 +4,7 @@
 
 **[Live Demo For Column Filter](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/storybook/?path=/docs/column-filter--docs)**
 
-**[API&Props Definitation](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/docs/filter-props.html)**
+**[API&Props Definition](https://jeff-k-zhou.github.io/react-bootstrap-table-ng/docs/filter-props.html)**
 
 ---
 
@@ -159,7 +159,7 @@ const columns = [
 }];
 ```
 
-The benifit is `react-bootstrap-table-ng` will render the select options by the order of array.
+The benefit is `react-bootstrap-table-ng` will render the select options by the order of array.
 
 ## MultiSelect Filter
 

@@ -10,7 +10,8 @@ import filterFactory, {
 import overlayFactory from "../../../react-bootstrap-table-ng-overlay";
 import paginationFactory, {
   PaginationProvider, PaginationListStandalone,
-  PaginationTotalStandalone, SizePerPageDropdownStandalone
+  PaginationTotalStandalone, SizePerPageDropdownStandalone,
+  PaginationJumpStandalone
 } from "../../../react-bootstrap-table-ng-paginator";
 import ToolkitProvider, {
   Search, CSVExport
@@ -1246,6 +1247,7 @@ const RemoteAllExportComponent = () => {
             sizePerPageList: [10, 25, 50, 100],
             hideSizePerPage: false,
             showTotal: true,
+            showPageJump: true,
             paginationTotalRenderer: customPaginationTotal,
           })}
         >
@@ -1376,6 +1378,7 @@ const remoteAllCustomPaginationOptions = {
   sizePerPageList: [10, 25, 50, 100],
   showSizePerPage: true,
   showTotal: true,
+  showPageJump: true,
   paginationTotalRenderer: customPaginationTotal,
 };
 
@@ -1573,6 +1576,7 @@ const RemoteAllCustomComponent: React.FC = () => {
                 >
                   Export CSV
                 </ExportCSVButton>
+                <PaginationJumpStandalone {...paginationProps} />
                 <PaginationListStandalone {...paginationProps} />
               </div>
               <BootstrapTable
@@ -1603,6 +1607,7 @@ const RemoteAllCustomComponent: React.FC = () => {
                 >
                   Export CSV
                 </ExportCSVButton>
+                <PaginationJumpStandalone {...paginationProps} />           
                 <PaginationListStandalone {...paginationProps} />
               </div>
               <Code>{remoteAllExportSourceCode}</Code>

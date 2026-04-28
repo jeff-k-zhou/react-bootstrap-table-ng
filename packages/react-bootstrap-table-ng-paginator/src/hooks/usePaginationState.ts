@@ -111,7 +111,7 @@ export const usePaginationState = (props: any) => {
     const effectiveDataSize = isRemotePagination() ? options.totalSize! : dataSize!;
     const withFirstAndLast =
       typeof options.withFirstAndLast === "undefined"
-        ? Const.With_FIRST_AND_LAST
+        ? Const.WITH_FIRST_AND_LAST
         : options.withFirstAndLast;
     const alwaysShowAllBtns =
       typeof options.alwaysShowAllBtns === "undefined"
@@ -146,6 +146,7 @@ export const usePaginationState = (props: any) => {
       sizePerPageList,
       paginationSize: options.paginationSize || Const.PAGINATION_SIZE,
       showTotal: options.showTotal,
+      showPageJump: options.showPageJump,
       pageListRenderer: options.pageListRenderer,
       pageButtonRenderer: options.pageButtonRenderer,
       sizePerPageRenderer: options.sizePerPageRenderer,

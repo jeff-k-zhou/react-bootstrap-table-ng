@@ -179,7 +179,7 @@ const columns = [
 }];
 ```
 
-The benifit is `react-bootstrap-table-ng` will render the select options by the order of array.
+The benefit is `react-bootstrap-table-ng` will render the select options by the order of array.
 
 ## MultiSelect Filter
 

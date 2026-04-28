@@ -346,6 +346,7 @@ paginator({
   pageStartIndex: 0, // first page will be 0, default is 1
   paginationSize: 3,  // the pagination bar size, default is 5
   showTotal: true, // display pagination information
+  showPageJump: true, // display page jump input
   sizePerPageList: [ {
     text: '5', value: 5
   }, {
