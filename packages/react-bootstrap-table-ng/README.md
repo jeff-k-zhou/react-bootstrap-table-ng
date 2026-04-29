@@ -13,9 +13,11 @@ The goal of this fork is to provide stable version to supports React 18+ and Boo
 - Added hooks and context API to support modern React features
 - Added column resize functionality
 - Added cell expand functionality, i.e. showing full text when hover ellipsis cell
+- Added pagination jump control functionality, allowing users to jump to a specific page by typing the page number.
+- Added row id prefix functionality to provide stable identifiers for integration with external libraries.
 - Converted all test cases from Enzyme to React Testing Library (RTL), Removed Enzyme related dependencies
 - Updated most dependencies to their latest stable versions to fix vulnerabilities
-- Upgraded Storybook to 10.3.3
+- Upgraded Storybook to 10.3.5
 - Upgraded Yarn to 4.13.0
 
 ## Release Notes
