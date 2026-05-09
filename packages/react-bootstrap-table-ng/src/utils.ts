@@ -1,14 +1,12 @@
-import {
-  get,
-  set,
-  isObject,
-  isEmpty,
-  debounce,
-  has,
-  isFunction,
-  isString,
-  isEqual,
-} from "lodash-es";
+import get from "lodash-es/get";
+import set from "lodash-es/set";
+import isObject from "lodash-es/isObject";
+import isEmpty from "lodash-es/isEmpty";
+import debounce from "lodash-es/debounce";
+import has from "lodash-es/has";
+import isFunction from "lodash-es/isFunction";
+import isString from "lodash-es/isString";
+import isEqual from "lodash-es/isEqual";
 
 function isDefined(value: any): boolean {
   return value != null;
