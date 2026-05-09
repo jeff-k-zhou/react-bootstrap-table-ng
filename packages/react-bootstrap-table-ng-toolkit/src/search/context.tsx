@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect, useRef, useImperativeHandle } from "react";
-import _ from "lodash";
+import get from "lodash-es/get";
 import { TableSearchProps } from "../..";
 
 interface DataChangeListener {
@@ -54,7 +54,7 @@ const SearchProvider = React.forwardRef<any, SearchProviderProps>((props, ref) =
       for (let cidx = 0; cidx < columns.length; cidx += 1) {
         const column = columns[cidx];
         if (column.searchable === false) continue;
-        let targetValue = _.get(row, column.dataField);
+        let targetValue = get(row, column.dataField);
         if (column.formatter && options.searchFormatted) {
           targetValue = column.formatter(
             targetValue,

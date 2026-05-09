@@ -24,7 +24,14 @@ module.exports = {
     rules: [
       {
         test: /\.(ts|tsx)$/,
-        use: ['ts-loader'],
+        use: [{
+          loader: 'ts-loader',
+          options: {
+            compilerOptions: {
+              module: 'esnext'
+            }
+          }
+        }],
         exclude: /node_modules/
       },
       {
@@ -52,5 +59,9 @@ module.exports = {
       // ESLint class options
       resolvePluginsRelativeTo: __dirname
     })
-  ]
+  ],
+  performance: {
+    maxEntrypointSize: 1024000,
+    maxAssetSize: 1024000
+  }
 };

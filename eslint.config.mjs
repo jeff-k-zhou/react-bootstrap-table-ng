@@ -110,6 +110,8 @@ export default [
 
             "import/no-relative-packages": 0,
             "import/extensions": 0,
+            "import/named": 0,
+            "import/no-named-as-default": 0,
 
             "import/no-unresolved": [0, {
                 ignore: ["^react-bootstrap-table"],
