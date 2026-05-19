@@ -28,17 +28,17 @@ const RowTemplate: React.FC<RowTemplateProps> = (props) => {
 
   if (selectRow && selectRow.hideSelectColumn !== true) {
     if (isRenderFunctionColumnInLeft(selectRow.selectColumnPosition)) {
-      childrens.unshift(React.createElement(cellEl, { key: "selection" }));
+      childrens.unshift(React.createElement(cellEl, { key: "selection" }, React.createElement("span", { className: "sr-only visually-hidden" }, "Selection column")));
     } else {
-      childrens.push(React.createElement(cellEl, { key: "selection" }));
+      childrens.push(React.createElement(cellEl, { key: "selection" }, React.createElement("span", { className: "sr-only visually-hidden" }, "Selection column")));
     }
   }
 
   if (expandRow && expandRow.showExpandColumn) {
     if (isRenderFunctionColumnInLeft(expandRow.expandColumnPosition)) {
-      childrens.unshift(React.createElement(cellEl, { key: "expansion" }));
+      childrens.unshift(React.createElement(cellEl, { key: "expansion" }, React.createElement("span", { className: "sr-only visually-hidden" }, "Expand row column")));
     } else {
-      childrens.push(React.createElement(cellEl, { key: "expansion" }));
+      childrens.push(React.createElement(cellEl, { key: "expansion" }, React.createElement("span", { className: "sr-only visually-hidden" }, "Expand row column")));
     }
   }
 

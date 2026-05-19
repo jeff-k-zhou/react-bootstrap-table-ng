@@ -302,7 +302,7 @@ export const OnlyExportSelectedRows: Story = {
             <BootstrapTable
               { ...props.baseProps }
               selectRow={ selectRow }
-              pagination={ paginationFactory() }
+              pagination={ paginationFactory({ paginationListAriaLabel: 'Table 1 pagination' }) }
             />
           </div>
         )
@@ -323,7 +323,7 @@ export const OnlyExportSelectedRows: Story = {
             <BootstrapTable
               { ...props.baseProps }
               selectRow={ selectRow }
-              pagination={ paginationFactory() }
+              pagination={ paginationFactory({ paginationListAriaLabel: 'Table 2 pagination' }) }
             />
           </div>
         )

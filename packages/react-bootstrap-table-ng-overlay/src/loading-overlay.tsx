@@ -50,6 +50,11 @@ export interface LoadingOverlayProps {
    */
   styles?: LoadingOverlayStyles;
 
+  /**
+   * default: ``undefined`` - accessible label for the overlay when it is clickable.
+   */
+  ariaLabel?: string;
+
   children?: any;
 }
 
@@ -63,7 +68,8 @@ const LoadingOverlay = forwardRef<any, LoadingOverlayProps>((props, ref) => {
     spinner,
     text,
     classNamePrefix = "_loading_overlay_",
-    styles
+    styles,
+    ariaLabel
   } = props;
 
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -112,12 +118,32 @@ const LoadingOverlay = forwardRef<any, LoadingOverlayProps>((props, ref) => {
     <div
       data-testid="wrapper"
       ref={wrapperRef}
+      aria-busy={active}  /* WCAG 4.1.3 — communicates loading state to AT */
       className={getCx(
         ["wrapper", active && "wrapper--active"],
         css(getStyles("wrapper")),
         className
       )}
     >
+      {/* Visually-hidden live region — WCAG 4.1.3 Status Messages */}
+      <span
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+        style={{
+          position: "absolute",
+          width: "1px",
+          height: "1px",
+          padding: 0,
+          margin: "-1px",
+          overflow: "hidden",
+          clip: "rect(0,0,0,0)",
+          whiteSpace: "nowrap",
+          border: 0,
+        }}
+      >
+        {active ? (typeof text === "string" ? text : "Loading") : ""}
+      </span>
       <CSSTransition
         in={active}
         classNames="_loading-overlay-transition"
@@ -129,8 +155,14 @@ const LoadingOverlay = forwardRef<any, LoadingOverlayProps>((props, ref) => {
         {(state) => (
           <div
             data-testid="overlay"
-            role="button"
-            tabIndex={0}
+            /* WCAG 2.1.1 / 4.1.2 — only expose interactive role when onClick is provided */
+            {...(onClick
+              ? {
+                role: "button",
+                tabIndex: 0,
+                "aria-label": ariaLabel || (typeof text === "string" ? text : "Dismiss loading overlay")
+              }
+              : {})}
             className={getCx(
               "overlay",
               css(getStyles("overlay", state))

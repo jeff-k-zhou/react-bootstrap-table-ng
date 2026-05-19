@@ -182,3 +182,10 @@ const { SearchBar, ClearSearchButton } = Search;
 
 ### Props
 * `className`: Add custom class name on clear search button.
+
+## Accessibility
+
+The `SearchBar` is compliant with **WCAG 2.1 Level AA** (Robust - Status Messages).
+
+- **Dynamic Announcements**: When a search is performed or cleared, the `SearchBar` automatically notifies screen readers of the update (e.g., "Search applied for: apple" or "Search cleared") via a visually hidden polite live region. This ensures users are aware of the table content change without losing focus on the input field.
+- **Customization**: Use the `srText` prop to customize the screen reader text for the search input label.

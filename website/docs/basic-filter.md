@@ -442,3 +442,11 @@ export default Table;
 - [Example For Programmtically MultiSelect Filter](pathname:///react-bootstrap-table-ng/storybook/index.html?selectedKind=Column%20Filter&selectedStory=Programmatically%20Multi%20Select%20Filter)
 - [Example For Programmtically Number Filter](pathname:///react-bootstrap-table-ng/storybook/index.html?selectedKind=Column%20Filter&selectedStory=Programmatically%20Number%20Filter%20)
 - [Example For Programmtically Date Filter](pathname:///react-bootstrap-table-ng/storybook/index.html?selectedKind=Column%20Filter&selectedStory=Programmatically%Date%20Filter%20)
+
+## Accessibility
+
+All built-in filter components are compliant with **WCAG 2.1 Level AA** (Robust - Status Messages).
+
+- **Dynamic Announcements**: When a filter is applied or cleared, the component automatically notifies screen readers of the update (e.g., "Filter applied: 100" or "Filter cleared") via a visually hidden polite live region.
+- **Labels and Instructions**: Each filter control is programmatically linked to its column header and contains hidden labels to satisfy WCAG 3.3.2 requirements.
+- **Multi-select Support**: The `MultiSelectFilter` correctly communicates its multi-selection capability to assistive technology.

@@ -13,15 +13,17 @@ interface FiltersCellProps {
     filter?: FilterProps;
     headerAlign?: string | Function;
     dataField: string;
+    text?: string;
   };
   currFilters?: Record<string, any>;
   onFilter?: (filterData: Record<string, any>) => React.ReactNode;
   onExternalFilter?: (column: any, filterType: string) => (value: any) => Function;
+  cellEl?: string;
 }
 
 const FiltersCell: React.FC<FiltersCellProps> = (props) => {
-  const { index, column, currFilters, onExternalFilter = () => {}, onFilter = () => {} } = props;
-  const { filter } = column;
+  const { index, column, currFilters, onExternalFilter = () => {}, onFilter = () => {}, cellEl = "th" } = props;
+  const { filter, text } = column;
 
   let filterElm: React.ReactNode;
   const cellAttrs: React.HTMLAttributes<HTMLTableHeaderCellElement> = {};
@@ -49,7 +51,14 @@ const FiltersCell: React.FC<FiltersCellProps> = (props) => {
     );
   }
 
-  return React.createElement("th", cellAttrs, filterElm);
+  // Ensure discernible text for <th> (WCAG 1.3.1 / 4.1.2)
+  const discernibleText = (
+    <span className="sr-only visually-hidden">
+      {`Filter for ${text || column.dataField}`}
+    </span>
+  );
+
+  return React.createElement(cellEl, cellAttrs, [discernibleText, filterElm]);
 };
 
 export default FiltersCell;

@@ -17,7 +17,7 @@ describe("SizePerPageOption", () => {
     });
 
     it("should render SizePerPageOption correctly", () => {
-      const li = screen.getByRole("menuitem");
+      const li = screen.getByRole("option");
       expect(li).toBeInTheDocument();
       expect(li).toHaveAttribute("data-page", `${page}`);
       expect(li.textContent).toEqual(text);
@@ -25,7 +25,7 @@ describe("SizePerPageOption", () => {
 
     describe("when MouseDown event happen", () => {
       it("should call props.onSizePerPageChange correctly", () => {
-        const li = screen.getByRole("menuitem");
+        const li = screen.getByRole("option");
         const event = createEvent.mouseDown(li);
         fireEvent(li, event);
         expect(event.defaultPrevented).toBe(true);
@@ -41,7 +41,7 @@ describe("SizePerPageOption", () => {
     });
 
     it("should render SizePerPageOption correctly", () => {
-      const li = screen.getByRole("menuitem");
+      const li = screen.getByRole("option");
       expect(li).toBeInTheDocument();
       expect(li).toHaveAttribute("data-page", `${page}`);
       expect(li.textContent).toEqual(text);
@@ -49,7 +49,7 @@ describe("SizePerPageOption", () => {
 
     describe("when MouseDown event happen", () => {
       it("should call props.onSizePerPageChange correctly", () => {
-        const li = screen.getByRole("menuitem");
+        const li = screen.getByRole("option");
         const event = createEvent.mouseDown(li);
         fireEvent(li, event);
         expect(event.defaultPrevented).toBe(true);

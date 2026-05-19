@@ -130,6 +130,7 @@ const Pagination: React.FC<any> = (props) => {
         <div className={pageListClass}>
           <PaginationListWithAdapter
           {...rest}
+            tableId={tableId}
             lastPage={lastPage}
             totalPages={totalPages}
             pageButtonRenderer={pageButtonRenderer}

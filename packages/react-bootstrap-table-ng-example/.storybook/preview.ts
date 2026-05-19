@@ -4,7 +4,7 @@ import type { Preview } from "@storybook/react-webpack5";
 
 const preview: Preview = {
   parameters: {
-    actions: { },
+    actions: {},
     controls: {
       matchers: {
         color: /(background|color)$/i,

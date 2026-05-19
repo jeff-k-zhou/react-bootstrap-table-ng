@@ -242,10 +242,12 @@
     width: 200px; /* Adjust this to match your column width */
     transition: all 0.2s ease;
   }
-  .expandable-cell:hover {
-    /* Hover state: show everything */
+  .expandable-cell:hover,
+  .expandable-cell:focus,
+  .expandable-cell:focus-within {
+    /* Hover and Focus state: show everything */
     white-space: normal;
     overflow: visible;
     word-wrap: break-word;
-}
+  }
 }

@@ -114,6 +114,8 @@ const RowPureContent: React.FC<RowPureContentProps> = React.memo((props) => {
         if (typeof tabIndexStart === "number" && tabIndexStart !== -1) {
           cellAttrs.tabIndex = tabIndex!;
           tabIndex = tabIndex! + 1;
+        } else if (isExpandableCell) {
+          cellAttrs.tabIndex = 0;
         }
 
         return (

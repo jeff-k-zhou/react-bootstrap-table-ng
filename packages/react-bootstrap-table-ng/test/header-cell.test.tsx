@@ -467,7 +467,7 @@ describe("HeaderCell", () => {
       expect(onSortCallBack.callCount).toBe(1);
     });
 
-    it("should have onKeyUp event on header cell", () => {
+    it("should have onKeyDown event on header cell", () => {
       render(
         <table>
           <thead>
@@ -478,11 +478,11 @@ describe("HeaderCell", () => {
         </table>
       );
       const th = screen.getByRole("columnheader");
-      fireEvent.keyUp(th, { key: "Enter" });
+      fireEvent.keyDown(th, { key: "Enter" });
       expect(onSortCallBack.callCount).toBe(1);
     });
 
-    it("should not trigger onSort callback when keyup key is not Enter on header cell", () => {
+    it("should not trigger onSort callback when keydown key is not Enter or Space on header cell", () => {
       render(
         <table>
           <thead>
@@ -493,7 +493,7 @@ describe("HeaderCell", () => {
         </table>
       );
       const th = screen.getByRole("columnheader");
-      fireEvent.keyUp(th, { key: "test-key" });
+      fireEvent.keyDown(th, { key: "test-key" });
       expect(onSortCallBack.callCount).toBe(0);
     });
 
@@ -508,7 +508,7 @@ describe("HeaderCell", () => {
         </table>
       );
       const th = screen.getByRole("columnheader");
-      expect(th).toHaveAttribute("aria-label", "ID sortable");
+      expect(th).toHaveAttribute("aria-label", "ID, sortable, not sorted");
     });
 
     describe("and sorting prop is true", () => {
@@ -530,7 +530,8 @@ describe("HeaderCell", () => {
             </table>
           );
           const th = screen.getByRole("columnheader");
-          expect(th).toHaveAttribute("aria-label", `ID sort ${order}`);
+          const expectedOrder = order === SORT_ASC ? "ascending" : "descending";
+          expect(th).toHaveAttribute("aria-label", `ID, sorted ${expectedOrder}`);
         });
 
         it(`should render SortCaret correctly for ${order}`, () => {

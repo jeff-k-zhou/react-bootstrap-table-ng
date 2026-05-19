@@ -27,6 +27,7 @@ export interface RowProps {
   keyField?: string;
   value?: any;
   id?: string;
+  expansionRowId?: string;
 }
 
 export default function RowShouldUpdater<P extends RowProps>(

@@ -14,6 +14,7 @@ interface FiltersProps {
   selectRow?: any;
   expandRow?: any;
   onSort?: (filterData: Record<string, any>) => void;
+  cellEl?: string;
 }
 
 const Filters: React.FC<FiltersProps> = (props) => {
@@ -26,6 +27,7 @@ const Filters: React.FC<FiltersProps> = (props) => {
     className,
     selectRow,
     expandRow,
+    cellEl = "td",
   } = props;
 
   function renderContent() {
@@ -41,6 +43,7 @@ const Filters: React.FC<FiltersProps> = (props) => {
           currFilters={currFilters}
           onExternalFilter={onExternalFilter}
           onFilter={onFilter}
+          cellEl={cellEl}
         />
       );
 
@@ -67,7 +70,7 @@ const Filters: React.FC<FiltersProps> = (props) => {
         renderContent={renderContent}
         selectRow={selectRow}
         expandRow={expandRow}
-        cellEl="td"
+        cellEl={cellEl}
       />
     </tbody>
   );

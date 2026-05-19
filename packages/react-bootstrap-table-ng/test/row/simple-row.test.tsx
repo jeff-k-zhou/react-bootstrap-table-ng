@@ -104,11 +104,12 @@ describe("SimpleRow", () => {
                 columns={defaultColumns}
                 row={row}
                 visibleColumnSize={visibleColumnSize}
+                cellExpandable={false}
               />
             </tbody>
           </table>
         );
-        // tabIndexStart should be -1
+        // tabIndexStart should be -1, and cells are not expandable so no tabIndex set
         const cells = screen.getAllByRole("cell");
         expect(cells[0]).not.toHaveAttribute("tabindex");
       });

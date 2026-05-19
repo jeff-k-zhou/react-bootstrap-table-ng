@@ -16,7 +16,9 @@ const PageButton: React.FC<PageButtonProps> = React.memo((props) => {
 
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
-    onPageChange(page);
+    if (!disabled) {
+      onPageChange(page);
+    }
   };
 
   const classes = cs(
@@ -30,7 +32,21 @@ const PageButton: React.FC<PageButtonProps> = React.memo((props) => {
 
   return (
     <li className={classes} title={title}>
-      <a href="#" onClick={handleClick} className="page-link">
+      <a
+        href="#"
+        className="page-link"
+        onClick={handleClick}
+        aria-label={title}
+        aria-current={active ? "page" : undefined}
+        aria-disabled={disabled ? "true" : undefined}
+        /* WCAG 2.1.1 — disabled items must be removed from tab order */
+        tabIndex={disabled ? -1 : 0}
+        onKeyDown={(e) => {
+          if (disabled && (e.key === "Enter" || e.key === " ")) {
+            e.preventDefault();
+          }
+        }}
+      >
         {page}
       </a>
     </li>

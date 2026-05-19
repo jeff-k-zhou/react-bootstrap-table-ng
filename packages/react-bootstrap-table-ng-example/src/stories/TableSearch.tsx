@@ -102,6 +102,7 @@ export default ({
               style={{ backgroundColor: "pink" }}
               ref={(n) => (input = n)}
               type="text"
+              aria-label="Search"
             />
             <button className="btn btn-warning" onClick={handleClick}>
               Click to Search!!

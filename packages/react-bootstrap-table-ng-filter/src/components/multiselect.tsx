@@ -173,7 +173,7 @@ const MultiSelectFilter = forwardRef<any, MultiSelectFilterProps>((props, ref) =
 
   return (
     <label className="filter-label" htmlFor={elmId}>
-      <span className="sr-only visually-hidden">Filter by {column.text}</span>
+      <span className="sr-only visually-hidden">Filter by {column.text}:</span>
       <select
         {...rest}
         ref={selectRef}
@@ -184,10 +184,15 @@ const MultiSelectFilter = forwardRef<any, MultiSelectFilterProps>((props, ref) =
         onChange={filterHandler}
         onClick={(e) => e.stopPropagation()}
         value={selectedOptions}
+        aria-label={`Filter by ${column.text} (multiple selection allowed)`}
+        aria-multiselectable="true"
         data-testid="multiselect-filter"
       >
         {getOptionsTags()}
       </select>
+      <span aria-live="polite" className="sr-only visually-hidden">
+        {selectedOptions.length > 0 ? `Filter applied: ${selectedOptions.length} items selected` : "Filter cleared"}
+      </span>
     </label>
   );
 });

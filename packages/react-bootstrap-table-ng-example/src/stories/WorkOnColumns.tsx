@@ -67,7 +67,7 @@ const ProductList: React.FC = () => {
       formatter: (cellContent: any, row: any) => (
         <div className="checkbox disabled">
           <label>
-            <input type="checkbox" checked={row.inStock} disabled />
+            <input type="checkbox" checked={row.inStock} disabled aria-label="In stock status" onChange={() => { }} />
           </label>
         </div>
       ),
@@ -160,7 +160,7 @@ const ProductList: React.FC = () => {
           formatter: (cellContent, row) => (
             <div className="checkbox disabled">
               <label>
-                <input type="checkbox" checked={ row.inStock } disabled />
+                <input type="checkbox" checked={ row.inStock } disabled onChange={() => { }} />
               </label>
             </div>
           )
@@ -317,7 +317,7 @@ const DummyColumnWithRowExpand: React.FC = () => {
     {
       dataField: "action",
       isDummyField: true,
-      text: "",
+      text: "Actions",
       formatter: actionFormater,
       formatExtraData: { hoverIdx },
       headerStyle: { width: "50px" },

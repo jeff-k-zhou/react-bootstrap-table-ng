@@ -51,8 +51,13 @@ const RowAggregator = React.memo((props: RowProps) => {
     expandRow ?? {};
 
   const newAttrs = delegate({ ...attrs });
-  if (clickToSelect || (expandRow && !!expandRow.renderer)) {
+  const isClickToExpand = expandRow && !!expandRow.renderer;
+  if (clickToSelect || isClickToExpand) {
     newAttrs.onClick = createClickEventHandler(newAttrs.onClick as any);
+  }
+
+  if (isClickToExpand) {
+    newAttrs.tabIndex = 0;
   }
 
   const prevProps = useRef<RowProps>(props);

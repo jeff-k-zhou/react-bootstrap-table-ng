@@ -78,7 +78,9 @@ const SizePerPageDropDown = (props: SizePerPageDropDownProps) => {
         className={`btn ${btnContextual} dropdown-toggle`}
         data-toggle={bootstrap5 ? undefined : "dropdown"}
         data-bs-toggle={bootstrap5 ? "dropdown" : undefined}
+        aria-haspopup="listbox"
         aria-expanded={open}
+        aria-label={`Rows per page: ${currSizePerPage}`}
         onClick={onClick}
         onBlur={onBlur}
       >
@@ -91,7 +93,8 @@ const SizePerPageDropDown = (props: SizePerPageDropDownProps) => {
       </button>
       <ul
         className={`dropdown-menu ${openClass}`}
-        role="menu"
+        role="listbox"
+        aria-label="Rows per page"
         aria-labelledby={id}
       >
         {options.map((option: any) => {

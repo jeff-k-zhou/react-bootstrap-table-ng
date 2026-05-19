@@ -5,15 +5,15 @@ const SortSymbol: FC = () => (
   <BootstrapContext.Consumer>
     {({ bootstrap4, bootstrap5 }) => {
       if (bootstrap4 || bootstrap5) {
-        return <span className={`order-${bootstrap5 ? "5" : "4"}`} />;
+        return <span className={`order-${bootstrap5 ? "5" : "4"}`} aria-hidden="true" />;
       }
       return (
-        <span className="order">
-          <span className="dropdown">
-            <span className="caret" />
+        <span className="order" aria-hidden="true">
+          <span className="dropdown" aria-hidden="true">
+            <span className="caret" aria-hidden="true" />
           </span>
-          <span className="dropup">
-            <span className="caret" />
+          <span className="dropup" aria-hidden="true">
+            <span className="caret" aria-hidden="true" />
           </span>
         </span>
       );

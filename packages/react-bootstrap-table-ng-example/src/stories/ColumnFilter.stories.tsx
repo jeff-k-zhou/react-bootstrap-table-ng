@@ -877,11 +877,23 @@ export const FilterPosition: Story = {
     }, {
       dataField: 'name',
       text: 'Product Name',
-      filter: textFilter()
+      filter: textFilter({ id: 'name-filter-1' })
     }, {
       dataField: 'price',
       text: 'Product Price',
-      filter: textFilter()
+      filter: textFilter({ id: 'price-filter-1' })
+    }],
+    columns2: [{
+      dataField: 'id',
+      text: 'Product ID'
+    }, {
+      dataField: 'name',
+      text: 'Product Name',
+      filter: textFilter({ id: 'name-filter-2' })
+    }, {
+      dataField: 'price',
+      text: 'Product Price',
+      filter: textFilter({ id: 'price-filter-2' })
     }],
     data: productsGenerator(8),
     sourceCode1: `\
@@ -1894,6 +1906,7 @@ const AdvancePriceFilter = ({ column, onFilter }: AdvancePriceFilterProps) => {
         min="2100"
         max="2110"
         onChange={onChange}
+        aria-label="Price range"
       />
       <p
         key="show"
@@ -1905,6 +1918,7 @@ const AdvancePriceFilter = ({ column, onFilter }: AdvancePriceFilterProps) => {
         key="select"
         ref={selectRef}
         className="form-control"
+        aria-label="Price comparator"
       >
         <option value={GT}>&gt;</option>
         <option value={EQ}>=</option>

@@ -1,6 +1,6 @@
 import cs from "classnames";
 
-import React, { Component } from "react";
+import React, { useId } from "react";
 
 import { EDITTYPE, TIME_TO_CLOSE_MESSAGE } from "..";
 import CheckBoxEditor from "./checkbox-editor";
@@ -58,6 +58,8 @@ const createEditingCell = (_: any, onStartEdit?: any) => {
     const [invalidMessage, setInvalidMessage] = React.useState<any>(null);
     const editorRef = React.useRef<any>(null);
     const indicatorTimerRef = React.useRef<any>(null);
+    /** Stable id so aria-describedby links to the error indicator (WCAG 3.3.1) */
+    const indicatorId = useId();
 
     const clearTimer = React.useCallback(() => {
       if (indicatorTimerRef.current) {
@@ -119,13 +121,22 @@ const createEditingCell = (_: any, onStartEdit?: any) => {
 
     const handleKeyDown = React.useCallback((e: any) => {
       if (e.keyCode === 27) {
-        // ESC
+        // ESC — cancel edit and restore focus to the originating cell (WCAG 2.4.3)
         onEscape();
+        // Find the <td> that was active before editing started and return focus to it.
+        // The <td> carries data-col-idx set by RowPureContent, and the row <tr> has an id.
+        // We look for [data-col-idx="columnIndex"] within the nearest ancestor <tr>.
+        requestAnimationFrame(() => {
+          const cell = document.querySelector<HTMLElement>(
+            `[data-editing-cell="${rowIndex}-${columnIndex}"]`
+          );
+          cell?.focus();
+        });
       } else if (e.keyCode === 13) {
         // ENTER
         beforeComplete(editorRef.current?.getValue());
       }
-    }, [beforeComplete, onEscape]);
+    }, [beforeComplete, onEscape, rowIndex, columnIndex]);
 
     const handleClick = React.useCallback((e: any) => {
       if (e.target.tagName !== "TD") {
@@ -179,6 +190,11 @@ const createEditingCell = (_: any, onStartEdit?: any) => {
       onBlur: handleBlur,
       didMount: () => { },
       onUpdate: () => { },
+      /** WCAG 3.3.2 / 4.1.2 — every editor type receives a programmatic label */
+      "aria-label": column.text,
+      "aria-invalid": hasError,
+      /** WCAG 3.3.1 — link to the error indicator when one is visible */
+      ...(hasError ? { "aria-describedby": indicatorId } : {}),
     };
 
     if (onStartEdit) {
@@ -243,10 +259,12 @@ const createEditingCell = (_: any, onStartEdit?: any) => {
         className={cs("react-bootstrap-table-editing-cell", className)}
         style={style}
         onClick={handleClick}
+        /** data-editing-cell lets the Esc handler refocus this cell (WCAG 2.4.3) */
+        data-editing-cell={`${rowIndex}-${columnIndex}`}
       >
         {editor}
         {hasError ? (
-          <EditorIndicator invalidMessage={invalidMessage} />
+          <EditorIndicator invalidMessage={invalidMessage} id={indicatorId} />
         ) : null}
       </td>
     );

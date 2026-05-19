@@ -17,6 +17,8 @@ interface ExpandCellProps {
   }) => React.ReactNode;
   rowIndex?: number;
   tabIndex?: number;
+  /** ID of the expansion row element — used for aria-controls */
+  expansionRowId?: string;
 }
 
 const ExpandCell: React.FC<ExpandCellProps> = React.memo((props) => {
@@ -28,29 +30,56 @@ const ExpandCell: React.FC<ExpandCellProps> = React.memo((props) => {
     expandColumnRenderer,
     rowIndex,
     tabIndex,
+    expansionRowId,
   } = props;
 
-  const handleClick = (e: React.MouseEvent<HTMLTableDataCellElement>) => {
-    e.stopPropagation();
-    onRowExpand(rowKey, !expanded, rowIndex, e);
-  };
 
-  const attrs: { tabIndex?: number } = {};
-  if (tabIndex !== undefined && tabIndex !== -1) attrs.tabIndex = tabIndex;
+
+  const expandLabel = expandable
+    ? expanded
+      ? "Collapse row"
+      : "Expand row"
+    : undefined;
+
+  const content = expandColumnRenderer
+    ? expandColumnRenderer({
+      expandable,
+      expanded,
+      rowKey,
+    })
+    : expandable
+      ? expanded
+        ? "(-)"
+        : "(+)"
+      : "";
 
   return (
-    <td className="expand-cell" onClick={handleClick} data-testid="expand-cell" {...attrs}>
-      {expandColumnRenderer
-        ? expandColumnRenderer({
-          expandable,
-          expanded,
-          rowKey,
-        })
-        : expandable
-          ? expanded
-            ? "(-)"
-            : "(+)"
-          : ""}
+    <td className="expand-cell" data-testid="expand-cell">
+      {expandable ? (
+        <button
+          type="button"
+          className="btn btn-link p-0 border-0"
+          tabIndex={tabIndex !== undefined && tabIndex !== -1 ? tabIndex : 0}
+          aria-expanded={expanded}
+          aria-label={expandLabel}
+          aria-controls={expansionRowId}
+          onClick={(e) => {
+            e.stopPropagation();
+            onRowExpand(rowKey, !expanded, rowIndex, e as any);
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              onRowExpand(rowKey, !expanded, rowIndex, e as any);
+            }
+          }}
+          style={{ color: "inherit", textDecoration: "none" }}
+        >
+          {content}
+        </button>
+      ) : (
+        content
+      )}
     </td>
   );
 }, (prevProps, nextProps) => {
@@ -60,7 +89,8 @@ const ExpandCell: React.FC<ExpandCellProps> = React.memo((props) => {
     prevProps.rowKey === nextProps.rowKey &&
     prevProps.tabIndex === nextProps.tabIndex &&
     prevProps.onRowExpand === nextProps.onRowExpand &&
-    prevProps.expandColumnRenderer === nextProps.expandColumnRenderer
+    prevProps.expandColumnRenderer === nextProps.expandColumnRenderer &&
+    prevProps.expansionRowId === nextProps.expansionRowId
   );
 });
 

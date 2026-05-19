@@ -853,7 +853,7 @@ export const CustomSelection: Story = {
       clickToSelect: true,
       selectionHeaderRenderer: () => 'X',
       selectionRenderer: ({ mode, ...rest }: any) => (
-        <input type={mode} onChange={() => { }} {...rest} />
+        <input type={mode} aria-label="Selection" onChange={() => { }} {...rest} />
       )
     },
     selectRow2: {
@@ -862,6 +862,7 @@ export const CustomSelection: Story = {
       selectionHeaderRenderer: ({ indeterminate, ...rest }: any) => (
         <input
           type="checkbox"
+          aria-label="Select All"
           ref={(input) => {
             if (input) input.indeterminate = indeterminate;
           }}
@@ -870,7 +871,7 @@ export const CustomSelection: Story = {
         />
       ),
       selectionRenderer: ({ mode, ...rest }: any) => (
-        <input type={mode} onChange={() => { }} {...rest} />
+        <input type={mode} aria-label="Selection" onChange={() => { }} {...rest} />
       )
     }
   }

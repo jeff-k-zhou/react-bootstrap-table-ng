@@ -1,6 +1,6 @@
 {
   "name": "react-bootstrap-table-ng-website",
-  "version": "5.19.5",
+  "version": "5.19.6",
   "private": true,
   "license": "MIT",
   "repository": {
@@ -27,8 +27,8 @@
     "@mdx-js/react": "^3.1.1",
     "clsx": "^2.1.1",
     "prism-react-renderer": "^2.4.1",
-    "react": "^19.2.5",
-    "react-dom": "^19.2.5"
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6"
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "^3.10.1",

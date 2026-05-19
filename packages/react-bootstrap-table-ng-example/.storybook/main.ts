@@ -127,6 +127,10 @@ const config: StorybookConfig = {
         if (config.output && process.env.NODE_ENV === "production") {
             config.output.publicPath = "../storybook/";
         }
+        config.performance = {
+            ...(config.performance || {}),
+            hints: false,
+        };
         return config;
     },
 };

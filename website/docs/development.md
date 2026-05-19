@@ -25,3 +25,18 @@ $ npm test
 $ npm run test:watch  # for watch mode
 $ npm run test:coverage  # generate coverage report
 ```
+
+### Accessibility Testing
+We maintain WCAG 2.1 compliance using automated testing tools.
+
+#### Unit Level (jest-axe)
+```bash
+$ yarn jest accessibility.test.tsx
+```
+
+#### Integration Level (axe-playwright)
+To run accessibility audits against all Storybook stories:
+```bash
+$ yarn storybook:test
+```
+

@@ -1577,7 +1577,7 @@ const RemoteAllCustomComponent: React.FC = () => {
                   Export CSV
                 </ExportCSVButton>
                 <PaginationJumpStandalone {...paginationProps} />
-                <PaginationListStandalone {...paginationProps} />
+                <PaginationListStandalone {...paginationProps} paginationListAriaLabel="Table pagination top" />
               </div>
               <BootstrapTable
                 {...props.baseProps}
@@ -1608,7 +1608,7 @@ const RemoteAllCustomComponent: React.FC = () => {
                   Export CSV
                 </ExportCSVButton>
                 <PaginationJumpStandalone {...paginationProps} />           
-                <PaginationListStandalone {...paginationProps} />
+                <PaginationListStandalone {...paginationProps} paginationListAriaLabel="Table pagination bottom" />
               </div>
               <Code>{remoteAllExportSourceCode}</Code>
             </div>

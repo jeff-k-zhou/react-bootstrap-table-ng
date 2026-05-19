@@ -57,6 +57,19 @@ const Cell = React.memo((props: CellProps) => {
     [atstart, rowindex, columnindex, clicktoedit, dbclicktoedit]
   );
 
+  /** WCAG 2.1.1 — keyboard equivalent for double-click-to-edit (Enter or F2) */
+  const handleKeyDown = React.useCallback(
+    (e: React.KeyboardEvent<HTMLTableCellElement>) => {
+      if (dbclicktoedit === "true" && editable === "true") {
+        if (e.key === "Enter" || e.key === "F2") {
+          e.preventDefault();
+          if (atstart) atstart(rowindex, columnindex);
+        }
+      }
+    },
+    [dbclicktoedit, editable, atstart, rowindex, columnindex]
+  );
+
   if (clicktoedit === "true" && editable === "true") {
     attrs.onClick = createHandleEditingCell(attrs.onClick);
   } else if (dbclicktoedit === "true" && editable === "true") {
@@ -64,7 +77,12 @@ const Cell = React.memo((props: CellProps) => {
   }
 
   return (
-    <td {...attrs}>
+    <td
+      {...attrs}
+      onKeyDown={handleKeyDown}
+      /** WCAG 2.4.3 — data attribute lets the Esc handler in editing-cell.tsx refocus this cell */
+      data-editing-cell={`${rowindex}-${columnindex}`}
+    >
       {typeof content === "boolean" ? `${content}` : content}
     </td>
   );

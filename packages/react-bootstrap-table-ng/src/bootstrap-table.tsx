@@ -39,6 +39,7 @@ const BootstrapTable = React.forwardRef<any, BootstrapTableProps>((props, ref) =
     tabIndexCell,
     id,
     classes,
+    tableAriaLabel,
     bootstrap4 = false,
     bootstrap5 = false,
     striped = false,
@@ -121,9 +122,35 @@ const BootstrapTable = React.forwardRef<any, BootstrapTableProps>((props, ref) =
 
     const tableId = id || generatedId;
 
+    const tableStatus = (
+      <div
+        className="sr-only"
+        aria-live="polite"
+        aria-atomic="true"
+        style={{
+          position: "absolute",
+          width: "1px",
+          height: "1px",
+          padding: 0,
+          margin: "-1px",
+          overflow: "hidden",
+          clip: "rect(0,0,0,0)",
+          border: 0,
+        }}
+      >
+        {sortField ? `Sorted by ${columns.find((c: any) => c.dataField === sortField)?.text || sortField} ${sortOrder === "asc" ? "ascending" : "descending"}. ` : ""}
+        {`${visibleRows.length} rows found.`}
+      </div>
+    );
+
     return (
       <div className={tableWrapperClass}>
-        <table id={tableId} className={tableClass} role="table">
+        {tableStatus}
+        <table
+          id={tableId}
+          className={tableClass}
+          aria-label={tableAriaLabel || (typeof caption === "string" ? caption : undefined)}
+        >
           {tableCaption}
           <Header
             columns={columns}

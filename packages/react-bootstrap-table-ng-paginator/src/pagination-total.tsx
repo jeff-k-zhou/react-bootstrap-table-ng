@@ -13,7 +13,11 @@ const PaginationTotal = (props: PaginationTotalProps) => {
     return props.paginationTotalRenderer(props.from, props.to, props.dataSize);
   }
   return (
-    <span className="react-bootstrap-table-pagination-total">
+    <span
+      className="react-bootstrap-table-pagination-total"
+      aria-live="polite"
+      aria-atomic="true"
+    >
       &nbsp;Showing rows {props.from} to&nbsp;{props.to} of&nbsp;
       {props.dataSize}
     </span>

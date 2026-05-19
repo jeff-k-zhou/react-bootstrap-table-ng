@@ -77,7 +77,8 @@ const FooterCell = React.memo((props: FooterCellProps) => {
     ? footerFormatter(column, index || 0, { text })
     : text;
 
-  return React.createElement("th", cellAttrs, children as ReactNode);
+  const cellAttrsWithScope = { ...cellAttrs, scope: "col" };
+  return React.createElement("th", cellAttrsWithScope, children as ReactNode);
 });
 
 export default FooterCell;

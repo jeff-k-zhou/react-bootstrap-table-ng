@@ -34,14 +34,25 @@ const ColumnResizer: React.FC<ColumnResizerProps> = (props) => {
   return (
     <div
       ref={resizer}
-      role="button"
+      role="separator"
       tabIndex={0}
-      aria-label="Resize column"
+      aria-label="Resize column. Use left and right arrow keys to adjust width."
+      aria-orientation="vertical"
+      aria-valuenow={100}
+      aria-valuemin={10}
+      aria-valuemax={10000}
       className={`react-bootstrap-table-column-resizer ${className || ""}`}
       onMouseDown={onMouseDown}
       onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") {
+        const parent = resizer.current?.parentElement;
+        if (!parent) return;
+        const step = 8;
+        if (e.key === "ArrowRight") {
           e.preventDefault();
+          onColumnResize(parent.offsetWidth + step);
+        } else if (e.key === "ArrowLeft") {
+          e.preventDefault();
+          onColumnResize(Math.max(step, parent.offsetWidth - step));
         }
       }}
       style={{

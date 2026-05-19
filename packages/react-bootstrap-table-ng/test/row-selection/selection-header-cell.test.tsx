@@ -1,6 +1,6 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
-import { CHECKBOX_STATUS_CHECKED, CHECKBOX_STATUS_INDETERMINATE } from "../..";
+import { CHECKBOX_STATUS_CHECKED, CHECKBOX_STATUS_INDETERMINATE } from "../../src/const";
 import SelectionHeaderCell, { CheckBox } from "../../src/row-selection/selection-header-cell";
 import { BootstrapContext } from "../../src/contexts/bootstrap";
 
