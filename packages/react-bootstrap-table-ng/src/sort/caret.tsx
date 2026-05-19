@@ -20,12 +20,13 @@ const SortCaret: React.FC<SortCaretProps> = ({ order }) => {
             <span
               className={`caret-${bootstrap5 ? "5" : "4"}-${order}`}
               data-testid="sort-caret"
+              aria-hidden="true"
             />
           );
         }
         return (
-          <span className={orderClass} data-testid="sort-caret">
-            <span className="caret" />
+          <span className={orderClass} data-testid="sort-caret" aria-hidden="true">
+            <span className="caret" aria-hidden="true" />
           </span>
         );
       }}

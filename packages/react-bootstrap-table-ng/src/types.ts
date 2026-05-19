@@ -692,6 +692,12 @@ export interface BootstrapTableProps<T extends object = any, K = number> {
      * Custom row ID prefix or generator.
      */
     rowIdPrefix?: string | ((row: T, rowIndex: number) => string) | undefined;
+    /**
+     * Accessible label for the table element (aria-label). Falls back to the
+     * caption text when caption is a plain string. Providing this is strongly
+     * recommended for WCAG 1.3.1 compliance when no visible caption is shown.
+     */
+    tableAriaLabel?: string | undefined;
 }
 
 /**

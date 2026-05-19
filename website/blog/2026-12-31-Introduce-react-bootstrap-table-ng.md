@@ -22,6 +22,7 @@ on top of [`react-bootstrap-table-next`] and [`react-bootstrap-table-nextgen`]
 - Add cell expand functionality
 - Replace all class components with functional components
 - Utilize modern React features such as hooks and context API
+- Add WCAG 2.1 AA support (accessibility)
 - Update most dependencies to their latest stable versions to fix vulnerabilities
 
 ### Development environment
@@ -29,6 +30,7 @@ on top of [`react-bootstrap-table-next`] and [`react-bootstrap-table-nextgen`]
 - Upgrade Storybook to 10.x
 - Upgrade Yarn to 4.x
 - Upgrade Docusaurus to 3.x
+- Add accessibility testing
 
 ---
 

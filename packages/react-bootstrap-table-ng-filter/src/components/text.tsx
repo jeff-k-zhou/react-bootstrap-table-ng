@@ -139,7 +139,7 @@ const TextFilter = forwardRef<any, TextFilterProps>((props, ref) => {
 
   return (
     <label className="filter-label" htmlFor={elmId}>
-      <span className="sr-only visually-hidden">Filter by {text}</span>
+      <span className="sr-only visually-hidden">Filter by {text}:</span>
       <input
         {...rest}
         ref={inputRef}
@@ -153,6 +153,9 @@ const TextFilter = forwardRef<any, TextFilterProps>((props, ref) => {
         value={value}
         data-testid="text-filter"
       />
+      <span aria-live="polite" className="sr-only visually-hidden">
+        {value ? `Filter applied: ${value}` : "Filter cleared"}
+      </span>
     </label>
   );
 });

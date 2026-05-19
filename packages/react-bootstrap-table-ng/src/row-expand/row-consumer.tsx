@@ -43,6 +43,7 @@ export default (
         expanded={expanded}
         expandable={expandable}
         expandRow={expandRow}
+        expansionRowId={props.id ? `${props.id}-expansion` : undefined}
         className={cs(props.className, parentClassName)}
       />,
       expanded || isClosing ? (
@@ -53,6 +54,7 @@ export default (
           expanded={expanded}
           onClosed={() => expandRow.onClosed(key)}
           className={className}
+          aria-hidden={!expanded}
         >
           {expandRow.renderer(props.row, props.rowIndex)}
         </ExpandRow>

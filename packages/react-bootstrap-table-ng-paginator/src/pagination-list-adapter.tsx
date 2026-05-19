@@ -62,6 +62,8 @@ const paginationListAdapter = (WrappedComponent: any) => {
         pageButtonRenderer={pageButtonRenderer}
         onPageChange={onPageChange}
         pages={pages}
+        tableId={props.tableId}
+        paginationListAriaLabel={props.paginationListAriaLabel}
       />
     );
   };

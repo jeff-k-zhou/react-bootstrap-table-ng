@@ -2,7 +2,7 @@ import cs from "classnames";
 import React from "react";
 
 import { Property } from "csstype";
-import { FILTERS_POSITION_INLINE, SORT_DESC } from "./const";
+import { FILTERS_POSITION_INLINE, SORT_ASC, SORT_DESC } from "./const";
 import { useCellEventDelegater } from "./cell-event-delegater";
 import SortCaret from "./sort/caret";
 import SortSymbol from "./sort/symbol";
@@ -179,10 +179,12 @@ const HeaderCell = React.memo((props: HeaderCellProps) => {
     ? headerAttrs(column, index)
     : headerAttrs || {};
 
-  const cellAttrs: React.HTMLAttributes<HTMLTableHeaderCellElement> = {
+  const cellAttrs: any = {
     ...customAttrs,
     ...delegateEvents,
     tabIndex: _.isDefined(customAttrs.tabIndex) ? customAttrs.tabIndex : 0,
+    // Every <th> must have scope="col" for WCAG 1.3.1
+    scope: (customAttrs as any).scope || "col",
   };
 
   let sortSymbol: React.ReactNode;
@@ -225,13 +227,28 @@ const HeaderCell = React.memo((props: HeaderCellProps) => {
   if (sort) {
     const customClick = cellAttrs.onClick;
     const customKeyDown = cellAttrs.onKeyDown;
-    cellAttrs["aria-label"] = sorting
-      ? `${text} sort ${sortOrder}`
-      : `${text} sortable`;
-    cellAttrs.onKeyUp = (e: React.KeyboardEvent<HTMLTableHeaderCellElement>) => {
-      if (e.key === "Enter") {
+
+    // Build aria-sort value (WCAG 4.1.2)
+    let ariaSortValue: "ascending" | "descending" | "none" = "none";
+    if (sorting) {
+      ariaSortValue = sortOrder === SORT_ASC ? "ascending" : "descending";
+    }
+    cellAttrs["aria-sort"] = ariaSortValue;
+
+    // Build a descriptive aria-label that includes the current sort state
+    const sortStateLabel = sorting
+      ? `sorted ${ariaSortValue}`
+      : "sortable, not sorted";
+    cellAttrs["aria-label"] = `${text}, ${sortStateLabel}`;
+
+    // Handle both Enter AND Space for keyboard activation (WCAG 2.1.1)
+    cellAttrs.onKeyDown = (e: React.KeyboardEvent<HTMLTableHeaderCellElement>) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
         onSort?.(column);
         if (_.isFunction(customKeyDown)) customKeyDown(e);
+      } else if (_.isFunction(customKeyDown)) {
+        customKeyDown(e);
       }
     };
     cellAttrs.onClick = (e: React.MouseEvent<HTMLTableHeaderCellElement>) => {

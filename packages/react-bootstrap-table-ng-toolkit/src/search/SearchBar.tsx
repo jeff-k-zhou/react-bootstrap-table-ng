@@ -71,9 +71,6 @@ const SearchBar: React.FC<SearchBarProps> = (props) => {
   return (
     <div className="search-label-container">
       <label htmlFor={`search-bar-${tableId}`} className="search-label" id={`search-bar-${tableId}-label`}>
-        <span className="sr-only visually-hidden">
-          {srText}
-        </span>
         {srText}
       </label>
       <input
@@ -87,6 +84,9 @@ const SearchBar: React.FC<SearchBarProps> = (props) => {
         value={value}
         placeholder={placeholder}
       />
+      <span aria-live="polite" className="sr-only visually-hidden">
+        {value ? `Search applied for: ${value}` : "Search cleared"}
+      </span>
     </div>
   );
 };

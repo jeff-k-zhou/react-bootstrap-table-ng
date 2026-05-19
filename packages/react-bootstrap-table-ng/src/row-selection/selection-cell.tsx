@@ -48,18 +48,9 @@ const SelectionCell: React.FC<SelectionCellProps> = React.memo((props) => {
   } = props;
   const { bootstrap4, bootstrap5 } = React.useContext(BootstrapContext);
 
-  const handleClick = (e: React.MouseEvent<HTMLTableCellElement>) => {
-    e.stopPropagation();
-    if (disabled) return;
+  const rowLabel = `Select row ${rowIndex + 1}`;
 
-    const checked = inputType === ROW_SELECT_SINGLE ? true : !selected;
-    onRowSelect!(rowKey, checked, rowIndex, e);
-  };
-
-  const attrs: React.HTMLAttributes<HTMLTableCellElement> = {};
-  if (tabIndex !== -1) attrs.tabIndex = tabIndex;
-
-  attrs.style = (_.isFunction(selectColumnStyle)
+  const style = (_.isFunction(selectColumnStyle)
     ? selectColumnStyle({
       checked: selected,
       disabled,
@@ -68,8 +59,19 @@ const SelectionCell: React.FC<SelectionCellProps> = React.memo((props) => {
     })
     : selectColumnStyle) as any;
 
+  const handleSelection = (e: any) => {
+    if (disabled) return;
+    e.stopPropagation();
+    const checked = inputType === ROW_SELECT_SINGLE ? true : !selected;
+    onRowSelect!(rowKey, checked, rowIndex, e);
+  };
+
   return (
-    <td className="selection-cell" onClick={handleClick} data-testid="selection-cell" {...attrs as any}>
+    <td
+      className="selection-cell"
+      data-testid="selection-cell"
+      style={style}
+    >
       {selectionRenderer ? (
         selectionRenderer({
           mode: inputType!,
@@ -83,13 +85,16 @@ const SelectionCell: React.FC<SelectionCellProps> = React.memo((props) => {
           type={inputType}
           checked={selected}
           disabled={disabled ?? false}
+          aria-label={rowLabel}
+          tabIndex={tabIndex !== -1 ? tabIndex : 0}
           className={
             bootstrap5
               ? "selection-input-5"
               : bootstrap4
-              ? "selection-input-4"
-              : ""
+                ? "selection-input-4"
+                : ""
           }
+          onClick={handleSelection}
           onChange={() => { }}
         />
       )}

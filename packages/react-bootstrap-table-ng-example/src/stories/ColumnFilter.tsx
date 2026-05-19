@@ -86,7 +86,7 @@ export default ({
           <BootstrapTable
             keyField="id"
             data={data}
-            columns={columns}
+            columns={columns2 || columns}
             filter={filter}
             filterPosition="bottom"
             expandRow={expandRow}

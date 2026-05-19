@@ -81,6 +81,7 @@ const SelectFilter = forwardRef<any, SelectFilterProps>((props, ref) => {
   useImperativeHandle(ref, () => ({
     applyFilter: (val: any) => {
         setIsSelected(val !== "");
+        setCurrentValue(val);
         if (selectInputRef.current) {
           selectInputRef.current.value = val;
         }
@@ -90,6 +91,7 @@ const SelectFilter = forwardRef<any, SelectFilterProps>((props, ref) => {
     },
     cleanFiltered: () => {
         setIsSelected(false);
+        setCurrentValue("");
         if (selectInputRef.current) {
           selectInputRef.current.value = "";
         }
@@ -104,6 +106,7 @@ const SelectFilter = forwardRef<any, SelectFilterProps>((props, ref) => {
     if (getFilter) {
       getFilter((filterVal: any) => {
         setIsSelected(filterVal !== "");
+        setCurrentValue(filterVal);
         if (selectInputRef.current) {
           selectInputRef.current.value = filterVal;
         }
@@ -144,10 +147,13 @@ const SelectFilter = forwardRef<any, SelectFilterProps>((props, ref) => {
     prevOptions.current = resolvedOptions;
   }, [defaultValue, resolvedOptions, column, onFilter]);
 
+  const [currentValue, setCurrentValue] = React.useState(getDefaultValue() || "");
+
   const filterHandler = React.useCallback(
     (e: any) => {
       const { value } = e.target;
       setIsSelected(value !== "");
+      setCurrentValue(value);
       if (onFilter) {
         (onFilter as any)(column, FILTER_TYPES.SELECT)(value);
       }
@@ -192,7 +198,7 @@ const SelectFilter = forwardRef<any, SelectFilterProps>((props, ref) => {
 
   return (
     <label className="filter-label" htmlFor={elmId}>
-      <span className="sr-only visually-hidden">Filter by {column.text}</span>
+      <span className="sr-only visually-hidden">Filter by {column.text}:</span>
       <select
         {...rest}
         ref={selectInputRef}
@@ -201,11 +207,15 @@ const SelectFilter = forwardRef<any, SelectFilterProps>((props, ref) => {
         className={selectClass}
         onChange={filterHandler}
         onClick={(e) => e.stopPropagation()}
-        defaultValue={getDefaultValue() || ""}
+        defaultValue={currentValue}
+        aria-label={`Filter by ${column.text}`}
         data-testid="select-filter"
       >
         {renderOptions()}
       </select>
+      <span aria-live="polite" className="sr-only visually-hidden">
+        {currentValue ? `Filter applied: ${currentValue}` : "Filter cleared"}
+      </span>
     </label>
   );
 });

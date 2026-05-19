@@ -189,36 +189,47 @@ const DateFilter = forwardRef<any, DateFilterProps>((props, ref) => {
   const inputElmId = `date-filter-column-${dataField}${id ? `-${id}` : ""}`;
 
   return (
-    <div
-      onClick={(e) => e.stopPropagation()}
+    <fieldset
       className={`filter date-filter ${className}`}
       style={style as any}
       data-testid="date-filter"
+      onClick={(e) => e.stopPropagation()}
     >
-      <select
-        id={comparatorElmId}
-        style={comparatorStyle as any}
-        className={`date-filter-comparator form-control ${comparatorClassName}`}
-        onChange={onChangeComparator}
-        value={state.comparator}
-        data-testid="date-filter-comparator"
-        aria-label="Filter comparator"
-      >
-        {getComparatorOptions()}
-      </select>
-      <input
-        ref={inputRef}
-        id={inputElmId}
-        className={`filter date-filter-input form-control ${dateClassName}`}
-        style={dateStyle as any}
-        type="date"
-        onChange={onChangeDate}
-        placeholder={placeholder || `Enter ${text}...`}
-        defaultValue={state.date}
-        data-testid="date-filter-input"
-        aria-label={`Enter ${text}`}
-      />
-    </div>
+      <legend className="sr-only visually-hidden">Filter by {text}</legend>
+      {/* WCAG 3.3.2 — each sub-control has its own <label htmlFor> in addition to the group legend */}
+      <label htmlFor={comparatorElmId} className="filter-label">
+        <span className="sr-only visually-hidden">Comparison operator for {text}</span>
+        <select
+          id={comparatorElmId}
+          style={comparatorStyle as any}
+          className={`date-filter-comparator form-control ${comparatorClassName}`}
+          onChange={onChangeComparator}
+          value={state.comparator}
+          data-testid="date-filter-comparator"
+          aria-label={`Comparison operator for ${text} date filter`}
+        >
+          {getComparatorOptions()}
+        </select>
+      </label>
+      <label htmlFor={inputElmId} className="filter-label">
+        <span className="sr-only visually-hidden">Date value for {text}</span>
+        <input
+          ref={inputRef}
+          id={inputElmId}
+          className={`filter date-filter-input form-control ${dateClassName}`}
+          style={dateStyle as any}
+          type="date"
+          onChange={onChangeDate}
+          placeholder={placeholder || `Enter ${text}...`}
+          defaultValue={state.date}
+          data-testid="date-filter-input"
+          aria-label={`Enter ${text}`}
+        />
+      </label>
+      <span aria-live="polite" className="sr-only visually-hidden">
+        {state.date ? `Filter applied: ${state.comparator} ${state.date}` : "Filter cleared"}
+      </span>
+    </fieldset>
   );
 });
 

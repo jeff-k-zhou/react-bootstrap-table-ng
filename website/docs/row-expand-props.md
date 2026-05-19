@@ -6,6 +6,8 @@ title: Row Expand Props
 `react-bootstrap-table-ng` supports the row expand feature. By passing prop `expandRow` to enable this functionality.
 
 > Default is click to expand/collapse a row. In addition, we don't support any way to change this mechanism!
+>
+> **Accessibility Note:** Row expansion is fully accessible. `react-bootstrap-table-ng` automatically manages `aria-expanded` and `role="button"` on the rows. Interactive rows can be toggled using the keyboard (`Space` or `Enter`).
 
 ## Required
 

@@ -29,7 +29,7 @@ describe("<SelectionCell />", () => {
           </tbody>
         </table>
       );
-      fireEvent.click(screen.getByRole("cell"));
+      fireEvent.click(screen.getByRole(mode));
       expect(mockOnRowSelect).toHaveBeenCalledWith(rowKey, !selected, rowIndex, expect.anything());
     });
 
@@ -51,7 +51,7 @@ describe("<SelectionCell />", () => {
           </tbody>
         </table>
       );
-      fireEvent.click(screen.getByRole("cell"));
+      fireEvent.click(screen.getByRole(mode));
       expect(mockOnRowSelect).not.toHaveBeenCalled();
     });
 
@@ -72,7 +72,7 @@ describe("<SelectionCell />", () => {
           </tbody>
         </table>
       );
-      fireEvent.click(screen.getByRole("cell"));
+      fireEvent.click(screen.getByRole("radio"));
       expect(mockOnRowSelect).toHaveBeenCalledWith(rowKey, true, rowIndex, expect.anything());
     });
 
@@ -93,7 +93,7 @@ describe("<SelectionCell />", () => {
           </tbody>
         </table>
       );
-      fireEvent.click(screen.getByRole("cell"));
+      fireEvent.click(screen.getByRole("checkbox"));
       expect(mockOnRowSelect).toHaveBeenCalledWith(rowKey, false, rowIndex, expect.anything());
     });
   });

@@ -39,6 +39,7 @@
 - [pagination](#pagination)
 - [filter](#filter)
 - [filterPosition](#filterPosition)
+- [tableAriaLabel](#tableAriaLabel)
 - [onTableChange](#onTableChange)
 - [onDataSizeChange](#onDataSizeChange)
 
@@ -177,9 +178,11 @@ Same as bootstrap `.table-hover` class for adding mouse hover effect (grey backg
 
 Same as bootstrap `.table-condensed` class for making a table more compact by cutting cell padding in half.
 
-### id - [String] {#id}
-
 Customize id on `table` element.
+
+### tableAriaLabel - [String] {#tableAriaLabel}
+
+Accessible label for the table. If not provided, the table will attempt to use the `caption` (if it's a string) as its aria-label.
 
 ### tabIndexCell - [Bool] {#tabIndexCell}
 

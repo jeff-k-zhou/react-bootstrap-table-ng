@@ -114,6 +114,7 @@ describe("RowPureContent", () => {
                 rowIndex={rowIndex}
                 columns={defaultColumns}
                 row={row}
+                cellExpandable={false}
               />
             </tr>
           </tbody>

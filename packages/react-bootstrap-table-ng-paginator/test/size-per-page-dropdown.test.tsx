@@ -44,14 +44,14 @@ describe("SizePerPageDropDown", () => {
     });
 
     it("should render SizePerPageOption successfully", () => {
-      const list = screen.getByRole("menu");
+      const list = screen.getByRole("listbox");
       expect(list).toBeInTheDocument();
-      const items = screen.getAllByRole("menuitem");
+      const items = screen.getAllByRole("option");
       expect(items.length).toBe(options.length);
       options.forEach((option) => {
         const matchingItems = screen.getAllByText(option.text);
         // At least one of them should be in the menu
-        const itemInMenu = matchingItems.find(el => el.closest('[role="menu"]'));
+        const itemInMenu = matchingItems.find(el => el.closest('[role="listbox"]'));
         expect(itemInMenu).toBeInTheDocument();
       });
     });
@@ -80,11 +80,11 @@ describe("SizePerPageDropDown", () => {
     });
 
     it("should render SizePerPageOption successfully", () => {
-      const items = screen.getAllByRole("menuitem");
+      const items = screen.getAllByRole("option");
       expect(items.length).toBe(options.length);
       options.forEach((option) => {
         const matchingItems = screen.getAllByText(option.text);
-        const itemInMenu = matchingItems.find(el => el.closest('[role="menu"]'));
+        const itemInMenu = matchingItems.find(el => el.closest('[role="listbox"]'));
         expect(itemInMenu).toBeInTheDocument();
       });
     });
@@ -167,7 +167,7 @@ describe("SizePerPageDropDown", () => {
   });
 
   describe("when optionRenderer prop is defined", () => {
-    const optionRenderer = jest.fn((option: any) => <li role="menuitem" key={option.text}>{option.text}</li>);
+    const optionRenderer = jest.fn((option: any) => <li role="option" aria-selected="false" key={option.text}>{option.text}</li>);
     beforeEach(() => {
       optionRenderer.mockClear();
       render(<SizePerPageDropDown {...props} optionRenderer={optionRenderer} />);

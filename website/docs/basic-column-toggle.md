@@ -121,3 +121,10 @@ Following, we just explain how it work:
 * `toggles`: An object which describe current column visibilities. `true` is on and `false` is off.
 * `onColumnToggle`: Call this method when user toggle a column.
 
+## Accessibility
+
+The `ToggleList` is compliant with **WCAG 2.1 Level AA** (Robust - Status Messages).
+
+- **Dynamic Announcements**: When a column visibility is toggled, the component automatically notifies screen readers of the change (e.g., "Column ID visibility toggled") via a visually hidden polite live region.
+- **State Communication**: Individual toggle buttons utilize `aria-pressed` to communicate whether a column is currently shown or hidden.
+

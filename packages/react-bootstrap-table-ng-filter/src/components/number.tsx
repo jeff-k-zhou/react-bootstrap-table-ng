@@ -227,49 +227,63 @@ const NumberFilter = forwardRef<any, NumberFilterProps>((props, ref) => {
   }`;
 
   return (
-    <div
-      onClick={(e) => e.stopPropagation()}
+    <fieldset
       className={`filter number-filter ${className}`}
       style={style as any}
       data-testid="number-filter"
+      onClick={(e) => e.stopPropagation()}
     >
-      <select
-        style={comparatorStyle as any}
-        id={comparatorElmId}
-        className={`number-filter-comparator form-control ${comparatorClassName}`}
-        onChange={onChangeComparator}
-        value={state.comparator}
-        data-testid="number-filter-comparator"
-        aria-label="Filter comparator"
-      >
-        {getComparatorOptions()}
-      </select>
-      {options ? (
+      <legend className="sr-only visually-hidden">Filter by {column.text}</legend>
+      {/* WCAG 3.3.2 — each sub-control has its own <label htmlFor> in addition to the group legend */}
+      <label htmlFor={comparatorElmId} className="filter-label">
+        <span className="sr-only visually-hidden">Comparison operator for {column.text}</span>
         <select
-          id={inputElmId}
-          style={numberStyle as any}
-          className={selectClass}
-          onChange={onChangeNumberSet}
-          value={state.number}
-          data-testid="number-filter-select"
-          aria-label={`Select ${column.text}`}
+          style={comparatorStyle as any}
+          id={comparatorElmId}
+          className={`number-filter-comparator form-control ${comparatorClassName}`}
+          onChange={onChangeComparator}
+          value={state.comparator}
+          data-testid="number-filter-comparator"
+          aria-label={`Comparison operator for ${column.text} filter`}
         >
-          {getNumberOptions()}
+          {getComparatorOptions()}
         </select>
+      </label>
+      {options ? (
+        <label htmlFor={inputElmId} className="filter-label">
+          <span className="sr-only visually-hidden">Number value for {column.text}</span>
+          <select
+            id={inputElmId}
+            style={numberStyle as any}
+            className={selectClass}
+            onChange={onChangeNumberSet}
+            value={state.number}
+            data-testid="number-filter-select"
+            aria-label={`Select ${column.text}`}
+          >
+            {getNumberOptions()}
+          </select>
+        </label>
       ) : (
-        <input
-          id={inputElmId}
-          type="number"
-          style={numberStyle as any}
-          className={`number-filter-input form-control ${numberClassName}`}
-          placeholder={placeholder || `Enter ${column.text}...`}
-          onChange={onChangeNumber}
-          value={state.number}
-          data-testid="number-filter-input"
-          aria-label={`Enter ${column.text}`}
-        />
+        <label htmlFor={inputElmId} className="filter-label">
+          <span className="sr-only visually-hidden">Number value for {column.text}</span>
+          <input
+            id={inputElmId}
+            type="number"
+            style={numberStyle as any}
+            className={`number-filter-input form-control ${numberClassName}`}
+            placeholder={placeholder || `Enter ${column.text}...`}
+            onChange={onChangeNumber}
+            value={state.number}
+            data-testid="number-filter-input"
+            aria-label={`Enter ${column.text}`}
+          />
+        </label>
       )}
-    </div>
+      <span aria-live="polite" className="sr-only visually-hidden">
+        {state.number ? `Filter applied: ${state.comparator} ${state.number}` : "Filter cleared"}
+      </span>
+    </fieldset>
   );
 });
 

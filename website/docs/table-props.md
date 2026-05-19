@@ -44,6 +44,7 @@ title: BootstrapTable Props
 - [pagination](#pagination-object)
 - [filter](#filter-object)
 - [filterPosition](#filterposition-string)
+- [tableAriaLabel](#tablearialabel-string)
 - [onTableChange](#ontablechange-function)
 - [onDataSizeChange](#ondatasizechange-function)
 
@@ -150,10 +151,18 @@ import overlayFactory from "react-bootstrap-table-ng-overlay";
 />;
 ```
 
-Actually, `react-bootstrap-table-ng-overlay` is depends on [`react-loading-overlay`](https://github.com/derrickpelletier/react-loading-overlay) and `overlayFactory` just a factory function and you can pass any props which available for `react-loading-overlay`:
+## accessibility props:
+
+- `ariaLabel`: [String] - Accessible label for the overlay when it is clickable.
+- `text`: [String] - Display text that will also be announced to screen readers as a status update.
 
 ```js
-overlay={ overlayFactory({ spinner: true, background: 'rgba(192,192,192,0.3)' }) }
+overlay={ overlayFactory({
+  spinner: true,
+  background: 'rgba(192,192,192,0.3)',
+  ariaLabel: 'Loading data, click to cancel',
+  text: 'Fetching products...'
+}) }
 ```
 
 ## caption - [String | Node] {#caption-string-node}
@@ -179,6 +188,10 @@ Same as bootstrap `.table-condensed` class for making a table more compact by cu
 ## id - [String] {#id-string}
 
 Customize id on `table` element.
+
+## tableAriaLabel - [String] {#tablearialabel-string}
+
+Accessible label for the table. If not provided, the table will attempt to use the `caption` (if it's a string) as its aria-label. This is crucial for screen reader users to identify the purpose of the table.
 
 ## rowIdPrefix - [String | Function] {#rowIdPrefix-string-function}
 
@@ -253,7 +266,9 @@ Makes table cells editable, please see [cellEdit definition](./cell-edit-props) 
 
 ## cellExpandable - [Bool] {#cellexpandable-bool}
 
-Default is `true`. When enabled, `react-bootstrap-table-ng` adds the `expandable-cell` CSS class to every `<td>` element in the table body. This class is intended to be used with truncated cell content — you can use it to show the full content on hover via CSS (e.g. `max-width` + `overflow: hidden` + `text-overflow: ellipsis` with a hover expansion effect).
+Default is `true`. When enabled, `react-bootstrap-table-ng` adds the `expandable-cell` CSS class to every `<td>` element in the table body.
+
+This feature allows for truncated cell content that expands visually. Starting from version `5.19.6`, this feature is **fully keyboard accessible**. When a cell is expandable, it receives a `tabIndex="0"`, allowing keyboard users to focus on it (via Tab) and see the expanded content, mirroring the hover behavior for mouse users.
 
 Set to `false` to disable the `expandable-cell` class for all columns at the table level:
 

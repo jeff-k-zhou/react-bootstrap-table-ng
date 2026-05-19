@@ -23,6 +23,7 @@ export const CheckBox: React.FC<CheckBoxProps> = ({
     type="checkbox"
     checked={checked}
     className={className}
+    aria-label="Select all rows"
     ref={(input) => {
       if (input) {
         input.indeterminate = indeterminate;
@@ -62,7 +63,12 @@ const SelectionHeaderCell: React.FC<SelectionHeaderCellProps> = React.memo((prop
   const { bootstrap4, bootstrap5 } = React.useContext(BootstrapContext);
 
   if (hideSelectAll) {
-    return <th data-row-selection />;
+    // Placeholder <th> for single-select: occupies column space to match body
+    return (
+      <th scope="col" data-row-selection>
+        <span className="sr-only visually-hidden">Selection column</span>
+      </th>
+    );
   }
 
   const handleCheckBoxClick = (e: React.MouseEvent<HTMLTableHeaderCellElement>) => {
@@ -73,12 +79,25 @@ const SelectionHeaderCell: React.FC<SelectionHeaderCellProps> = React.memo((prop
     onAllRowsSelect!(e, isUnSelect);
   };
 
+  // Allow keyboard activation of select-all (WCAG 2.1.1)
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTableHeaderCellElement>) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      const isUnSelect =
+        checkedStatus === CHECKBOX_STATUS_CHECKED ||
+        checkedStatus === CHECKBOX_STATUS_INDETERMINATE;
+      onAllRowsSelect!(e as any, isUnSelect);
+    }
+  };
+
   const checked = checkedStatus === CHECKBOX_STATUS_CHECKED;
   const indeterminate = checkedStatus === CHECKBOX_STATUS_INDETERMINATE;
 
   const attrs: React.HTMLAttributes<HTMLTableHeaderCellElement> = {};
   if (selectionHeaderRenderer || mode === ROW_SELECT_MULTIPLE) {
     attrs.onClick = handleCheckBoxClick;
+    attrs.onKeyDown = handleKeyDown;
+    attrs.tabIndex = 0;
   }
 
   attrs.style = (_.isFunction(headerColumnStyle)
@@ -110,7 +129,14 @@ const SelectionHeaderCell: React.FC<SelectionHeaderCellProps> = React.memo((prop
   }
 
   return (
-    <th className="selection-cell-header" data-row-selection {...attrs as any}>
+    <th
+      className="selection-cell-header"
+      scope="col"
+      aria-label="Select all rows"
+      data-row-selection
+      {...attrs as any}
+    >
+      <span className="sr-only visually-hidden">Selection Column</span>
       {content}
     </th>
   );

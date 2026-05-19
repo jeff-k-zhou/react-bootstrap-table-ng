@@ -47,6 +47,17 @@ export default () =>
   <BootstrapTable keyField='id' data={ products } columns={ columns } />
 ```
 
+## Accessibility
+
+`react-bootstrap-table-ng` is designed with accessibility as a first-class citizen. The library is fully compliant with **WCAG 2.1 Level AA** standards across all core and supplementary packages.
+
+### Key Features
+- **Full Keyboard Navigation**: Every interactive element, from sorting headers to filter inputs and pagination links, is accessible via keyboard.
+- **Robust Semantic Markup**: We use appropriate ARIA roles and attributes (e.g., `aria-sort`, `aria-busy`, `role="status"`) to ensure compatibility with modern screen readers.
+- **Dynamic Status Messages**: Background updates like search results, filter applications, and row expansions are automatically announced via polite `aria-live` regions, satisfying WCAG 4.1.3 (Status Messages).
+
+For more details on package-specific accessibility, please refer to the individual component documentation.
+
 <hr />
 
 ## UMD
