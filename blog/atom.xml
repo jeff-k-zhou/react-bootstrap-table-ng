@@ -15,9 +15,9 @@
         <summary type="html"><![CDATA[react-bootstrap-table-ng is a maintenance fork of react-bootstrap-table-nextgen / npm package react-bootstrap-table-nextgen, which is a fork of react-bootstrap-table2 / npm package react-bootstrap-table-next created by Allen Fang.]]></summary>
         <content type="html"><![CDATA[<p><code>react-bootstrap-table-ng</code> is a maintenance fork of <a href="https://github.com/TerrenceMiao/react-bootstrap-table-nextgen" target="_blank" rel="noopener noreferrer" class=""><code>react-bootstrap-table-nextgen</code></a> / npm package <a href="https://www.npmjs.com/package/react-bootstrap-table-nextgen" target="_blank" rel="noopener noreferrer" class=""><code>react-bootstrap-table-nextgen</code></a>, which is a fork of <a href="https://github.com/react-bootstrap-table/react-bootstrap-table2" target="_blank" rel="noopener noreferrer" class=""><code>react-bootstrap-table2</code></a> / npm package <a href="https://www.npmjs.com/package/react-bootstrap-table-next" target="_blank" rel="noopener noreferrer" class=""><code>react-bootstrap-table-next</code></a> created by Allen Fang.</p>
 <p>The goal of this fork is to provide stable version to support React 18+ and Bootstrap 4+ with modern React 18+ features such as hooks, context, etc.</p>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="planned-changes">Planned changes<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/12/31/Introduce-react-bootstrap-table-ng#planned-changes" class="hash-link" aria-label="Direct link to Planned changes" title="Direct link to Planned changes" translate="no">​</a></h2>
+<h2 class="anchor anchorTargetStickyNavbar_tleR" id="planned-changes">Planned changes<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/12/31/Introduce-react-bootstrap-table-ng#planned-changes" class="hash-link" aria-label="Direct link to Planned changes" title="Direct link to Planned changes" translate="no">​</a></h2>
 <p>on top of [<code>react-bootstrap-table-next</code>] and [<code>react-bootstrap-table-nextgen</code>]</p>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="core-featuresenhancements">Core Features/Enhancements<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/12/31/Introduce-react-bootstrap-table-ng#core-featuresenhancements" class="hash-link" aria-label="Direct link to Core Features/Enhancements" title="Direct link to Core Features/Enhancements" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="core-featuresenhancements">Core Features/Enhancements<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/12/31/Introduce-react-bootstrap-table-ng#core-featuresenhancements" class="hash-link" aria-label="Direct link to Core Features/Enhancements" title="Direct link to Core Features/Enhancements" translate="no">​</a></h3>
 <ul>
 <li class="">Support React 18 and React 19</li>
 <li class="">Support Bootstrap 3.x up to 3.4.1, Bootstrap 4.x up to 4.6.2, and Bootstrap 5.x up to 5.3.8</li>
@@ -27,20 +27,119 @@
 <li class="">Add cell expand functionality</li>
 <li class="">Replace all class components with functional components</li>
 <li class="">Utilize modern React features such as hooks and context API</li>
+<li class="">Add WCAG 2.1 AA support (accessibility)</li>
 <li class="">Update most dependencies to their latest stable versions to fix vulnerabilities</li>
 </ul>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="development-environment">Development environment<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/12/31/Introduce-react-bootstrap-table-ng#development-environment" class="hash-link" aria-label="Direct link to Development environment" title="Direct link to Development environment" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="development-environment">Development environment<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/12/31/Introduce-react-bootstrap-table-ng#development-environment" class="hash-link" aria-label="Direct link to Development environment" title="Direct link to Development environment" translate="no">​</a></h3>
 <ul>
 <li class="">Upgrade Storybook to 10.x</li>
 <li class="">Upgrade Yarn to 4.x</li>
 <li class="">Upgrade Docusaurus to 3.x</li>
+<li class="">Add accessibility testing</li>
 </ul>
 <hr>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="release-notes">Release Notes<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/12/31/Introduce-react-bootstrap-table-ng#release-notes" class="hash-link" aria-label="Direct link to Release Notes" title="Direct link to Release Notes" translate="no">​</a></h2>
+<h2 class="anchor anchorTargetStickyNavbar_tleR" id="release-notes">Release Notes<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/12/31/Introduce-react-bootstrap-table-ng#release-notes" class="hash-link" aria-label="Direct link to Release Notes" title="Direct link to Release Notes" translate="no">​</a></h2>
 <p><a href="https://github.com/jeff-k-zhou/react-bootstrap-table-ng/releases" target="_blank" rel="noopener noreferrer" class="">https://github.com/jeff-k-zhou/react-bootstrap-table-ng/releases</a></p>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="react-and-bootstrap-compatibility">React and Bootstrap compatibility<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/12/31/Introduce-react-bootstrap-table-ng#react-and-bootstrap-compatibility" class="hash-link" aria-label="Direct link to React and Bootstrap compatibility" title="Direct link to React and Bootstrap compatibility" translate="no">​</a></h2>
+<h2 class="anchor anchorTargetStickyNavbar_tleR" id="react-and-bootstrap-compatibility">React and Bootstrap compatibility<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/12/31/Introduce-react-bootstrap-table-ng#react-and-bootstrap-compatibility" class="hash-link" aria-label="Direct link to React and Bootstrap compatibility" title="Direct link to React and Bootstrap compatibility" translate="no">​</a></h2>
 <p>See the below table on which version of react-bootstrap-table-ng you should be using in your project.</p>
 <table><thead><tr><th rowspan="2">react-bootstrap-table-ng</th><th colspan="3">Compatible react/bootstrap/react-bootstrap versions</th></tr><tr><th>react</th><th>bootstrap</th><th>react-bootstrap</th></tr></thead><tbody><tr><td rowspan="3">5.19.x</td><td rowspan="3">18.x - 19.x</td><td>5.x</td><td>2.x</td></tr><tr><td>4.x</td><td>1.x</td></tr><tr><td>3.x</td><td>0.33.x</td></tr><tr><td rowspan="2">4.19.x</td><td rowspan="2">18.x - 19.x</td><td>4.x</td><td>1.x</td></tr><tr><td>3.x</td><td>0.33.x</td></tr><tr><td rowspan="2">4.18.x</td><td rowspan="2">18.x</td><td>4.x</td><td>1.x</td></tr><tr><td>3.x</td><td>0.33.x</td></tr></tbody></table>]]></content>
+        <author>
+            <name>Jeff Zhou</name>
+            <uri>https://github.com/jeff-k-zhou</uri>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Accessibility Milestone Release (2026-05-18)]]></title>
+        <id>https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/05/18/version-bump</id>
+        <link href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/05/18/version-bump"/>
+        <updated>2026-05-18T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Changed Packages]]></summary>
+        <content type="html"><![CDATA[<h2 class="anchor anchorTargetStickyNavbar_tleR" id="changed-packages">Changed Packages<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/05/18/version-bump#changed-packages" class="hash-link" aria-label="Direct link to Changed Packages" title="Direct link to Changed Packages" translate="no">​</a></h2>
+<p>All <code>react-bootstrap-table-ng</code> packages version bump to <code>5.19.6</code></p>
+<h2 class="anchor anchorTargetStickyNavbar_tleR" id="overview">Overview<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/05/18/version-bump#overview" class="hash-link" aria-label="Direct link to Overview" title="Direct link to Overview" translate="no">​</a></h2>
+<p>This release marks a significant milestone in our commitment to inclusive design. We have implemented comprehensive accessibility improvements across all <code>react-bootstrap-table-ng</code> packages, ensuring full compliance with <strong>WCAG 2.1 (Level AA)</strong> standards.</p>
+<h2 class="anchor anchorTargetStickyNavbar_tleR" id="changelog">Changelog<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/05/18/version-bump#changelog" class="hash-link" aria-label="Direct link to Changelog" title="Direct link to Changelog" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="accessibility-features">Accessibility Features<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/05/18/version-bump#accessibility-features" class="hash-link" aria-label="Direct link to Accessibility Features" title="Direct link to Accessibility Features" translate="no">​</a></h3>
+<ul>
+<li class=""><strong>Automated A11y Guardrails</strong>: Integrated <code>jest-axe</code> for unit testing and <code>axe-playwright</code> into our Storybook test runner. Every component and interactive state is now automatically scanned for accessibility violations during development and CI.</li>
+<li class=""><strong>Enhanced Keyboard Navigation</strong>:<!-- -->
+<ul>
+<li class="">Implemented focus management for <strong>Row Expansion</strong>. Users can now toggle row visibility using <code>Space</code> or <code>Enter</code>.</li>
+<li class="">Added <code>:focus</code> support for <strong>Cell Expansion</strong>. Truncated content is now visible when tabbing through the table.</li>
+<li class="">Standardized <code>tabIndex</code> management to ensure a logical and predictable focus flow.</li>
+</ul>
+</li>
+<li class=""><strong>Improved Screen Reader Support</strong>:<!-- -->
+<ul>
+<li class="">Added descriptive <code>aria-label</code>s to all pagination controls (First, Prev, Next, Last).</li>
+<li class="">Implemented <code>aria-expanded</code> and <code>aria-current</code> state communication for rows and pagination items.</li>
+<li class="">Added visually hidden (<code>sr-only</code>) labels for selection and expansion columns to provide context without cluttering the UI.</li>
+</ul>
+</li>
+<li class=""><strong>Semantic HTML Refactor</strong>:<!-- -->
+<ul>
+<li class="">Transitioned interactive elements from container <code>&lt;td&gt;</code>/<code>&lt;th&gt;</code> tags to nested focusable elements (<code>button</code>, <code>input</code>).</li>
+<li class="">Fixed "empty table header" violations by ensuring every header cell has an accessible name.</li>
+</ul>
+</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="bug-fixes">Bug Fixes<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/05/18/version-bump#bug-fixes" class="hash-link" aria-label="Direct link to Bug Fixes" title="Direct link to Bug Fixes" translate="no">​</a></h3>
+<ul>
+<li class="">Fixed a "double tab stop" issue in the row selection column.</li>
+<li class="">Resolved a regression in radio-button selection where already-selected items wouldn't trigger state updates on re-click.</li>
+<li class="">Fixed module resolution issues in the test suite that occurred when running tests without a full production build.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_tleR" id="how-to-verify">How to Verify<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/05/18/version-bump#how-to-verify" class="hash-link" aria-label="Direct link to How to Verify" title="Direct link to How to Verify" translate="no">​</a></h2>
+<p>We encourage all developers to update to the latest version and verify the improvements.</p>
+<h2 class="anchor anchorTargetStickyNavbar_tleR" id="accessibility-assessment-report-react-bootstrap-table-ng">Accessibility Assessment Report: <code>react-bootstrap-table-ng</code><a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/05/18/version-bump#accessibility-assessment-report-react-bootstrap-table-ng" class="hash-link" aria-label="Direct link to accessibility-assessment-report-react-bootstrap-table-ng" title="Direct link to accessibility-assessment-report-react-bootstrap-table-ng" translate="no">​</a></h2>
+<p>This report provides an assessment of the accessibility (a11y) implementations across all core and supplementary packages in the <code>react-bootstrap-table-ng</code> monorepo (excluding the <code>example</code> package). The evaluation is structured around the four <strong>WCAG 2.1 Principles: Perceivable, Operable, Understandable, and Robust (POUR)</strong>.</p>
+<p><em>Note: As a UI component library, maximum compliance is evaluated based on the semantic structure, keyboard event handling, and ARIA state management the library provides. Visual compliance (like color contrast, a Level AA/AAA requirement) depends partly on the user's provided CSS (e.g., Bootstrap).</em></p>
+<h2 class="anchor anchorTargetStickyNavbar_tleR" id="wcag-21-compliance-matrix">WCAG 2.1 Compliance Matrix<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/05/18/version-bump#wcag-21-compliance-matrix" class="hash-link" aria-label="Direct link to WCAG 2.1 Compliance Matrix" title="Direct link to WCAG 2.1 Compliance Matrix" translate="no">​</a></h2>
+<table><thead><tr><th style="text-align:left">Package</th><th style="text-align:center">Perceivable</th><th style="text-align:center">Operable</th><th style="text-align:center">Understandable</th><th style="text-align:center">Robust</th><th style="text-align:center">Overall Rating</th></tr></thead><tbody><tr><td style="text-align:left"><code>react-bootstrap-table-ng</code> (Core)</td><td style="text-align:center"><strong>AA</strong></td><td style="text-align:center"><strong>AA</strong></td><td style="text-align:center"><strong>AA</strong></td><td style="text-align:center"><strong>AA</strong></td><td style="text-align:center"><strong>AA</strong></td></tr><tr><td style="text-align:left"><code>react-bootstrap-table-ng-paginator</code></td><td style="text-align:center"><strong>AA</strong></td><td style="text-align:center"><strong>AA</strong></td><td style="text-align:center"><strong>AA</strong></td><td style="text-align:center"><strong>AA</strong></td><td style="text-align:center"><strong>AA</strong></td></tr><tr><td style="text-align:left"><code>react-bootstrap-table-ng-toolkit</code></td><td style="text-align:center"><strong>AA</strong></td><td style="text-align:center"><strong>AA</strong></td><td style="text-align:center"><strong>AA</strong></td><td style="text-align:center"><strong>AA</strong></td><td style="text-align:center"><strong>AA</strong></td></tr><tr><td style="text-align:left"><code>react-bootstrap-table-ng-filter</code></td><td style="text-align:center"><strong>AA</strong></td><td style="text-align:center"><strong>AA</strong></td><td style="text-align:center"><strong>AA</strong></td><td style="text-align:center"><strong>AA</strong></td><td style="text-align:center"><strong>AA</strong></td></tr><tr><td style="text-align:left"><code>react-bootstrap-table-ng-editor</code></td><td style="text-align:center"><strong>AA</strong></td><td style="text-align:center"><strong>AA</strong></td><td style="text-align:center"><strong>AA</strong></td><td style="text-align:center"><strong>AA</strong></td><td style="text-align:center"><strong>AA</strong></td></tr><tr><td style="text-align:left"><code>react-bootstrap-table-ng-overlay</code></td><td style="text-align:center"><strong>AA</strong></td><td style="text-align:center"><strong>AA</strong></td><td style="text-align:center"><strong>AA</strong></td><td style="text-align:center"><strong>AA</strong></td><td style="text-align:center"><strong>AA</strong></td></tr></tbody></table>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_tleR" id="breakdown-by-package">Breakdown by Package<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/05/18/version-bump#breakdown-by-package" class="hash-link" aria-label="Direct link to Breakdown by Package" title="Direct link to Breakdown by Package" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="1-react-bootstrap-table-ng-core">1. <code>react-bootstrap-table-ng</code> (Core)<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/05/18/version-bump#1-react-bootstrap-table-ng-core" class="hash-link" aria-label="Direct link to 1-react-bootstrap-table-ng-core" title="Direct link to 1-react-bootstrap-table-ng-core" translate="no">​</a></h3>
+<ul>
+<li class=""><strong>Perceivable (AA):</strong> Meets Level A (1.1.1 Non-text Content) by hiding visual sorting carets (<code>aria-hidden="true"</code>) and Level AA (1.3.1 Info and Relationships) by supporting <code>caption</code> elements and <code>aria-label</code> for screen reader context.</li>
+<li class=""><strong>Operable (AA):</strong> Meets Level A (2.1.1 Keyboard) by providing a fully navigable cell grid (<code>tabIndexCell</code>) and focusable resize handlers. Meets Level AA (2.4.7 Focus Visible) by ensuring standard interactive elements retain focus outlines (assuming default CSS).</li>
+<li class=""><strong>Understandable (AA):</strong> Meets Level A (3.2.2 On Input) and AA criteria. It utilizes <code>aria-sort</code> and dynamic <code>aria-expanded</code> attributes to explicitly tell users the active state of data interactions.</li>
+<li class=""><strong>Robust (AA):</strong> Meets Level A (4.1.2 Name, Role, Value). Automated <code>jest-axe</code> tests validate robustness against semantic regressions. The use of <code>aria-live="polite"</code> and <code>aria-atomic="true"</code> on row expansions/sections ensures it meets Level AA (4.1.3 Status Messages).</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="2-react-bootstrap-table-ng-paginator">2. <code>react-bootstrap-table-ng-paginator</code><a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/05/18/version-bump#2-react-bootstrap-table-ng-paginator" class="hash-link" aria-label="Direct link to 2-react-bootstrap-table-ng-paginator" title="Direct link to 2-react-bootstrap-table-ng-paginator" translate="no">​</a></h3>
+<ul>
+<li class=""><strong>Perceivable (AA):</strong> Satisfies Level AA (1.3.1) by wrapping pagination inside <code>&lt;nav aria-label="..."&gt;</code>.</li>
+<li class=""><strong>Operable (AA):</strong> Meets Level A (2.1.1 Keyboard) and Level AA limits. Dropdowns and jump-to-page fields correctly enforce <code>tabIndex={0}</code> or <code>-1</code> dynamically.</li>
+<li class=""><strong>Understandable (AA):</strong> Achieves Level AA by explicitly using <code>aria-current="page"</code> (a strict WCAG requirement to indicate the current item within a set) alongside clear <code>aria-disabled</code> tracking.</li>
+<li class=""><strong>Robust (AA):</strong> Uses semantic <code>role="listbox"</code> and <code>role="option"</code>. Meets Level AA (4.1.3 Status Messages) by utilizing polite live regions for the "Showing rows X to Y of Z" textual updates.</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="3-react-bootstrap-table-ng-toolkit">3. <code>react-bootstrap-table-ng-toolkit</code><a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/05/18/version-bump#3-react-bootstrap-table-ng-toolkit" class="hash-link" aria-label="Direct link to 3-react-bootstrap-table-ng-toolkit" title="Direct link to 3-react-bootstrap-table-ng-toolkit" translate="no">​</a></h3>
+<ul>
+<li class=""><strong>Perceivable (AA):</strong> Satisfies Level A and AA. Features like the global SearchBar use <code>aria-labelledby</code>, and purely visual elements (like modal close icons) use <code>aria-hidden="true"</code>.</li>
+<li class=""><strong>Operable (AA):</strong> Meets Level AA. Delete/Insert modals correctly restrict focus layers using <code>tabIndex={-1}</code> and nested <code>role="document"</code> structures, avoiding keyboard traps (2.1.2 No Keyboard Trap - Level A).</li>
+<li class=""><strong>Understandable (AA):</strong> Column visibility toggles utilize <code>aria-pressed="true/false"</code>, which cleanly conveys the operation's state context to assistive technologies.</li>
+<li class=""><strong>Robust (AA):</strong> Meets Level AA (4.1.3 Status Messages) by utilizing visually hidden <code>aria-live="polite"</code> regions that announce search updates ("Search applied for: X") and column visibility changes ("Column X toggled").</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="4-react-bootstrap-table-ng-filter">4. <code>react-bootstrap-table-ng-filter</code><a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/05/18/version-bump#4-react-bootstrap-table-ng-filter" class="hash-link" aria-label="Direct link to 4-react-bootstrap-table-ng-filter" title="Direct link to 4-react-bootstrap-table-ng-filter" translate="no">​</a></h3>
+<ul>
+<li class=""><strong>Perceivable (AA):</strong> Form inputs satisfy Level A (1.1.1) and Level AA (1.3.5 Identify Input Purpose). Each filter uniquely identifies itself (<code>"Comparison operator for Date filter"</code>).</li>
+<li class=""><strong>Operable (AA):</strong> Relies on native interactive elements (<code>select</code>, <code>input type="text/number/date"</code>) guaranteeing native keyboard operability (Level A/AA).</li>
+<li class=""><strong>Understandable (AA):</strong> Achieves Level A (3.3.2 Labels or Instructions) natively. Multi-selects define <code>aria-multiselectable="true"</code>, allowing users to understand how to interact with the input without trial and error.</li>
+<li class=""><strong>Robust (AA):</strong> Meets Level AA (4.1.3 Status Messages) by incorporating <code>aria-live="polite"</code> status announcements whenever a filter is applied or cleared, ensuring background updates are communicated to assistive technology.</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="5-react-bootstrap-table-ng-editor">5. <code>react-bootstrap-table-ng-editor</code><a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/05/18/version-bump#5-react-bootstrap-table-ng-editor" class="hash-link" aria-label="Direct link to 5-react-bootstrap-table-ng-editor" title="Direct link to 5-react-bootstrap-table-ng-editor" translate="no">​</a></h3>
+<ul>
+<li class=""><strong>Perceivable (AA):</strong> Errors and input associations satisfy Level AA semantics.</li>
+<li class=""><strong>Operable (AA):</strong> Cell editing automatically shifts focus directly to the input context and traps keyboard input within the cell until explicitly dismissed or saved (2.1.1 Keyboard).</li>
+<li class=""><strong>Understandable (AA):</strong> Strictly follows Level A (3.3.1 Error Identification). The editor displays error indicators (<code>role="alert"</code>) and programmatically links the invalid input to the error description utilizing <code>aria-invalid="true"</code> and <code>aria-describedby="[error-id]"</code>.</li>
+<li class=""><strong>Robust (AA):</strong> Meets Level AA (4.1.3 Status Messages). The editor indicator utilizes <code>role="alert"</code> enhanced with explicit <code>aria-live="assertive"</code> and <code>aria-atomic="true"</code> properties to ensure consistent and immediate error announcements.</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="6-react-bootstrap-table-ng-overlay">6. <code>react-bootstrap-table-ng-overlay</code><a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/05/18/version-bump#6-react-bootstrap-table-ng-overlay" class="hash-link" aria-label="Direct link to 6-react-bootstrap-table-ng-overlay" title="Direct link to 6-react-bootstrap-table-ng-overlay" translate="no">​</a></h3>
+<ul>
+<li class=""><strong>Perceivable (AA):</strong> Satisfies Level AA. Loading spinners are given <code>role="img"</code> and <code>aria-labelledby</code> so screen readers don't skip over the visual feedback.</li>
+<li class=""><strong>Operable (AA):</strong> Clickable overlays fall back to keyboard users by programmatically assigning <code>role="button"</code> and <code>tabIndex={0}</code>.</li>
+<li class=""><strong>Understandable (AA):</strong> Achieves Level AA (3.2.4 Consistent Identification) and Level A (3.3.2 Labels or Instructions). The overlay utilizes the <code>text</code> prop for dynamic status announcements and provides an <code>ariaLabel</code> (or context-aware default) for interactive overlays, ensuring they are consistently identified and labeled.</li>
+<li class=""><strong>Robust (AA):</strong> Directly achieves Level AA (4.1.3 Status Messages) by utilizing <code>aria-busy={active}</code> on the wrapping container while injecting a <code>role="status"</code> live region that communicates background data fetching passively without hijacking keyboard focus.</li>
+</ul>]]></content>
         <author>
             <name>Jeff Zhou</name>
             <uri>https://github.com/jeff-k-zhou</uri>
@@ -52,14 +151,14 @@
         <link href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/04/28/version-bump"/>
         <updated>2026-04-28T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[Changed Packages]]></summary>
-        <content type="html"><![CDATA[<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="changed-packages">Changed Packages<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/04/28/version-bump#changed-packages" class="hash-link" aria-label="Direct link to Changed Packages" title="Direct link to Changed Packages" translate="no">​</a></h2>
+        <content type="html"><![CDATA[<h2 class="anchor anchorTargetStickyNavbar_tleR" id="changed-packages">Changed Packages<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/04/28/version-bump#changed-packages" class="hash-link" aria-label="Direct link to Changed Packages" title="Direct link to Changed Packages" translate="no">​</a></h2>
 <p>All <code>react-bootstrap-table-ng</code> packages version bump to <code>5.19.5</code></p>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="changelog">Changelog<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/04/28/version-bump#changelog" class="hash-link" aria-label="Direct link to Changelog" title="Direct link to Changelog" translate="no">​</a></h2>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="bug-fixes">Bug fixes<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/04/28/version-bump#bug-fixes" class="hash-link" aria-label="Direct link to Bug fixes" title="Direct link to Bug fixes" translate="no">​</a></h3>
+<h2 class="anchor anchorTargetStickyNavbar_tleR" id="changelog">Changelog<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/04/28/version-bump#changelog" class="hash-link" aria-label="Direct link to Changelog" title="Direct link to Changelog" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="bug-fixes">Bug fixes<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/04/28/version-bump#bug-fixes" class="hash-link" aria-label="Direct link to Bug fixes" title="Direct link to Bug fixes" translate="no">​</a></h3>
 <ul>
 <li class="">Fixed a redirect issue in Storybook when interacting with custom pagination renderers by ensuring click events are properly prevented.</li>
 </ul>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features">Features<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/04/28/version-bump#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="features">Features<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/04/28/version-bump#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
 <ul>
 <li class="">Added <strong>Pagination Jump Control</strong> feature, allowing users to jump to a specific page by typing the page number.<!-- -->
 <ul>
@@ -70,7 +169,7 @@
 </li>
 <li class="">Added <code>rowIdPrefix</code> prop to <code>BootstrapTable</code> component for customizing row IDs to provide stable identifiers for integration with external libraries. It could be a string or a function that returns a string. The row ID will be <code>tableId-row-key</code> by default. The row ID will be <code>rowIdPrefix-row-key</code> if a string is provided. The row ID will be <code>function(row, index)-row-key</code> if a function is provided.</li>
 </ul>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="improvements">Improvements<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/04/28/version-bump#improvements" class="hash-link" aria-label="Direct link to Improvements" title="Direct link to Improvements" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="improvements">Improvements<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/04/28/version-bump#improvements" class="hash-link" aria-label="Direct link to Improvements" title="Direct link to Improvements" translate="no">​</a></h3>
 <ul>
 <li class="">Optimized pagination component logic for better performance and reliability.</li>
 <li class="">Updated documentation and added new Storybook stories for the pagination jump feature.</li>
@@ -86,14 +185,14 @@
         <link href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/04/20/version-bump"/>
         <updated>2026-04-20T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[Changed Packages]]></summary>
-        <content type="html"><![CDATA[<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="changed-packages">Changed Packages<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/04/20/version-bump#changed-packages" class="hash-link" aria-label="Direct link to Changed Packages" title="Direct link to Changed Packages" translate="no">​</a></h2>
+        <content type="html"><![CDATA[<h2 class="anchor anchorTargetStickyNavbar_tleR" id="changed-packages">Changed Packages<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/04/20/version-bump#changed-packages" class="hash-link" aria-label="Direct link to Changed Packages" title="Direct link to Changed Packages" translate="no">​</a></h2>
 <p>All <code>react-bootstrap-table-ng</code> packages version bump to <code>5.19.4</code></p>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="changelog">Changelog<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/04/20/version-bump#changelog" class="hash-link" aria-label="Direct link to Changelog" title="Direct link to Changelog" translate="no">​</a></h2>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="bug-fixes">Bug fixes<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/04/20/version-bump#bug-fixes" class="hash-link" aria-label="Direct link to Bug fixes" title="Direct link to Bug fixes" translate="no">​</a></h3>
+<h2 class="anchor anchorTargetStickyNavbar_tleR" id="changelog">Changelog<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/04/20/version-bump#changelog" class="hash-link" aria-label="Direct link to Changelog" title="Direct link to Changelog" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="bug-fixes">Bug fixes<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/04/20/version-bump#bug-fixes" class="hash-link" aria-label="Direct link to Bug fixes" title="Direct link to Bug fixes" translate="no">​</a></h3>
 <ul>
 <li class="">Fixed findByRole('table') return error when storybook deployed to github website with docusarus</li>
 </ul>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features">Features<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/04/20/version-bump#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="features">Features<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/04/20/version-bump#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
 <ul>
 <li class="">Added row insert and delete feature</li>
 </ul>]]></content>
@@ -108,9 +207,9 @@
         <link href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/04/11/version-bump"/>
         <updated>2026-04-11T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[Changed Packages]]></summary>
-        <content type="html"><![CDATA[<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="changed-packages">Changed Packages<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/04/11/version-bump#changed-packages" class="hash-link" aria-label="Direct link to Changed Packages" title="Direct link to Changed Packages" translate="no">​</a></h2>
+        <content type="html"><![CDATA[<h2 class="anchor anchorTargetStickyNavbar_tleR" id="changed-packages">Changed Packages<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/04/11/version-bump#changed-packages" class="hash-link" aria-label="Direct link to Changed Packages" title="Direct link to Changed Packages" translate="no">​</a></h2>
 <p>All <code>react-bootstrap-table-ng</code> packages version bump to <code>5.19.3</code></p>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="changelog">Changelog<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/04/11/version-bump#changelog" class="hash-link" aria-label="Direct link to Changelog" title="Direct link to Changelog" translate="no">​</a></h2>
+<h2 class="anchor anchorTargetStickyNavbar_tleR" id="changelog">Changelog<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/04/11/version-bump#changelog" class="hash-link" aria-label="Direct link to Changelog" title="Direct link to Changelog" translate="no">​</a></h2>
 <ul>
 <li class="">Using react 18 features such as hooks</li>
 <li class="">Added table id if not specified</li>
@@ -130,13 +229,13 @@
 <li class="">Added unit test for cell expandable flag</li>
 <li class="">Fixed lint errors and warnings</li>
 </ul>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="bug-fixes">Bug fixes<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/04/11/version-bump#bug-fixes" class="hash-link" aria-label="Direct link to Bug fixes" title="Direct link to Bug fixes" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="bug-fixes">Bug fixes<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/04/11/version-bump#bug-fixes" class="hash-link" aria-label="Direct link to Bug fixes" title="Direct link to Bug fixes" translate="no">​</a></h3>
 <p>N/A</p>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features">Features<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/04/11/version-bump#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="features">Features<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/04/11/version-bump#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
 <ul>
 <li class="">Cell expand feature. Cell expand will be enabled by default. To disable expand for a column, set column.cellExpandable to false.</li>
 </ul>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="enhancements">Enhancements<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/04/11/version-bump#enhancements" class="hash-link" aria-label="Direct link to Enhancements" title="Direct link to Enhancements" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="enhancements">Enhancements<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/04/11/version-bump#enhancements" class="hash-link" aria-label="Direct link to Enhancements" title="Direct link to Enhancements" translate="no">​</a></h3>
 <p>N/A</p>]]></content>
         <author>
             <name>Jeff Zhou</name>
@@ -149,14 +248,14 @@
         <link href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/02/22/version-bump"/>
         <updated>2026-02-22T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[Changed Packages]]></summary>
-        <content type="html"><![CDATA[<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="changed-packages">Changed Packages<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/02/22/version-bump#changed-packages" class="hash-link" aria-label="Direct link to Changed Packages" title="Direct link to Changed Packages" translate="no">​</a></h2>
+        <content type="html"><![CDATA[<h2 class="anchor anchorTargetStickyNavbar_tleR" id="changed-packages">Changed Packages<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/02/22/version-bump#changed-packages" class="hash-link" aria-label="Direct link to Changed Packages" title="Direct link to Changed Packages" translate="no">​</a></h2>
 <p>All <code>react-bootstrap-table-ng</code> packages version bump to <code>5.19.2</code></p>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="changelog">Changelog<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/02/22/version-bump#changelog" class="hash-link" aria-label="Direct link to Changelog" title="Direct link to Changelog" translate="no">​</a></h2>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="bug-fixes">Bug fixes<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/02/22/version-bump#bug-fixes" class="hash-link" aria-label="Direct link to Bug fixes" title="Direct link to Bug fixes" translate="no">​</a></h3>
+<h2 class="anchor anchorTargetStickyNavbar_tleR" id="changelog">Changelog<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/02/22/version-bump#changelog" class="hash-link" aria-label="Direct link to Changelog" title="Direct link to Changelog" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="bug-fixes">Bug fixes<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/02/22/version-bump#bug-fixes" class="hash-link" aria-label="Direct link to Bug fixes" title="Direct link to Bug fixes" translate="no">​</a></h3>
 <p>N/A</p>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features">Features<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/02/22/version-bump#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="features">Features<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/02/22/version-bump#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
 <p>N/A</p>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="enhancements">Enhancements<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/02/22/version-bump#enhancements" class="hash-link" aria-label="Direct link to Enhancements" title="Direct link to Enhancements" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="enhancements">Enhancements<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/02/22/version-bump#enhancements" class="hash-link" aria-label="Direct link to Enhancements" title="Direct link to Enhancements" translate="no">​</a></h3>
 <ul>
 <li class="">Column resize will be enabled by default when columnResize is set. To disable resize for a column, set column.resizable to false.</li>
 </ul>]]></content>
@@ -171,16 +270,16 @@
         <link href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/02/19/version-bump"/>
         <updated>2026-02-19T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[Changed Packages]]></summary>
-        <content type="html"><![CDATA[<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="changed-packages">Changed Packages<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/02/19/version-bump#changed-packages" class="hash-link" aria-label="Direct link to Changed Packages" title="Direct link to Changed Packages" translate="no">​</a></h2>
+        <content type="html"><![CDATA[<h2 class="anchor anchorTargetStickyNavbar_tleR" id="changed-packages">Changed Packages<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/02/19/version-bump#changed-packages" class="hash-link" aria-label="Direct link to Changed Packages" title="Direct link to Changed Packages" translate="no">​</a></h2>
 <p>All <code>react-bootstrap-table-ng</code> packages version bump to <code>5.19.1</code></p>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="changelog">Changelog<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/02/19/version-bump#changelog" class="hash-link" aria-label="Direct link to Changelog" title="Direct link to Changelog" translate="no">​</a></h2>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="bug-fixes">Bug fixes<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/02/19/version-bump#bug-fixes" class="hash-link" aria-label="Direct link to Bug fixes" title="Direct link to Bug fixes" translate="no">​</a></h3>
+<h2 class="anchor anchorTargetStickyNavbar_tleR" id="changelog">Changelog<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/02/19/version-bump#changelog" class="hash-link" aria-label="Direct link to Changelog" title="Direct link to Changelog" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="bug-fixes">Bug fixes<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/02/19/version-bump#bug-fixes" class="hash-link" aria-label="Direct link to Bug fixes" title="Direct link to Bug fixes" translate="no">​</a></h3>
 <p>N/A</p>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features">Features<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/02/19/version-bump#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="features">Features<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/02/19/version-bump#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
 <ul>
 <li class="">Added column resizable feature.</li>
 </ul>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="enhancements">Enhancements<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/02/19/version-bump#enhancements" class="hash-link" aria-label="Direct link to Enhancements" title="Direct link to Enhancements" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="enhancements">Enhancements<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/02/19/version-bump#enhancements" class="hash-link" aria-label="Direct link to Enhancements" title="Direct link to Enhancements" translate="no">​</a></h3>
 <ul>
 <li class="">Removed <code>defaultProps</code> for function components (React 19 preparation).</li>
 </ul>]]></content>
@@ -195,14 +294,14 @@
         <link href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/02/16/version-bump"/>
         <updated>2026-02-16T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[Changed Packages]]></summary>
-        <content type="html"><![CDATA[<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="changed-packages">Changed Packages<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/02/16/version-bump#changed-packages" class="hash-link" aria-label="Direct link to Changed Packages" title="Direct link to Changed Packages" translate="no">​</a></h2>
+        <content type="html"><![CDATA[<h2 class="anchor anchorTargetStickyNavbar_tleR" id="changed-packages">Changed Packages<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/02/16/version-bump#changed-packages" class="hash-link" aria-label="Direct link to Changed Packages" title="Direct link to Changed Packages" translate="no">​</a></h2>
 <p>All <code>react-bootstrap-table-ng</code> packages version bump to <code>5.19.0</code></p>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="changelog">Changelog<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/02/16/version-bump#changelog" class="hash-link" aria-label="Direct link to Changelog" title="Direct link to Changelog" translate="no">​</a></h2>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="bug-fixes">Bug fixes<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/02/16/version-bump#bug-fixes" class="hash-link" aria-label="Direct link to Bug fixes" title="Direct link to Bug fixes" translate="no">​</a></h3>
+<h2 class="anchor anchorTargetStickyNavbar_tleR" id="changelog">Changelog<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/02/16/version-bump#changelog" class="hash-link" aria-label="Direct link to Changelog" title="Direct link to Changelog" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="bug-fixes">Bug fixes<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/02/16/version-bump#bug-fixes" class="hash-link" aria-label="Direct link to Bug fixes" title="Direct link to Bug fixes" translate="no">​</a></h3>
 <p>N/A</p>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features">Features<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/02/16/version-bump#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="features">Features<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/02/16/version-bump#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
 <p>N/A</p>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="enhancements">Enhancements<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/02/16/version-bump#enhancements" class="hash-link" aria-label="Direct link to Enhancements" title="Direct link to Enhancements" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="enhancements">Enhancements<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/02/16/version-bump#enhancements" class="hash-link" aria-label="Direct link to Enhancements" title="Direct link to Enhancements" translate="no">​</a></h3>
 <ul>
 <li class="">Added support for Bootstrap 5.x.</li>
 </ul>]]></content>
@@ -217,14 +316,14 @@
         <link href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/02/11/version-bump"/>
         <updated>2026-02-11T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[Changed Packages]]></summary>
-        <content type="html"><![CDATA[<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="changed-packages">Changed Packages<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/02/11/version-bump#changed-packages" class="hash-link" aria-label="Direct link to Changed Packages" title="Direct link to Changed Packages" translate="no">​</a></h2>
+        <content type="html"><![CDATA[<h2 class="anchor anchorTargetStickyNavbar_tleR" id="changed-packages">Changed Packages<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/02/11/version-bump#changed-packages" class="hash-link" aria-label="Direct link to Changed Packages" title="Direct link to Changed Packages" translate="no">​</a></h2>
 <p>All <code>react-bootstrap-table-ng</code> packages version bump to <code>4.19.2</code></p>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="changelog">Changelog<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/02/11/version-bump#changelog" class="hash-link" aria-label="Direct link to Changelog" title="Direct link to Changelog" translate="no">​</a></h2>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="bug-fixes">Bug fixes<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/02/11/version-bump#bug-fixes" class="hash-link" aria-label="Direct link to Bug fixes" title="Direct link to Bug fixes" translate="no">​</a></h3>
+<h2 class="anchor anchorTargetStickyNavbar_tleR" id="changelog">Changelog<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/02/11/version-bump#changelog" class="hash-link" aria-label="Direct link to Changelog" title="Direct link to Changelog" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="bug-fixes">Bug fixes<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/02/11/version-bump#bug-fixes" class="hash-link" aria-label="Direct link to Bug fixes" title="Direct link to Bug fixes" translate="no">​</a></h3>
 <p>N/A</p>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features">Features<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/02/11/version-bump#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="features">Features<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/02/11/version-bump#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
 <p>N/A</p>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="enhancements">Enhancements<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/02/11/version-bump#enhancements" class="hash-link" aria-label="Direct link to Enhancements" title="Direct link to Enhancements" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="enhancements">Enhancements<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/02/11/version-bump#enhancements" class="hash-link" aria-label="Direct link to Enhancements" title="Direct link to Enhancements" translate="no">​</a></h3>
 <ul>
 <li class="">Converted <code>PropTypes</code> to TypeScript types.</li>
 <li class="">Removed <code>prop-types</code> from dependencies.</li>
@@ -240,16 +339,16 @@
         <link href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/02/10/version-bump"/>
         <updated>2026-02-10T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[Changed Packages]]></summary>
-        <content type="html"><![CDATA[<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="changed-packages">Changed Packages<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/02/10/version-bump#changed-packages" class="hash-link" aria-label="Direct link to Changed Packages" title="Direct link to Changed Packages" translate="no">​</a></h2>
+        <content type="html"><![CDATA[<h2 class="anchor anchorTargetStickyNavbar_tleR" id="changed-packages">Changed Packages<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/02/10/version-bump#changed-packages" class="hash-link" aria-label="Direct link to Changed Packages" title="Direct link to Changed Packages" translate="no">​</a></h2>
 <p>All <code>react-bootstrap-table-ng</code> packages version bump to <code>4.19.1</code></p>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="changelog">Changelog<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/02/10/version-bump#changelog" class="hash-link" aria-label="Direct link to Changelog" title="Direct link to Changelog" translate="no">​</a></h2>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="bug-fixes">Bug fixes<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/02/10/version-bump#bug-fixes" class="hash-link" aria-label="Direct link to Bug fixes" title="Direct link to Bug fixes" translate="no">​</a></h3>
+<h2 class="anchor anchorTargetStickyNavbar_tleR" id="changelog">Changelog<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/02/10/version-bump#changelog" class="hash-link" aria-label="Direct link to Changelog" title="Direct link to Changelog" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="bug-fixes">Bug fixes<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/02/10/version-bump#bug-fixes" class="hash-link" aria-label="Direct link to Bug fixes" title="Direct link to Bug fixes" translate="no">​</a></h3>
 <ul>
 <li class="">Fixed infinite loop of <code>forceUpdate</code> on remote filters when using customized pagination.</li>
 </ul>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features">Features<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/02/10/version-bump#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="features">Features<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/02/10/version-bump#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
 <p>N/A</p>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="enhancements">Enhancements<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/02/10/version-bump#enhancements" class="hash-link" aria-label="Direct link to Enhancements" title="Direct link to Enhancements" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="enhancements">Enhancements<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/02/10/version-bump#enhancements" class="hash-link" aria-label="Direct link to Enhancements" title="Direct link to Enhancements" translate="no">​</a></h3>
 <ul>
 <li class="">Brought in documentation with Docusaurus 3.9.2.</li>
 <li class="">Upgraded Storybook to 10.2.7.</li>
@@ -266,14 +365,14 @@
         <link href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/01/30/version-bump"/>
         <updated>2026-01-30T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[Changed Packages]]></summary>
-        <content type="html"><![CDATA[<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="changed-packages">Changed Packages<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/01/30/version-bump#changed-packages" class="hash-link" aria-label="Direct link to Changed Packages" title="Direct link to Changed Packages" translate="no">​</a></h2>
+        <content type="html"><![CDATA[<h2 class="anchor anchorTargetStickyNavbar_tleR" id="changed-packages">Changed Packages<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/01/30/version-bump#changed-packages" class="hash-link" aria-label="Direct link to Changed Packages" title="Direct link to Changed Packages" translate="no">​</a></h2>
 <p>All <code>react-bootstrap-table-ng</code> packages version bump to <code>4.19.0</code></p>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="changelog">Changelog<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/01/30/version-bump#changelog" class="hash-link" aria-label="Direct link to Changelog" title="Direct link to Changelog" translate="no">​</a></h2>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="bug-fixes">Bug fixes<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/01/30/version-bump#bug-fixes" class="hash-link" aria-label="Direct link to Bug fixes" title="Direct link to Bug fixes" translate="no">​</a></h3>
+<h2 class="anchor anchorTargetStickyNavbar_tleR" id="changelog">Changelog<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/01/30/version-bump#changelog" class="hash-link" aria-label="Direct link to Changelog" title="Direct link to Changelog" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="bug-fixes">Bug fixes<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/01/30/version-bump#bug-fixes" class="hash-link" aria-label="Direct link to Bug fixes" title="Direct link to Bug fixes" translate="no">​</a></h3>
 <p>N/A</p>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features">Features<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/01/30/version-bump#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="features">Features<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/01/30/version-bump#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
 <p>N/A</p>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="enhancements">Enhancements<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/01/30/version-bump#enhancements" class="hash-link" aria-label="Direct link to Enhancements" title="Direct link to Enhancements" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="enhancements">Enhancements<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/01/30/version-bump#enhancements" class="hash-link" aria-label="Direct link to Enhancements" title="Direct link to Enhancements" translate="no">​</a></h3>
 <ul>
 <li class="">Added support for React 19.</li>
 </ul>]]></content>
@@ -288,9 +387,9 @@
         <link href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/01/29/version-bump"/>
         <updated>2026-01-29T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[Changed Packages]]></summary>
-        <content type="html"><![CDATA[<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="changed-packages">Changed Packages<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/01/29/version-bump#changed-packages" class="hash-link" aria-label="Direct link to Changed Packages" title="Direct link to Changed Packages" translate="no">​</a></h2>
+        <content type="html"><![CDATA[<h2 class="anchor anchorTargetStickyNavbar_tleR" id="changed-packages">Changed Packages<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/01/29/version-bump#changed-packages" class="hash-link" aria-label="Direct link to Changed Packages" title="Direct link to Changed Packages" translate="no">​</a></h2>
 <p>All <code>react-bootstrap-table-ng</code> packages version bump to <code>4.18.0</code></p>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="changelog">Changelog<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/01/29/version-bump#changelog" class="hash-link" aria-label="Direct link to Changelog" title="Direct link to Changelog" translate="no">​</a></h2>
+<h2 class="anchor anchorTargetStickyNavbar_tleR" id="changelog">Changelog<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/01/29/version-bump#changelog" class="hash-link" aria-label="Direct link to Changelog" title="Direct link to Changelog" translate="no">​</a></h2>
 <ul>
 <li class="">Upgraded multiple dependency packages.</li>
 <li class="">Upgraded Yarn from classic to modern Yarn 4.12.0.</li>
@@ -300,11 +399,11 @@
 <li class="">Updated Storybook examples to use Bootstrap 3.4.1 and 4.6.2 CSS.</li>
 <li class="">Upgraded Sass and replaced <code>@import</code> with <code>@use</code> in all <code>.scss</code> files.</li>
 </ul>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="bug-fixes">Bug fixes<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/01/29/version-bump#bug-fixes" class="hash-link" aria-label="Direct link to Bug fixes" title="Direct link to Bug fixes" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="bug-fixes">Bug fixes<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/01/29/version-bump#bug-fixes" class="hash-link" aria-label="Direct link to Bug fixes" title="Direct link to Bug fixes" translate="no">​</a></h3>
 <p>N/A</p>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features">Features<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/01/29/version-bump#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="features">Features<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/01/29/version-bump#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
 <p>N/A</p>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="enhancements">Enhancements<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/01/29/version-bump#enhancements" class="hash-link" aria-label="Direct link to Enhancements" title="Direct link to Enhancements" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="enhancements">Enhancements<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2026/01/29/version-bump#enhancements" class="hash-link" aria-label="Direct link to Enhancements" title="Direct link to Enhancements" translate="no">​</a></h3>
 <ul>
 <li class="">Added support for React 18.x (18.3.1).</li>
 </ul>]]></content>
@@ -319,19 +418,19 @@
         <link href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/05/31/version-bump"/>
         <updated>2020-05-31T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[Changed Packages]]></summary>
-        <content type="html"><![CDATA[<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="changed-packages">Changed Packages<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/05/31/version-bump#changed-packages" class="hash-link" aria-label="Direct link to Changed Packages" title="Direct link to Changed Packages" translate="no">​</a></h2>
+        <content type="html"><![CDATA[<h2 class="anchor anchorTargetStickyNavbar_tleR" id="changed-packages">Changed Packages<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/05/31/version-bump#changed-packages" class="hash-link" aria-label="Direct link to Changed Packages" title="Direct link to Changed Packages" translate="no">​</a></h2>
 <p>We got following packages version bump in this release:</p>
 <ul>
 <li class=""><code>react-bootstrap-table-next@4.0.3</code></li>
 </ul>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="changelog">Changelog<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/05/31/version-bump#changelog" class="hash-link" aria-label="Direct link to Changelog" title="Direct link to Changelog" translate="no">​</a></h2>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="bug-fixes">Bug fixes<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/05/31/version-bump#bug-fixes" class="hash-link" aria-label="Direct link to Bug fixes" title="Direct link to Bug fixes" translate="no">​</a></h3>
+<h2 class="anchor anchorTargetStickyNavbar_tleR" id="changelog">Changelog<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/05/31/version-bump#changelog" class="hash-link" aria-label="Direct link to Changelog" title="Direct link to Changelog" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="bug-fixes">Bug fixes<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/05/31/version-bump#bug-fixes" class="hash-link" aria-label="Direct link to Bug fixes" title="Direct link to Bug fixes" translate="no">​</a></h3>
 <ul>
 <li class="">Fixed Lodash for underscore - <code>_utils2.default.contains</code> is not a function(<a href="https://github.com/react-bootstrap-table/react-bootstrap-table2/pull/1386/commits/cd00c3c3b49f98e272302238e13dd732b80fa442" target="_blank" rel="noopener noreferrer" class="">cd00c3c</a>)</li>
 </ul>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features">Features<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/05/31/version-bump#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="features">Features<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/05/31/version-bump#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
 <p>N/A</p>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="enhancements">Enhancements<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/05/31/version-bump#enhancements" class="hash-link" aria-label="Direct link to Enhancements" title="Direct link to Enhancements" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="enhancements">Enhancements<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/05/31/version-bump#enhancements" class="hash-link" aria-label="Direct link to Enhancements" title="Direct link to Enhancements" translate="no">​</a></h3>
 <ul>
 <li class="">Allow data containing dots in key names(<a href="https://github.com/react-bootstrap-table/react-bootstrap-table2/pull/1383/commits/8b6992bea5fbbb856d95cde5b7861f40a915083e" target="_blank" rel="noopener noreferrer" class="">8b6992b</a>)</li>
 </ul>]]></content>
@@ -346,19 +445,19 @@
         <link href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/05/17/version-bump"/>
         <updated>2020-05-17T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[Changed Packages]]></summary>
-        <content type="html"><![CDATA[<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="changed-packages">Changed Packages<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/05/17/version-bump#changed-packages" class="hash-link" aria-label="Direct link to Changed Packages" title="Direct link to Changed Packages" translate="no">​</a></h2>
+        <content type="html"><![CDATA[<h2 class="anchor anchorTargetStickyNavbar_tleR" id="changed-packages">Changed Packages<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/05/17/version-bump#changed-packages" class="hash-link" aria-label="Direct link to Changed Packages" title="Direct link to Changed Packages" translate="no">​</a></h2>
 <p>We got following packages version bump in this release:</p>
 <ul>
 <li class=""><code>react-bootstrap-table-next@4.0.2</code></li>
 <li class=""><code>react-bootstrap-table2-filter@1.3.3</code></li>
 <li class=""><code>react-bootstrap-table2-toolkit@2.1.3</code></li>
 </ul>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="changelog">Changelog<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/05/17/version-bump#changelog" class="hash-link" aria-label="Direct link to Changelog" title="Direct link to Changelog" translate="no">​</a></h2>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="bug-fixes">Bug fixes<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/05/17/version-bump#bug-fixes" class="hash-link" aria-label="Direct link to Bug fixes" title="Direct link to Bug fixes" translate="no">​</a></h3>
+<h2 class="anchor anchorTargetStickyNavbar_tleR" id="changelog">Changelog<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/05/17/version-bump#changelog" class="hash-link" aria-label="Direct link to Changelog" title="Direct link to Changelog" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="bug-fixes">Bug fixes<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/05/17/version-bump#bug-fixes" class="hash-link" aria-label="Direct link to Bug fixes" title="Direct link to Bug fixes" translate="no">​</a></h3>
 <p>N/A</p>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features">Features<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/05/17/version-bump#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="features">Features<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/05/17/version-bump#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
 <p>N/A</p>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="enhancements">Enhancements<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/05/17/version-bump#enhancements" class="hash-link" aria-label="Direct link to Enhancements" title="Direct link to Enhancements" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="enhancements">Enhancements<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/05/17/version-bump#enhancements" class="hash-link" aria-label="Direct link to Enhancements" title="Direct link to Enhancements" translate="no">​</a></h3>
 <ul>
 <li class="">Implement <code>afterFilter</code> function(<a href="https://github.com/react-bootstrap-table/react-bootstrap-table2/pull/1341/commits/51fbb1e8c2fc7f27b8bc723e892ccdd33b1dd6fe" target="_blank" rel="noopener noreferrer" class="">51fbb1e</a>)</li>
 <li class="">Add <code>onAuxClick</code> event for column and row event(<a href="https://github.com/react-bootstrap-table/react-bootstrap-table2/pull/1341/commits/54df96c60fe14b4926a032db5dae3ea1702d8325" target="_blank" rel="noopener noreferrer" class="">54df96c</a>)</li>
@@ -374,18 +473,18 @@
         <link href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/04/18/version-bump"/>
         <updated>2020-04-18T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[Changed Packages]]></summary>
-        <content type="html"><![CDATA[<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="changed-packages">Changed Packages<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/04/18/version-bump#changed-packages" class="hash-link" aria-label="Direct link to Changed Packages" title="Direct link to Changed Packages" translate="no">​</a></h2>
+        <content type="html"><![CDATA[<h2 class="anchor anchorTargetStickyNavbar_tleR" id="changed-packages">Changed Packages<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/04/18/version-bump#changed-packages" class="hash-link" aria-label="Direct link to Changed Packages" title="Direct link to Changed Packages" translate="no">​</a></h2>
 <p>We got following packages version bump in this release:</p>
 <ul>
 <li class=""><code>react-bootstrap-table-next@4.0.1</code></li>
 <li class=""><code>react-bootstrap-table2-filter@1.3.2</code></li>
 </ul>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="changelog">Changelog<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/04/18/version-bump#changelog" class="hash-link" aria-label="Direct link to Changelog" title="Direct link to Changelog" translate="no">​</a></h2>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="bug-fixes">Bug fixes<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/04/18/version-bump#bug-fixes" class="hash-link" aria-label="Direct link to Bug fixes" title="Direct link to Bug fixes" translate="no">​</a></h3>
+<h2 class="anchor anchorTargetStickyNavbar_tleR" id="changelog">Changelog<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/04/18/version-bump#changelog" class="hash-link" aria-label="Direct link to Changelog" title="Direct link to Changelog" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="bug-fixes">Bug fixes<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/04/18/version-bump#bug-fixes" class="hash-link" aria-label="Direct link to Bug fixes" title="Direct link to Bug fixes" translate="no">​</a></h3>
 <p>N/A</p>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features">Features<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/04/18/version-bump#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="features">Features<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/04/18/version-bump#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
 <p>N/A</p>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="enhancements">Enhancements<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/04/18/version-bump#enhancements" class="hash-link" aria-label="Direct link to Enhancements" title="Direct link to Enhancements" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="enhancements">Enhancements<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/04/18/version-bump#enhancements" class="hash-link" aria-label="Direct link to Enhancements" title="Direct link to Enhancements" translate="no">​</a></h3>
 <ul>
 <li class="">Implement <code>afterFilter</code> function(<a href="https://github.com/react-bootstrap-table/react-bootstrap-table2/pull/1341/commits/51fbb1e8c2fc7f27b8bc723e892ccdd33b1dd6fe" target="_blank" rel="noopener noreferrer" class="">51fbb1e</a>)</li>
 <li class="">Add <code>onAuxClick</code> event for column and row event(<a href="https://github.com/react-bootstrap-table/react-bootstrap-table2/pull/1341/commits/54df96c60fe14b4926a032db5dae3ea1702d8325" target="_blank" rel="noopener noreferrer" class="">54df96c</a>)</li>
@@ -401,20 +500,20 @@
         <link href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/03/16/version-bump"/>
         <updated>2020-03-16T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[Changed Packages]]></summary>
-        <content type="html"><![CDATA[<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="changed-packages">Changed Packages<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/03/16/version-bump#changed-packages" class="hash-link" aria-label="Direct link to Changed Packages" title="Direct link to Changed Packages" translate="no">​</a></h2>
+        <content type="html"><![CDATA[<h2 class="anchor anchorTargetStickyNavbar_tleR" id="changed-packages">Changed Packages<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/03/16/version-bump#changed-packages" class="hash-link" aria-label="Direct link to Changed Packages" title="Direct link to Changed Packages" translate="no">​</a></h2>
 <p>We got following packages version bump in this release:</p>
 <ul>
 <li class=""><code>react-bootstrap-table2-paginator@2.1.2</code></li>
 </ul>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="changelog">Changelog<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/03/16/version-bump#changelog" class="hash-link" aria-label="Direct link to Changelog" title="Direct link to Changelog" translate="no">​</a></h2>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="bug-fixes">Bug fixes<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/03/16/version-bump#bug-fixes" class="hash-link" aria-label="Direct link to Bug fixes" title="Direct link to Bug fixes" translate="no">​</a></h3>
+<h2 class="anchor anchorTargetStickyNavbar_tleR" id="changelog">Changelog<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/03/16/version-bump#changelog" class="hash-link" aria-label="Direct link to Changelog" title="Direct link to Changelog" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="bug-fixes">Bug fixes<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/03/16/version-bump#bug-fixes" class="hash-link" aria-label="Direct link to Bug fixes" title="Direct link to Bug fixes" translate="no">​</a></h3>
 <ul>
 <li class="">Fix <code>hidePageListOnlyOnePage</code> isn't work on <code>PaginationListStandalone</code>(<a href="https://github.com/react-bootstrap-table/react-bootstrap-table2/commit/ac73e9bdc280677dfa773f19f0d3b30477d0acab" target="_blank" rel="noopener noreferrer" class="">ac73e9b</a>)</li>
 <li class="">Fix <code>bootstrap4</code> isn't work for <code>SizePerPageDropdownStandalone</code>(<a href="https://github.com/react-bootstrap-table/react-bootstrap-table2/commit/b55aba68484e5aa6bdcb32de2c5c9afa4ba3dd54" target="_blank" rel="noopener noreferrer" class="">b55aba6</a>)</li>
 </ul>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features">Features<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/03/16/version-bump#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="features">Features<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/03/16/version-bump#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
 <p>N/A</p>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="enhancements">Enhancements<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/03/16/version-bump#enhancements" class="hash-link" aria-label="Direct link to Enhancements" title="Direct link to Enhancements" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="enhancements">Enhancements<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/03/16/version-bump#enhancements" class="hash-link" aria-label="Direct link to Enhancements" title="Direct link to Enhancements" translate="no">​</a></h3>
 <ul>
 <li class="">Implement <code>disablePageTitle</code> to allow to disable title on page button(<a href="https://github.com/react-bootstrap-table/react-bootstrap-table2/commit/a3f8cfc01827bbcac858a3c2e5061717b0c864c8" target="_blank" rel="noopener noreferrer" class="">a3f8cfc</a>)</li>
 </ul>]]></content>
@@ -429,24 +528,24 @@
         <link href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/03/07/version-bump"/>
         <updated>2020-03-07T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[Changed Packages]]></summary>
-        <content type="html"><![CDATA[<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="changed-packages">Changed Packages<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/03/07/version-bump#changed-packages" class="hash-link" aria-label="Direct link to Changed Packages" title="Direct link to Changed Packages" translate="no">​</a></h2>
+        <content type="html"><![CDATA[<h2 class="anchor anchorTargetStickyNavbar_tleR" id="changed-packages">Changed Packages<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/03/07/version-bump#changed-packages" class="hash-link" aria-label="Direct link to Changed Packages" title="Direct link to Changed Packages" translate="no">​</a></h2>
 <p>We got following packages version bump in this release:</p>
 <ul>
 <li class=""><code>react-bootstrap-table-next@4.0.0</code></li>
 <li class=""><code>react-bootstrap-table2-filter@1.3.1</code></li>
 <li class=""><code>react-bootstrap-table2-paginator@2.1.1</code></li>
 </ul>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="changelog">Changelog<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/03/07/version-bump#changelog" class="hash-link" aria-label="Direct link to Changelog" title="Direct link to Changelog" translate="no">​</a></h2>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="bug-fixes">Bug fixes<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/03/07/version-bump#bug-fixes" class="hash-link" aria-label="Direct link to Bug fixes" title="Direct link to Bug fixes" translate="no">​</a></h3>
+<h2 class="anchor anchorTargetStickyNavbar_tleR" id="changelog">Changelog<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/03/07/version-bump#changelog" class="hash-link" aria-label="Direct link to Changelog" title="Direct link to Changelog" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="bug-fixes">Bug fixes<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/03/07/version-bump#bug-fixes" class="hash-link" aria-label="Direct link to Bug fixes" title="Direct link to Bug fixes" translate="no">​</a></h3>
 <ul>
 <li class="">Fixed hardcode id for size per page dropdown(<a href="https://github.com/react-bootstrap-table/react-bootstrap-table2/pull/1277/commits/094c907c438472e4e617b8d8e455e0aa8793be0f" target="_blank" rel="noopener noreferrer" class="">094c907</a>)</li>
 <li class="">Add <code>type=button</code> for size per page dropdown(<a href="https://github.com/react-bootstrap-table/react-bootstrap-table2/pull/1277/commits/094c907c438472e4e617b8d8e455e0aa8793be0f" target="_blank" rel="noopener noreferrer" class="">094c907</a>)</li>
 <li class="">Fix abnormal <code>onFilter</code> calls(SelectFilter onFilter hook is not fired when filter value is reset)(<a href="https://github.com/react-bootstrap-table/react-bootstrap-table2/commit/1f738068f29bb283d21dca6ee428736a9a274b1e" target="_blank" rel="noopener noreferrer" class="">1f73806</a>)</li>
 <li class="">Fix hardcode id for column filters(<a href="https://github.com/react-bootstrap-table/react-bootstrap-table2/commit/6d7a4c478314b55b0a90551c6a83296991a387a6" target="_blank" rel="noopener noreferrer" class="">6d7a4c4</a>)</li>
 </ul>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features">Features<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/03/07/version-bump#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="features">Features<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/03/07/version-bump#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
 <p>N/A</p>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="enhancements">Enhancements<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/03/07/version-bump#enhancements" class="hash-link" aria-label="Direct link to Enhancements" title="Direct link to Enhancements" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="enhancements">Enhancements<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/03/07/version-bump#enhancements" class="hash-link" aria-label="Direct link to Enhancements" title="Direct link to Enhancements" translate="no">​</a></h3>
 <ul>
 <li class="">Upgrade <code>react-transition-group</code> (<a href="https://github.com/react-bootstrap-table/react-bootstrap-table2/commit/9c66a2020b30cad4855935ec4e6094f7ee254319" target="_blank" rel="noopener noreferrer" class="">9c66a20</a>)</li>
 </ul>]]></content>
@@ -461,20 +560,20 @@
         <link href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/02/16/version-bump"/>
         <updated>2020-02-16T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[Changed Packages]]></summary>
-        <content type="html"><![CDATA[<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="changed-packages">Changed Packages<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/02/16/version-bump#changed-packages" class="hash-link" aria-label="Direct link to Changed Packages" title="Direct link to Changed Packages" translate="no">​</a></h2>
+        <content type="html"><![CDATA[<h2 class="anchor anchorTargetStickyNavbar_tleR" id="changed-packages">Changed Packages<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/02/16/version-bump#changed-packages" class="hash-link" aria-label="Direct link to Changed Packages" title="Direct link to Changed Packages" translate="no">​</a></h2>
 <p>We got following packages version bump in this release:</p>
 <ul>
 <li class=""><code>react-bootstrap-table-next@3.3.5</code></li>
 </ul>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="changelog">Changelog<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/02/16/version-bump#changelog" class="hash-link" aria-label="Direct link to Changelog" title="Direct link to Changelog" translate="no">​</a></h2>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="bug-fixes">Bug fixes<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/02/16/version-bump#bug-fixes" class="hash-link" aria-label="Direct link to Bug fixes" title="Direct link to Bug fixes" translate="no">​</a></h3>
+<h2 class="anchor anchorTargetStickyNavbar_tleR" id="changelog">Changelog<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/02/16/version-bump#changelog" class="hash-link" aria-label="Direct link to Changelog" title="Direct link to Changelog" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="bug-fixes">Bug fixes<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/02/16/version-bump#bug-fixes" class="hash-link" aria-label="Direct link to Bug fixes" title="Direct link to Bug fixes" translate="no">​</a></h3>
 <ul>
 <li class="">Fixed Accessibility Issue: Sortable table headers not read by sceen reader(<a href="https://github.com/react-bootstrap-table/react-bootstrap-table2/pull/1259/commits/2d418d851656816b2aee9edb778ec00476610b21" target="_blank" rel="noopener noreferrer" class="">2d418d8</a>)</li>
 <li class="">Fixed column sorting feature breaks if the initial columns array doesn't have sort field(<a href="https://github.com/react-bootstrap-table/react-bootstrap-table2/pull/1259/commits/c1d1d72b69ffa6851d0528f8765eadc6902eed1f" target="_blank" rel="noopener noreferrer" class="">c1d1d72</a>)</li>
 </ul>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features">Features<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/02/16/version-bump#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="features">Features<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/02/16/version-bump#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
 <p>N/A</p>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="enhancements">Enhancements<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/02/16/version-bump#enhancements" class="hash-link" aria-label="Direct link to Enhancements" title="Direct link to Enhancements" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="enhancements">Enhancements<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/02/16/version-bump#enhancements" class="hash-link" aria-label="Direct link to Enhancements" title="Direct link to Enhancements" translate="no">​</a></h3>
 <p>N/A</p>]]></content>
         <author>
             <name>Allen Fang</name>
@@ -487,22 +586,22 @@
         <link href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/02/09/version-bump"/>
         <updated>2020-02-09T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[Changed Packages]]></summary>
-        <content type="html"><![CDATA[<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="changed-packages">Changed Packages<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/02/09/version-bump#changed-packages" class="hash-link" aria-label="Direct link to Changed Packages" title="Direct link to Changed Packages" translate="no">​</a></h2>
+        <content type="html"><![CDATA[<h2 class="anchor anchorTargetStickyNavbar_tleR" id="changed-packages">Changed Packages<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/02/09/version-bump#changed-packages" class="hash-link" aria-label="Direct link to Changed Packages" title="Direct link to Changed Packages" translate="no">​</a></h2>
 <p>We got following packages version bump in this release:</p>
 <ul>
 <li class=""><code>react-bootstrap-table-next@3.3.4</code></li>
 <li class=""><code>react-bootstrap-table2-toolkit@2.1.2</code></li>
 </ul>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="changelog">Changelog<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/02/09/version-bump#changelog" class="hash-link" aria-label="Direct link to Changelog" title="Direct link to Changelog" translate="no">​</a></h2>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="bug-fixes">Bug fixes<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/02/09/version-bump#bug-fixes" class="hash-link" aria-label="Direct link to Bug fixes" title="Direct link to Bug fixes" translate="no">​</a></h3>
+<h2 class="anchor anchorTargetStickyNavbar_tleR" id="changelog">Changelog<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/02/09/version-bump#changelog" class="hash-link" aria-label="Direct link to Changelog" title="Direct link to Changelog" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="bug-fixes">Bug fixes<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/02/09/version-bump#bug-fixes" class="hash-link" aria-label="Direct link to Bug fixes" title="Direct link to Bug fixes" translate="no">​</a></h3>
 <ul>
 <li class="">Fixed accessibility issue: Users navigating with <code>tab</code> cannot trigger sort functionality(<a href="https://github.com/react-bootstrap-table/react-bootstrap-table2/pull/1246/commits/bfb259299d3adbca94feea9d497eb448c5533dbc" target="_blank" rel="noopener noreferrer" class="">bfb2592</a>)</li>
 <li class="">Fixed column sorting feature breaks if the initial columns array doesn't have sort field(<a href="https://github.com/react-bootstrap-table/react-bootstrap-table2/commit/5cc7882e4cf1490b6f094cd9cccbba01aabb1233" target="_blank" rel="noopener noreferrer" class="">5cc7882</a>)</li>
 <li class="">Fixed columns initially hidden when using ToolKitProvider and columns array changes(<a href="https://github.com/react-bootstrap-table/react-bootstrap-table2/commit/7162728b4536c97f6a42fb712c8082d387947a09" target="_blank" rel="noopener noreferrer" class="">7162728</a>)</li>
 </ul>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features">Features<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/02/09/version-bump#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="features">Features<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/02/09/version-bump#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
 <p>N/A</p>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="enhancements">Enhancements<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/02/09/version-bump#enhancements" class="hash-link" aria-label="Direct link to Enhancements" title="Direct link to Enhancements" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="enhancements">Enhancements<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2020/02/09/version-bump#enhancements" class="hash-link" aria-label="Direct link to Enhancements" title="Direct link to Enhancements" translate="no">​</a></h3>
 <ul>
 <li class="">Allow to add class on <code>thead</code> and <code>tbody</code>(<a href="https://github.com/react-bootstrap-table/react-bootstrap-table2/commit/7b593a783c2f6eba485b6bb3725d8360b34b7470" target="_blank" rel="noopener noreferrer" class="">7b593a7</a>)</li>
 </ul>]]></content>
@@ -517,52 +616,26 @@
         <link href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2019/12/07/version-bump"/>
         <updated>2019-12-07T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[Changed Packages]]></summary>
-        <content type="html"><![CDATA[<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="changed-packages">Changed Packages<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2019/12/07/version-bump#changed-packages" class="hash-link" aria-label="Direct link to Changed Packages" title="Direct link to Changed Packages" translate="no">​</a></h2>
+        <content type="html"><![CDATA[<h2 class="anchor anchorTargetStickyNavbar_tleR" id="changed-packages">Changed Packages<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2019/12/07/version-bump#changed-packages" class="hash-link" aria-label="Direct link to Changed Packages" title="Direct link to Changed Packages" translate="no">​</a></h2>
 <p>We got following packages version bump in this release:</p>
 <ul>
 <li class=""><code>react-bootstrap-table-next@3.3.3</code></li>
 <li class=""><code>react-bootstrap-table2-toolkit@2.1.1</code></li>
 </ul>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="changelog">Changelog<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2019/12/07/version-bump#changelog" class="hash-link" aria-label="Direct link to Changelog" title="Direct link to Changelog" translate="no">​</a></h2>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="bug-fixes">Bug fixes<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2019/12/07/version-bump#bug-fixes" class="hash-link" aria-label="Direct link to Bug fixes" title="Direct link to Bug fixes" translate="no">​</a></h3>
+<h2 class="anchor anchorTargetStickyNavbar_tleR" id="changelog">Changelog<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2019/12/07/version-bump#changelog" class="hash-link" aria-label="Direct link to Changelog" title="Direct link to Changelog" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="bug-fixes">Bug fixes<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2019/12/07/version-bump#bug-fixes" class="hash-link" aria-label="Direct link to Bug fixes" title="Direct link to Bug fixes" translate="no">​</a></h3>
 <ul>
 <li class="">Fixed wrong table caption in bootstrap 4(<a href="https://github.com/react-bootstrap-table/react-bootstrap-table2/pull/1195/commits/ee829eb924538250d266761b7c7750238b0fb340" target="_blank" rel="noopener noreferrer" class="">38b0fb3</a>)</li>
 </ul>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features">Features<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2019/12/07/version-bump#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="features">Features<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2019/12/07/version-bump#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
 <ul>
 <li class="">Allow to export table footer to csv file(<a href="https://github.com/react-bootstrap-table/react-bootstrap-table2/pull/1195/commits/47d6eb097aee9d73a948be1ed4a2dc6123d5ec04" target="_blank" rel="noopener noreferrer" class="">47d6eb0</a>)</li>
 <li class="">Allow to manage sorting state(<a href="https://github.com/react-bootstrap-table/react-bootstrap-table2/pull/1195/commits/2068f518f6f1c6158c2124bb2399edf64da355a3" target="_blank" rel="noopener noreferrer" class="">2068f51</a>)</li>
 </ul>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="enhancements">Enhancements<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2019/12/07/version-bump#enhancements" class="hash-link" aria-label="Direct link to Enhancements" title="Direct link to Enhancements" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_tleR" id="enhancements">Enhancements<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2019/12/07/version-bump#enhancements" class="hash-link" aria-label="Direct link to Enhancements" title="Direct link to Enhancements" translate="no">​</a></h3>
 <ul>
 <li class="">One-time sorting configuration(<a href="https://github.com/react-bootstrap-table/react-bootstrap-table2/pull/1195/commits/a07b2da00a0e4703557c6ee5c7a74ff7df732a64" target="_blank" rel="noopener noreferrer" class="">a07b2da</a>)</li>
 </ul>]]></content>
-        <author>
-            <name>Allen Fang</name>
-            <uri>https://twitter.com/allenfang_tw</uri>
-        </author>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[New Release (2019-12-02)]]></title>
-        <id>https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2019/12/02/version-bump</id>
-        <link href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2019/12/02/version-bump"/>
-        <updated>2019-12-02T00:00:00.000Z</updated>
-        <summary type="html"><![CDATA[Changed Packages]]></summary>
-        <content type="html"><![CDATA[<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="changed-packages">Changed Packages<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2019/12/02/version-bump#changed-packages" class="hash-link" aria-label="Direct link to Changed Packages" title="Direct link to Changed Packages" translate="no">​</a></h2>
-<p>We got following packages version bump in this release:</p>
-<ul>
-<li class=""><code>react-bootstrap-table-next@3.3.2</code></li>
-</ul>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="changelog">Changelog<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2019/12/02/version-bump#changelog" class="hash-link" aria-label="Direct link to Changelog" title="Direct link to Changelog" translate="no">​</a></h2>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="bug-fixes">Bug fixes<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2019/12/02/version-bump#bug-fixes" class="hash-link" aria-label="Direct link to Bug fixes" title="Direct link to Bug fixes" translate="no">​</a></h3>
-<ul>
-<li class="">Fixed incorrect row colspan when apply column toggle or column.hidden(<a href="https://github.com/react-bootstrap-table/react-bootstrap-table2/commit/4a340c714bb6006a30c447eeba4fd44ceca1e379" target="_blank" rel="noopener noreferrer" class="">4a340c7</a>)</li>
-<li class="">Fixed <code>filterPosition</code> property does not work with rowSelect(<a href="https://github.com/react-bootstrap-table/react-bootstrap-table2/commit/8ecdbf611bf7e715d95511a731032d5028759799" target="_blank" rel="noopener noreferrer" class="">8ecdbf6</a>)</li>
-</ul>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features">Features<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2019/12/02/version-bump#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
-<p>N/A</p>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="enhancements">Enhancements<a href="https://jeff-k-zhou.github.io/react-bootstrap-table-ng/blog/2019/12/02/version-bump#enhancements" class="hash-link" aria-label="Direct link to Enhancements" title="Direct link to Enhancements" translate="no">​</a></h3>
-<p>N/A</p>]]></content>
         <author>
             <name>Allen Fang</name>
             <uri>https://twitter.com/allenfang_tw</uri>
