@@ -131,32 +131,32 @@ function styles() {
 
 function umd(done) {
   gulp.parallel(
-    () => gulp.src('./webpack/ng.umd.babel.js').pipe(shell(['webpack --config <%= file.path %>'])),
-    () => gulp.src('./webpack/toolkit.umd.babel.js').pipe(shell(['webpack --config <%= file.path %>'])),
-    () => gulp.src('./webpack/overlay.umd.babel.js').pipe(shell(['webpack --config <%= file.path %>'])),
-    () => gulp.src('./webpack/paginator.umd.babel.js').pipe(shell(['webpack --config <%= file.path %>'])),
-    () => gulp.src('./webpack/filter.umd.babel.js').pipe(shell(['webpack --config <%= file.path %>'])),
-    () => gulp.src('./webpack/editor.umd.babel.js').pipe(shell(['webpack --config <%= file.path %>']))
+    () => gulp.src('./webpack/ng.umd.cjs').pipe(shell(['webpack --config <%= file.path %>'])),
+    () => gulp.src('./webpack/toolkit.umd.cjs').pipe(shell(['webpack --config <%= file.path %>'])),
+    () => gulp.src('./webpack/overlay.umd.cjs').pipe(shell(['webpack --config <%= file.path %>'])),
+    () => gulp.src('./webpack/paginator.umd.cjs').pipe(shell(['webpack --config <%= file.path %>'])),
+    () => gulp.src('./webpack/filter.umd.cjs').pipe(shell(['webpack --config <%= file.path %>'])),
+    () => gulp.src('./webpack/editor.umd.cjs').pipe(shell(['webpack --config <%= file.path %>']))
   )();
   done();
 }
 function umdng() {
-  return gulp.src('./webpack/ng.umd.babel.js').pipe(shell(['webpack --config <%= file.path %>']));
+  return gulp.src('./webpack/ng.umd.cjs').pipe(shell(['webpack --config <%= file.path %>']));
 }
 function umdtoolkit() {
-  return gulp.src('./webpack/toolkit.umd.babel.js').pipe(shell(['webpack --config <%= file.path %>']));
+  return gulp.src('./webpack/toolkit.umd.cjs').pipe(shell(['webpack --config <%= file.path %>']));
 }
 function umdoverlay() {
-  return gulp.src('./webpack/overlay.umd.babel.js').pipe(shell(['webpack --config <%= file.path %>']));
+  return gulp.src('./webpack/overlay.umd.cjs').pipe(shell(['webpack --config <%= file.path %>']));
 }
 function umdpaginator() {
-  return gulp.src('./webpack/paginator.umd.babel.js').pipe(shell(['webpack --config <%= file.path %>']));
+  return gulp.src('./webpack/paginator.umd.cjs').pipe(shell(['webpack --config <%= file.path %>']));
 }
 function umdfilter() {
-  return gulp.src('./webpack/filter.umd.babel.js').pipe(shell(['webpack --config <%= file.path %>']));
+  return gulp.src('./webpack/filter.umd.cjs').pipe(shell(['webpack --config <%= file.path %>']));
 }
 function umdeditor() {
-  return gulp.src('./webpack/editor.umd.babel.js').pipe(shell(['webpack --config <%= file.path %>']));
+  return gulp.src('./webpack/editor.umd.cjs').pipe(shell(['webpack --config <%= file.path %>']));
 }
 
 const buildUMD = gulp.series(umdng, umdtoolkit, umdoverlay, umdpaginator, umdfilter, umdeditor);

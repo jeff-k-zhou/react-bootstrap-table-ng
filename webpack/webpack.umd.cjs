@@ -55,9 +55,7 @@ module.exports = {
       // Plugin options
       extensions: ['ts', 'tsx'],
       eslintPath: require.resolve('eslint'),
-      exclude: ['/node_modules/'],
-      // ESLint class options
-      resolvePluginsRelativeTo: __dirname
+      exclude: ['/node_modules/']
     })
   ],
   performance: {
