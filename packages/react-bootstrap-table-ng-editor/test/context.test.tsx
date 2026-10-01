@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-import { render, screen } from "@testing-library/react";
+import { render, screen, act } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import React from "react";
 import dataOperator from "../../react-bootstrap-table-ng/src/store/operators";
@@ -16,27 +16,15 @@ describe("CellEditContext", () => {
   let CellEditContext: any;
 
   const data = [
-    {
-      id: 1,
-      name: "A",
-    },
-    {
-      id: 2,
-      name: "B",
-    },
+    { id: 1, name: "A" },
+    { id: 2, name: "B" },
   ];
 
   const keyField = "id";
 
   const columns = [
-    {
-      dataField: "id",
-      text: "ID",
-    },
-    {
-      dataField: "name",
-      text: "Name",
-    },
+    { dataField: "id", text: "ID" },
+    { dataField: "name", text: "Name" },
   ];
 
   const defaultCellEdit = {
@@ -47,16 +35,16 @@ describe("CellEditContext", () => {
 
   const defaultSelectRow = {};
 
-  const mockBase = jest.fn((props: any) => null);
-
+  let capturedProps: any = null;
   const handleCellChange = jest.fn();
 
   function renderContext(
-    customCellEdit = defaultCellEdit,
+    customCellEdit: any = defaultCellEdit,
     enableRemote = false,
-    selectRow = defaultSelectRow
+    selectRow = defaultSelectRow,
+    extraProps: any = {}
   ) {
-    mockBase.mockReset();
+    capturedProps = null;
     handleCellChange.mockReset();
     CellEditContext = createCellEditContext(
       _,
@@ -72,8 +60,14 @@ describe("CellEditContext", () => {
         columns={columns}
         selectRow={selectRow}
         data={data}
+        {...extraProps}
       >
-        <Consumer>{(cellEditProps) => mockBase(cellEditProps)}</Consumer>
+        <Consumer>
+          {(props: any) => {
+            capturedProps = props;
+            return <div data-testid="cell-edit-consumer">rendered</div>;
+          }}
+        </Consumer>
       </CellEditContext.Provider>
     );
   }
@@ -88,289 +82,198 @@ describe("CellEditContext", () => {
     });
 
     it("should pass correct cell editing props to children element", () => {
-      expect(mockBase).toHaveBeenCalledTimes(1);
-      expect(mockBase).toHaveBeenCalledWith(
+      expect(capturedProps).toEqual(
         expect.objectContaining({
           ...defaultCellEdit,
           DBCLICK_TO_CELL_EDIT,
           DELAY_FOR_DBCLICK,
           nonEditableRows: [],
+          ridx: null,
+          cidx: null,
+          message: null,
         })
       );
     });
   });
 
-  describe("componentWillReceiveProps", () => {
-    const initialState = { ridx: 1, cidx: 1, message: "test" };
-    describe("if nextProps.cellEdit is not existing", () => {
-      beforeEach(() => {
-        renderContext();
-        // Set initial state
-        // ...existing code...
-      });
-
-      it("should not set state.message", () => {
-        // ...existing code...
-      });
-
-      it("should not set state.ridx", () => {
-        // ...existing code...
-      });
-
-      it("should not set state.cidx", () => {
-        // ...existing code...
-      });
+  describe("remote cell editing errorMessage in props", () => {
+    it("sets message when errorMessage is provided in remote mode", () => {
+      renderContext({ ...defaultCellEdit, errorMessage: "Remote error" }, true);
+      expect(capturedProps.message).toBe("Remote error");
     });
 
-    describe("if nextProps.cellEdit is existing but remote cell editing is disable", () => {
-      beforeEach(() => {
-        renderContext();
-        // Set initial state
-        // ...existing code...
-      });
-
-      it("should not set state.message", () => {
-        // ...existing code...
-      });
-
-      it("should not set state.ridx", () => {
-        // ...existing code...
-      });
-
-      it("should not set state.cidx", () => {
-        // ...existing code...
-      });
-    });
-
-    describe("if nextProps.cellEdit is existing and remote cell editing is enable", () => {
-      describe("if nextProps.cellEdit.options.errorMessage is defined", () => {
-        let message: any;
-        beforeEach(() => {
-          message = "validation fail";
-          renderContext(defaultCellEdit, true);
-          // Set initial state
-          // ...existing code...
-        });
-
-        it("should set state.message", () => {
-          // ...existing code...
-        });
-
-        it("should not set state.ridx", () => {
-          // ...existing code...
-        });
-
-        it("should not set state.cidx", () => {
-          // ...existing code...
-        });
-      });
-
-      describe("if nextProps.cellEdit.options.errorMessage is not defined", () => {
-        beforeEach(() => {
-          renderContext(defaultCellEdit, true);
-          // Set initial state
-          // ...existing code...
-        });
-
-        it("should not set state.message", () => {
-          // ...existing code...
-        });
-
-        it("should set correct state.ridx", () => {
-          // ...existing code...
-        });
-
-        it("should set correct state.cidx", () => {
-          // ...existing code...
-        });
-      });
-    });
-  });
-
-  describe("handleCellUpdate", () => {
-    const row: { [key: string]: any } = data[1];
-    const column = columns[1];
-    const newValue = "This is new value";
-    const oldValue = row[column.dataField];
-
-    describe("if cellEdit.beforeSaveCell prop is defined", () => {
-      const beforeSaveCell = jest.fn();
-
-      beforeEach(() => {
-        beforeSaveCell.mockReset();
-        renderContext({
-          ...defaultCellEdit,
-          beforeSaveCell,
-        });
-        // Call handleCellUpdate
-        // ...existing code...
-      });
-
-      it("should call cellEdit.beforeSaveCell correctly", () => {
-        //expect(beforeSaveCell).toHaveBeenCalledTimes(1);
-        /*expect(beforeSaveCell).toHaveBeenCalledWith(
-          oldValue,
-          newValue,
-          row,
-          column,
-          expect.anything()
-        );
-        */
-      });
-    });
-
-    describe("when remote cell editing is enable", () => {
-      const afterSaveCell = jest.fn();
-      beforeEach(() => {
-        afterSaveCell.mockReset();
-        renderContext(
-          {
-            ...defaultCellEdit,
-            afterSaveCell,
-          },
-          true
-        );
-        // Call handleCellUpdate
-        // ...existing code...
-      });
-
-      it("should call handleCellChange correctly", () => {
-        //expect(handleCellChange).toHaveBeenCalledTimes(1);
-       /* expect(handleCellChange).toHaveBeenCalledWith(
-          row[keyField],
-          column.dataField,
-          newValue
-        ); */
-      });
-
-      it("should not call cellEdit.afterSaveCell even if it is defined", () => {
-        expect(afterSaveCell).toHaveBeenCalledTimes(0);
-      });
-    });
-
-    describe("when remote cell editing is disable", () => {
-      const afterSaveCell = jest.fn();
-
-      beforeEach(() => {
-        afterSaveCell.mockReset();
-        renderContext({
-          ...defaultCellEdit,
-          afterSaveCell,
-        });
-        // Set initial state
-        // ...existing code...
-        // Call handleCellUpdate
-        // ...existing code...
-      });
-
-      it("should not call handleCellChange correctly", () => {
-        expect(handleCellChange).toHaveBeenCalledTimes(0);
-      });
-
-      it("should set state correctly", () => {
-        // ...existing code...
-      });
-
-      it("should call cellEdit.afterSaveCell if it is defined", () => {
-        //expect(afterSaveCell).toHaveBeenCalledTimes(1);
-      });
-    });
-  });
-
-  describe("completeEditing", () => {
-    const initialState = { ridx: 1, cidx: 1, message: "test" };
-
-    beforeEach(() => {
-      renderContext();
-      // Set initial state
-      // ...existing code...
-      // Call completeEditing
-      // ...existing code...
-    });
-
-    it("should set state correctly", () => {
-      // ...existing code...
+    it("clears message when errorMessage is not provided in remote mode", () => {
+      renderContext({ ...defaultCellEdit }, true);
+      expect(capturedProps.message).toBeNull();
     });
   });
 
   describe("startEditing", () => {
-    const ridx = 0;
-    const cidx = 1;
-
-    describe("if selectRow prop is not defined", () => {
-      beforeEach(() => {
-        renderContext();
-        // Call startEditing
-        // ...existing code...
+    it("starts editing when selectRow is not defined", () => {
+      renderContext();
+      act(() => {
+        capturedProps.atstart(0, 1);
       });
-
-      it("should set state correctly", () => {
-        // ...existing code...
-      });
+      expect(capturedProps.ridx).toBe(0);
+      expect(capturedProps.cidx).toBe(1);
     });
 
-    describe("if selectRow prop is defined", () => {
-      describe("and selectRow.clickToEdit is enable", () => {
-        beforeEach(() => {
-          renderContext(defaultCellEdit, false, {
-            ...defaultSelectRow,
-            clickToEdit: true,
-          });
-          // Call startEditing
-          // ...existing code...
-        });
-
-        it("should set state correctly", () => {
-          // ...existing code...
-        });
+    it("starts editing when clickToEdit is true", () => {
+      renderContext(defaultCellEdit, false, { clickToSelect: true, clickToEdit: true });
+      act(() => {
+        capturedProps.atstart(1, 0);
       });
+      expect(capturedProps.ridx).toBe(1);
+      expect(capturedProps.cidx).toBe(0);
+    });
 
-      describe("and selectRow.clickToSelect is disable", () => {
-        beforeEach(() => {
-          renderContext(defaultCellEdit, false, {
-            ...defaultSelectRow,
-            clickToSelect: false,
-          });
-          // Call startEditing
-          // ...existing code...
-        });
-
-        it("should set state correctly", () => {
-          // ...existing code...
-        });
+    it("starts editing when clickToSelect is false", () => {
+      renderContext(defaultCellEdit, false, { clickToSelect: false, clickToEdit: false });
+      act(() => {
+        capturedProps.atstart(0, 0);
       });
+      expect(capturedProps.ridx).toBe(0);
+      expect(capturedProps.cidx).toBe(0);
+    });
 
-      describe("and selectRow.clickToEdit & selectRow.clickToSelect is enable", () => {
-        beforeEach(() => {
-          renderContext(defaultCellEdit, false, {
-            ...defaultSelectRow,
-            clickToEdit: false,
-            clickToSelect: true,
-          });
-          // Call startEditing
-          // ...existing code...
-        });
-
-        it("should not set state", () => {
-          // ...existing code...
-        });
+    it("does not start editing when clickToSelect is true and clickToEdit is false", () => {
+      renderContext(defaultCellEdit, false, { clickToSelect: true, clickToEdit: false });
+      act(() => {
+        capturedProps.atstart(0, 0);
       });
+      expect(capturedProps.ridx).toBeNull();
+      expect(capturedProps.cidx).toBeNull();
     });
   });
 
   describe("escapeEditing", () => {
-    const initialState = { ridx: 1, cidx: 1 };
-
-    beforeEach(() => {
+    it("resets ridx and cidx when onEscape is called", () => {
       renderContext();
-      // Set initial state
-      // ...existing code...
-      // Call escapeEditing
-      // ...existing code...
+      act(() => {
+        capturedProps.atstart(1, 1);
+      });
+      expect(capturedProps.ridx).toBe(1);
+
+      act(() => {
+        capturedProps.onEscape();
+      });
+      expect(capturedProps.ridx).toBeNull();
+      expect(capturedProps.cidx).toBeNull();
+    });
+  });
+
+  describe("handleCellUpdate", () => {
+    const row = data[0];
+    const column = columns[1];
+    const newValue = "New A";
+
+    it("updates cell in non-remote mode and triggers afterSaveCell", () => {
+      const afterSaveCell = jest.fn();
+      renderContext({ ...defaultCellEdit, afterSaveCell }, false);
+
+      act(() => {
+        capturedProps.atstart(0, 1);
+      });
+
+      act(() => {
+        capturedProps.onUpdate(row, column, newValue);
+      });
+
+      expect(afterSaveCell).toHaveBeenCalledWith(
+        "A",
+        "New A",
+        row,
+        column
+      );
+      expect(capturedProps.ridx).toBeNull();
     });
 
-    it("should set state correctly", () => {
-      // ...existing code...
+    it("calls handleCellChange in remote mode", () => {
+      const afterSaveCell = jest.fn();
+      renderContext({ ...defaultCellEdit, afterSaveCell }, true);
+
+      act(() => {
+        capturedProps.onUpdate(row, column, newValue);
+      });
+
+      expect(handleCellChange).toHaveBeenCalledWith(1, "name", "New A");
+      expect(afterSaveCell).not.toHaveBeenCalled();
+    });
+
+    it("handles beforeSaveCell returning async object", () => {
+      const beforeSaveCell = jest.fn().mockReturnValue({ async: true });
+      renderContext({ ...defaultCellEdit, beforeSaveCell }, false);
+
+      act(() => {
+        capturedProps.onUpdate(row, column, newValue);
+      });
+
+      expect(beforeSaveCell).toHaveBeenCalled();
+      expect(handleCellChange).not.toHaveBeenCalled();
+    });
+
+    it("handles beforeSaveCell calling done(false) which calls onEscape", () => {
+      const beforeSaveCell = jest.fn((oldVal, newVal, r, c, done) => {
+        done(false);
+      });
+      renderContext({ ...defaultCellEdit, beforeSaveCell }, false);
+
+      act(() => {
+        capturedProps.atstart(0, 1);
+      });
+
+      act(() => {
+        capturedProps.onUpdate(row, column, newValue);
+      });
+
+      expect(beforeSaveCell).toHaveBeenCalled();
+      expect(capturedProps.ridx).toBeNull();
+    });
+
+    it("handles beforeSaveCell calling done(true) which saves", () => {
+      const afterSaveCell = jest.fn();
+      const beforeSaveCell = jest.fn((oldVal, newVal, r, c, done) => {
+        done(true);
+      });
+      renderContext({ ...defaultCellEdit, beforeSaveCell, afterSaveCell }, false);
+
+      act(() => {
+        capturedProps.onUpdate(row, column, newValue);
+      });
+
+      expect(afterSaveCell).toHaveBeenCalled();
+    });
+
+    it("handles onUpdate when beforeSaveCell and afterSaveCell are omitted", () => {
+      renderContext({ mode: CLICK_TO_CELL_EDIT }, false);
+      act(() => {
+        capturedProps.onUpdate(row, column, newValue);
+      });
+      // data is mutated in place by dataOperator.editCell; capturedProps does not expose data
+      // so we check the original data array reference
+      expect(data[0].name).toBe(newValue);
+    });
+
+    it("handles beforeSaveCell calling done() without arguments (default true)", () => {
+      const beforeSaveCell = jest.fn((oldVal, newVal, r, c, done) => {
+        done();
+      });
+      renderContext({ mode: CLICK_TO_CELL_EDIT, beforeSaveCell }, false);
+      act(() => {
+        capturedProps.onUpdate(row, column, newValue);
+      });
+      expect(beforeSaveCell).toHaveBeenCalled();
+    });
+  });
+
+  describe("nonEditableRows", () => {
+    it("calls nonEditableRows callback if provided", () => {
+      const nonEditableRows = jest.fn().mockReturnValue([1]);
+      renderContext({ ...defaultCellEdit, nonEditableRows });
+      expect(capturedProps.nonEditableRows).toEqual([1]);
+      expect(nonEditableRows).toHaveBeenCalled();
     });
   });
 });
+
+

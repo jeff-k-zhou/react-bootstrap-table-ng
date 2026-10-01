@@ -66,4 +66,41 @@ describe("PaginationList", () => {
       expect(screen.getAllByText("Custom").length).toBe(pages.length);
     });
   });
+
+  describe("when pageButtonRenderer returns null", () => {
+    it("renders empty list", () => {
+      const { container } = render(
+        <PaginationList
+          pages={pages}
+          onPageChange={onPageChange}
+          pageButtonRenderer={() => null}
+        />
+      );
+      expect(container.querySelectorAll("li")).toHaveLength(0);
+    });
+  });
+
+  describe("aria labels", () => {
+    it("uses paginationListAriaLabel when provided", () => {
+      render(
+        <PaginationList
+          pages={pages}
+          onPageChange={onPageChange}
+          paginationListAriaLabel="Custom navigation"
+        />
+      );
+      expect(screen.getByRole("navigation")).toHaveAttribute("aria-label", "Custom navigation");
+    });
+
+    it("uses tableId when provided without aria label", () => {
+      render(
+        <PaginationList
+          pages={pages}
+          onPageChange={onPageChange}
+          tableId="users-table"
+        />
+      );
+      expect(screen.getByRole("navigation")).toHaveAttribute("aria-label", "Pagination for table users-table");
+    });
+  });
 });

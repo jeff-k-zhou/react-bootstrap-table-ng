@@ -93,6 +93,12 @@ describe("DataContext", () => {
         const result = getData({ data: fakeData });
         expect(result).toEqual(data);
       });
+
+      it("should return filterProps.data when filtered", () => {
+        const filteredData = [data[0]];
+        const result = getData({ data: filteredData, currFilters: { name: "A" } });
+        expect(result).toEqual(filteredData);
+      });
     });
 
     describe("if no argument is given", () => {
@@ -101,5 +107,19 @@ describe("DataContext", () => {
         expect(result).toEqual(data);
       });
     });
+
+    it("returns empty array for default context getData when rendered outside provider", () => {
+      let defaultVal: any;
+      render(
+        <DataContext.Consumer>
+          {(val) => {
+            defaultVal = val;
+            return null;
+          }}
+        </DataContext.Consumer>
+      );
+      expect(defaultVal.getData()).toEqual([]);
+    });
   });
 });
+

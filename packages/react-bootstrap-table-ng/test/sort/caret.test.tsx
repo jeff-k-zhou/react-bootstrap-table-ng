@@ -59,4 +59,24 @@ describe("SortCaret", () => {
       });
     });
   });
+
+  describe("when bootstrap5 context is true", () => {
+    it("should render caret-5-asc correctly", () => {
+      const { container } = render(
+        <BootstrapContext.Provider value={{ bootstrap5: true }}>
+          <SortCaret order={SORT_ASC} />
+        </BootstrapContext.Provider>
+      );
+      expect(container.getElementsByClassName("caret-5-asc").length).toBe(1);
+    });
+
+    it("should render caret-5-desc correctly", () => {
+      const { container } = render(
+        <BootstrapContext.Provider value={{ bootstrap5: true }}>
+          <SortCaret order={SORT_DESC} />
+        </BootstrapContext.Provider>
+      );
+      expect(container.getElementsByClassName("caret-5-desc").length).toBe(1);
+    });
+  });
 });

@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import React from "react";
 import { stub } from "sinon";
@@ -222,10 +222,78 @@ describe("Cell", () => {
         await userEvent.dblClick(cell);
         expect(onStartCallBack.callCount).toBe(1);
       });
+
+      it("should call onStart on Enter and F2 keydown", () => {
+        render(
+          <table>
+            <tbody>
+              <tr>
+                <Cell
+                  row={row}
+                  rowindex={rowindex}
+                  column={column}
+                  columnindex={columnindex}
+                  editable={"true"}
+                  dbclicktoedit={"true"}
+                  atstart={onStartCallBack}
+                />
+              </tr>
+            </tbody>
+          </table>
+        );
+        const cell = screen.getByRole("cell");
+        fireEvent.keyDown(cell, { key: "Enter" });
+        expect(onStartCallBack.callCount).toBe(1);
+
+        fireEvent.keyDown(cell, { key: "F2" });
+        expect(onStartCallBack.callCount).toBe(2);
+
+        fireEvent.keyDown(cell, { key: "Escape" });
+        expect(onStartCallBack.callCount).toBe(2);
+      });
     });
   });
 
-  // Note: shouldComponentUpdate tests are not directly portable to RTL,
-  // as they test internal React lifecycle, not DOM output.
-  // You may want to test re-rendering behavior via props/state changes in integration tests.
+  describe("when isDummyField is true", () => {
+    const dummyCol = {
+      dataField: "dummy",
+      isDummyField: true,
+      text: "Dummy",
+      formatter: (_: any, r: any) => <span>dummy-{r.name}</span>,
+    };
+
+    it("renders dummy column correctly and updates on row change", () => {
+      const { rerender } = render(
+        <table>
+          <tbody>
+            <tr>
+              <Cell
+                row={row}
+                columnindex={1}
+                rowindex={1}
+                column={dummyCol}
+              />
+            </tr>
+          </tbody>
+        </table>
+      );
+      expect(screen.getByText("dummy-A")).toBeInTheDocument();
+
+      rerender(
+        <table>
+          <tbody>
+            <tr>
+              <Cell
+                row={{ id: 1, name: "B" }}
+                columnindex={1}
+                rowindex={1}
+                column={dummyCol}
+              />
+            </tr>
+          </tbody>
+        </table>
+      );
+      expect(screen.getByText("dummy-B")).toBeInTheDocument();
+    });
+  });
 });

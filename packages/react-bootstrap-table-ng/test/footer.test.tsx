@@ -116,4 +116,35 @@ describe("Footer", () => {
       expect(headers.length).toBe(columns.length + 1);
     });
   });
+
+  describe("when columns have undefined or null footer", () => {
+    it("skips rendering cell for columns where footer is null or undefined", () => {
+      const mixedColumns: any[] = [
+        { dataField: "id", text: "ID", footer: null },
+        { dataField: "name", text: "Name", footer: undefined },
+        { dataField: "val", text: "Val", footer: "Total" },
+      ];
+      render(
+        <table>
+          <Footer
+            data={data}
+            columns={mixedColumns}
+            selectRow={selectRow}
+            expandRow={expandRow}
+          />
+        </table>
+      );
+      expect(screen.getByText("Total")).toBeInTheDocument();
+      expect(screen.getAllByRole("columnheader")).toHaveLength(1);
+    });
+
+    it("renders with default props when data and columns are omitted", () => {
+      const { container } = render(
+        <table>
+          <Footer columns={[]} />
+        </table>
+      );
+      expect(container.querySelector("tfoot")).toBeInTheDocument();
+    });
+  });
 });

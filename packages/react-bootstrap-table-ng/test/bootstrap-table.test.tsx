@@ -291,4 +291,96 @@ describe("BootstrapTable", () => {
       });
     });
   });
+
+  describe("imperative ref, onDataSizeChange, overlay, and condensed bootstrap5", () => {
+    it("exposes getData and props.data on ref", () => {
+      const ref = React.createRef<any>();
+      render(<BootstrapTable ref={ref} keyField="id" columns={columns} data={data} />);
+      expect(ref.current?.getData()).toEqual(data);
+      expect(ref.current?.props.data).toEqual(data);
+    });
+
+    it("triggers onDataSizeChange when pagination is not present", () => {
+      const onDataSizeChange = jest.fn();
+      render(
+        <BootstrapTable
+          keyField="id"
+          columns={columns}
+          data={data}
+          onDataSizeChange={onDataSizeChange}
+        />
+      );
+      expect(onDataSizeChange).toHaveBeenCalledWith({ dataSize: data.length });
+    });
+
+    it("renders with overlay when overlay factory is provided", () => {
+      const dummyOverlay = (loading: boolean) => ({ children, active }: any) => (
+        <div data-testid="test-overlay" data-active={active}>
+          {children}
+        </div>
+      );
+      render(
+        <BootstrapTable
+          keyField="id"
+          columns={columns}
+          data={data}
+          overlay={dummyOverlay}
+          loading={true}
+        />
+      );
+      const overlayEl = screen.getByTestId("test-overlay");
+      expect(overlayEl).toBeInTheDocument();
+      expect(overlayEl).toHaveAttribute("data-active", "true");
+    });
+
+    it("applies table-sm when condensed and bootstrap5 are true", () => {
+      render(
+        <BootstrapTable
+          keyField="id"
+          columns={columns}
+          data={data}
+          condensed
+          bootstrap5
+        />
+      );
+      const table = screen.getByRole("table");
+      expect(table).toHaveClass("table-sm");
+    });
+
+    it("renders table with caption string, defaultSorted desc for unknown sortField, hasFooter, and filterPosition top", () => {
+      const footerColumns = [
+        {
+          dataField: "id",
+          text: "ID",
+          footer: "Total ID",
+          filter: {
+            Filter: () => <div>FilterComponent</div>,
+            props: {},
+          },
+        },
+      ];
+
+      render(
+        <BootstrapTable
+          keyField="id"
+          columns={footerColumns}
+          data={data}
+          caption="Products Table"
+          sortField="non_existent_field"
+          sortOrder="desc"
+          sort={{ sortCaret: jest.fn() }}
+          filterPosition="top"
+          currFilters={{}}
+        />
+      );
+
+      const table = screen.getByRole("table");
+      expect(table).toHaveAttribute("aria-label", "Products Table");
+      expect(screen.getByText("Total ID")).toBeInTheDocument();
+      expect(screen.getByText("FilterComponent")).toBeInTheDocument();
+      // Status div containing text
+      expect(screen.getByText(/Sorted by non_existent_field descending/)).toBeInTheDocument();
+    });
+  });
 });
+

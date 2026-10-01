@@ -279,6 +279,52 @@ describe("withSelectionConsumer", () => {
           expect(getByTestId("base").className).toContain(selectedClassName);
         });
       });
+
+      it("should apply selectRow.bgColor as string or function", () => {
+        selectRow = {
+          mode: "checkbox",
+          selected: [data[rowIndex][keyField]],
+          bgColor: jest.fn().mockReturnValue("blue"),
+        };
+        renderWithContext();
+        expect(selectRow.bgColor).toHaveBeenCalledWith(row, rowIndex);
+      });
+
+      it("should apply selectRow.bgColor as string", () => {
+        selectRow = {
+          mode: "checkbox",
+          selected: [data[rowIndex][keyField]],
+          bgColor: "red",
+        };
+        const { getByTestId } = renderWithContext();
+        expect(getByTestId("base").style.backgroundColor).toBe("red");
+      });
+
+      it("should apply selectRow.nonSelectableStyle and nonSelectableClasses as function", () => {
+        selectRow = {
+          mode: "checkbox",
+          selected: [],
+          nonSelectable: [data[rowIndex][keyField]],
+          nonSelectableStyle: jest.fn().mockReturnValue({ opacity: 0.5 }),
+          nonSelectableClasses: jest.fn().mockReturnValue("non-selectable-fn"),
+        };
+        renderWithContext();
+        expect(selectRow.nonSelectableStyle).toHaveBeenCalledWith(row, rowIndex);
+        expect(selectRow.nonSelectableClasses).toHaveBeenCalledWith(row, rowIndex);
+      });
+
+      it("should apply selectRow.nonSelectableStyle and nonSelectableClasses as static", () => {
+        selectRow = {
+          mode: "checkbox",
+          selected: [],
+          nonSelectable: [data[rowIndex][keyField]],
+          nonSelectableStyle: { color: "gray" },
+          nonSelectableClasses: "non-selectable-static",
+        };
+        const { getByTestId } = renderWithContext();
+        expect(getByTestId("base").className).toContain("non-selectable-static");
+      });
     });
   });
 });
+

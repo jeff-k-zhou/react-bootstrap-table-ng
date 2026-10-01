@@ -86,5 +86,71 @@ describe("Sort Function", () => {
       };
       expect(nextOrder(currentSortColumn, nextSort)).toBe(SORT_DESC);
     });
+
+    it("should return ASC when same column is currently sorted DESC", () => {
+      const nextSort = {
+        sortColumn: currentSortColumn,
+        sortOrder: SORT_DESC,
+      };
+      expect(nextOrder(currentSortColumn, nextSort)).toBe(SORT_ASC);
+    });
+  });
+
+  describe("sort - additional branch coverage", () => {
+    it("should sort strings in DESC using string comparator (localeCompare)", () => {
+      const stringData = [
+        { id: 1, name: "banana" },
+        { id: 2, name: "apple" },
+        { id: 3, name: "cherry" },
+      ];
+      const strColumn = { dataField: "name", text: "Name" };
+      const sorted = sort(stringData, SORT_DESC, strColumn);
+      expect(sorted[0].name).toBe("cherry");
+      expect(sorted[1].name).toBe("banana");
+      expect(sorted[2].name).toBe("apple");
+    });
+
+    it("should sort strings in ASC using string comparator", () => {
+      const stringData = [
+        { id: 1, name: "banana" },
+        { id: 2, name: "apple" },
+        { id: 3, name: "cherry" },
+      ];
+      const strColumn = { dataField: "name", text: "Name" };
+      const sorted = sort(stringData, SORT_ASC, strColumn);
+      expect(sorted[0].name).toBe("apple");
+      expect(sorted[1].name).toBe("banana");
+      expect(sorted[2].name).toBe("cherry");
+    });
+
+    it("should use sortValue function to transform values before sorting", () => {
+      const sortValueFn = jest.fn((val: any, row: any) => row.name.length);
+      const sortValueColumn = { dataField: "id", text: "ID", sortValue: sortValueFn };
+      const testData = [
+        { id: 1, name: "a" },
+        { id: 2, name: "bbb" },
+        { id: 3, name: "cc" },
+      ];
+      const sorted = sort(testData, SORT_ASC, sortValueColumn);
+      expect(sorted[0].name).toBe("a");
+      expect(sorted[1].name).toBe("cc");
+      expect(sorted[2].name).toBe("bbb");
+      expect(sortValueFn).toHaveBeenCalled();
+    });
+
+    it("should handle equal numeric values (comparator returns 0)", () => {
+      const eqData = [{ id: 5 }, { id: 5 }];
+      const sorted = sort(eqData, SORT_DESC, { dataField: "id", text: "ID" });
+      expect(sorted.length).toBe(2);
+    });
+
+    it("should treat undefined field values as empty string", () => {
+      const dataWithUndefined = [
+        { id: 1, name: undefined },
+        { id: 2, name: "hello" },
+      ];
+      const sorted = sort(dataWithUndefined, SORT_ASC, { dataField: "name", text: "Name" });
+      expect(sorted.length).toBe(2);
+    });
   });
 });

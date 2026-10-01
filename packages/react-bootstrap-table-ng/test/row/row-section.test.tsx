@@ -28,5 +28,17 @@ describe("Row", () => {
       expect(cell).toHaveAttribute("colspan", colSpan.toString());
       expect(cell).toHaveClass("react-bs-table-no-data");
     });
+
+    it("should render with default props when none provided", () => {
+      render(
+        <table>
+          <tbody>
+            <RowSection />
+          </tbody>
+        </table>
+      );
+      const cell = screen.getByRole("cell");
+      expect(cell).toHaveAttribute("colspan", "1");
+    });
   });
 });

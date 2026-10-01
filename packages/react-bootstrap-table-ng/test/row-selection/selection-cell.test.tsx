@@ -214,5 +214,52 @@ describe("<SelectionCell />", () => {
       const cell = screen.getByRole("cell");
       expect(cell.querySelector(".selection-input-5")).toBeInTheDocument();
     });
+
+    it("handles selectColumnStyle as function and object, and custom tabIndex", () => {
+      const styleFn = jest.fn().mockReturnValue({ backgroundColor: "red" });
+      const { rerender } = render(
+        <table>
+          <tbody>
+            <tr>
+              <SelectionCell
+                rowKey={1}
+                mode={mode}
+                rowIndex={rowIndex}
+                selected={selected}
+                selectColumnStyle={styleFn}
+                tabIndex={3}
+              />
+            </tr>
+          </tbody>
+        </table>
+      );
+      expect(styleFn).toHaveBeenCalledWith({
+        checked: selected,
+        disabled: undefined,
+        rowindex: rowIndex,
+        rowkey: 1,
+      });
+      const input = screen.getByRole("checkbox");
+      expect(input).toHaveAttribute("tabindex", "3");
+
+      // Rerender with style object
+      rerender(
+        <table>
+          <tbody>
+            <tr>
+              <SelectionCell
+                rowKey={1}
+                mode={mode}
+                rowIndex={rowIndex}
+                selected={selected}
+                selectColumnStyle={{ color: "blue" }}
+              />
+            </tr>
+          </tbody>
+        </table>
+      );
+      const cell = screen.getByRole("cell");
+      expect(cell.style.color).toBe("blue");
+    });
   });
 });

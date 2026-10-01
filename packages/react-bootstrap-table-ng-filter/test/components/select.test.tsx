@@ -303,4 +303,42 @@ describe("Select Filter", () => {
       expect(onFilterFirstReturn).toHaveBeenCalledWith(value);
     });
   });
+
+  describe("when onFilter is undefined", () => {
+    it("handles getFilter, ref methods, change event, and prop updates without error", () => {
+      let filterMethod: any;
+      const ref = React.createRef<any>();
+      const { rerender } = render(
+        <SelectFilter
+          ref={ref}
+          column={column}
+          options={options}
+          getFilter={(f: any) => (filterMethod = f)}
+        />
+      );
+
+      const select = screen.getByRole("combobox");
+      fireEvent.change(select, { target: { value: "1" } });
+
+      const { act } = require("@testing-library/react");
+      act(() => {
+        filterMethod("2");
+        ref.current?.applyFilter("0");
+        ref.current?.cleanFiltered();
+      });
+
+      // Update defaultValue and options to trigger needFilter without onFilter
+      rerender(
+        <SelectFilter
+          ref={ref}
+          column={column}
+          options={{ ...options, 3: "Excellent" }}
+          defaultValue="3"
+        />
+      );
+
+      expect(select).toBeInTheDocument();
+    });
+  });
 });
+

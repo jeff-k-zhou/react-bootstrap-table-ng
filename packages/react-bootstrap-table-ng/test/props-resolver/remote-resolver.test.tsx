@@ -3,6 +3,7 @@ import React, { act } from "react";
 import { stub } from "sinon";
 import BootstrapTable from "../../src/bootstrap-table";
 import withContext from "../../src/contexts";
+import remoteResolver from "../../src/props-resolver/remote-resolver";
 
 const Container = withContext(BootstrapTable);
 
@@ -370,6 +371,62 @@ describe("remoteResolver", () => {
       );
       fireEvent.click(screen.getByText("ID"));
       expect(onTableChangeCB).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("remoteResolver HOC and extra handlers", () => {
+    it("handles remote insertRow and deleteRow handlers", () => {
+      let resolvedProps: any;
+      const MockBase = (props: any) => {
+        resolvedProps = props;
+        return <div data-testid="mock-base" />;
+      };
+
+      const Wrapped = remoteResolver(MockBase);
+
+      render(
+        <Wrapped
+          remote={{ insertRow: true, deleteRow: true, search: true }}
+          onTableChange={onTableChangeCB}
+          data={data}
+          pagination={{ options: { page: 2, sizePerPage: 20 } }}
+          filter={{ props: { currFilters: { name: "x" } } }}
+          sort={{ props: { sortField: "id", sortOrder: "asc" } }}
+          search={{ props: { searchText: "query" } }}
+        />
+      );
+
+      expect(resolvedProps.isRemoteInsertRow()).toBe(true);
+      expect(resolvedProps.isRemoteDeleteRow()).toBe(true);
+      expect(resolvedProps.isRemoteSearch()).toBe(true);
+
+      // Trigger handleRemoteInsertRow
+      resolvedProps.handleRemoteInsertRow({ id: 3, name: "C" });
+      expect(onTableChangeCB).toHaveBeenCalledWith(
+        "insertRow",
+        expect.objectContaining({
+          newRow: { id: 3, name: "C" },
+          page: 2,
+          sizePerPage: 20,
+          sortField: "id",
+          sortOrder: "asc",
+          searchText: "query",
+        })
+      );
+
+      // Trigger handleRemoteDeleteRow
+      resolvedProps.handleRemoteDeleteRow([1, 2]);
+      expect(onTableChangeCB).toHaveBeenCalledWith(
+        "deleteRow",
+        expect.objectContaining({ rowKeys: [1, 2] })
+      );
+
+      // Trigger handleRemoteSearchChange
+      resolvedProps.handleRemoteSearchChange("new-search");
+      expect(onTableChangeCB).toHaveBeenCalledWith(
+        "search",
+        expect.objectContaining({ searchText: "new-search" })
+      );
     });
   });
 });

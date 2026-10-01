@@ -424,4 +424,60 @@ describe("PaginationStateContext", () => {
       expect(call.paginationProps.hidePageListOnlyOnePage).toEqual(hidePageListOnlyOnePage);
     });
   });
+
+  describe("filterChanged event and remote pagination emitter", () => {
+    it("handles dataChangeListener filterChanged event", () => {
+      const StateContext = createStateContext();
+      render(
+        <StateContext.Provider
+          pagination={paginationFactory(defaultPagination)}
+          data={data}
+        >
+          <StateContext.Consumer>
+            {(context: any) => {
+              renderMockComponent(context);
+              return null;
+            }}
+          </StateContext.Consumer>
+        </StateContext.Provider>
+      );
+      const call = renderMockComponent.mock.calls[0][0];
+      expect(call.paginationTableProps.dataChangeListener).toBeDefined();
+      act(() => {
+        call.paginationTableProps.dataChangeListener.emit("filterChanged", 30);
+      });
+    });
+
+    it("emits paginationChange when isRemotePagination is true", () => {
+      const StateContext = createStateContext();
+      const remoteEmitter = {
+        emit: jest.fn((event: string, arg?: any) => {
+          if (event === "isRemotePagination" && arg) {
+            arg.result = true;
+          }
+        }),
+      };
+      render(
+        <StateContext.Provider
+          pagination={paginationFactory({ ...defaultPagination, totalSize: 100 })}
+          data={data}
+        >
+          <StateContext.Consumer>
+            {(context: any) => {
+              renderMockComponent(context);
+              return null;
+            }}
+          </StateContext.Consumer>
+        </StateContext.Provider>
+      );
+      const call = renderMockComponent.mock.calls[0][0];
+      act(() => {
+        call.paginationTableProps.setPaginationRemoteEmitter(remoteEmitter);
+        call.paginationProps.onPageChange(3);
+        call.paginationProps.onSizePerPageChange(25, 2);
+      });
+      expect(remoteEmitter.emit).toHaveBeenCalledWith("paginationChange", 3, expect.anything());
+      expect(remoteEmitter.emit).toHaveBeenCalledWith("paginationChange", 2, 25);
+    });
+  });
 });

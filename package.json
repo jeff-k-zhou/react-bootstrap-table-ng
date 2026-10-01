@@ -202,10 +202,10 @@
       "^.+\\.[jt]sx?$": "babel-jest"
     },
     "moduleFileExtensions": [
-      "js",
-      "jsx",
       "ts",
       "tsx",
+      "js",
+      "jsx",
       "json",
       "node"
     ],

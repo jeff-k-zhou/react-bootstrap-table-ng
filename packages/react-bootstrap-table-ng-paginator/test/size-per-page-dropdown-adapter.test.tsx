@@ -93,4 +93,36 @@ describe("sizePerPageDropdownAdapter", () => {
       expect(sizePerPageRenderer).toHaveBeenCalledTimes(1);
     });
   });
+
+  describe("default onPageChange fallback & onBlur", () => {
+    it("should execute default onPageChange when triggered and close on blur", () => {
+      const usePagMod = require("../src/hooks/usePagination");
+      const spy = jest.spyOn(usePagMod, "usePagination").mockImplementation((p: any) => {
+        if (typeof p.onPageChange === "function") {
+          p.onPageChange(2, 10);
+        }
+        return {
+          getSizePerPageStatus: () => [{ text: "10", page: 10 }],
+          handleChangeSizePerPage: jest.fn(),
+        } as any;
+      });
+
+      let passedProps: any;
+      const SpyComponent = (props: any) => {
+        passedProps = props;
+        return <div data-testid="spy-comp" onBlur={props.onBlur} />;
+      };
+      const Adapter = sizePerPageDropdownAdapter(SpyComponent);
+      render(<Adapter sizePerPageList={[10, 20]} currSizePerPage={10} hideSizePerPage={false} />);
+
+      expect(spy).toHaveBeenCalled();
+      spy.mockRestore();
+
+      // Trigger onBlur to test closeDropDown
+      if (passedProps?.onBlur) {
+        fireEvent.blur(screen.getByTestId("spy-comp"));
+      }
+    });
+  });
 });
+

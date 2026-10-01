@@ -68,6 +68,16 @@ describe("PageButton", () => {
       const li = screen.getByRole("listitem");
       expect(li).toHaveClass("disabled");
     });
+
+    it("should not call onPageChange on click or keydown when disabled", () => {
+      const link = screen.getByRole("link");
+      fireEvent.click(link);
+      expect(onPageChangeCallback).not.toHaveBeenCalled();
+
+      fireEvent.keyDown(link, { key: "Enter" });
+      fireEvent.keyDown(link, { key: " " });
+      expect(onPageChangeCallback).not.toHaveBeenCalled();
+    });
   });
 
   describe("when disabled prop is false", () => {
