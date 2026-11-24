@@ -2,8 +2,8 @@ import React from "react";
 import _ from "../utils";
 
 export interface RowProps {
-  clickToEdit?: string;
-  dbclickToEdit?: string;
+  clickToEdit?: boolean | string;
+  dbclickToEdit?: boolean | string;
   editable?: boolean;
   editingRowIdx?: number | null;
   editingColIdx?: number;
@@ -28,6 +28,7 @@ export interface RowProps {
   value?: any;
   id?: string;
   expansionRowId?: string;
+  [key: string]: any;
 }
 
 export default function RowShouldUpdater<P extends RowProps>(

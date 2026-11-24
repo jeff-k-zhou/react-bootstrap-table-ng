@@ -43,7 +43,7 @@ export interface PaginationDataProviderProps {
     options: {
       custom?: boolean;
       pageStartIndex?: number;
-      onPageChange: (newPage: any, currSizePerPage: number) => void;
+      onPageChange?: (newPage: any, currSizePerPage: number) => void;
       sizePerPage?: number;
       page?: number;
     };

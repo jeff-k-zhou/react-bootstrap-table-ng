@@ -215,6 +215,7 @@ describe("<SelectionCell />", () => {
       expect(cell.querySelector(".selection-input-5")).toBeInTheDocument();
     });
 
+    /* eslint-disable jsx-a11y/tabindex-no-positive */
     it("handles selectColumnStyle as function and object, and custom tabIndex", () => {
       const styleFn = jest.fn().mockReturnValue({ backgroundColor: "red" });
       const { rerender } = render(
@@ -261,5 +262,6 @@ describe("<SelectionCell />", () => {
       const cell = screen.getByRole("cell");
       expect(cell.style.color).toBe("blue");
     });
+    /* eslint-enable jsx-a11y/tabindex-no-positive */
   });
 });

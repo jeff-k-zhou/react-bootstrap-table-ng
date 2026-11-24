@@ -12,7 +12,7 @@ describe("CellEventDelegater", () => {
 
     const TestComponent = () => {
       const delegate = useCellEventDelegater({ column, columnIndex: 2, index: 5 });
-      const events = delegate({ onClick, onDoubleClick, customAttr: "ignore" });
+      const events = delegate({ onClick, onDoubleClick, "data-custom-attr": "ignore" });
 
       return (
         <button data-testid="btn" {...events}>

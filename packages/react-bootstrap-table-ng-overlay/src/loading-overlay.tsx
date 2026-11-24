@@ -5,10 +5,10 @@ import Spinner from "./loading-overlay-spinner";
 import STYLES from "./loading-overlay-styles";
 
 export type LoadingOverlayStyles = {
-  content?: (base: React.CSSProperties) => React.CSSProperties;
-  overlay?: (base: React.CSSProperties, state?: any) => React.CSSProperties;
-  spinner?: (base: React.CSSProperties) => React.CSSProperties;
-  wrapper?: (base: React.CSSProperties, props?: any) => React.CSSProperties;
+  content?: ((base: React.CSSProperties) => React.CSSProperties) | React.CSSProperties;
+  overlay?: ((base: React.CSSProperties, state?: any) => React.CSSProperties) | React.CSSProperties;
+  spinner?: ((base: React.CSSProperties) => React.CSSProperties) | React.CSSProperties;
+  wrapper?: ((base: React.CSSProperties, props?: any) => React.CSSProperties) | React.CSSProperties;
 };
 
 export interface LoadingOverlayProps {

@@ -188,6 +188,7 @@ describe("ExpandCell", () => {
     expect(screen.getByRole("button")).toHaveAttribute("aria-controls", "expansion-row-1");
   });
 
+  /* eslint-disable jsx-a11y/tabindex-no-positive */
   it("sets tabIndex from prop", () => {
     render(
       <table>
@@ -206,6 +207,7 @@ describe("ExpandCell", () => {
     );
     expect(screen.getByRole("button")).toHaveAttribute("tabindex", "2");
   });
+  /* eslint-enable jsx-a11y/tabindex-no-positive */
 
   it("has aria-label 'Expand row' when not expanded and expandable", () => {
     render(

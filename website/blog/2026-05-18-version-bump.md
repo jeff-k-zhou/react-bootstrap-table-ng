@@ -5,7 +5,7 @@ authors: jeff-k-zhou
 
 ## Changed Packages
 
-All `react-bootstrap-table-ng` packages version bump to `5.19.6`
+All `react-bootstrap-table-ng` packages version bump to `5.19.7`
 
 ## Overview
 

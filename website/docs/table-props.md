@@ -268,7 +268,7 @@ Makes table cells editable, please see [cellEdit definition](./cell-edit-props) 
 
 Default is `true`. When enabled, `react-bootstrap-table-ng` adds the `expandable-cell` CSS class to every `<td>` element in the table body.
 
-This feature allows for truncated cell content that expands visually. Starting from version `5.19.6`, this feature is **fully keyboard accessible**. When a cell is expandable, it receives a `tabIndex="0"`, allowing keyboard users to focus on it (via Tab) and see the expanded content, mirroring the hover behavior for mouse users.
+This feature allows for truncated cell content that expands visually. Starting from version `5.19.7`, this feature is **fully keyboard accessible**. When a cell is expandable, it receives a `tabIndex="0"`, allowing keyboard users to focus on it (via Tab) and see the expanded content, mirroring the hover behavior for mouse users.
 
 Set to `false` to disable the `expandable-cell` class for all columns at the table level:
 

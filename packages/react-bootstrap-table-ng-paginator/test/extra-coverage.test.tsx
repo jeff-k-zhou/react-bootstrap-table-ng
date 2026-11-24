@@ -210,7 +210,7 @@ describe("SizePerPageDropDown extra coverage", () => {
 
   it("renders with optionRenderer", () => {
     const optionRenderer = jest.fn(({ text, page, onSizePerPageChange }) => (
-      <li key={text} role="option">
+      <li key={text} role="option" aria-selected={false}>
         <button onClick={() => onSizePerPageChange(page)}>{text}</button>
       </li>
     ));

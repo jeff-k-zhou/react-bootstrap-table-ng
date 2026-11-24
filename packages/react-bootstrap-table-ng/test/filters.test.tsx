@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import Filters from "../src/filters.tsx";
+import Filters from "../src/filters";
 
 const MockFilterComponent = ({ onFilter, column, filterState }: any) => (
   <input
