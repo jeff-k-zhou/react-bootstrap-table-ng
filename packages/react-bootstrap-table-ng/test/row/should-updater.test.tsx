@@ -1,8 +1,11 @@
-import {
+import React from "react";
+import { render } from "@testing-library/react";
+import RowShouldUpdater, {
   shouldUpdateByCellEditing,
   shouldUpdatedBySelfProps,
   shouldUpdateByColumnsForSimpleCheck,
-  shouldUpdatedByNormalProps
+  shouldUpdatedByNormalProps,
+  shouldUpdateChild,
 } from "../../src/row/should-updater";
 
 describe("Row shouldUpdater", () => {
@@ -223,6 +226,78 @@ describe("Row shouldUpdater", () => {
           shouldUpdatedByNormalProps(props, nextProps)
         ).toBeTruthy();
       });
+    });
+  });
+
+  describe("RowShouldUpdater HOC", () => {
+    it("wraps a component and passes all props through forwardRef", () => {
+      const BaseComponent = React.forwardRef((props: any, ref: any) => (
+        <tr ref={ref} data-testid="base-row" data-foo={props.foo} />
+      ));
+      (BaseComponent as any).displayName = "Base";
+
+      const Wrapped = RowShouldUpdater(BaseComponent as any);
+
+      const { container } = render(
+        <table>
+          <tbody>
+            <Wrapped foo="bar" />
+          </tbody>
+        </table>
+      );
+      const row = container.querySelector("[data-testid='base-row']");
+      expect(row).toBeTruthy();
+      expect(row?.getAttribute("data-foo")).toBe("bar");
+    });
+
+    it("uses component name in displayName when displayName is missing", () => {
+      function NamedComponent() { return null; }
+      const Wrapped = RowShouldUpdater(NamedComponent as any);
+      expect(Wrapped.displayName).toBe("RowShouldUpdater(NamedComponent)");
+    });
+
+    it("uses 'Component' fallback displayName when using a named component without displayName", () => {
+      const WrappedAnon = RowShouldUpdater(function () { return null; } as any);
+      // Should have some displayName starting with RowShouldUpdater
+      expect(WrappedAnon.displayName).toContain("RowShouldUpdater(");
+    });
+  });
+
+  describe("shouldUpdateChild", () => {
+    it("returns true when selectRow changes", () => {
+      const base = {
+        rowIndex: 0,
+        columns: [{ dataField: "id", text: "ID" }],
+        row: { id: 1 },
+        selectRow: { mode: "checkbox" },
+        expandRow: { renderer: jest.fn() },
+      };
+      const next = { ...base, selectRow: { mode: "radio" } };
+      expect(shouldUpdateChild(base, next)).toBe(true);
+    });
+
+    it("returns true when expandRow changes", () => {
+      const base = {
+        rowIndex: 0,
+        columns: [{ dataField: "id", text: "ID" }],
+        row: { id: 1 },
+        selectRow: { mode: "checkbox" },
+        expandRow: { renderer: jest.fn() },
+      };
+      const next = { ...base, expandRow: { renderer: jest.fn() } };
+      expect(shouldUpdateChild(base, next)).toBe(true);
+    });
+
+    it("returns false when all props are unchanged", () => {
+      const expandFn = jest.fn();
+      const base = {
+        rowIndex: 0,
+        columns: [{ dataField: "id", text: "ID" }],
+        row: { id: 1 },
+        selectRow: { mode: "checkbox" },
+        expandRow: { renderer: expandFn },
+      };
+      expect(shouldUpdateChild(base, { ...base })).toBe(false);
     });
   });
 });

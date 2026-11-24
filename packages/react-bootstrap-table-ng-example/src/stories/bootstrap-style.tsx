@@ -12,7 +12,7 @@ interface WithBootstrapStyleState {
 }
 
 export const BOOTSTRAP_VERSION = {
-  FIVE: "5.3.8",
+  FIVE: "5.3.9",
   FOUR: "4.6.2",
   THREE: "3.4.1",
 };

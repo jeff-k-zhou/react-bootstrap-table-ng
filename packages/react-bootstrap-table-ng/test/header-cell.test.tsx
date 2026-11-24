@@ -636,4 +636,186 @@ describe("HeaderCell", () => {
       expect(filterRenderer).toHaveBeenCalledTimes(1);
     });
   });
+
+  describe("extra branch coverage tests", () => {
+    it("handles headerAttrs as function with custom tabIndex and scope", () => {
+      const headerAttrsFn = jest.fn((col, idx) => ({
+        "data-attr": `test-${idx}`,
+        tabIndex: 3,
+        scope: "row",
+      }));
+      const column = {
+        dataField: "name",
+        text: "Name",
+        headerAttrs: headerAttrsFn,
+      };
+
+      render(
+        <table>
+          <thead>
+            <tr>
+              <HeaderCell column={column} index={1} />
+            </tr>
+          </thead>
+        </table>
+      );
+
+      const th = screen.getByRole("rowheader");
+      expect(th).toHaveAttribute("data-attr", "test-1");
+      expect(th).toHaveAttribute("tabindex", "3");
+      expect(th).toHaveAttribute("scope", "row");
+      expect(headerAttrsFn).toHaveBeenCalledWith(column, 1);
+    });
+
+    it("handles headerStyle as function returning falsy / null", () => {
+      const headerStyleFn = jest.fn(() => null);
+      const column = {
+        dataField: "name",
+        text: "Name",
+        headerStyle: headerStyleFn,
+      };
+
+      render(
+        <table>
+          <thead>
+            <tr>
+              <HeaderCell column={column} index={1} />
+            </tr>
+          </thead>
+        </table>
+      );
+
+      const th = screen.getByRole("columnheader");
+      expect(th).toBeInTheDocument();
+      expect(headerStyleFn).toHaveBeenCalled();
+    });
+
+    it("handles customClick and customKeyDown for sorting keyboard and click events", () => {
+      const onSort = jest.fn();
+      const customClick = jest.fn();
+      const customKeyDown = jest.fn();
+
+      const column = {
+        dataField: "name",
+        text: "Name",
+        sort: true,
+        headerAttrs: {
+          onClick: customClick,
+          onKeyDown: customKeyDown,
+        },
+      };
+
+      render(
+        <table>
+          <thead>
+            <tr>
+              <HeaderCell column={column} index={0} onSort={onSort} />
+            </tr>
+          </thead>
+        </table>
+      );
+
+      const th = screen.getByRole("columnheader");
+
+      // Click
+      fireEvent.click(th);
+      expect(onSort).toHaveBeenCalledWith(column);
+      expect(customClick).toHaveBeenCalledTimes(1);
+
+      // Enter key
+      fireEvent.keyDown(th, { key: "Enter" });
+      expect(onSort).toHaveBeenCalledTimes(2);
+      expect(customKeyDown).toHaveBeenCalledTimes(1);
+
+      // Space key
+      fireEvent.keyDown(th, { key: " " });
+      expect(onSort).toHaveBeenCalledTimes(3);
+      expect(customKeyDown).toHaveBeenCalledTimes(2);
+
+      // Other key (not Enter / Space)
+      fireEvent.keyDown(th, { key: "ArrowDown" });
+      expect(onSort).toHaveBeenCalledTimes(3);
+      expect(customKeyDown).toHaveBeenCalledTimes(3);
+    });
+
+    it("handles sortCaretfunc when sorting with falsy sortOrder and globalSortCaret fallback", () => {
+      const sortCaret = jest.fn((order, col) => <span>custom-caret-{order}</span>);
+      const column = {
+        dataField: "id",
+        text: "ID",
+        sort: true,
+        sortCaret,
+      };
+
+      render(
+        <table>
+          <thead>
+            <tr>
+              <HeaderCell
+                column={column}
+                index={0}
+                sorting={true}
+                sortOrder={undefined as any}
+              />
+            </tr>
+          </thead>
+        </table>
+      );
+
+      expect(screen.getByText(`custom-caret-${SORT_DESC}`)).toBeInTheDocument();
+      expect(sortCaret).toHaveBeenCalledWith(SORT_DESC, column);
+    });
+
+    it("handles sortCaretfunc when sorting={false} and headerSortingClasses / headerSortingStyle as functions", () => {
+      const sortCaret = jest.fn((order, col) => <span>unsorted-caret</span>);
+      const sortingClassesFn = jest.fn((col, order, isLast, idx) => "custom-sort-cls");
+      const sortingStyleFn = jest.fn((col, order, isLast, idx) => ({ fontWeight: "bold" }));
+
+      const column = {
+        dataField: "id",
+        text: "ID",
+        sort: true,
+        sortCaret,
+        headerSortingClasses: sortingClassesFn,
+        headerSortingStyle: sortingStyleFn,
+      };
+
+      const { rerender } = render(
+        <table>
+          <thead>
+            <tr>
+              <HeaderCell column={column} index={0} sorting={false} />
+            </tr>
+          </thead>
+        </table>
+      );
+
+      expect(screen.getByText("unsorted-caret")).toBeInTheDocument();
+      expect(sortCaret).toHaveBeenCalledWith(undefined, column);
+
+      // Now rerender with sorting={true} to trigger sorting classes and style functions
+      rerender(
+        <table>
+          <thead>
+            <tr>
+              <HeaderCell
+                column={column}
+                index={0}
+                sorting={true}
+                sortOrder={SORT_ASC}
+                isLastSorting={true}
+              />
+            </tr>
+          </thead>
+        </table>
+      );
+
+      const th = screen.getByRole("columnheader");
+      expect(th).toHaveClass("custom-sort-cls");
+      expect(th).toHaveStyle({ "font-weight": "bold" });
+      expect(sortingClassesFn).toHaveBeenCalledWith(column, SORT_ASC, true, 0);
+      expect(sortingStyleFn).toHaveBeenCalledWith(column, SORT_ASC, true, 0);
+    });
+  });
 });
+

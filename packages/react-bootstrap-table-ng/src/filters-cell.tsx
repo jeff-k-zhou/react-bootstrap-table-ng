@@ -3,7 +3,7 @@ import _ from "./utils";
 
 interface FilterProps {
   props: Record<string, any>;
-  Filter: React.ComponentType<any>;
+  Filter?: React.ComponentType<any>;
 }
 
 interface FiltersCellProps {
@@ -40,9 +40,10 @@ const FiltersCell: React.FC<FiltersCellProps> = (props) => {
   if (column.filterRenderer) {
     const onCustomFilter = onExternalFilter(column, filter?.props.type || "");
     filterElm = column.filterRenderer(onCustomFilter!, column);
-  } else if (filter) {
+  } else if (filter && filter.Filter) {
+    const FilterComponent = filter.Filter;
     filterElm = (
-      <filter.Filter
+      <FilterComponent
         {...filter.props}
         filterState={currFilters![column.dataField]}
         onFilter={onFilter}
@@ -58,7 +59,7 @@ const FiltersCell: React.FC<FiltersCellProps> = (props) => {
     </span>
   );
 
-  return React.createElement(cellEl, cellAttrs, [discernibleText, filterElm]);
+  return React.createElement(cellEl, cellAttrs, discernibleText, filterElm);
 };
 
 export default FiltersCell;

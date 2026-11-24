@@ -137,4 +137,48 @@ describe("Core Column Resizing", () => {
     const resizers = document.querySelectorAll(".react-bootstrap-table-column-resizer");
     expect(resizers.length).toBe(2);
   });
+
+  it("should resize column on ArrowRight and ArrowLeft keyboard events", () => {
+    render(
+      <BootstrapTableWithContext
+        keyField="id"
+        data={data}
+        columns={columns}
+        columnResize
+      />
+    );
+
+    const resizer = document.querySelectorAll(".react-bootstrap-table-column-resizer")[0];
+    const header = resizer.parentElement!;
+    Object.defineProperty(header, "offsetWidth", { configurable: true, value: 100 });
+
+    act(() => {
+      fireEvent.keyDown(resizer, { key: "ArrowRight" });
+    });
+    const th = screen.getAllByRole("columnheader")[0];
+    expect(th).toHaveStyle("width: 108px");
+
+    Object.defineProperty(header, "offsetWidth", { configurable: true, value: 108 });
+    act(() => {
+      fireEvent.keyDown(resizer, { key: "ArrowLeft" });
+    });
+    expect(th).toHaveStyle("width: 100px");
+
+    // Unhandled key like Tab does not change width
+    act(() => {
+      fireEvent.keyDown(resizer, { key: "Tab" });
+    });
+    expect(th).toHaveStyle("width: 100px");
+  });
+
+  it("handles ColumnResizer standalone with custom className and keydown", () => {
+    const onResize = jest.fn();
+    const ColumnResizer = require("../src/column-resizer").default;
+    render(<ColumnResizer onColumnResize={onResize} className="custom-resizer" />);
+    const resizer = screen.getByRole("separator");
+    expect(resizer).toHaveClass("custom-resizer");
+    fireEvent.keyDown(resizer, { key: "ArrowRight" });
+    fireEvent.mouseDown(resizer);
+  });
 });
+

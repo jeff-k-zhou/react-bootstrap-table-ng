@@ -57,6 +57,48 @@ describe("usePagination", () => {
         result.current.handleChangePage(props.nextPageText);
         expect(props.onPageChange).toHaveBeenCalledWith(2, 10);
     });
+
+    it("should call onPageChange with correct page for lastPageText and firstPageText", () => {
+        const props = createMockProps();
+        props.currPage = 3;
+        const { result } = renderHook(() => usePagination(props));
+        result.current.handleChangePage(props.lastPageText);
+        expect(props.onPageChange).toHaveBeenCalledWith(10, 10);
+
+        result.current.handleChangePage(props.firstPageText);
+        expect(props.onPageChange).toHaveBeenCalledWith(1, 10);
+    });
+  });
+
+  describe("getPageStatus with alwaysShowAllBtns", () => {
+    it("returns all buttons when alwaysShowAllBtns is true", () => {
+      const props = createMockProps();
+      props.alwaysShowAllBtns = true;
+      props.withFirstAndLast = true;
+      const { result } = renderHook(() => usePagination(props));
+      const pages = result.current.getPageStatus();
+      expect(pages.some((p: any) => p.page === props.firstPageText)).toBe(true);
+      expect(pages.some((p: any) => p.page === props.lastPageText)).toBe(true);
+    });
+
+    it("returns buttons when alwaysShowAllBtns is true and withFirstAndLast is false", () => {
+      const props = createMockProps();
+      props.alwaysShowAllBtns = true;
+      props.withFirstAndLast = false;
+      const { result } = renderHook(() => usePagination(props));
+      const pages = result.current.getPageStatus();
+      expect(pages.some((p: any) => p.page === props.prePageText)).toBe(true);
+    });
+
+    it("handles middle page with withFirstAndLast false and alwaysShowAllBtns false", () => {
+      const props = createMockProps();
+      props.currPage = 5;
+      props.alwaysShowAllBtns = false;
+      props.withFirstAndLast = false;
+      const { result } = renderHook(() => usePagination(props));
+      const pages = result.current.getPageStatus();
+      expect(pages.length).toBeGreaterThan(0);
+    });
   });
 
   describe("fromTo", () => {

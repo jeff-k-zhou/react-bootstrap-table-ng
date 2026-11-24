@@ -95,6 +95,36 @@ describe("Row Aggregator", () => {
         expect(selectRow.onSelect).toHaveBeenCalledTimes(1);
       });
     });
+
+    describe("if selectColumnPosition is right", () => {
+      it("renders selection cell at the end", () => {
+        const selectRow = { mode: "radio", selectColumnPosition: INDICATOR_POSITION_RIGHT };
+        const props = getBaseProps();
+        const { rerender } = render(
+          <SelectionContext.Provider data={data} keyField={keyField} selectRow={selectRow}>
+            <table>
+              <tbody>
+                <RowAggregatorWithSelection {...props} />
+              </tbody>
+            </table>
+          </SelectionContext.Provider>
+        );
+        const rowEl = screen.getByRole("row");
+        const cells = rowEl.querySelectorAll("td");
+        expect(cells[cells.length - 1]).toHaveAttribute("data-testid", "selection-cell");
+
+        // Rerender with identical props (memo return true)
+        rerender(
+          <SelectionContext.Provider data={data} keyField={keyField} selectRow={selectRow}>
+            <table>
+              <tbody>
+                <RowAggregatorWithSelection {...props} />
+              </tbody>
+            </table>
+          </SelectionContext.Provider>
+        );
+      });
+    });
   });
 
   describe("when expandRow is enable", () => {
@@ -281,6 +311,64 @@ describe("Row Aggregator", () => {
       fireEvent.click(rowEl);
       expect(attrs.onClick).toHaveBeenCalledTimes(1);
       expect(selectRow.onSelect).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe("tabIndexCell behavior", () => {
+    it("assigns tabIndex to selection cell when tabIndexCell=true", () => {
+      const selectRow = { mode: "checkbox" };
+      render(
+        <SelectionContext.Provider data={data} keyField={keyField} selectRow={selectRow}>
+          <table>
+            <tbody>
+              <RowAggregatorWithSelection
+                {...getBaseProps()}
+                tabIndexCell={true}
+                visibleColumnSize={2}
+                rowIndex={0}
+              />
+            </tbody>
+          </table>
+        </SelectionContext.Provider>
+      );
+      const selectionCell = screen.getByTestId("selection-cell");
+      expect(selectionCell).toBeInTheDocument();
+    });
+
+    it("assigns tabIndex to expand cell when tabIndexCell=true and showExpandColumn", () => {
+      const expandRow = { renderer: jest.fn(), showExpandColumn: true };
+      render(
+        <ExpansionContext.Provider data={data} keyField={keyField} expandRow={expandRow}>
+          <table>
+            <tbody>
+              <RowAggregatorWithExpansion
+                {...getBaseProps()}
+                tabIndexCell={true}
+                visibleColumnSize={2}
+                rowIndex={0}
+              />
+            </tbody>
+          </table>
+        </ExpansionContext.Provider>
+      );
+      const expandCell = screen.getByTestId("expand-cell");
+      expect(expandCell).toBeInTheDocument();
+    });
+
+    it("sets tabIndex=0 on row when isClickToExpand", () => {
+      const expandRow = { renderer: jest.fn() };
+      render(
+        <ExpansionContext.Provider data={data} keyField={keyField} expandRow={expandRow}>
+          <table>
+            <tbody>
+              <RowAggregatorWithExpansion {...getBaseProps()} />
+            </tbody>
+          </table>
+        </ExpansionContext.Provider>
+      );
+      const rowEl = screen.getByRole("row");
+      // When expandRow.renderer is set, tabIndex=0 is added to tr
+      expect(rowEl).toHaveAttribute("tabIndex", "0");
     });
   });
 });

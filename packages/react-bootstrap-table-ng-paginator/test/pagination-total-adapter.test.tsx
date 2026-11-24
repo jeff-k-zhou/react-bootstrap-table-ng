@@ -29,5 +29,23 @@ describe("paginationTotalAdapter", () => {
       expect(receivedProps.dataSize).toEqual(props.dataSize);
       expect(receivedProps.paginationTotalRenderer).toEqual(props.paginationTotalRenderer);
     });
+
+    it("should execute default onPageChange callback when triggered from usePagination", () => {
+      const usePagMod = require("../src/hooks/usePagination");
+      const spy = jest.spyOn(usePagMod, "usePagination").mockImplementation((p: any) => {
+        if (typeof p.onPageChange === "function") {
+          p.onPageChange(2, 10);
+        }
+        return { fromTo: [1, 10] } as any;
+      });
+
+      const SpyComponent = () => null;
+      const Adapter = paginationTotalAdapter(SpyComponent);
+      render(<Adapter currPage={1} currSizePerPage={10} dataSize={20} pageStartIndex={1} />);
+
+      expect(spy).toHaveBeenCalled();
+      spy.mockRestore();
+    });
   });
 });
+

@@ -121,6 +121,7 @@
     "./packages/react-bootstrap-table-ng-example",
     "./packages/**/*.d.ts",
     "./packages/**/*.js",
-    "./packages/**/*.js.map"
+    "./packages/**/*.js.map",
+    "./packages/**/test"
   ]
 }

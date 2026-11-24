@@ -31,4 +31,31 @@ describe("TextEditor", () => {
       expect(input).toHaveClass(className);
     });
   });
+
+  it("handles autoSelectText, didMount, ref.getValue and default props", () => {
+    const didMount = jest.fn();
+    const ref = React.createRef<any>();
+    render(
+      <TextEditor
+        ref={ref}
+        autoSelectText={true}
+        didMount={didMount}
+        onUpdate={() => {}}
+      />
+    );
+    expect(didMount).toHaveBeenCalledTimes(1);
+    expect(ref.current?.getValue()).toBe("");
+  });
+
+  it("handles when inputRef.current is null during mount", () => {
+    const fakeRef = {
+      get current() { return null; },
+      set current(_) {}
+    };
+    const spy = jest.spyOn(React, "useRef").mockReturnValueOnce(fakeRef as any);
+    render(<TextEditor onUpdate={() => {}} />);
+    spy.mockRestore();
+  });
 });
+
+

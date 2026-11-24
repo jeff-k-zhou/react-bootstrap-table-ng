@@ -1,5 +1,5 @@
-import * as path from "path";
-import umdConfig from "./webpack.umd.babel";
+const path = require("path");
+const umdConfig = require("./webpack.umd.cjs");
 
 module.exports = {
   ...umdConfig,

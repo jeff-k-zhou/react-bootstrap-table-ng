@@ -1,6 +1,6 @@
 {
   "name": "react-bootstrap-table-ng",
-  "version": "5.19.6",
+  "version": "5.19.7",
   "description": "Next generation of react-bootstrap-table",
   "main": "./lib/index.js",
   "types": "./index.d.ts",
@@ -44,7 +44,7 @@
   ],
   "dependencies": {
     "classnames": "^2.5.1",
-    "lodash-es": "^4.17.23",
+    "lodash-es": "^4.18.1",
     "react-transition-group": "^4.4.5"
   },
   "peerDependencies": {
@@ -57,5 +57,5 @@
     "@types/lodash-es": "^4",
     "@types/react-transition-group": ">=4.4.12"
   },
-  "gitHead": "36c5d25e3cba752d9aa02f3de916313bf47537b3"
+  "gitHead": "90f0a0740c0f70443ceeac5be2285f3d6d1e3b25"
 }

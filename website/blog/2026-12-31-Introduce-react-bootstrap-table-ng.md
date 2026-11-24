@@ -15,7 +15,7 @@ on top of [`react-bootstrap-table-next`] and [`react-bootstrap-table-nextgen`]
 ### Core Features/Enhancements
 
 - Support React 18 and React 19
-- Support Bootstrap 3.x up to 3.4.1, Bootstrap 4.x up to 4.6.2, and Bootstrap 5.x up to 5.3.8
+- Support Bootstrap 3.x up to 3.4.1, Bootstrap 4.x up to 4.6.2, and Bootstrap 5.x up to 5.3.9
 - Convert all test cases from Enzyme to React Testing Library (RTL), remove Enzyme related dependencies
 - Migrate PropTypes to typescript types due to PropTypes deprecation in React 19
 - Add column resize functionality

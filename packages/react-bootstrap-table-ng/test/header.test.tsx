@@ -256,4 +256,27 @@ describe("Header", () => {
       });
     });
   });
+
+  describe('selectRow.selectColumnPosition is "right"', () => {
+    it("should render selection column at the right position", () => {
+      const selectRow = {
+        mode: "checkbox",
+        selectColumnPosition: INDICATOR_POSITION_RIGHT,
+      };
+      render(
+        <SelectionContext.Provider data={data} keyField={keyField} selectRow={selectRow}>
+          <table>
+            <Header
+              {...mockHeaderResolvedProps}
+              columns={columns}
+              selectRow={selectRow}
+            />
+          </table>
+        </SelectionContext.Provider>
+      );
+      const headers = screen.getAllByRole("columnheader");
+      expect(headers.length).toBe(columns.length + 1);
+    });
+  });
 });
+

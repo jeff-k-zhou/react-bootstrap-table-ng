@@ -203,5 +203,116 @@ describe("FilterContext", () => {
       filterProps = mockBase.mock.calls[mockBase.mock.calls.length - 1][0];
       expect(Object.keys(filterProps.currFilters)).toHaveLength(0);
     });
+
+    it("should support onExternalFilter callback", () => {
+      renderContext();
+      const filterProps = mockBase.mock.calls[0][0];
+      act(() => {
+        filterProps.onExternalFilter(columns[0], FILTER_TYPES.TEXT)("1");
+      });
+      const updatedFilterProps = mockBase.mock.calls[mockBase.mock.calls.length - 1][0];
+      expect(updatedFilterProps.currFilters.id).toBeDefined();
+    });
+
+    it("should call afterFilter when filter.afterFilter is provided", () => {
+      const afterFilter = jest.fn();
+      FilterContext = createFilterContext(
+        _,
+        jest.fn().mockReturnValue(false),
+        handleFilterChange
+      );
+      render(
+        <FilterContext.Provider
+          columns={columns}
+          data={data}
+          filter={{ afterFilter }}
+          isRemoteFiltering={FilterContext.isRemoteFiltering}
+          handleFilterChange={FilterContext.handleFilterChange}
+          _={FilterContext._}
+        >
+          <FilterContext.Consumer>
+            {(filterProps: any) => mockBase(filterProps)}
+          </FilterContext.Consumer>
+        </FilterContext.Provider>
+      );
+      expect(afterFilter).toHaveBeenCalledWith(data, expect.any(Object));
+    });
+
+    it("should expose ref with currFilters and getFiltered", () => {
+      const ref = React.createRef<any>();
+      FilterContext = createFilterContext(
+        _,
+        jest.fn().mockReturnValue(false),
+        handleFilterChange
+      );
+      render(
+        <FilterContext.Provider
+          ref={ref}
+          columns={columns}
+          data={data}
+          isRemoteFiltering={FilterContext.isRemoteFiltering}
+          handleFilterChange={FilterContext.handleFilterChange}
+          _={FilterContext._}
+        >
+          <div />
+        </FilterContext.Provider>
+      );
+      expect(ref.current).toBeDefined();
+      expect(ref.current.currFilters).toBeDefined();
+      expect(ref.current.getFiltered()).toEqual(data);
+    });
+
+    it("should set default comparator to EQ for SELECT filter and handle caseSensitive", () => {
+      renderContext();
+      const filterProps = mockBase.mock.calls[0][0];
+      const selectCol = {
+        dataField: "status",
+        text: "Status",
+        filter: { props: { caseSensitive: true } },
+      };
+      act(() => {
+        filterProps.onFilter(selectCol, FILTER_TYPES.SELECT)("active");
+      });
+      const updatedProps = mockBase.mock.calls[mockBase.mock.calls.length - 1][0];
+      expect(updatedProps.currFilters.status.comparator).toBe("=");
+      expect(updatedProps.currFilters.status.caseSensitive).toBe(true);
+    });
+
+    it("should trigger initial remote filtering if initial filters exist", () => {
+      const remoteFilterHandler = jest.fn();
+      FilterContext = createFilterContext(
+        _,
+        jest.fn().mockReturnValue(true),
+        remoteFilterHandler
+      );
+      const colsWithDefault = [
+        {
+          dataField: "id",
+          text: "ID",
+          filter: { props: { defaultValue: "1" } },
+        },
+      ];
+      function Child({ filterProps }: any) {
+        React.useLayoutEffect(() => {
+          filterProps.onFilter(colsWithDefault[0], FILTER_TYPES.TEXT, true)("1");
+        }, []);
+        return null;
+      }
+      render(
+        <FilterContext.Provider
+          columns={colsWithDefault}
+          data={data}
+          isRemoteFiltering={FilterContext.isRemoteFiltering}
+          handleFilterChange={FilterContext.handleFilterChange}
+          _={FilterContext._}
+        >
+          <FilterContext.Consumer>
+            {(filterProps: any) => <Child filterProps={filterProps} />}
+          </FilterContext.Consumer>
+        </FilterContext.Provider>
+      );
+      expect(remoteFilterHandler).toHaveBeenCalled();
+    });
   });
 });
+

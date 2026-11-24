@@ -58,4 +58,41 @@ describe("SizePerPageOption", () => {
       });
     });
   });
+
+  describe("keyboard interaction and bootstrap5", () => {
+    it("handles Enter and Space keydown to select size", () => {
+      render(
+        <SizePerPageOption
+          text={text}
+          page={page}
+          onSizePerPageChange={onSizePerPageChange}
+          bootstrap5
+        />
+      );
+
+      const option = screen.getByRole("option");
+      fireEvent.keyDown(option, { key: "Enter" });
+      expect(onSizePerPageChange).toHaveBeenCalledWith(page);
+
+      fireEvent.keyDown(option, { key: " " });
+      expect(onSizePerPageChange).toHaveBeenCalledWith(page);
+
+      fireEvent.click(option);
+    });
+
+    it("handles keydown on default list item structure", () => {
+      render(
+        <SizePerPageOption
+          text={text}
+          page={page}
+          onSizePerPageChange={onSizePerPageChange}
+        />
+      );
+
+      const option = screen.getByRole("option");
+      fireEvent.keyDown(option, { key: "Enter" });
+      expect(onSizePerPageChange).toHaveBeenCalledWith(page);
+      fireEvent.click(option);
+    });
+  });
 });

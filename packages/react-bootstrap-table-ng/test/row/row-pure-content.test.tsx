@@ -708,4 +708,72 @@ describe("RowPureContent", () => {
       expect(cells[1]).toHaveClass("expandable-cell");
     });
   });
+
+  describe("extra branch coverage tests", () => {
+    it("handles isEditable=true, column.editable as function and boolean, clickToEdit and dbclickToEdit", () => {
+      const editableFn = jest.fn((content, r, rIdx, cIdx) => true);
+      const cols = [
+        { dataField: "id", text: "ID" }, // keyField -> not editable
+        { dataField: "name", text: "Name", editable: editableFn },
+        { dataField: "price", text: "Price", editable: true },
+      ];
+
+      render(
+        <table>
+          <tbody>
+            <tr>
+              <RowPureContent
+                keyField="id"
+                columns={cols}
+                row={row}
+                isEditable={true}
+                clickToEdit={true}
+                dbclickToEdit={true}
+              />
+            </tr>
+          </tbody>
+        </table>
+      );
+
+      expect(editableFn).toHaveBeenCalledWith("A", row, undefined, 1);
+      const cells = screen.getAllByRole("cell");
+      expect(cells).toHaveLength(3);
+    });
+
+    it("handles memo re-render when shouldUpdate is undefined in nextProps", () => {
+      const { rerender } = render(
+        <table>
+          <tbody>
+            <tr>
+              <RowPureContent
+                keyField="id"
+                columns={defaultColumns}
+                rowIndex={0}
+                row={row}
+              />
+            </tr>
+          </tbody>
+        </table>
+      );
+
+      // Re-render without shouldUpdate to trigger `typeof nextProps.shouldUpdate === "undefined"`
+      rerender(
+        <table>
+          <tbody>
+            <tr>
+              <RowPureContent
+                keyField="id"
+                columns={defaultColumns}
+                rowIndex={0}
+                row={{ ...row, name: "B" }}
+              />
+            </tr>
+          </tbody>
+        </table>
+      );
+
+      expect(screen.getByText("B")).toBeInTheDocument();
+    });
+  });
 });
+

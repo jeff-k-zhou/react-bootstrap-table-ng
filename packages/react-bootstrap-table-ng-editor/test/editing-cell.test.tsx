@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, act } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import React from "react";
 import { stub } from "sinon";
@@ -563,4 +563,218 @@ describe("EditingCell", () => {
       expect(editor).toBeInTheDocument();
     });
   });
+
+  describe("async validation, onStartEdit, and keyboard interactions", () => {
+    const textCol = { dataField: "name", text: "Name" };
+
+    it("calls onStartEdit when provided to factory", () => {
+      const onStartEdit = jest.fn();
+      const CustomEditingCell = editingCellFactory(_, onStartEdit);
+      render(
+        <TableRowWrapper>
+          <CustomEditingCell
+            row={row}
+            rowIndex={rowIndex}
+            columnIndex={columnIndex}
+            column={textCol}
+            onUpdate={jest.fn()}
+            onEscape={jest.fn()}
+          />
+        </TableRowWrapper>
+      );
+      expect(onStartEdit).toHaveBeenCalledWith(row, textCol, rowIndex, columnIndex);
+    });
+
+    it("handles async validator returning { async: true } and calling callback with valid: false", () => {
+      let asyncDone: any;
+      const validator = jest.fn((val, r, c, done) => {
+        asyncDone = done;
+        return { async: true };
+      });
+      const localOnUpdate = jest.fn();
+
+      render(
+        <TableRowWrapper>
+          <EditingCell
+            row={row}
+            rowIndex={rowIndex}
+            columnIndex={columnIndex}
+            column={{ ...textCol, validator }}
+            onUpdate={localOnUpdate}
+            onEscape={jest.fn()}
+          />
+        </TableRowWrapper>
+      );
+
+      const input = screen.getByRole("textbox");
+      fireEvent.keyDown(input, { keyCode: 13 });
+      expect(validator).toHaveBeenCalled();
+
+      // Complete async validation with error
+      act(() => {
+        asyncDone({ valid: false, message: "Async Error" });
+      });
+      expect(screen.getByText("Async Error")).toBeInTheDocument();
+      expect(localOnUpdate).not.toHaveBeenCalled();
+
+      // Complete async validation with valid: true
+      act(() => {
+        asyncDone({ valid: true });
+      });
+      expect(localOnUpdate).toHaveBeenCalled();
+    });
+
+    it("displays message when message prop is passed and triggers onErrorMessageDisappear after timeout", () => {
+      jest.useFakeTimers();
+      const onErrorMessageDisappear = jest.fn();
+
+      render(
+        <TableRowWrapper>
+          <EditingCell
+            row={row}
+            rowIndex={rowIndex}
+            columnIndex={columnIndex}
+            column={textCol}
+            onUpdate={jest.fn()}
+            onEscape={jest.fn()}
+            message="Initial Error"
+            timeToCloseMessage={100}
+            onErrorMessageDisappear={onErrorMessageDisappear}
+          />
+        </TableRowWrapper>
+      );
+
+      expect(screen.getByText("Initial Error")).toBeInTheDocument();
+
+      act(() => {
+        jest.advanceTimersByTime(150);
+      });
+
+      expect(onErrorMessageDisappear).toHaveBeenCalled();
+      jest.useRealTimers();
+    });
+
+    it("handles ESC keydown and click stopPropagation", () => {
+      const localOnEscape = jest.fn();
+      render(
+        <TableRowWrapper>
+          <EditingCell
+            row={row}
+            rowIndex={rowIndex}
+            columnIndex={columnIndex}
+            column={textCol}
+            onUpdate={jest.fn()}
+            onEscape={localOnEscape}
+          />
+        </TableRowWrapper>
+      );
+
+      const input = screen.getByRole("textbox");
+      fireEvent.keyDown(input, { keyCode: 27 });
+      expect(localOnEscape).toHaveBeenCalled();
+
+      const clickEvent = new MouseEvent("click", { bubbles: true });
+      const spy = jest.spyOn(clickEvent, "stopPropagation");
+      input.dispatchEvent(clickEvent);
+      expect(spy).toHaveBeenCalled();
+    });
+
+    it("handles validator returning sync valid: true, default async result, rAF on escape, TD click, other key, and editorProps.onUpdate", () => {
+      jest.useFakeTimers();
+      const originalRAF = window.requestAnimationFrame;
+      window.requestAnimationFrame = (cb: any) => { cb(); return 0; };
+
+      const focusSpy = jest.spyOn(HTMLElement.prototype, "focus");
+
+      let capturedAsync: any;
+      const validCol = {
+        dataField: "text",
+        text: "Text",
+        validator: (newVal: any, r: any, c: any, asyncCb: any) => {
+          capturedAsync = asyncCb;
+          return { valid: true };
+        },
+      };
+
+      const localOnUpdate = jest.fn();
+      const localOnEscape = jest.fn();
+
+      const { container } = render(
+        <TableRowWrapper>
+          <EditingCell
+            row={row}
+            rowIndex={1}
+            columnIndex={1}
+            column={validCol}
+            onUpdate={localOnUpdate}
+            onEscape={localOnEscape}
+            message="Timer without onErrorMessageDisappear"
+            timeToCloseMessage={50}
+          />
+        </TableRowWrapper>
+      );
+
+      // Timeout fires without onErrorMessageDisappear callback
+      act(() => {
+        jest.advanceTimersByTime(100);
+      });
+
+      const input = container.querySelector("input")!;
+      // Enter calls validator which returns { valid: true } -> onUpdate
+      fireEvent.keyDown(input, { key: "Enter", keyCode: 13 });
+      expect(localOnUpdate).toHaveBeenCalled();
+
+      // Trigger capturedAsync with default argument (no arg passed)
+      act(() => {
+        capturedAsync();
+      });
+
+      // Press other key (not Enter or ESC)
+      fireEvent.keyDown(input, { keyCode: 65 });
+
+      // Click directly on TD
+      const td = container.querySelector("td")!;
+      fireEvent.click(td);
+
+      // Press ESC to trigger rAF and focus
+      fireEvent.keyDown(input, { key: "Escape", keyCode: 27 });
+      expect(localOnEscape).toHaveBeenCalled();
+      expect(focusSpy).toHaveBeenCalled();
+      focusSpy.mockRestore();
+
+      // Test editorProps.onUpdate default callback by having both editor and editorRenderer defined
+      let defaultOnUpdateCalled = false;
+      const bothCol = {
+        dataField: "name",
+        text: "Name",
+        editor: {}, // triggers isDefaultEditorDefined, skipping else if
+        editorRenderer: (editorProps: any) => {
+          editorProps.onUpdate();
+          defaultOnUpdateCalled = true;
+          return <div data-testid="both-editor" />;
+        },
+      };
+
+      render(
+        <TableRowWrapper>
+          <EditingCell
+            row={row}
+            rowIndex={1}
+            columnIndex={1}
+            column={bothCol}
+            onUpdate={jest.fn()}
+            onEscape={jest.fn()}
+          />
+        </TableRowWrapper>
+      );
+      expect(defaultOnUpdateCalled).toBe(true);
+
+      window.requestAnimationFrame = originalRAF;
+      jest.useRealTimers();
+    });
+  });
 });
+
+
+
+

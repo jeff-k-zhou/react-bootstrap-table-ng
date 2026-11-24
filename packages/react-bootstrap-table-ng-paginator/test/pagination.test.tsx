@@ -141,4 +141,28 @@ describe("Pagination", () => {
       });
     });
   });
+
+  describe("when rendered with minimal props and various configurations", () => {
+    it("renders with minimal props using all default values", () => {
+      const { container } = render(<Pagination currPage={1} currSizePerPage={10} dataSize={50} />);
+      expect(container.querySelector(".react-bootstrap-table-pagination")).toBeInTheDocument();
+    });
+
+    it("handles totalSize, bootstrap4, bootstrap5, and hideSizePerPage", () => {
+      const { container } = render(
+        <Pagination
+          currPage={1}
+          currSizePerPage={10}
+          totalSize={100}
+          bootstrap4={true}
+          bootstrap5={true}
+          hideSizePerPage={true}
+          showTotal={false}
+          showPageJump={false}
+        />
+      );
+      expect(container.querySelector(".react-bootstrap-table-pagination")).toBeInTheDocument();
+      expect(container.querySelector(".react-bootstrap-table-pagination-total")).not.toBeInTheDocument();
+    });
+  });
 });

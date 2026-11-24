@@ -178,4 +178,32 @@ describe("SortContext", () => {
       );
     });
   });
+
+  describe("when sort prop is defined", () => {
+    it("initializes and syncs sort state when sort prop changes", () => {
+      const { rerender } = renderContext(false, {
+        sort: { dataField: "id", order: SORT_ASC },
+      });
+      let props = mockBase.mock.calls[mockBase.mock.calls.length - 1][0];
+      expect(props.sortOrder).toBe(SORT_ASC);
+      expect(props.sortField).toBe("id");
+
+      // Rerender with different sort
+      rerender(
+        <SortContext.Provider
+          columns={columns}
+          data={data}
+          sort={{ dataField: "name", order: SORT_DESC }}
+          defaultSortDirection={SORT_DESC}
+        >
+          <SortContext.Consumer>
+            {(sortProps: any) => mockBase(sortProps)}
+          </SortContext.Consumer>
+        </SortContext.Provider>
+      );
+      props = mockBase.mock.calls[mockBase.mock.calls.length - 1][0];
+      expect(props.sortOrder).toBe(SORT_DESC);
+      expect(props.sortField).toBe("name");
+    });
+  });
 });

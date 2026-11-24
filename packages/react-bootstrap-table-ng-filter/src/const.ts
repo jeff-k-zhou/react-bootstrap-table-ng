@@ -40,7 +40,7 @@ export type TextFilterProps<T extends object = any> = TableColumnFilterProps<
 
 export type SelectFilterOptions =
   | { [index: string]: string }
-  | Array<{ value: number; label: string }>;
+  | Array<{ value: number | string; label: string }>;
 
 export type SelectFilterProps<T extends object = any> = TableColumnFilterProps<
   string,

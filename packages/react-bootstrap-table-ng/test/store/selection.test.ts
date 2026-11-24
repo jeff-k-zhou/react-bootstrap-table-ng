@@ -89,5 +89,15 @@ describe('Selection Function', () => {
         });
       });
     });
+
+    it('handles default arguments when data or selected is undefined', () => {
+      expect(getSelectionSummary(undefined, keyField, undefined)).toEqual({
+        allRowsSelected: false,
+        allRowsNotSelected: true,
+      });
+      expect(selectableKeys(undefined, keyField)).toEqual([]);
+      expect(getSelectedRows(undefined, keyField, [])).toEqual([]);
+      expect(unSelectableKeys([1, 2], undefined)).toEqual([]);
+    });
   });
 });

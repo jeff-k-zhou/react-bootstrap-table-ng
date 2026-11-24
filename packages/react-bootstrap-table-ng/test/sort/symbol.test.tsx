@@ -29,4 +29,15 @@ describe("SortSymbol", () => {
       expect(container.getElementsByClassName("order-4").length).toBe(1);
     });
   });
+
+  describe("if bootstrap5 prop is true", () => {
+    it("should render sort symbol correctly", () => {
+      const { container } = render(
+        <BootstrapContext.Provider value={{ bootstrap5: true }}>
+          <SortSymbol />
+        </BootstrapContext.Provider>
+      );
+      expect(container.getElementsByClassName("order-5").length).toBe(1);
+    });
+  });
 });

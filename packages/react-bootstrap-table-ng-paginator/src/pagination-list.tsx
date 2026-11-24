@@ -19,17 +19,18 @@ interface PaginationListProps {
 const PaginatonList = (props: PaginationListProps) => (
   <nav aria-label={props.paginationListAriaLabel || (props.tableId ? `Pagination for table ${props.tableId}` : "Table pagination")}>
     <ul className="pagination react-bootstrap-table-page-btns-ul">
-      {props.pages.map((pageProps: any) => {
+      {props.pages.map((pageProps: any, index: number) => {
+        const key = typeof pageProps.page === "string" || typeof pageProps.page === "number" ? pageProps.page : (pageProps.title || index);
         if (props.pageButtonRenderer) {
           const element = props.pageButtonRenderer({
             ...pageProps,
             onPageChange: props.onPageChange,
           });
-          return element ? React.cloneElement(element, { key: pageProps.page }) : null;
+          return element ? React.cloneElement(element, { key: element.key ?? key }) : null;
         }
         return (
           <PageButton
-            key={pageProps.page}
+            key={key}
             {...pageProps}
             onPageChange={props.onPageChange}
           />

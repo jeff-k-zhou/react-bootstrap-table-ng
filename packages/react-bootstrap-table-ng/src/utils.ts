@@ -52,7 +52,7 @@ const _: TableUtils = {
   includes: (list: any[] | undefined, value: any) =>
     Array.isArray(list) && list.includes(value),
   has,
-  filter: <T>(list: T[], predicate: (item: T) => boolean) =>
+  filter: <T,>(list: T[], predicate: (item: T) => boolean) =>
     Array.isArray(list) ? list.filter(predicate) : [],
   isFunction,
   isString,

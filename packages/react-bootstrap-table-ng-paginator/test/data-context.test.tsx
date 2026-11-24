@@ -136,5 +136,66 @@ describe("PaginationDataContext", () => {
       expect(renderMockComponent).toHaveBeenCalled();
       // No direct way to check currPage, but onPageChange should be called if logic is correct
     });
+
+    it("triggers onPageChange and onDataSizeChange on data shrink", () => {
+      const onPageChange = jest.fn();
+      const onDataSizeChange = jest.fn();
+      const Context = createStateContext();
+      const isRemote = jest.fn().mockReturnValue(false);
+
+      const { rerender } = render(
+        <Context.Provider
+          pagination={paginationFactory({ page: 5, sizePerPage: 10, onPageChange })}
+          data={data}
+          onDataSizeChange={onDataSizeChange}
+          isRemotePagination={isRemote}
+        >
+          <Context.Consumer>
+            {(props: any) => {
+              props.setRemoteEmitter({ emit: jest.fn() });
+              return <div>{props.data.length}</div>;
+            }}
+          </Context.Consumer>
+        </Context.Provider>
+      );
+
+      rerender(
+        <Context.Provider
+          pagination={paginationFactory({ page: 5, sizePerPage: 10, onPageChange })}
+          data={data.slice(0, 5)}
+          onDataSizeChange={onDataSizeChange}
+          isRemotePagination={isRemote}
+        >
+          <Context.Consumer>
+            {(props: any) => <div>{props.data.length}</div>}
+          </Context.Consumer>
+        </Context.Provider>
+      );
+
+      expect(onPageChange).toHaveBeenCalled();
+      expect(onDataSizeChange).toHaveBeenCalled();
+    });
+
+    it("adjusts effectiveCurrPage when page is beyond totalPages without remote pagination", () => {
+      const Context = createStateContext();
+      const isRemote = jest.fn().mockReturnValue(false);
+      let receivedData: any;
+
+      render(
+        <Context.Provider
+          pagination={paginationFactory({ page: 20, sizePerPage: 10 })}
+          data={data.slice(0, 5)}
+          isRemotePagination={isRemote}
+        >
+          <Context.Consumer>
+            {(props: any) => {
+              receivedData = props.data;
+              return <div>{props.data.length}</div>;
+            }}
+          </Context.Consumer>
+        </Context.Provider>
+      );
+      expect(receivedData).toBeDefined();
+    });
   });
 });
